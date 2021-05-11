@@ -93,7 +93,7 @@ class LibroReclamaciones extends Intranet
         $nueva_ruta_imagen_contactanos = str_replace('public/', '/storage/', $ruta_imagen_contactanos);*/
 
         $empresa->ruta_imagen_libro = $nueva_ruta_imagen_libro;
-        $empresa->save();
+        $empresa->update();
 
         $respuesta->result = Result::SUCCESS;
         $respuesta->mensaje = 'Imagen de portada reemplazada correctamente.';
