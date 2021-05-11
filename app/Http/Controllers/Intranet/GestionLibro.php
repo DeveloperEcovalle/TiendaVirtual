@@ -52,7 +52,6 @@ class GestionLibro extends Intranet
     {
         $libro = LibroReclamaciones::find($id);
         $ruta = public_path().'/storage/reclamos/'.$libro->codigo.'.pdf';
-        //Storage::disk('public')->delete('informesti/'.$id);
         return response()->download($ruta);
     }
 }

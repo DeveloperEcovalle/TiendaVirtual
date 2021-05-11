@@ -76,12 +76,16 @@ class Certificaciones extends Intranet {
         $imagen = $request->file('imagen_de_portada');
 
         if ($imagen) {
-            $sRutaImagenActual = str_replace('/storage', 'public', $pagina->ruta_imagen_portada);
-            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
-            Storage::disk('public')->delete($sNombreImagenActual);
-
-            $ruta_imagen_portada = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
-            $nueva_ruta_imagen_portada = str_replace('public/', '/storage/', $ruta_imagen_portada);
+            if($pagina->ruta_imagen_portada)
+            {
+                $imag_aux = explode('/',$pagina->ruta_imagen_portada);
+                Storage::disk('public')->delete('empresa/'.$imag_aux[3]);
+            }
+            $ruta = public_path().'/storage/empresa';
+            $fileName = uniqid().$imagen->getClientOriginalName();
+            $imagen->move($ruta,$fileName);
+            $sNombreImagenActual = '/storage/empresa/'.$fileName;
+            $nueva_ruta_imagen_portada = $sNombreImagenActual;
         } else {
             $nueva_ruta_imagen_portada = $pagina->ruta_imagen_portada;
         }
