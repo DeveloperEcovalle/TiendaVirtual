@@ -1,0 +1,13 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class LineaProducto extends Model {
+
+    protected $table = 'lineas_producto';
+    protected $primaryKey = 'id';
+    public $timestamps = false;
+
+}

@@ -1,0 +1,333 @@
+@extends('website.layout')
+
+@section('title', 'Facturación y Envío')
+
+@section('content')
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent px-0">
+                <li class="breadcrumb-item"><a href="/">{{ $lstLocales['Home'] }}</a></li>
+                <li class="breadcrumb-item"><a href="/">{{ $lstLocales['Shopping cart'] }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Facturaci&oacute;n y env&iacute;o</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="pt-5 pb-5" v-if="iCargando === 1" v-cloak>
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <img src="/img/spinner.svg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-4 pb-5" v-if="lstCarritoCompras.length > 0 && iCargando === 0" v-cloak>
+        <div class="container-xl">
+            <div class="row pb-5">
+                <div class="col-lg-4">
+                    <button class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
+                        1. {{ $lstLocales['Shopping cart'] }}
+                    </button>
+                </div>
+                <div class="col-lg-4">
+                    <button class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
+                        2. {{ $lstTraduccionesFacturacionEnvio['billing_and_delivery'] }}
+                    </button>
+                </div>
+                <div class="col-lg-4">
+                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                        3. {{ $lstTraduccionesFacturacionEnvio['payment'] }}
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="row">
+                        <div class="col-md-12 mb-1">
+                            <div style="background-color: #EE9722;color:#ffffff">
+                                <div class="form-group row p-4 align-items-end">
+                                    <div class="col-md-6" style="background:url('/img/delivery_aux.png') no-repeat center; background-size: contain;">
+                                        <div class="radio">
+                                            <input type="radio" name="tipo_compra" id="sDelivery" v-on:click="sDeliveryFn()" checked>
+                                            <label for="sDelivery" title="Delivery">
+                                                <b>Delivery</b>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="background:url('/img/shop.png') no-repeat center; background-size: contain;">
+                                        <div class="radio">
+                                            <input type="radio" name="tipo_compra" id="sRTienda" v-on:click="sRTiendaFn()">
+                                            <label for="sRTienda" title="Recojo en tienda">
+                                                <b>Recojo en tienda</b>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3" v-if="sDelivery === 0">
+                            <div class="p-4 bg-white">
+                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
+                                <p>
+                                    <span class="font-weight-bold">Direcci&oacute;n de env&iacute;o</span>
+                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                </p>
+                                <div v-if="iDireccionEnvioEstablecida === 0">
+                                    <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
+                                </div>
+                                <div v-else>
+                                    <p class="font-weight-bold mb-0">@{{ direccionEnvio.sNombres + ' ' + direccionEnvio.sApellidos + ' ' }}</p>
+                                    <p class="mb-0">@{{ direccionEnvio.sDireccion + ', ' + direccionEnvio.sDistrito + ', ' + direccionEnvio.sProvincia + ', ' + direccionEnvio.sDepartamento }}</p>
+                                    <p>@{{ direccionEnvio.sTelefono }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-ecovalle" :disabled="iDireccionEnvioEstablecida === 0" v-on:click="iDireccionEnvioConfirmada = 1" v-if="iDireccionEnvioConfirmada === 0">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3" v-if="sRTienda === 0">
+                            <div class="p-4 bg-white">
+                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de recojo en tienda</h1>
+                                <p>
+                                    <span class="font-weight-bold">Datos de recojo</span>
+                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarRecojo">Editar</a> <!--v-if="iRecojoConfirmado === 0"-->
+                                </p>
+                                <div v-if="iRecojoEstablecido === 0">
+                                    <p>Datos de recojo no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
+                                </div>
+                                <div v-else>
+                                    <p class="font-weight-bold mb-0">@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
+                                    <p>@{{ datosRecojo.sDocumento }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-ecovalle" :disabled="iRecojoEstablecido === 0" v-on:click="iRecojoConfirmado = 1" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3 d-none">
+                            <div class="p-4 bg-white">
+                                <h1 class="h5 font-weight-bold text-ecovalle-2">1. Informaci&oacute;n de facturaci&oacute;n</h1>
+                                <p class="font-weight-bold"></p>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3 d-none">
+                            <div class="p-4 bg-white">
+                                <h1 class="h5 font-weight-bold text-ecovalle-2">2. Medio de pago</h1>
+                                <p class="font-weight-bold">Seleccionar forma de pago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="px-3 pt-3 bg-white">
+                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['order_summary'] }}</h1>
+                            </div>
+                        </div>
+                        <div class="col-12" v-for="(detalle, i) in lstCarritoCompras">
+                            <div class="p-3 bg-white">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img class="img-fluid mb-3 mb-md-0" v-if="detalle.producto.imagenes.length > 0" :src="detalle.producto.imagenes[0].ruta">
+                                    </div>
+                                    <div class="col-5">
+                                        <p class="font-weight-bold small mb-0">
+                                            @{{ locale === 'es' ? detalle.producto.nombre_es : detalle.producto.nombre_en }}
+                                        </p>
+                                    </div>
+                                    <div class="col-4">
+                                        <p class="text-right font-weight-bold small mb-0">
+                                            S/ @{{ (detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
+                                            (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
+                                            (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))).toFixed(2) }}</p>
+                                        <p class="text-right font-weight-bold small mb-0">Cant: @{{ detalle.cantidad }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="px-3 pt-3 bg-white">
+                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['price_summary'] }}</h1>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="p-3 bg-white">
+                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
+                                <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
+                                <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="modalEditarDireccionEnvio" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar direcci&oacute;n de env&iacute;o</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="frmDireccionEnvio" v-on:submit.prevent="confirmarDireccionEnvio">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tipo documento</label>
+                                    <select name="tipo_documento" id="tipo_documento" class="form-control" v-on:change="cambiarTipoDoc()" v-model="sTipoDoc">
+                                        <option value="">Seleccionar</option>
+                                        <option value="DNI">DNI</option>
+                                        <option value="RUC">RUC</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Documento</label>
+                                    <div class="input-group">
+                                        <input type="text" id="documento" name="documento" v-model="direccionEnvio.sDocumento" class="form-control"  maxlength="8" required>
+                                        <span class="input-group-append"><a class="btn btn-primary" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="pt-5 pb-5" v-if="iCargandoConsultaApi === 1" v-cloak>
+                            <div class="container-xl">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <img src="/img/spinner.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="row">
+                            <div class="col-md-12" v-if="iCargandoConsultaApi === 0">
+                                <div class="form-group" v-if="sTipoDoc === 'DNI'">
+                                    <label>Nombres</label>
+                                    <input class="form-control" v-model="direccionEnvio.sNombres" autocomplete="off">
+                                </div>
+                                <div class="form-group"  v-if="sTipoDoc === 'DNI'">
+                                    <label>Apellidos</label>
+                                    <input class="form-control" v-model="direccionEnvio.sApellidos" autocomplete="off">
+                                </div>
+                                <div class="form-group"  v-if="sTipoDoc === 'RUC'">
+                                    <label>Razon Social</label>
+                                    <input class="form-control" v-model="direccionEnvio.sRazon" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tel&eacute;fono o celular</label>
+                                    <input class="form-control" v-model="direccionEnvio.sTelefono" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo electr&oacute;nico</label>
+                                    <input class="form-control" v-model="direccionEnvio.sCorreo" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label>Direcci&oacute;n</label>
+                                    <input class="form-control" v-model="direccionEnvio.sDireccion" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Departamento</label>
+                                    <select class="form-control" v-model="direccionEnvio.sDepartamento">
+                                        <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Provincia</label>
+                                    <select class="form-control" v-model="direccionEnvio.sProvincia">
+                                        <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Distrito</label>
+                                    <select class="form-control" v-model="direccionEnvio.sDistrito">
+                                        <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="frmDireccionEnvio" class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalEditarRecojo" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar datos de recojo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="frmRecojo" v-on:submit.prevent="confirmarRecojo">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tipo documento</label>
+                                    <select name="rtipo_documento" id="rtipo_documento" class="form-control" v-on:change="rcambiarTipoDoc()" v-model="rTipoDoc">
+                                        <option value="">Seleccionar</option>
+                                        <option value="DNI">DNI</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Documento</label>
+                                    <div class="input-group">
+                                        <input type="text" id="rdocumento" name="rdocumento" v-model="datosRecojo.sDocumento" class="form-control"  maxlength="8" required>
+                                        <span class="input-group-append"><a class="btn btn-primary" v-on:click.prevent="ajaxConsultaApir()"><i class="fa fa-search"></i> </a></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="pt-5 pb-5" v-if="iCargandoConsultaApir === 1" v-cloak>
+                            <div class="container-xl">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <img src="/img/spinner.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="row">
+                            <div class="col-md-12" v-if="iCargandoConsultaApir === 0">
+                                <div class="form-group" v-if="rTipoDoc === 'DNI'">
+                                    <label>Nombres</label>
+                                    <input class="form-control" v-model="datosRecojo.sNombres" autocomplete="off">
+                                </div>
+                                <div class="form-group"  v-if="rTipoDoc === 'DNI'">
+                                    <label>Apellidos</label>
+                                    <input class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="frmRecojo" class="btn btn-ecovalle" :disabled="!bRecojoValida">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script src="https://checkout.culqi.com/js/v3"></script>
+    <script src="/js/website/facturacionEnvio.js?cvcn=14"></script>
+@endsection

@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+@font-face {
+  font-family: "ecovalle";
+  src:url("fonts/ecovalle.eot");
+  src:url("fonts/ecovalle.eot?#iefix") format("embedded-opentype"),
+    url("fonts/ecovalle.woff") format("woff"),
+    url("fonts/ecovalle.ttf") format("truetype"),
+    url("fonts/ecovalle.svg#ecovalle") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "ecovalle" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="ecovalle-"]:before,
+[class*=" ecovalle-"]:before {
+  font-family: "ecovalle" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ecovalle-carrito-compras:before {
+  content: "\61";
+}
+.ecovalle-usuario:before {
+  content: "\62";
+}
