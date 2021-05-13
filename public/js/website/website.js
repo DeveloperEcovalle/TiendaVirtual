@@ -378,6 +378,8 @@ function autocompletar()
                         divList.appendChild(elementoLista);
                         //console.log(item.nombre_es);
                     });
+                }else{
+                    $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
                 }
             },
             error: function () {
