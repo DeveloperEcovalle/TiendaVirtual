@@ -7,10 +7,10 @@
         <a :href="pagina.enlace_imagen_portada" v-if="pagina.enlace_imagen_portada">
             <img :src="pagina.ruta_imagen_portada" class="w-100">
         </a>
-        <img :src="pagina.ruta_imagen_portada" class="w-100 d-none" v-else>
+        <img :src="pagina.ruta_imagen_portada" class="w-100" v-else>
     </section>
 
-    <section class="bg-ecovalle-6 d-none">
+    <section class="bg-ecovalle-6">
         <div class="container-xl">
             <div class="row py-4 py-lg-5">
                 <div class="col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">

@@ -165,7 +165,7 @@ class LibroReclamaciones extends Website
                 ->save(public_path().'/storage/reclamos/' . $reclamo->codigo.'.pdf');
                 
                 Mail::send('website.email.reclamo',compact("reclamo"), function ($mail) use ($pdf,$reclamo) {
-                    $mail->to('ccubas@unitru.edu.pe');
+                    $mail->to('developer.ecovalle@gmail.com');
                     $mail->subject('RECLAMO N° '.$reclamo->codigo);
                     $mail->attachdata($pdf->output(), $reclamo->codigo.'.pdf');
                     $mail->from('ccubas.16.09@gmail.com','ECO VALLE');

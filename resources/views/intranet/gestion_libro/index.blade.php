@@ -24,32 +24,33 @@
                 <div class="form-group">
                     <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar por codigo, nombres ó apellidos">
                 </div>
-                <table class="table table-bordered table-hover" id="tblLibro">
-                    <thead>
-                        <tr>
-                            <th class="bg-primary">Nombres</th>
-                            <th class="bg-primary">Apellidos</th>
-                            <th class="bg-primary">Documento</th>
-                            <th class="bg-primary">C&oacute;digo</th>
-                            <th class="bg-primary">Direcci&oacute;n</th>
-                            <th class="bg-primary" style="width: 100px;"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        <tr v-for="reclamo of lstLibroFiltrado" v-cloak>
-                            <td>@{{ reclamo.nombres }}</td>
-                            <td>@{{ reclamo.apellidos }}</td>
-                            <td>@{{ reclamo.numero_documento }}</td>
-                            <td>@{{ reclamo.codigo }}</td>
-                            <td>@{{ reclamo.direccion }}</td>
-                            <td><a :href="'/intranet/app/libro-reclamaciones/libro/ajax/download/'+reclamo.id" class="btn btn-sm btn-danger btn-block"><i class="fa fa-file-pdf-o"></i> PDF</a></td>
-                        </tr>
-                        <tr v-if="lstLibroFiltrado.length === 0" v-cloak>
-                            <td colspan="3" class="text-center">No hay datos para mostrar</td>
-                        </tr>
-                    </tbody>
-                </table>
-
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tblLibro">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary">Nombres</th>
+                                <th class="bg-primary">Apellidos</th>
+                                <th class="bg-primary">Documento</th>
+                                <th class="bg-primary">C&oacute;digo</th>
+                                <th class="bg-primary">Direcci&oacute;n</th>
+                                <th class="bg-primary" style="width: 100px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            <tr v-for="reclamo of lstLibroFiltrado" v-cloak>
+                                <td>@{{ reclamo.nombres }}</td>
+                                <td>@{{ reclamo.apellidos }}</td>
+                                <td>@{{ reclamo.numero_documento }}</td>
+                                <td>@{{ reclamo.codigo }}</td>
+                                <td>@{{ reclamo.direccion }}</td>
+                                <td><a :href="'/intranet/app/libro-reclamaciones/libro/ajax/download/'+reclamo.id" class="btn btn-sm btn-danger btn-block"><i class="fa fa-file-pdf-o"></i> PDF</a></td>
+                            </tr>
+                            <tr v-if="lstLibroFiltrado.length === 0" v-cloak>
+                                <td colspan="6" class="text-center">No hay datos para mostrar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

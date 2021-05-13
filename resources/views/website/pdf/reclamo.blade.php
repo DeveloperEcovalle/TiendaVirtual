@@ -188,7 +188,7 @@
                 <tr>
                     <td colspan="6">
                         <b style="font-size: 12px;">DESCRIPCIÓN:</b><br>
-                        <p style="font-size: 12px;margin:0px;">{{$reclamo->descripción}}</p>
+                        <p style="font-size: 12px;margin:0px;">{{$reclamo->descripcion}}</p>
                     </td>
                 </tr>
                 <tr>

@@ -29,7 +29,7 @@
         <div id="wrapper" class="overflow-hidden">
             <div id="page-wrapper" class="gray-bg overflow-hidden">
                 <div class="row border-bottom white-bg">
-                    <nav class="navbar navbar-expand-lg navbar-fixed-top" role="navigation">
+                    <nav class="navbar navbar-expand-lg navbar-fixed-top">
                         <a href="#" class="navbar-brand">ECOVALLE</a>
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-label="Toggle navigation">
                             <i class="fas fa-bars"></i>

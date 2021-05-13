@@ -24,31 +24,33 @@
                 <div class="form-group">
                     <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar producto por nombre">
                 </div>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th class="bg-primary">Producto</th>
-                            <th class="bg-primary text-right">Stock m&iacute;nimo</th>
-                            <th class="bg-primary text-right">Stock actual</th>
-                            <th class="bg-primary text-right">Pendiente de despacho</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        <tr v-for="producto of lstProductosFiltrados" v-bind:class="{selected: iIdSeleccionado === producto.id}" v-on:click="panelEditar(producto.id)" style="cursor: pointer;" v-cloak>
-                            <td>@{{ producto.nombre_es }}</td>
-                            <td class="text-right">@{{ producto.stock_minimo }}</td>
-                            <td class="text-right" :class="{ 'bg-danger': producto.stock_actual < producto.stock_minimo
-                             , 'bg-warning': producto.stock_actual === producto.stock_minimo
-                             , 'bg-success': producto.stock_actual > producto.stock_minimo }">
-                                @{{ producto.stock_actual }}
-                            </td>
-                            <td class="text-right">@{{ producto.stock_separado }}</td>
-                        </tr>
-                        <tr v-if="lstProductosFiltrados.length === 0" v-cloak>
-                            <td colspan="4" class="text-center">No hay datos para mostrar</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary">Producto</th>
+                                <th class="bg-primary text-right">Stock m&iacute;nimo</th>
+                                <th class="bg-primary text-right">Stock actual</th>
+                                <th class="bg-primary text-right">Pendiente de despacho</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            <tr v-for="producto of lstProductosFiltrados" v-bind:class="{selected: iIdSeleccionado === producto.id}" v-on:click="panelEditar(producto.id)" style="cursor: pointer;" v-cloak>
+                                <td>@{{ producto.nombre_es }}</td>
+                                <td class="text-right">@{{ producto.stock_minimo }}</td>
+                                <td class="text-right" :class="{ 'bg-danger': producto.stock_actual < producto.stock_minimo
+                                , 'bg-warning': producto.stock_actual === producto.stock_minimo
+                                , 'bg-success': producto.stock_actual > producto.stock_minimo }">
+                                    @{{ producto.stock_actual }}
+                                </td>
+                                <td class="text-right">@{{ producto.stock_separado }}</td>
+                            </tr>
+                            <tr v-if="lstProductosFiltrados.length === 0" v-cloak>
+                                <td colspan="4" class="text-center">No hay datos para mostrar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
             </div>
         </div>

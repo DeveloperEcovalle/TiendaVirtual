@@ -71,23 +71,22 @@ class LibroReclamaciones extends Intranet
 
         $imagen = $request->file('imagen_de_portada');
         if ($imagen) {
-            $sRutaImagenActual = str_replace('/storage', 'public', $empresa->ruta_imagen_libro);
-            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
-            Storage::disk('public')->delete($sNombreImagenActual);
-            $ruta_imagen_libro = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
+            // $sRutaImagenActual = str_replace('/storage', 'public', $empresa->ruta_imagen_libro);
+            // $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            // Storage::disk('public')->delete($sNombreImagenActual);
+            // $ruta_imagen_libro = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
 
-            $nueva_ruta_imagen_libro = str_replace('public/', '/storage/', $ruta_imagen_libro);
-            // $url_baner = public_path().$empresa->ruta_imagen_libro;
-            // try
-            // {
-            //     unlink($url_baner);
-            // }catch(Exception $e)
-            // {}
-
-            // $ruta = public_path().'/storage/empresa';
-            // $fileName = uniqid().$imagen->getClientOriginalName();
-            // $imagen->move($ruta,$fileName);
-            // $nueva_ruta_imagen_libro = '/storage/empresa/'.$fileName;
+            // $nueva_ruta_imagen_libro = str_replace('public/', '/storage/', $ruta_imagen_libro);
+            $url_baner = public_path().$empresa->ruta_imagen_libro;
+            try
+            {
+                unlink($url_baner);
+            }catch(Exception $e){}
+            
+            $ruta = public_path().'/storage/empresa';
+            $fileName = uniqid().$imagen->getClientOriginalName();
+            $imagen->move($ruta,$fileName);
+            $nueva_ruta_imagen_libro = '/storage/empresa/'.$fileName;
         } else {
             $nueva_ruta_imagen_libro = $empresa->ruta_imagen_libro;
         }
