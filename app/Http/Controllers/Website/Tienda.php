@@ -186,6 +186,37 @@ class Tienda extends Website {
         return response()->json($respuesta);
     }
 
+    public function ajaxBuscarProductoAllDatos(Request $request) {
+        $sBuscar = $request->get('texto');
+
+        $lstBuscar = explode(' ', $sBuscar, 3);
+
+        $sBusqueda0 = '%' . $lstBuscar[0] . '%';
+        $lstProductos = Producto::whereHas('precio_actual')
+            ->where('nombre_es', 'like', $sBusqueda0)
+            ->orWhere('beneficios_es', 'like', $sBusqueda0)
+            ->orWhere('descripcion_es', 'like', $sBusqueda0);
+
+        if (count($lstBuscar) > 1) {
+            foreach ($lstBuscar as $i => $sBuscando) {
+                if (strlen(trim($sBuscando)) > 2 && $i > 0) {
+                    $sBusqueda = '%' . $sBuscando . '%';
+                    $lstProductos = $lstProductos->orWhere('nombre_es', 'like', $sBusqueda);
+                }
+            }
+        }
+
+        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
+            ->limit(8)
+            ->get();
+
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = $lstProductos;
+
+        return response()->json($respuesta);
+    }
+
     public function producto(Request $request, $id) {
         $locale = $request->session()->get('locale');
 

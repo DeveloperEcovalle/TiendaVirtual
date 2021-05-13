@@ -13,7 +13,6 @@ vueLibroReclamaciones = new Vue({
         sApellidos: '', //
         sTelefono: '', //
         sOTelefono: '', //
-        sTDireccion: '', //
         sDireccion: '', //
         sLote: '', //
         sDepInt: '', //
@@ -43,16 +42,16 @@ vueLibroReclamaciones = new Vue({
             return this.sNombres.trim().length > 0
                 && this.sApellidos.trim().length > 0
                 && this.sTelefono.trim().length > 0
-                && this.sTDireccion.trim().length > 0
                 && this.sDireccion.trim().length > 0
                 && this.sLote.trim().length > 0
+                && this.sTDocumento.trim().length > 0
+                && this.sNDocumento.trim().length > 0
                 && this.sDepartamento.trim().length > 0
                 && this.sProvincia.trim().length > 0
                 && this.sDistrito.trim().length > 0
                 && this.sBContratado.trim().length > 0
                 && this.sDescripcion.trim().length > 0
-                && this.sTReclamo.trim().length > 0
-                && this.sDetalle.trim().length > 0;
+                && this.sTReclamo.trim().length > 0;
         },
         lstDepartamentos: function () {
             let lst = [];
@@ -168,7 +167,6 @@ vueLibroReclamaciones = new Vue({
                         $this.sApellidos = '';
                         $this.sTelefono = '';
                         $this.sOTelefono = '';
-                        $this.sTDireccion = '';
                         $this.sDireccion = '';
                         $this.sLote = '';
                         $this.sDepInt = '';

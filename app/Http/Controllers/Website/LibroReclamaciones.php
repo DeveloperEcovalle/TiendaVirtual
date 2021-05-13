@@ -27,7 +27,6 @@ class LibroReclamaciones extends Website
                 'Name' => 'Name',
                 'Last Name' => 'Last Name',
                 'Phone' => 'Phone',
-                'Type of address' => 'Type of address',
                 'Address' => 'Address',
                 'Lot' => 'No. / Lot',
                 'DeptInt' => 'Dept / Int (Optional)',
@@ -58,7 +57,6 @@ class LibroReclamaciones extends Website
                 'Name' => 'Nombres',
                 'Last Name' => 'Apellidos',
                 'Phone' => 'Teléfono/Celular',
-                'Type of address' => 'Tipo de dirección',
                 'Address' => 'Dirección',
                 'Lot' => 'Nro. / Lote',
                 'DeptInt' => 'Depto / Int (Opcional)',
@@ -119,7 +117,6 @@ class LibroReclamaciones extends Website
             $reclamo->apellidos = $request->apellidos;
             $reclamo->telefono = $request->telefono;
             $reclamo->otelefono = $request->otelefono;
-            $reclamo->tipo_direccion = $request->tipo_direccion;
             $reclamo->direccion = $request->direccion;
             $reclamo->lote = $request->lote;
             $reclamo->dept_int = $request->dept_int;

@@ -65,9 +65,9 @@ strong{
     float: left;
     padding-left: 10px;
     padding-right: 50px;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
     outline: none;
 }
 
@@ -88,18 +88,18 @@ strong{
  }
 
 .autocompletar button.icon{
-    -webkit-border-top-right-radius: 5px;
-    -webkit-border-bottom-right-radius: 5px;
-    -moz-border-radius-topright: 5px;
-    -moz-border-radius-bottomright: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    -webkit-border-top-right-radius: 15px;
+    -webkit-border-bottom-right-radius: 15px;
+    -moz-border-radius-topright: 15px;
+    -moz-border-radius-bottomright: 15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
    
     border: none;
-    background: #232833;
+    background: #ffffff; /*#232833*/
     height: 35px;
     width: 50px;
-    color: #ffffff;
+    color: #65737e;
     opacity: 0;
     font-size: 10pt;
    
@@ -124,6 +124,7 @@ strong{
  
 .autocompletar:hover button.icon:hover{
     background: var(--amarillo-ecovalle);
+    color: #ffffff;
 }
 
 .lista-autocompletar-items{
@@ -144,6 +145,7 @@ strong{
     width: 100%;
     zoom: 85%;
 }
+
 .lista-autocompletar-items .div-item {
     padding: 5px;
     margin: 5px;

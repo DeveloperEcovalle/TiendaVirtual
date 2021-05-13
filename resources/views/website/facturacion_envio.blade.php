@@ -76,7 +76,7 @@
                                 <p>
                                     <span class="font-weight-bold">Direcci&oacute;n de env&iacute;o</span>
                                     <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    <button v-on:click.prevent="mostrarModalPago()">Culqi</button>
+                                    <button class="d-none" v-on:click.prevent="mostrarModalPago()">Culqi</button>
                                 </p>
                                 <div v-if="iDireccionEnvioEstablecida === 0">
                                     <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>

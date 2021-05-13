@@ -108,6 +108,7 @@ Route::middleware([Locale::class])->group(function () {
                 Route::post('/listarCategorias', 'Tienda@ajaxListarCategorias');
                 Route::post('/listarProductos', 'Tienda@ajaxListarProductos');
                 Route::post('/buscarProducto', 'Tienda@ajaxBuscarProducto');
+                Route::post('/buscarProductoAllDatos', 'Tienda@ajaxBuscarProductoAllDatos');
             });
 
             Route::prefix('/producto')->group(function () {

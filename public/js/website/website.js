@@ -331,7 +331,7 @@ function autocompletar()
         var arr = [];
         $.ajax({
             type: 'post',
-            url: '/tienda/ajax/buscarProducto',
+            url: '/tienda/ajax/buscarProductoAllDatos',
             data: {'texto':search_p},
             dataType: 'json',
             success: function (respuesta) {

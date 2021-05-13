@@ -62,27 +62,18 @@
                     </div>
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
-                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Type of address'] }} <span class="text-danger">*</span></label>
-                            <select class="form-control" name="tipo_direccion" v-model="sTDireccion"  required="required">
-                                <option value="" selected> @{{ locale === 'es' ? "Seleccionar" : "To Select" }}</option>
-                                <option value="Tipo de direccion 1"> @{{ locale === 'es' ? "Tipo de direccion 1" : "Type Address one" }}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-4">
-                        <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['Address'] }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="direccion" v-model="sDireccion" required="required" autocomplete="off">
                         </div>
                     </div>
-                </div>
-                <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['Lot'] }} <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="lote" v-model="sLote" required="required" autocomplete="off">
                         </div>
                     </div>
+                </div>
+                <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['DeptInt'] }}</label>
@@ -95,14 +86,14 @@
                             <input type="text" class="form-control" name="urbanizacion" v-model="sUrbanizacion" autocomplete="off">
                         </div>
                     </div>
-                </div>
-                <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['Reference'] }}</label>
                             <input type="text" class="form-control" name="referencia" v-model="sReferencia" autocomplete="off">
                         </div>
                     </div>
+                </div>
+                <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['Departament'] }} <span class="text-danger">*</span></label>
@@ -121,8 +112,6 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-4">
                         <div class="form-group">
                             <label class="text-ecovalle-2">{{ $lstLocalesLR['District'] }} <span class="text-danger">*</span></label>
@@ -136,16 +125,18 @@
                 <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
-                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Document type'] }}</label>
-                            <select class="form-control" name="tipo_documento" v-model="sTDocumento">
+                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Document type'] }} <span class="text-danger">*</span></label>
+                            <select class="form-control" name="tipo_documento" v-model="sTDocumento" required>
                                 <option value="" selected> @{{ locale === 'es' ? "Seleccionar" : "To Select" }}</option>
+                                <option value="DNI" selected>DNI</option>
+                                <option value="RUC" selected>RUC</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
-                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Document number'] }}</label>
-                            <input type="text" class="form-control" name="numero_documento" v-model="sNDocumento">
+                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Document number'] }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" name="numero_documento" v-model="sNDocumento" minlength="8" required>
                         </div>
                     </div>
                 </div>
@@ -211,8 +202,8 @@
                 <div class="row ml-2 mr-2">
                     <div class="col-12 col-lg-6">
                         <div class="form-group">
-                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Detail'] }} <span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="detalle" v-model="sDetalle" rows="2" required></textarea>
+                            <label class="text-ecovalle-2">{{ $lstLocalesLR['Detail'] }}</label>
+                            <textarea class="form-control" name="detalle" v-model="sDetalle" rows="2"></textarea>
                         </div>
                     </div>
                     <div class="col-12 col-lg-6">
