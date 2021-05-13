@@ -67,12 +67,16 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-12 text-right" v-if="sDelivery === 0">
+                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasEnvio"><b>Ver tarifas de env&iacute;o</b></a>
+                        </div>
                         <div class="col-12 mb-3" v-if="sDelivery === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
                                 <p>
                                     <span class="font-weight-bold">Direcci&oacute;n de env&iacute;o</span>
                                     <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    <button v-on:click.prevent="mostrarModalPago()">Culqi</button>
                                 </p>
                                 <div v-if="iDireccionEnvioEstablecida === 0">
                                     <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
@@ -321,6 +325,50 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" form="frmRecojo" class="btn btn-ecovalle" :disabled="!bRecojoValida">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalTarifasEnvio" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tarifas de env&iacute;o</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4" v-cloak>
+                    <div class="form-group">
+                        <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar por departamento, provincia ó distrito">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tblBlogs">
+                            <thead>
+                                <tr>
+                                    <th class="bg-ecovalle-2">Departamento</th>
+                                    <th class="bg-ecovalle-2">Provincia</th>
+                                    <th class="bg-ecovalle-2">Distrito</th>
+                                    <th class="bg-ecovalle-2">Tarifa</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                <tr v-for="ubigeo  of lstPreciosEnvioFiltrado" v-cloak>
+                                    <td>@{{ ubigeo.departamento }}</td>
+                                    <td>@{{ ubigeo.provincia }}</td>
+                                    <td>@{{ ubigeo.distrito }}</td>
+                                    <td>S/. @{{ ubigeo.tarifa.toFixed(2) }}</td>
+                                </tr>
+                                <tr v-if="lstPreciosEnvio.length === 0" v-cloak>
+                                    <td colspan="4" class="text-center">No hay datos para mostrar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cerrar</button>
                 </div>
             </div>
         </div>

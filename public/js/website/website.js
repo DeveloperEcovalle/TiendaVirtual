@@ -310,7 +310,9 @@ function autocompletar()
         {
             cerrarLista();
         }
+
         if(!search_p) return false;
+
         const divList = document.createElement("div");
         divList.setAttribute("id", this.id + "-lista-autocompletar");
         divList.setAttribute("class", "lista-autocompletar-items");
@@ -336,6 +338,11 @@ function autocompletar()
                 if(respuesta.result == "success")
                 {
                     arr = respuesta.data;
+
+                    if(arr.length > 0)
+                    {
+                        $("#inputSearch").css("border-radius", "15px 15px 0px 0px");
+                    }
                     arr.forEach(item =>{
                         const elementoLista = document.createElement('div');
                         elementoLista.setAttribute("class", "div-item");
@@ -429,4 +436,6 @@ function cerrarLista(){
     const items = document.querySelectorAll(".lista-autocompletar-items");
     items.forEach(item =>{item.parentNode.removeChild(item);});
     indexFocus = -1;
+    $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
 }
+

@@ -128,7 +128,7 @@ Route::middleware([Locale::class])->group(function () {
             Route::get('/', 'FacturacionEnvio@index');
 
             Route::prefix('/ajax')->group(function () {
-                Route::post('/listarPreciosEnvio', 'FacturacionEnvio@ajaxListarPreciosEnvio');
+                Route::get('/listarPreciosEnvio', 'FacturacionEnvio@ajaxListarPreciosEnvio');
                 Route::post('/listarDatosFacturacion', 'FacturacionEnvio@ajaxListarDatosFacturacion');
                 Route::post('/crearCargo', 'FacturacionEnvio@ajaxCrearCargo');
                 Route::post('/consultaApi', 'FacturacionEnvio@ajaxConsultaApi');

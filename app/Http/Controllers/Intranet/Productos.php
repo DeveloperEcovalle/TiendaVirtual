@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Intranet;
 
 use App\CategoriaProducto;
+use App\DetalleCarrito;
+use App\DetalleVenta;
 use App\DocumentoProducto;
 use App\Http\Controllers\ItemAutocompletar;
 use App\Http\Controllers\Respuesta;
@@ -506,27 +508,42 @@ class Productos extends Intranet {
 
         $producto = Producto::find($iProductoId);
 
-        Precio::where('producto_id', $iProductoId)->delete();
-        Oferta::where('producto_id', $iProductoId)->delete();
+        $detalles = DetalleCarrito::where('producto_id', $iProductoId)->get();
 
-        foreach($producto->imagenes as $img)
+        if(count($detalles) == 0)
         {
-            $url_baner = public_path().$img->ruta;
-            try
+            Precio::where('producto_id', $iProductoId)->delete();
+            Oferta::where('producto_id', $iProductoId)->delete();
+            ProductoLinea::where('producto_id', $iProductoId)->delete();
+            ProductoCategoria::where('producto_id', $iProductoId)->delete();
+            ProductoSubproducto::where('producto_id', $iProductoId)->delete();
+
+            foreach($producto->imagenes as $img)
             {
-                unlink($url_baner);
-            }catch(Exception $e)
-            {}
+                $url_baner = public_path().$img->ruta;
+                try
+                {
+                    unlink($url_baner);
+                }catch(Exception $e)
+                {}
+            }
+
+            ImagenProducto::where('producto_id', $iProductoId)->delete();
+
+            // $sRutaImagen = str_replace('/storage/', '', $producto->ruta_imagen);
+            // Storage::disk('public')->delete($sRutaImagen);
+
+            $producto->delete();
+
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Producto eliminado correctamente.';
+
+            return response()->json($respuesta);
+        }else{
+            $respuesta->result = Result::ERROR;
+            $respuesta->mensaje = 'Producto con detalles no puedes eliminarlo.';
+
+            return response()->json($respuesta);
         }
-
-        // $sRutaImagen = str_replace('/storage/', '', $producto->ruta_imagen);
-        // Storage::disk('public')->delete($sRutaImagen);
-
-        $producto->delete();
-
-        $respuesta->result = Result::SUCCESS;
-        $respuesta->mensaje = 'Producto eliminado correctamente.';
-
-        return response()->json($respuesta);
     }
 }

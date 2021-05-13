@@ -134,8 +134,15 @@ class FacturacionEnvio extends Website {
         return view('website.facturacion_envio', $data);
     }
 
-    public function ajaxListarPreciosEnvio(Request $request) {
-        $lstPreciosEnvio = PrecioEnvio::all();
+    public function ajaxListarPreciosEnvio() {
+        // $lstPreciosEnvio = PrecioEnvio::all();
+
+        // $respuesta = new Respuesta;
+        // $respuesta->result = Result::SUCCESS;
+        // $respuesta->data = ['lstPreciosEnvio' => $lstPreciosEnvio];
+
+        // return response()->json($respuesta);
+        $lstPreciosEnvio = Ubigeo::where('estado','ACTIVO')->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
