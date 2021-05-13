@@ -445,3 +445,11 @@ function cerrarLista(){
     $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
 }
 
+function controlaStyleInput(){
+    let inputSearch = $('#inputSearch').val();
+    if(inputSearch === '')
+    {
+        $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
+    }
+}
+

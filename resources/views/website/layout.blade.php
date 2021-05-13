@@ -53,7 +53,7 @@
                                 <div class="">
                                     <form class="mb-0">
                                         <div class="autocompletar">
-                                            <input type="text" id="inputSearch" name="inputSearch" placeholder="{{ session('locale') === 'es' ? 'Buscar Producto' : 'Search Product' }}" autocomplete="off">
+                                            <input type="text" id="inputSearch" name="inputSearch" placeholder="{{ session('locale') === 'es' ? 'Buscar Producto' : 'Search Product' }}" onkeyup="controlaStyleInput();" autocomplete="off">
                                         </div>
                                         <!--<button type="submit"><i class="fas fa-search"></i></button>-->
                                     </form>
