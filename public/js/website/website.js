@@ -339,14 +339,6 @@ function autocompletar()
                 {
                     arr = respuesta.data;
 
-                    if(arr.length > 0)
-                    {
-                        $("#inputSearch").css("border-radius", "15px 15px 0px 0px");
-                    }
-                    else{
-                        $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
-                    }
-
                     arr.forEach(item =>{
                         const elementoLista = document.createElement('div');
                         elementoLista.setAttribute("class", "div-item");
@@ -360,14 +352,14 @@ function autocompletar()
                         let sNombre = item.nombre_es;
                         let sRutaImagen = item.imagenes.length > 0 ? item.imagenes[0].ruta : '';
                         elementoLista.innerHTML = `<div class="row justify-content-between">
-                                                    <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
-                                                    <div class="col-9">
-                                                    <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
-                                                    <div class="row justify-content-between">
-                                                    <div class="col-6"><p class="m-0 h4 text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
-                                                    <div class="col-6">`+stock_guia+`</div>
-                                                    </div>
-                                                    </div>
+                                                        <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
+                                                        <div class="col-9" class="div-contenedor">
+                                                            <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
+                                                            <div class="row justify-content-between">
+                                                                <div class="col-6"><p class="m-0 h4 text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
+                                                                <div class="col-6">`+stock_guia+`</div>
+                                                            </div>
+                                                        </div>
                                                     </div>`;
                         
                         elementoLista.addEventListener('click', function(){
@@ -378,8 +370,6 @@ function autocompletar()
                         divList.appendChild(elementoLista);
                         //console.log(item.nombre_es);
                     });
-                }else{
-                    $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
                 }
             },
             error: function () {
@@ -442,14 +432,5 @@ function cerrarLista(){
     const items = document.querySelectorAll(".lista-autocompletar-items");
     items.forEach(item =>{item.parentNode.removeChild(item);});
     indexFocus = -1;
-    $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
-}
-
-function controlaStyleInput(){
-    let inputSearch = $('#inputSearch').val();
-    if(inputSearch === '')
-    {
-        $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
-    }
 }
 

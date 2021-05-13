@@ -39,11 +39,13 @@
                           v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                         @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
                     </span>
-                    <div class="modal-container">
-                        <a href="#" onclick="fnExplota()">
-                            <img class="img-fluid" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" :src="sRutaImagenSeleccionada">
-                        </a>
-                        <button type="button" class="btn-round position-absolute px-2 py-1 d-none" onclick="fnReduce()"><i class="fa fa-close"></i></button>
+                    <div class="modal-container" id="modal-container">
+                        <div class="contenido">
+                            <a href="#" onclick="fnExplota()" class="controlaButton">
+                                <img class="img-fluid" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" :src="sRutaImagenSeleccionada">
+                            </a>
+                            <button type="button" class="btn-round position-absolute px-2 py-1 d-none" onclick="fnReduce()"><i class="fa fa-close"></i></button>
+                        </div>
                     </div>
                     <div class="pt-3 pb-4 text-center">
                         <a v-for="documento in producto.documentos" class="btn btn-amarillo" :href="documento.ruta_archivo" target="_blank">

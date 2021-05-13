@@ -294,6 +294,7 @@ let vueTiendaProducto = new Vue({
 
 function fnExplota(){
     $('.modal-container').addClass('active');
+    $('.modal-container').addClass('explota');
     $('.btn-round').removeClass('d-none');
     $('.reduce-container').attr('onclick','fnReduce()');
 }

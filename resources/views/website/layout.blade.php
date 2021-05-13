@@ -50,14 +50,13 @@
                     <div class="col-12 col-md-12 col-xs-12 col-lg-9">
                         <nav class="navbar navbar-dark justify-content-center justify-content-lg-end p-0 pt-1">
                             <div class="col-md-6">
-                                <div class="">
-                                    <form class="mb-0">
-                                        <div class="autocompletar">
-                                            <input type="text" id="inputSearch" name="inputSearch" placeholder="{{ session('locale') === 'es' ? 'Buscar Producto' : 'Search Product' }}" onkeyup="controlaStyleInput();" autocomplete="off">
-                                        </div>
-                                        <!--<button type="submit"><i class="fas fa-search"></i></button>-->
-                                    </form>
-                                </div>
+                                <form class="mb-0">
+                                    <div class="autocompletar">
+                                        <input type="text" id="inputSearch" name="inputSearch" placeholder="{{ session('locale') === 'es' ? 'Buscar ...' : 'Search ...' }}" autocomplete="off">
+                                        <button class="icon" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                    <!--<button type="submit"><i class="fas fa-search"></i></button>-->
+                                </form>
                             </div>
                             <div class="col-md-6">
                                 <ul class="nav align-items-center justify-content-between" id="navUsuario">
