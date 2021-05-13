@@ -343,6 +343,10 @@ function autocompletar()
                     {
                         $("#inputSearch").css("border-radius", "15px 15px 0px 0px");
                     }
+                    else{
+                        $("#inputSearch").css("border-radius", "15px 15px 15px 15px");
+                    }
+
                     arr.forEach(item =>{
                         const elementoLista = document.createElement('div');
                         elementoLista.setAttribute("class", "div-item");
