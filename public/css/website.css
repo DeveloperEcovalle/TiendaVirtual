@@ -52,11 +52,15 @@ strong{
     color: black;
 }
 #inputSearch{
-    background-color: #eee;
+    background-color: #ffffff; /*#eee*/
     border: none;
-    border-radius: 10px;
+    border-radius: 15px 15px 15px 15px;
     outline: none;
     width: 100%;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 10px;
 }
 
 .lista-autocompletar-items{
@@ -65,7 +69,7 @@ strong{
     border: 1px solid #d4d4d4;
     background-color: #ffffff;
     border-bottom: none;
-    border-radius: 10px 10px 10px 10px;
+    border-radius: 0px 0px 15px 15px;
     border-top: none;
     z-index: 99;
     /*position the autocomplete items to be the same width as the container:*/
@@ -605,4 +609,49 @@ footer ul li:before {
 
 .toast-success {
     background-color: white;
+}
+
+.modal-container{
+    display: inline-block;
+    position: relative;
+}
+
+.modal-container.active{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+
+.modal-container.active a{
+    z-index: 2;
+    width: 400px;
+    height: 400px;
+}
+
+.modal-container.active::after{
+    content:  '';
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.56);
+    z-index: 1;
+}
+
+.btn-round{
+    width: 50px;
+    height: 50px;
+    border-radius: 35px 35px 35px 35px;
+    background-color: rgba(0, 0, 0, 0.30);
+    font-size: 20px;
+    z-index: 2;
+    outline: none !important;
 }

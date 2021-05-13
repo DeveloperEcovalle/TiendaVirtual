@@ -28,29 +28,31 @@
                 <div class="form-group">
                     <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar por departamento, provincia ó distrito">
                 </div>
-                <table class="table table-bordered table-hover" id="tblBlogs">
-                    <thead>
-                        <tr>
-                            <th class="bg-primary">Departamento</th>
-                            <th class="bg-primary">Provincia</th>
-                            <th class="bg-primary">Distrito</th>
-                            <th class="bg-primary">Tarifa</th>
-                            <th class="bg-primary">Estado</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white">
-                        <tr v-for="ubigeo  of lstUbigeoFiltrados" v-bind:class="{selected: iIdSeleccionado === ubigeo.id}" v-on:click="panelEditar(ubigeo.id)" style="cursor: pointer;" v-cloak>
-                            <td>@{{ ubigeo.departamento }}</td>
-                            <td>@{{ ubigeo.provincia }}</td>
-                            <td>@{{ ubigeo.distrito }}</td>
-                            <td>@{{ ubigeo.tarifa }}</td>
-                            <td>@{{ ubigeo.estado }}</td>
-                        </tr>
-                        <tr v-if="lstUbigeo.length === 0" v-cloak>
-                            <td colspan="5" class="text-center">No hay datos para mostrar</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="tblBlogs">
+                        <thead>
+                            <tr>
+                                <th class="bg-primary">Departamento</th>
+                                <th class="bg-primary">Provincia</th>
+                                <th class="bg-primary">Distrito</th>
+                                <th class="bg-primary">Tarifa</th>
+                                <th class="bg-primary">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            <tr v-for="ubigeo  of lstUbigeoFiltrados" v-bind:class="{selected: iIdSeleccionado === ubigeo.id}" v-on:click="panelEditar(ubigeo.id)" style="cursor: pointer;" v-cloak>
+                                <td>@{{ ubigeo.departamento }}</td>
+                                <td>@{{ ubigeo.provincia }}</td>
+                                <td>@{{ ubigeo.distrito }}</td>
+                                <td>@{{ ubigeo.tarifa ? 'S/. '+ubigeo.tarifa.toFixed(2) : '' }}</td>
+                                <td>@{{ ubigeo.estado }}</td>
+                            </tr>
+                            <tr v-if="lstUbigeo.length === 0" v-cloak>
+                                <td colspan="5" class="text-center">No hay datos para mostrar</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 

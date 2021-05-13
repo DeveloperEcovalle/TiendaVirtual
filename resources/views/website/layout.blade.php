@@ -258,37 +258,37 @@
                                 </div>
                                 <div class="col-11 col-md-4 mb-4 mb-md-0">
                                     <h5 class="h6 font-weight-bold text-uppercase titulo-subrayado-amarillo">{{ $lstLocales['payment_methods'] }}</h5>
-                                    <img src="/img/visa.svg" style="width: 48px;" class="mr-1">
-                                    <img src="/img/mastercard.svg" style="width: 48px;">
+                                    <img src="/img/visa.svg" style="width: 50px;" class="mr-1">
+                                    <img src="/img/mastercard.svg" style="width: 50px;">
                                     <h5 class="h6 font-weight-bold text-uppercase titulo-subrayado-amarillo mt-3">{{ $lstLocales['follow_us'] }}</h5>
                                     @if($empresa->enlace_facebook)
-                                    <a href="{{ $empresa->enlace_facebook }}" target="_blank" class="btn btn-sm btn-social-icon mr-1">
+                                    <a href="{{ $empresa->enlace_facebook }}" target="_blank" class="btn btn-lg btn-social-icon mr-1">
                                         <i class="fab fa-facebook-f"></i>
                                     </a>
                                     @endif
                                     @if($empresa->enlace_instagram)
-                                    <a href="{{ $empresa->enlace_instagram }}" target="_blank" class="btn btn-sm btn-social-icon mr-1">
+                                    <a href="{{ $empresa->enlace_instagram }}" target="_blank" class="btn btn-lg btn-social-icon mr-1">
                                         <i class="fab fa-instagram"></i>
                                     </a>
                                     @endif
                                     @if($empresa->enlace_youtube)
-                                    <a href="{{ $empresa->enlace_youtube }}" target="_blank" class="btn btn-sm btn-social-icon mr-1">
+                                    <a href="{{ $empresa->enlace_youtube }}" target="_blank" class="btn btn-lg btn-social-icon mr-1">
                                         <i class="fab fa-youtube"></i>
                                     </a>
                                     @endif
                                     @if($empresa->enlace_tiktok)
-                                    <a href="{{ $empresa->enlace_tiktok }}" target="_blank" class="btn btn-sm btn-social-icon mr-1">
+                                    <a href="{{ $empresa->enlace_tiktok }}" target="_blank" class="btn btn-lg btn-social-icon mr-1">
                                         <i class="fab fa-tiktok"></i>
                                     </a>
                                     @endif
                                     @if($empresa->enlace_twitter)
-                                    <a href="{{ $empresa->enlace_twitter }}" target="_blank" class="btn btn-sm btn-social-icon mr-1">
+                                    <a href="{{ $empresa->enlace_twitter }}" target="_blank" class="btn btn-lg btn-social-icon mr-1">
                                         <i class="fab fa-twitter"></i>
                                     </a>
                                     @endif
 
                                     @if($empresa->enlace_linkedin)
-                                    <a href="{{ $empresa->enlace_linkedin }}" target="_blank" class="btn btn-sm btn-social-icon">
+                                    <a href="{{ $empresa->enlace_linkedin }}" target="_blank" class="btn btn-lg btn-social-icon">
                                         <i class="fab fa-linkedin-in"></i>
                                     </a>
                                     @endif

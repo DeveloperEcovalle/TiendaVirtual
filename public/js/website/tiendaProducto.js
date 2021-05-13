@@ -291,3 +291,18 @@ let vueTiendaProducto = new Vue({
 
     }
 });
+
+function fnExplota(){
+    $('.modal-container').addClass('active');
+    $('.btn-round').removeClass('d-none');
+    $('.reduce-container').attr('onclick','fnReduce()');
+}
+
+function fnReduce()
+{
+    $('.modal-container').removeClass('active');
+    $('.btn-round').addClass('d-none');
+    $('.reduce-container').removeAttr('onclick','fnReduce()');
+}
+
+

@@ -52,6 +52,7 @@ let vueFacturacionEnvio = new Vue({
         iCargando: 1,
         locale: 'es',
         lstCarritoCompras: [],
+        sBuscar:'',
 
         sDelivery: 0,
         sRTienda: 1,
@@ -99,6 +100,13 @@ let vueFacturacionEnvio = new Vue({
         respuestaPago: null
     },
     computed: {
+        lstPreciosEnvioFiltrado: function () {
+            return this.lstPreciosEnvio.filter(tarifa =>
+                tarifa.departamento.toLowerCase().includes(this.sBuscar.toLowerCase())
+                || tarifa.provincia.toLowerCase().includes(this.sBuscar.toLowerCase())
+                || tarifa.distrito.toLowerCase().includes(this.sBuscar.toLowerCase())
+            );
+        },
         bDireccionEnvioValida: function () {
             return this.direccionEnvio.sTelefono.trim().length > 0
                 && this.direccionEnvio.sCorreo.trim().length > 0
@@ -108,45 +116,46 @@ let vueFacturacionEnvio = new Vue({
                 && this.direccionEnvio.sDireccion.trim().length > 0
                 && this.direccionEnvio.sDocumento.trim().length > 0;
         },
-
         bRecojoValida: function () {
             return this.datosRecojo.sDocumento.trim().length > 0
                 && this.datosRecojo.sNombres.trim().length > 0
                 && this.datosRecojo.sApellidos.trim().length > 0;
         },
-
         bDestinoEncontrado: function () {
             return this.lstPreciosEnvio.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
         },
-
         bVerificaDni: function() {
             return this.sTipoDoc == 'DNI' && this.direccionEnvio.sNombres.trim().length > 0 && this.direccionEnvio.sApellidos.trim().length > 0;
         },
-
         bVerificaRuc: function(){
             return this.sTipoDoc == 'RUC' && this.direccionEnvio.sRazon.trim().length > 0
         },
-
         fDelivery: function () {
             for (let precioEnvio of this.lstPreciosEnvio) {
+                // if (this.direccionEnvio.sDepartamento !== ''
+                //     && this.direccionEnvio.sProvincia === ''
+                //     && this.direccionEnvio.sDistrito === ''
+                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
+
+
+                // else if (this.direccionEnvio.sDepartamento !== ''
+                //     && this.direccionEnvio.sProvincia !== ''
+                //     && this.direccionEnvio.sDistrito === ''
+                //     && precioEnvio.provincia === this.direccionEnvio.sProvincia
+                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
+
+                // else if (this.direccionEnvio.sDepartamento !== ''
+                //     && this.direccionEnvio.sProvincia !== ''
+                //     && this.direccionEnvio.sDistrito !== ''
+                //     && precioEnvio.distrito === this.direccionEnvio.sDistrito
+                //     && precioEnvio.provincia === this.direccionEnvio.sProvincia
+                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
                 if (this.direccionEnvio.sDepartamento !== ''
-                    && this.direccionEnvio.sProvincia === ''
-                    && this.direccionEnvio.sDistrito === ''
-                    && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
-
-
-                else if (this.direccionEnvio.sDepartamento !== ''
-                    && this.direccionEnvio.sProvincia !== ''
-                    && this.direccionEnvio.sDistrito === ''
-                    && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                    && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
-
-                else if (this.direccionEnvio.sDepartamento !== ''
                     && this.direccionEnvio.sProvincia !== ''
                     && this.direccionEnvio.sDistrito !== ''
                     && precioEnvio.distrito === this.direccionEnvio.sDistrito
                     && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                    && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
+                    && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.tarifa;
             }
             return 0;
         },
@@ -179,7 +188,7 @@ let vueFacturacionEnvio = new Vue({
         lstDepartamentos: function () {
             let lst = [];
             for (let ubigeo of this.lstUbigeo) {
-                if (lst.findIndex(departamento => departamento === ubigeo.departamento) === -1) {
+                if (lst.findIndex(departamento => departamento === ubigeo.departamento) === -1 && ubigeo.estado === 'ACTIVO') {
                     lst.push(ubigeo.departamento);
                 }
             }
@@ -189,7 +198,7 @@ let vueFacturacionEnvio = new Vue({
             let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.direccionEnvio.sDepartamento);
             let lst = [];
             for (let ubigeo of lstUbigeoFiltrado) {
-                if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1) {
+                if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1  && ubigeo.estado === 'ACTIVO') {
                     lst.push(ubigeo.provincia);
                 }
             }
@@ -198,7 +207,8 @@ let vueFacturacionEnvio = new Vue({
         lstDistritos: function () {
             return this.lstUbigeo.filter(ubigeo =>
                 ubigeo.departamento === this.direccionEnvio.sDepartamento
-                && ubigeo.provincia === this.direccionEnvio.sProvincia);
+                && ubigeo.provincia === this.direccionEnvio.sProvincia
+                && ubigeo.estado === 'ACTIVO');
         },
         sDetallesCarritoCompras: function () {
             let sDetalles = '';
@@ -225,6 +235,7 @@ let vueFacturacionEnvio = new Vue({
 
             $this.lstCarritoCompras = lstCarritoCompras;
             $this.guardarLstCarritoCompras();
+            $this.ajaxListarPreciosEnvio();
             $this.iCargando = 0;
 
             $this.ajaxListarDatosFacturacion();
@@ -505,7 +516,7 @@ let vueFacturacionEnvio = new Vue({
 
         ajaxListarPreciosEnvio: function () {
             let $this = this;
-            axios.post('/facturacion-envio/ajax/listarPreciosEnvio').then(response => $this.lstPreciosEnvio = response.data.data.lstPreciosEnvio);
+            axios.get('/facturacion-envio/ajax/listarPreciosEnvio').then(response => $this.lstPreciosEnvio = response.data.data.lstPreciosEnvio);
         },
 
         guardarLstCarritoCompras: function () {
@@ -570,7 +581,6 @@ let vueFacturacionEnvio = new Vue({
 
             Culqi.open();
         },
-
         ajaxEnviarContanciaYapePlin: function () {
             this.iPagando = 1;
 
