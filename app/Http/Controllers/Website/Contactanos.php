@@ -81,7 +81,7 @@ class Contactanos extends Website {
         $ruta_archivo = $archivo ? $archivo->store('public/correos') : null;
 
         $notificacionContactanosMail = new NotificacionContactanosMail($nombres, $apellidos, $asunto, $email, $telefono, $mensaje, $ruta_archivo);
-        Mail::to('ccubas@unitru.edu.pe')->send($notificacionContactanosMail);
+        Mail::to('comunity.rrss@ecovalle.pe')->send($notificacionContactanosMail);
 
         //comunity.rrss@ecovalle.pe
 
