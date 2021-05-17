@@ -142,7 +142,6 @@ let vueTiendaProducto = new Vue({
         ajaxAumentarCantidadProductoCarrito: function (producto) {
             let iProductoId = producto.id;
             let $this = this;
-            $this.producto.control_max = 0;
             if(producto.cantidad + 1  === producto.stock_actual)
             {
                 toastr.clear();
@@ -155,10 +154,26 @@ let vueTiendaProducto = new Vue({
                     },
                 };
                 toastr.info(producto.stock_actual +' en stock.');
-                $this.producto.control_max = 1;
-            }
 
-            if(producto.cantidad + 1 <= producto.stock_actual)
+                var cantidad = producto.stock_actual;
+                ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            producto.cantidad = cantidad;
+                            // this.cantidad = this.cantidad + 1;
+                            $this.actualizarLstProductosRelacionados();
+
+                            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+                            let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
+                            detalle.cantidad = cantidad;
+                            detalle.producto.cantidad = cantidad;
+
+                            $this.guardarLstCarritoCompras();
+                        }
+                    });
+            }
+            else if(producto.cantidad + 1 < producto.stock_actual)
             {
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
                 .then(response => {
@@ -173,11 +188,10 @@ let vueTiendaProducto = new Vue({
                         detalle.cantidad = detalle.cantidad + 1;
                         detalle.producto.cantidad = detalle.cantidad;
 
-                        $this.guardarLstCarritoCompras();
-                        $this.producto.control_max = 1
-                    
+                        $this.guardarLstCarritoCompras();                    
                     }
                 });
+
             }else{
                 toastr.clear();
                 toastr.options = {
@@ -189,7 +203,6 @@ let vueTiendaProducto = new Vue({
                     },
                 };
                 toastr.error('Stock insuficiente');
-                $this.producto.control_max = 1;
             }
         },
 

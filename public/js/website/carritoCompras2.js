@@ -98,8 +98,25 @@ let vueCarritoCompras = new Vue({
                     },
                 };
                 toastr.info($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
+
+                var cantidad = $this.lstCarritoCompras[i].producto.stock_actual;
+                ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            producto.cantidad = cantidad;
+                            // this.cantidad = this.cantidad + 1;
+
+                            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+                            let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
+                            detalle.cantidad = cantidad;
+                            detalle.producto.cantidad = cantidad;
+
+                            $this.guardarLstCarritoCompras();
+                        }
+                    });
             }
-            if($this.lstCarritoCompras[i].cantidad + 1 <= $this.lstCarritoCompras[i].producto.stock_actual)
+            if($this.lstCarritoCompras[i].cantidad + 1 < $this.lstCarritoCompras[i].producto.stock_actual)
             {
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
                     .then(response => {
@@ -123,7 +140,7 @@ let vueCarritoCompras = new Vue({
                         warning: 'bg-warning',
                     },
                 };
-                toastr.error('Stock insuficiente. \nStock actual: '+$this.lstCarritoCompras[i].producto.stock_actual);
+                toastr.error($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
             }
         },
         ajaxEliminarDelCarrito: function (producto, i) {
@@ -144,10 +161,7 @@ let vueCarritoCompras = new Vue({
         changeCantidad: function(producto,i)
         {
             var cantidad = $('#cantidad'+i.toString()).val();
-            if(cant == '' || cant == null)
-            {
-                cant = 1;
-            }
+
             var cant = parseInt(cantidad);
             if(isNaN(cant))
             {

@@ -117,21 +117,81 @@ let vueProductosFiltrados = new Vue({
         ajaxAumentarCantidadProductoCarrito: function (producto) {
             let iProductoId = producto.id;
             let $this = this;
-            ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
+            // ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
+            //     .then(response => {
+            //         let respuesta = response.data;
+            //         if (respuesta.result === result.success) {
+            //             producto.cantidad = producto.cantidad + 1;
+            //             $this.actualizarLstProductos();
+
+            //             let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+            //             let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
+            //             detalle.cantidad = detalle.cantidad + 1;
+            //             detalle.producto.cantidad = detalle.cantidad;
+
+            //             $this.guardarLstCarritoCompras();
+            //         }
+            //     });
+            if(producto.cantidad + 1  === producto.stock_actual)
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info(producto.stock_actual +' en stock.');
+
+                var cantidad = producto.stock_actual;
+                ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            producto.cantidad = cantidad;
+
+                            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+                            let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
+                            detalle.cantidad = cantidad;
+                            detalle.producto.cantidad = cantidad;
+
+                            $this.actualizarLstProductos();
+                            $this.guardarLstCarritoCompras();
+                        }
+                    });
+            }
+            else if(producto.cantidad + 1 < producto.stock_actual)
+            {
+                ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
                 .then(response => {
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
                         producto.cantidad = producto.cantidad + 1;
-                        $this.actualizarLstProductos();
 
                         let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
                         let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                         detalle.cantidad = detalle.cantidad + 1;
                         detalle.producto.cantidad = detalle.cantidad;
 
-                        $this.guardarLstCarritoCompras();
+                        $this.actualizarLstProductos();
+                        $this.guardarLstCarritoCompras();                    
                     }
                 });
+
+            }else{
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error('Stock insuficiente');
+            }
         },
 
         actualizarLstProductos: function () {
