@@ -53,15 +53,18 @@ let vueFacturacionEnvio = new Vue({
         locale: 'es',
         lstCarritoCompras: [],
         sBuscar:'',
+        sBuscard:'',
 
-        sDelivery: 0,
+        sNNacional: 0,
+        sDelivery: 1,
         sRTienda: 1,
 
         iCargandoDatosFacturacion: 0,
         lstUbigeo: [],
 
         lstTiposComprobante: [],
-        lstPreciosEnvio: [],
+        lstPreciosEnvioNacional: [],
+        lstPreciosDelivery: [],
 
         direccionEnvio: {
             sDocumento: '',
@@ -74,22 +77,41 @@ let vueFacturacionEnvio = new Vue({
             sProvincia: '',
             sDistrito: '',
             iUbigeoId: 0,
-            sDireccion: ''
+            sDireccion: '',
         },
+
         datosRecojo: {
             sDocumento: '',
             sNombres: '',
             sApellidos: '',
+            sTelefono: '',
+        },
+        
+        datosDelivery: {
+            sDocumento: '',
+            sNombres: '',
+            sApellidos: '',
+            sTelefono: '',
+            sDepartamento: 'LA LIBERTAD',
+            sProvincia: 'TRUJILLO',
+            sDistrito: '',
+            sDireccion: '',
         }, 
 
         iDireccionEnvioEstablecida: 0,
         iDireccionEnvioConfirmada: 0,
+
+        iDeliveryEstablecido: 0,
+        iDeliveryConfirmado: 0,
 
         iRecojoEstablecido: 0,
         iRecojoConfirmado: 0,
 
         rTipoDoc:'',
         iCargandoConsultaApir: 0,
+
+        dTipoDoc:'',
+        iCargandoConsultaApid: 0,
 
         sTipoDoc:'',
         iCargandoConsultaApi: 0,
@@ -100,8 +122,13 @@ let vueFacturacionEnvio = new Vue({
         respuestaPago: null
     },
     computed: {
-        lstPreciosEnvioFiltrado: function () {
-            return this.lstPreciosEnvio.filter(tarifa =>
+        lstPreciosDeliveryFiltrado: function () {
+            return this.lstPreciosDelivery.filter(tarifa =>
+                tarifa.distrito.toLowerCase().includes(this.sBuscard.toLowerCase())
+            );
+        },
+        lstPreciosEnvioNacionalFiltrado: function () {
+            return this.lstPreciosEnvioNacional.filter(tarifa =>
                 tarifa.departamento.toLowerCase().includes(this.sBuscar.toLowerCase())
                 || tarifa.provincia.toLowerCase().includes(this.sBuscar.toLowerCase())
                 || tarifa.distrito.toLowerCase().includes(this.sBuscar.toLowerCase())
@@ -119,11 +146,22 @@ let vueFacturacionEnvio = new Vue({
         bRecojoValida: function () {
             return this.datosRecojo.sDocumento.trim().length > 0
                 && this.datosRecojo.sNombres.trim().length > 0
-                && this.datosRecojo.sApellidos.trim().length > 0;
+                && this.datosRecojo.sApellidos.trim().length > 0
+                && this.datosRecojo.sTelefono.trim().length > 0;
         },
-        bDestinoEncontrado: function () {
-            return this.lstPreciosEnvio.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
+        bDeliveryValida: function () {
+            return this.datosDelivery.sDocumento.trim().length > 0
+                && this.datosDelivery.sNombres.trim().length > 0
+                && this.datosDelivery.sApellidos.trim().length > 0
+                && this.datosDelivery.sTelefono.trim().length > 0
+                && this.datosDelivery.sDireccion.trim().length > 0
+                && this.datosDelivery.sDepartamento.trim().length > 0
+                && this.datosDelivery.sProvincia.trim().length > 0
+                && this.datosDelivery.sDistrito.trim().length > 0;
         },
+        /*bDestinoEncontrado: function () {
+            return this.lstPreciosEnvioNacional.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
+        },*/
         bVerificaDni: function() {
             return this.sTipoDoc == 'DNI' && this.direccionEnvio.sNombres.trim().length > 0 && this.direccionEnvio.sApellidos.trim().length > 0;
         },
@@ -131,32 +169,32 @@ let vueFacturacionEnvio = new Vue({
             return this.sTipoDoc == 'RUC' && this.direccionEnvio.sRazon.trim().length > 0
         },
         fDelivery: function () {
-            for (let precioEnvio of this.lstPreciosEnvio) {
-                // if (this.direccionEnvio.sDepartamento !== ''
-                //     && this.direccionEnvio.sProvincia === ''
-                //     && this.direccionEnvio.sDistrito === ''
-                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
-
-
-                // else if (this.direccionEnvio.sDepartamento !== ''
-                //     && this.direccionEnvio.sProvincia !== ''
-                //     && this.direccionEnvio.sDistrito === ''
-                //     && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
-
-                // else if (this.direccionEnvio.sDepartamento !== ''
-                //     && this.direccionEnvio.sProvincia !== ''
-                //     && this.direccionEnvio.sDistrito !== ''
-                //     && precioEnvio.distrito === this.direccionEnvio.sDistrito
-                //     && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                //     && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.precio;
-                if (this.direccionEnvio.sDepartamento !== ''
-                    && this.direccionEnvio.sProvincia !== ''
-                    && this.direccionEnvio.sDistrito !== ''
-                    && precioEnvio.distrito === this.direccionEnvio.sDistrito
-                    && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                    && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.tarifa;
+            if(this.sNNacional == 0)
+            {
+                for (let precioEnvio of this.lstPreciosEnvioNacional) {
+                    if (this.direccionEnvio.sDepartamento !== ''
+                        && this.direccionEnvio.sProvincia !== ''
+                        && this.direccionEnvio.sDistrito !== ''
+                        && precioEnvio.distrito === this.direccionEnvio.sDistrito
+                        && precioEnvio.provincia === this.direccionEnvio.sProvincia
+                        && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.tarifa;
+                }
+                return 0;
             }
+
+            if(this.sDelivery == 0)
+            {
+                for (let precioDelivery of this.lstPreciosDelivery) {
+                    if (this.datosDelivery.sDepartamento !== ''
+                        && this.datosDelivery.sProvincia !== ''
+                        && this.datosDelivery.sDistrito !== ''
+                        && precioDelivery.distrito === this.datosDelivery.sDistrito
+                        && precioDelivery.provincia === this.datosDelivery.sProvincia
+                        && precioDelivery.departamento === this.datosDelivery.sDepartamento) return precioDelivery.tarifa;
+                }
+                return 0;
+            }
+
             return 0;
         },
         fSubtotal: function () {
@@ -198,16 +236,32 @@ let vueFacturacionEnvio = new Vue({
             let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.direccionEnvio.sDepartamento);
             let lst = [];
             for (let ubigeo of lstUbigeoFiltrado) {
-                if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1  && ubigeo.estado === 'ACTIVO') {
+                if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1  && ubigeo.estado === 'ACTIVO' && ubigeo.provincia != 'TRUJILLO') {
                     lst.push(ubigeo.provincia);
                 }
+            }
+            if(this.direccionEnvio.sDepartamento == '')
+            {
+                this.direccionEnvio.sProvincia = '';
+                this.direccionEnvio.sProvincia = '';
             }
             return lst;
         },
         lstDistritos: function () {
+            if(this.direccionEnvio.sProvincia == '')
+            {
+                this.direccionEnvio.sDistrito = '';
+                this.direccionEnvio.sDistrito = '';
+            }
             return this.lstUbigeo.filter(ubigeo =>
                 ubigeo.departamento === this.direccionEnvio.sDepartamento
                 && ubigeo.provincia === this.direccionEnvio.sProvincia
+                && ubigeo.estado === 'ACTIVO');
+        },
+        lstDistritosD: function () {
+            return this.lstUbigeo.filter(ubigeo =>
+                ubigeo.departamento === 'LA LIBERTAD'
+                && ubigeo.provincia === 'TRUJILLO'
                 && ubigeo.estado === 'ACTIVO');
         },
         sDetallesCarritoCompras: function () {
@@ -239,6 +293,7 @@ let vueFacturacionEnvio = new Vue({
             $this.iCargando = 0;
 
             $this.ajaxListarDatosFacturacion();
+            $('#modalEditarDireccionEnvio').modal('show'); 
         }).then(() => {
             if ($this.lstCarritoCompras.length === 0) {
                 location = '/carrito-compras';
@@ -248,12 +303,23 @@ let vueFacturacionEnvio = new Vue({
     methods: {
         sDeliveryFn: function(){
             this.sDelivery = 0;
+            this.sNNacional = 1;
             this.sRTienda = 1;
+
+            $('#modalEditarDelivery').modal('show');
+        },
+        sNNacionalFn: function(){
+            this.sNNacional = 0;
+            this.sDelivery = 1;
+            this.sRTienda = 1;
+            $('#modalEditarDireccionEnvio').modal('show'); 
         },
 
         sRTiendaFn: function(){
             this.sDelivery = 1;
             this.sRTienda = 0;
+            this.sNNacional = 1;
+            $('#modalEditarRecojo').modal('show');
         },
 
         cambiarTipoDoc: function(){
@@ -322,7 +388,7 @@ let vueFacturacionEnvio = new Vue({
                     $('#rdocumento').removeAttr('maxlength','11');
                     $('#rdocumento').attr('minlength','8');
                     $('#rdocumento').attr('maxlength','8');
-                    $('#rnombres').attr('required',true);
+                    $('#d').attr('required',true);
                     $('#rapellidos').attr('required',true);
                     this.datosRecojo.sDocumento = '';
                     this.datosRecojo.sNombres = '';
@@ -336,6 +402,33 @@ let vueFacturacionEnvio = new Vue({
                     this.datosRecojo.sDocumento = '';
                     this.datosRecojo.sNombres = '';
                     this.datosRecojo.sApellidos = '';
+                    break;
+            }
+        },
+
+        dcambiarTipoDoc: function(){
+            switch (this.dTipoDoc) {
+                case 'DNI':
+                    $('#ddocumento').removeAttr('minlength','11');
+                    $('#ddocumento').removeAttr('maxlength','11');
+                    $('#ddocumento').attr('minlength','8');
+                    $('#ddocumento').attr('maxlength','8');
+                    this.datosDelivery.sDocumento = '';
+                    this.datosDelivery.sNombres = '';
+                    this.datosDelivery.sApellidos = '';
+                    this.datosDelivery.sTelefono = '';
+                    this.datosDelivery.sDireccion = '';
+                    break;
+                default:
+                    $('#ddocumento').removeAttr('minlength','11');
+                    $('#ddocumento').removeAttr('maxlength','11');
+                    $('#ddocumento').attr('minlength','8');
+                    $('#ddocumento').attr('maxlength','8');
+                    this.datosDelivery.sDocumento = '';
+                    this.datosDelivery.sNombres = '';
+                    this.datosDelivery.sApellidos = '';
+                    this.datosDelivery.sTelefono = '';
+                    this.datosDelivery.sDireccion = '';
                     break;
             }
         },
@@ -514,9 +607,92 @@ let vueFacturacionEnvio = new Vue({
             }
         },
 
+        ajaxConsultaApid: function(){
+            let formData = new FormData();
+            var mensaje = '';
+            var verifica = true;
+            if(this.dTipoDoc == '')
+            {
+                verifica = false;
+                mensaje = 'Seleccionar tipo de documento';
+            }
+
+            if(this.datosDelivery.sDocumento == '')
+            {
+                verifica = false;
+                mensaje = 'Ingrese documento';
+            }
+
+            if(this.dTipoDoc == 'DNI' && this.datosDelivery.sDocumento.length < 8)
+            {
+                verifica = false;
+                mensaje = 'Faltan digitos al número de dni';
+            }
+
+            if(verifica)
+            {
+                this.iCargandoConsultaApid = 1;
+                formData.append('tipo_documento',this.dTipoDoc);
+                formData.append('documento',this.datosDelivery.sDocumento);
+                axios.post('/facturacion-envio/ajax/consultaApi', formData)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            if(this.dTipoDoc == 'DNI')
+                            {
+                                this.datosDelivery.sNombres = respuesta.data.nombres;
+                                this.datosDelivery.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
+                            }
+                            if(this.dTipoDoc == '')
+                            {
+                                toastr.clear();
+                                toastr.options = {
+                                    iconClasses: {
+                                        error: 'bg-danger',
+                                        info: 'bg-info',
+                                        success: 'bg-success',
+                                        warning: 'bg-warning',
+                                    },
+                                };
+                                toastr.warning('Seleccione tipo de documento');
+                            }
+                        }
+                        else{
+                            toastr.clear();
+                            toastr.options = {
+                                iconClasses: {
+                                    error: 'bg-danger',
+                                    info: 'bg-info',
+                                    success: 'bg-success',
+                                    warning: 'bg-warning',
+                                },
+                            };
+                            toastr.warning('No se encontraron resultados');
+                        }
+                        this.iCargandoConsultaApid = 0;
+                    })
+                    .then(() => this.iCargandoConsultaApid = 0);
+            }
+            else{
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error(mensaje);
+            }
+        },
+
         ajaxListarPreciosEnvio: function () {
             let $this = this;
-            axios.get('/facturacion-envio/ajax/listarPreciosEnvio').then(response => $this.lstPreciosEnvio = response.data.data.lstPreciosEnvio);
+            axios.get('/facturacion-envio/ajax/listarPreciosEnvio').then(response => {
+                $this.lstPreciosEnvioNacional = response.data.data.lstPreciosEnvio.filter(direccion => direccion.provincia !== 'TRUJILLO');
+                $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO')
+            });
         },
 
         guardarLstCarritoCompras: function () {
@@ -535,6 +711,12 @@ let vueFacturacionEnvio = new Vue({
             $('#modalEditarRecojo').modal('hide');
         },
 
+        confirmarDelivery: function () {
+            this.iDeliveryEstablecido = 1;
+            //$cookies.set('Recojo', this.Recojo, 12);
+            $('#modalEditarDelivery').modal('hide');
+        },
+
         ajaxListarDatosFacturacion: function () {
             let $this = this;
             $this.iCargandoDatosFacturacion = 1;
@@ -545,7 +727,6 @@ let vueFacturacionEnvio = new Vue({
                     let data = respuesta.data;
                     $this.lstTiposComprobante = data.lstTiposComprobante;
                     $this.lstUbigeo = data.lstUbigeo;
-                    console.log(data.lstTiposComprobante);
                     /*if ($this.lstTiposComprobante.length > 0) {
                         $this.formData.iTipoComprobanteId = $this.lstTiposComprobante[0].id;
                     }*/

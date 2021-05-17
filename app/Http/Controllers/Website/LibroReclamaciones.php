@@ -151,8 +151,8 @@ class LibroReclamaciones extends Website
                 $reclamo->update();
 
                 $empresa = Empresa::find(1);
-                Config::set('mail.mailers.smtp.username', 'ccubas.16.09@gmail.com');
-                Config::set('mail.mailers.smtp.password', 'mdnewuttmqmofynj');
+                // Config::set('mail.mailers.smtp.username', 'ccubas.16.09@gmail.com');
+                // Config::set('mail.mailers.smtp.password', 'mdnewuttmqmofynj');
 
                 $reclamo_pdf = AppLibroReclamaciones::find($reclamo->id);
 
@@ -162,10 +162,10 @@ class LibroReclamaciones extends Website
                 ->save(public_path().'/storage/reclamos/' . $reclamo->codigo.'.pdf');
                 
                 Mail::send('website.email.reclamo',compact("reclamo"), function ($mail) use ($pdf,$reclamo) {
-                    $mail->to('developer.ecovalle@gmail.com');
+                    $mail->to('ccubas@unitru.edu.pe');
                     $mail->subject('RECLAMO N° '.$reclamo->codigo);
                     $mail->attachdata($pdf->output(), $reclamo->codigo.'.pdf');
-                    $mail->from('ccubas.16.09@gmail.com','ECO VALLE');
+                    $mail->from('website@ecovalle.pe','ECO VALLE');
                 });
             }
             else

@@ -50,9 +50,10 @@
                     <div class="col-12 col-md-12 col-xs-12 col-lg-9">
                         <nav class="navbar navbar-dark justify-content-center justify-content-lg-end p-0 pt-1">
                             <div class="col-md-6">
-                                <form class="mb-0">
+                                <form class="mb-0" action="{{route('tienda.buscarProducto')}}" method="POST">
+                                    @csrf
                                     <div class="autocompletar">
-                                        <input type="text" id="inputSearch" name="inputSearch" placeholder="{{ session('locale') === 'es' ? 'Buscar ...' : 'Search ...' }}" autocomplete="off">
+                                        <input type="text" id="inputSearch" name="keyword" placeholder="{{ session('locale') === 'es' ? 'Buscar ...' : 'Search ...' }}" autocomplete="off">
                                         <button class="icon" type="submit"><i class="fa fa-search"></i></button>
                                     </div>
                                     <!--<button type="submit"><i class="fas fa-search"></i></button>-->

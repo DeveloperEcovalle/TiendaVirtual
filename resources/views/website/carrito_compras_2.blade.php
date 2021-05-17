@@ -45,19 +45,19 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
                         1. {{ $lstLocales['Shopping cart'] }}
-                    </button>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                    <a href="/facturacion-envio" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
                         2. {{ $lstTraduccionesCarritoCompras['billing_and_delivery'] }}
-                    </button>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0" disabled>
                         3. {{ $lstTraduccionesCarritoCompras['payment'] }}
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -98,7 +98,7 @@
                                                             </span>
                                                             <input type="text" class="form-control text-center" :value="detalle.cantidad" v-on:keyup="changeCantidad(detalle.producto,i)" :placeholder="detalle.cantidad" :id="'cantidad'+i">
                                                             <span class="input-group-append">
-                                                                <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(detalle.producto, i)">
+                                                                <button type="button" class="btn btn-ecovalle" :disabled="detalle.cantidad >= detalle.producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarrito(detalle.producto, i)">
                                                                     <i class="fas fa-plus"></i>
                                                                 </button>
                                                             </span>
@@ -121,7 +121,7 @@
                                 <p class="mb-0 text-muted">@{{ lstCarritoCompras.length }} detalles</p>
                                 <p class="mb-3 text-muted">@{{ iArticulos }} art&iacute;culos</p>
                                 <p class="mb-0 font-weight-bold">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
-                                <a class="btn btn-block btn-ecovalle mt-3" href="/facturacion-envio">Finalizar compra</a>
+                                <a class="btn btn-block btn-ecovalle mt-3" href="/facturacion-envio">Ir  a Comprar</a>
                             </div>
                         </div>
                     </div>

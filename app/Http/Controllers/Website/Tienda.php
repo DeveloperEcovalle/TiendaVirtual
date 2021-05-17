@@ -217,6 +217,52 @@ class Tienda extends Website {
         return response()->json($respuesta);
     }
 
+    public function ajaxObtenerProductos(Request $request){
+        $sBuscar = $request->get('keyword');
+
+        $lstBuscar = explode(' ', $sBuscar, 3);
+
+        $sBusqueda0 = '%' . $lstBuscar[0] . '%';
+        $lstProductos = Producto::whereHas('precio_actual')
+            ->where('nombre_es', 'like', $sBusqueda0)
+            ->orWhere('beneficios_es', 'like', $sBusqueda0)
+            ->orWhere('descripcion_es', 'like', $sBusqueda0);
+
+        if (count($lstBuscar) > 1) {
+            foreach ($lstBuscar as $i => $sBuscando) {
+                if (strlen(trim($sBuscando)) > 2 && $i > 0) {
+                    $sBusqueda = '%' . $sBuscando . '%';
+                    $lstProductos = $lstProductos->orWhere('nombre_es', 'like', $sBusqueda);
+                }
+            }
+        }
+
+        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])->get();
+
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = $lstProductos;
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxPanelBuscar(Request $request){
+        $sBuscar = $request->get('keyword');
+
+        $locale = $request->session()->get('locale');
+
+        $empresa = Empresa::with(['telefonos'])->first();
+        $data = [
+            'lstLocales' => $this->lstLocales[$locale],
+            'sBuscar' => $sBuscar,
+            'iPagina' => 2,
+            'empresa' => $empresa,
+            'telefono_whatsapp' => TelefonoEmpresa::where('whatsapp', 1)->first(),
+        ];
+
+        return view('website.tienda.productos_filtrados',$data);
+    }
+
     public function producto(Request $request, $id) {
         $locale = $request->session()->get('locale');
 

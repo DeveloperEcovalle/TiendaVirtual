@@ -27,17 +27,17 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
+                    <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
                         1. {{ $lstLocales['Shopping cart'] }}
-                    </button>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
                         2. {{ $lstTraduccionesFacturacionEnvio['billing_and_delivery'] }}
-                    </button>
+                    </a>
                 </div>
                 <div class="col-lg-4">
-                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0" disabled>
                         3. {{ $lstTraduccionesFacturacionEnvio['payment'] }}
                     </button>
                 </div>
@@ -48,15 +48,15 @@
                         <div class="col-md-12 mb-1">
                             <div style="background-color: #EE9722;color:#ffffff">
                                 <div class="form-group row p-4 align-items-end">
-                                    <div class="col-md-6" style="background:url('/img/delivery_aux.png') no-repeat center; background-size: contain;">
+                                    <div class="col-lg-4 col-12" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                         <div class="radio">
-                                            <input type="radio" name="tipo_compra" id="sDelivery" v-on:click="sDeliveryFn()" checked>
-                                            <label for="sDelivery" title="Delivery">
-                                                <b>Delivery</b>
+                                            <input type="radio" name="tipo_compra" id="sNNacional" v-on:click="sNNacionalFn()" checked>
+                                            <label for="sNNacional" title="Envío a nivel nacional">
+                                                <b>Envío a nivel nacional</b>
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6" style="background:url('/img/shop.png') no-repeat center; background-size: contain;">
+                                    <div class="col-lg-4 col-12">
                                         <div class="radio">
                                             <input type="radio" name="tipo_compra" id="sRTienda" v-on:click="sRTiendaFn()">
                                             <label for="sRTienda" title="Recojo en tienda">
@@ -64,13 +64,24 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="col-lg-4 col-12">
+                                        <div class="radio">
+                                            <input type="radio" name="tipo_compra" id="sDelivery" v-on:click="sDeliveryFn()">
+                                            <label for="sDelivery" title="Delivery Trujillo">
+                                                <b>Delivery Trujillo</b>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 text-right" v-if="sDelivery === 0">
-                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasEnvio"><b>Ver tarifas de env&iacute;o</b></a>
+                        <div class="col-12 text-right" v-if="sNNacional === 0">
+                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasEnvio"><b>Ver tarifas de env&iacute;o nacional</b></a>
                         </div>
-                        <div class="col-12 mb-3" v-if="sDelivery === 0">
+                        <div class="col-12 text-right" v-if="sDelivery === 0">
+                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
+                        </div>
+                        <div class="col-12 mb-3" v-if="sNNacional === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
                                 <p>
@@ -103,10 +114,32 @@
                                 </div>
                                 <div v-else>
                                     <p class="font-weight-bold mb-0">@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
-                                    <p>@{{ datosRecojo.sDocumento }}</p>
+                                    <p class="mb-0"><b>DNI:</b> @{{ datosRecojo.sDocumento }}</p>
+                                    <p><b>Tel&eacute;fono:</b> @{{ datosRecojo.sTelefono }}</p>
                                 </div>
                                 <div class="text-center">
                                     <button class="btn btn-ecovalle" :disabled="iRecojoEstablecido === 0" v-on:click="iRecojoConfirmado = 1" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3" v-if="sDelivery === 0">
+                            <div class="p-4 bg-white">
+                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n delivery Trujillo</h1>
+                                <p>
+                                    <span class="font-weight-bold">Datos de delivery</span>
+                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDelivery">Editar</a> <!--v-if="iRecojoConfirmado === 0"-->
+                                </p>
+                                <div v-if="iDeliveryEstablecido === 0">
+                                    <p>Datos de delivery no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
+                                </div>
+                                <div v-else>
+                                    <p class="font-weight-bold mb-0">@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos + ' ' }}</p>
+                                    <p class="mb-0"><b>DNI:</b> @{{ datosDelivery.sDocumento }}</p>
+                                    <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
+                                    <p><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-ecovalle" :disabled="iDeliveryEstablecido === 0" v-on:click="iDeliveryConfirmado = 1" v-if="iRecojoConfirmado === 0">Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -169,11 +202,12 @@
             </div>
         </div>
     </section>
+
     <div class="modal fade" id="modalEditarDireccionEnvio" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar direcci&oacute;n de env&iacute;o</h5>
+                <div class="modal-header bg-amarillo">
+                    <h5 class="modal-title"><b>Editar direcci&oacute;n de env&iacute;o nivel nacional</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -196,7 +230,7 @@
                                     <label>Documento</label>
                                     <div class="input-group">
                                         <input type="text" id="documento" name="documento" v-model="direccionEnvio.sDocumento" class="form-control"  maxlength="8" required>
-                                        <span class="input-group-append"><a class="btn btn-primary" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </a></span>
+                                        <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                 </div>
                             </div>
@@ -243,18 +277,21 @@
                                 <div class="form-group">
                                     <label>Departamento</label>
                                     <select class="form-control" v-model="direccionEnvio.sDepartamento">
+                                        <option value="" selected>Seleccionar</option>
                                         <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Provincia</label>
                                     <select class="form-control" v-model="direccionEnvio.sProvincia">
+                                        <option value="" selected>Seleccionar</option>
                                         <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Distrito</label>
                                     <select class="form-control" v-model="direccionEnvio.sDistrito">
+                                        <option value="" selected>Seleccionar</option>
                                         <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
                                 </div>
@@ -272,8 +309,8 @@
     <div class="modal fade" id="modalEditarRecojo" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Editar datos de recojo</h5>
+                <div class="modal-header bg-amarillo">
+                    <h5 class="modal-title"><b>Editar datos de recojo</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -295,7 +332,7 @@
                                     <label>Documento</label>
                                     <div class="input-group">
                                         <input type="text" id="rdocumento" name="rdocumento" v-model="datosRecojo.sDocumento" class="form-control"  maxlength="8" required>
-                                        <span class="input-group-append"><a class="btn btn-primary" v-on:click.prevent="ajaxConsultaApir()"><i class="fa fa-search"></i> </a></span>
+                                        <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApir()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                 </div>
                             </div>
@@ -311,13 +348,17 @@
                         </section>
                         <div class="row">
                             <div class="col-md-12" v-if="iCargandoConsultaApir === 0">
-                                <div class="form-group" v-if="rTipoDoc === 'DNI'">
+                                <div class="form-group">
                                     <label>Nombres</label>
                                     <input class="form-control" v-model="datosRecojo.sNombres" autocomplete="off">
                                 </div>
-                                <div class="form-group"  v-if="rTipoDoc === 'DNI'">
+                                <div class="form-group" >
                                     <label>Apellidos</label>
                                     <input class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Teléfono</label>
+                                    <input class="form-control" v-model="datosRecojo.sTelefono" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -330,11 +371,97 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEditarDelivery" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-amarillo">
+                    <h5 class="modal-title"><b>Editar datos de delivery Trujillo</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="frmDelivery" v-on:submit.prevent="confirmarDelivery">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tipo documento</label>
+                                    <select name="dtipo_documento" id="dtipo_documento" class="form-control" v-on:change="dcambiarTipoDoc()" v-model="dTipoDoc">
+                                        <option value="">Seleccionar</option>
+                                        <option value="DNI">DNI</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Documento</label>
+                                    <div class="input-group">
+                                        <input type="text" id="ddocumento" name="ddocumento" v-model="datosDelivery.sDocumento" class="form-control"  maxlength="8" required>
+                                        <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApid()"><i class="fa fa-search"></i> </button></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="pt-5 pb-5" v-if="iCargandoConsultaApid === 1" v-cloak>
+                            <div class="container-xl">
+                                <div class="row">
+                                    <div class="col-12 text-center">
+                                        <img src="/img/spinner.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="row" v-if="iCargandoConsultaApid === 0">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nombres</label>
+                                    <input class="form-control" v-model="datosDelivery.sNombres" autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Apellidos</label>
+                                    <input class="form-control" v-model="datosDelivery.sApellidos" autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Tel&eacute;fono</label>
+                                    <input class="form-control" v-model="datosDelivery.sTelefono" autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Direci&oacute;n</label>
+                                    <input class="form-control" v-model="datosDelivery.sDireccion" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Departamento</label>
+                                    <input class="form-control" v-model="datosDelivery.sDepartamento" readonly autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Provincia</label>
+                                    <input class="form-control" v-model="datosDelivery.sProvincia" readonly autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Distrito</label>
+                                    <select name="ddistrito" id="ddistrito" class="form-control" v-model="datosDelivery.sDistrito">
+                                        <option value="">Seleccionar</option>
+                                        <option v-for="distrito in lstDistritosD" :value="distrito.distrito">@{{ distrito.distrito }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" form="frmDelivery" class="btn btn-ecovalle" :disabled="!bDeliveryValida">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="modalTarifasEnvio" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tarifas de env&iacute;o</h5>
+                <div class="modal-header bg-amarillo">
+                    <h5 class="modal-title"><b>Tarifas de env&iacute;o nivel nacional</b></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -354,13 +481,57 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
-                                <tr v-for="ubigeo  of lstPreciosEnvioFiltrado" v-cloak>
+                                <tr v-for="ubigeo  of lstPreciosEnvioNacionalFiltrado" v-cloak>
                                     <td>@{{ ubigeo.departamento }}</td>
                                     <td>@{{ ubigeo.provincia }}</td>
                                     <td>@{{ ubigeo.distrito }}</td>
                                     <td>S/. @{{ ubigeo.tarifa.toFixed(2) }}</td>
                                 </tr>
-                                <tr v-if="lstPreciosEnvio.length === 0" v-cloak>
+                                <tr v-if="lstPreciosEnvioNacional.length === 0" v-cloak>
+                                    <td colspan="4" class="text-center">No hay datos para mostrar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalTarifasDelivery" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-amarillo">
+                    <h5 class="modal-title"><b>Tarifas delivery Trujillo</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4" v-cloak>
+                    <div class="form-group">
+                        <input type="text" v-model="sBuscard" class="form-control" placeholder="Buscar por distrito">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" id="tblBlogs">
+                            <thead>
+                                <tr>
+                                    <th class="bg-ecovalle-2">Departamento</th>
+                                    <th class="bg-ecovalle-2">Provincia</th>
+                                    <th class="bg-ecovalle-2">Distrito</th>
+                                    <th class="bg-ecovalle-2">Tarifa</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white">
+                                <tr v-for="ubigeo  of lstPreciosDeliveryFiltrado" v-cloak>
+                                    <td>@{{ ubigeo.departamento }}</td>
+                                    <td>@{{ ubigeo.provincia }}</td>
+                                    <td>@{{ ubigeo.distrito }}</td>
+                                    <td>S/. @{{ ubigeo.tarifa.toFixed(2) }}</td>
+                                </tr>
+                                <tr v-if="lstPreciosDelivery.length === 0" v-cloak>
                                     <td colspan="4" class="text-center">No hay datos para mostrar</td>
                                 </tr>
                             </tbody>

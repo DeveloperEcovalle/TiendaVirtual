@@ -86,6 +86,19 @@ let vueCarritoCompras = new Vue({
         ajaxAumentarCantidadProductoCarrito: function (producto, i) {
             let iProductoId = producto.id;
             let $this = this;
+            if($this.lstCarritoCompras[i].cantidad + 1 === $this.lstCarritoCompras[i].producto.stock_actual)
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
+            }
             if($this.lstCarritoCompras[i].cantidad + 1 <= $this.lstCarritoCompras[i].producto.stock_actual)
             {
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
@@ -180,7 +193,8 @@ let vueCarritoCompras = new Vue({
                             warning: 'bg-warning',
                         },
                     };
-                    toastr.error('Stock insuficiente. \nStock actual: '+$this.lstCarritoCompras[i].producto.stock_actual);
+                    toastr.error($this.lstCarritoCompras[i].producto.stock_actual +' en stock.');
+                    $('#cantidad'+i.toString()).val(cant_aux);
                 }                    
             }
         }

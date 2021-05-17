@@ -46,11 +46,7 @@
                                 <td><a :href="'/intranet/app/libro-reclamaciones/libro/ajax/download/'+reclamo.id" class="btn btn-sm btn-danger btn-block"><i class="fa fa-file-pdf-o"></i> PDF</a></td>
                             </tr>
                             <tr v-if="lstLibroFiltrado.length === 0" v-cloak>
-<<<<<<< HEAD
                                 <td colspan="6" class="text-center">No hay datos para mostrar</td>
-=======
-                                <td colspan="3" class="text-center">No hay datos para mostrar</td>
->>>>>>> 5fd9efa288bae8075821a3e7a6bc9c4a59c066f0
                             </tr>
                         </tbody>
                     </table>

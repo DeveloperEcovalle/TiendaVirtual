@@ -693,8 +693,6 @@ footer ul li:before {
 .contenido{
     display: inline-block;
     position: relative;
-    width: 400px;
-    height: 400px;
 }
 
 .modal-container.active{
@@ -782,4 +780,19 @@ button.btn-round:hover{
     outline: none;
     opacity: 1 !important;
     
+}
+
+.form-input-p {
+    border: 0px;
+    outline: none;
+}
+
+.form-input-p:focus {
+    border: none;
+    outline: none;
+}
+
+.form-input-p:active {
+    border: none;
+    outline: none;
 }

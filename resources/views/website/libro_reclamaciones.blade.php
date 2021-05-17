@@ -129,7 +129,7 @@
                             <select class="form-control" name="tipo_documento" v-model="sTDocumento" required>
                                 <option value="" selected> @{{ locale === 'es' ? "Seleccionar" : "To Select" }}</option>
                                 <option value="DNI" selected>DNI</option>
-                                <option value="RUC" selected>RUC</option>
+                                <option value="Carné de Extranjería" selected>Carné de Extranjería</option>
                             </select>
                         </div>
                     </div>

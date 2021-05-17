@@ -84,7 +84,7 @@
                                     </span>
                                     <input type="text" class="form-control text-center" :value="producto.cantidad" v-on:keyup="changeCantidad(producto)" :placeholder="producto.cantidad" id="cantidad">
                                     <span class="input-group-append">
-                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
+                                        <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual || producto.control_max == 0" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
                                             <i class="fas fa-plus"></i>
                                         </button>
                                     </span>
@@ -200,12 +200,12 @@
                                                     <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
                                                         <span class="input-group-prepend">
                                                             <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarrito(producto)">
-                                                                <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
+                                                                <i class="fas" :class="{ 'fa-minus' : producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                                             </button>
                                                         </span>
                                                         <input type="text" class="form-control text-center" :value="producto.cantidad" readonly>
                                                         <span class="input-group-append">
-                                                            <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
+                                                            <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
                                                                 <i class="fas fa-plus"></i>
                                                             </button>
                                                         </span>

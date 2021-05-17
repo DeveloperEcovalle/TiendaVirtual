@@ -84,6 +84,8 @@ let vueTiendaProducto = new Vue({
                     if (respuesta.result === result.success) {
                         let producto = respuesta.data.producto;
                         $this.producto = producto;
+                        $this.producto['control_max'] = 1;
+                        $this.producto['control_min'] = 1;
 
                         if (producto.imagenes.length > 0) {
                             $this.iImagenSeleccionada = 0;
@@ -102,7 +104,6 @@ let vueTiendaProducto = new Vue({
                 .then(response => $this.lstProductosRelacionados = response.data.data.lstProductosRelacionados)
                 .then(() => $this.iCargandoProductosRelacionados = 0);
         },
-
         ajaxAgregarAlCarrito: function (producto) {
             let $this = this;
             $this.iAgregandoAlCarrito = 1;
@@ -141,6 +142,22 @@ let vueTiendaProducto = new Vue({
         ajaxAumentarCantidadProductoCarrito: function (producto) {
             let iProductoId = producto.id;
             let $this = this;
+            $this.producto.control_max = 0;
+            if(producto.cantidad + 1  === producto.stock_actual)
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info(producto.stock_actual +' en stock.');
+                $this.producto.control_max = 1;
+            }
+
             if(producto.cantidad + 1 <= producto.stock_actual)
             {
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
@@ -157,6 +174,8 @@ let vueTiendaProducto = new Vue({
                         detalle.producto.cantidad = detalle.cantidad;
 
                         $this.guardarLstCarritoCompras();
+                        $this.producto.control_max = 1
+                    
                     }
                 });
             }else{
@@ -170,6 +189,7 @@ let vueTiendaProducto = new Vue({
                     },
                 };
                 toastr.error('Stock insuficiente');
+                $this.producto.control_max = 1;
             }
         },
 
@@ -262,7 +282,7 @@ let vueTiendaProducto = new Vue({
                             warning: 'bg-warning',
                         },
                     };
-                    toastr.error('Stock insuficiente');
+                    toastr.error(cant_aux + ' en stock.');
                 }                    
             }
         },
