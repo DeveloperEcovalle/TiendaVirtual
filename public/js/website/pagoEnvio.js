@@ -101,10 +101,10 @@ let culqi = function () {
                                 warning: 'bg-warning',
                             },
                         };
-                        toastr.success(respuesta.mensaje);
+                        toastr.info(respuesta.mensaje);
                         setTimeout(() => {
                             location = '/tienda';
-                          }, 2000);
+                          }, 3000);
                     } else {
                         toastr.clear();
                         toastr.options = {
