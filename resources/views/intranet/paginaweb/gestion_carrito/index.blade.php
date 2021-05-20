@@ -44,7 +44,7 @@
                                 <td>@{{ ubigeo.departamento }}</td>
                                 <td>@{{ ubigeo.provincia }}</td>
                                 <td>@{{ ubigeo.distrito }}</td>
-                                <td>@{{ ubigeo.tarifa ? 'S/. '+ubigeo.tarifa.toFixed(2) : '' }}</td>
+                                <td>@{{ ubigeo.tarifa ? 'S/. '+ubigeo.tarifa.toFixed(2) : 'S/. 0.00' }}</td>
                                 <td>@{{ ubigeo.estado }}</td>
                             </tr>
                             <tr v-if="lstUbigeo.length === 0" v-cloak>

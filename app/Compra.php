@@ -4,18 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Venta extends Model {
-
-    protected $table = 'ventas';
+class Compra extends Model
+{
+    protected $table = 'compras';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
     public function ubigeo() {
-        return $this->belongsTo(Ubigeo::class, 'ubigeo_id');
+        return $this->belongsTo(Ubigeo::class, 'id', 'ubigeo_id');
     }
 
     public function detalles() {
-        return $this->hasMany(DetalleVenta::class, 'venta_id');
+        return $this->hasMany(DetalleCompra::class, 'compra_id');
     }
-
 }

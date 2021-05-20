@@ -133,8 +133,18 @@ Route::middleware([Locale::class])->group(function () {
             Route::prefix('/ajax')->group(function () {
                 Route::get('/listarPreciosEnvio', 'FacturacionEnvio@ajaxListarPreciosEnvio');
                 Route::post('/listarDatosFacturacion', 'FacturacionEnvio@ajaxListarDatosFacturacion');
-                Route::post('/crearCargo', 'FacturacionEnvio@ajaxCrearCargo');
                 Route::post('/consultaApi', 'FacturacionEnvio@ajaxConsultaApi');
+            });
+        });
+
+        Route::prefix('/pago-envio')->group(function () {
+            Route::get('/', 'PagoEnvio@index');
+
+            Route::prefix('/ajax')->group(function () {
+                Route::get('/listarPreciosEnvio', 'PagoEnvio@ajaxListarPreciosEnvio');
+                Route::post('/listarDatosPago', 'PagoEnvio@ajaxListarDatosPago');
+                Route::post('/crearCargo', 'PagoEnvio@ajaxCrearCargo');
+                Route::post('/crearVenta', 'PagoEnvio@ajaxCrearVenta');
             });
         });
 
@@ -707,6 +717,7 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    
-    return generaCodigo('123');
+    $fecha_emision = now();
+    $fecha_emision = date_format($fecha_emision, 'Y-m-d H:i');
+    return $fecha_emision;
 });

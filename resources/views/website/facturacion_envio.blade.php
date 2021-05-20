@@ -8,7 +8,7 @@
             <ol class="breadcrumb bg-transparent px-0">
                 <li class="breadcrumb-item"><a href="/">{{ $lstLocales['Home'] }}</a></li>
                 <li class="breadcrumb-item"><a href="/">{{ $lstLocales['Shopping cart'] }}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Facturaci&oacute;n y env&iacute;o</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $lstTraduccionesFacturacionEnvio['Billing and shipping'] }}</li>
             </ol>
         </nav>
     </div>
@@ -75,6 +75,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 text-right" v-if="sNNacional === 0">
                             <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasEnvio"><b>Ver tarifas de env&iacute;o nacional</b></a>
                         </div>
@@ -85,20 +86,35 @@
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
                                 <p>
-                                    <span class="font-weight-bold">Direcci&oacute;n de env&iacute;o</span>
+                                    <span class="font-weight-bold">Datos de env&iacute;o</span>
                                     <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    <button class="d-none" v-on:click.prevent="mostrarModalPago()">Culqi</button>
                                 </p>
                                 <div v-if="iDireccionEnvioEstablecida === 0">
                                     <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
-                                <div v-else>
-                                    <p class="font-weight-bold mb-0">@{{ direccionEnvio.sNombres + ' ' + direccionEnvio.sApellidos + ' ' }}</p>
-                                    <p class="mb-0">@{{ direccionEnvio.sDireccion + ', ' + direccionEnvio.sDistrito + ', ' + direccionEnvio.sProvincia + ', ' + direccionEnvio.sDepartamento }}</p>
-                                    <p>@{{ direccionEnvio.sTelefono }}</p>
+                                <div class="row" v-else>
+                                    <div v-if="datosEnvio.sNombres != ''" class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosEnvio.sNombres + ' ' + datosEnvio.sApellidos + ' ' }}</p>
+                                    </div>
+                                    <div v-else class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosEnvio.sRazon}}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="mb-0"><b>Direcci&oacute;n: </b>@{{ datosEnvio.sDireccion + ', ' + datosEnvio.sDistrito + ', ' + datosEnvio.sProvincia + ', ' + datosEnvio.sDepartamento }}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0" v-if="datosEnvio.sTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosEnvio.sDocumento }}</p>
+                                        <p class="mb-0" v-if="datosEnvio.sTipoDoc == 'RUC'"><b>RUC: </b>@{{ datosEnvio.sDocumento }}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sTelefono }}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
+                                    </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iDireccionEnvioEstablecida === 0" v-on:click="iDireccionEnvioConfirmada = 1" v-if="iDireccionEnvioConfirmada === 0">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="iDireccionEnvioEstablecida === 0" v-on:click="confirmarFacturacion()" v-if="iDireccionEnvioConfirmada === 0">Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -112,13 +128,22 @@
                                 <div v-if="iRecojoEstablecido === 0">
                                     <p>Datos de recojo no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
-                                <div v-else>
-                                    <p class="font-weight-bold mb-0">@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
-                                    <p class="mb-0"><b>DNI:</b> @{{ datosRecojo.sDocumento }}</p>
-                                    <p><b>Tel&eacute;fono:</b> @{{ datosRecojo.sTelefono }}</p>
+                                <div class="row" v-else>
+                                    <div class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos}}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosRecojo.sTelefono }}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0"><b>DNI: </b>@{{ datosRecojo.sDocumento }}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
+                                    </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iRecojoEstablecido === 0" v-on:click="iRecojoConfirmado = 1" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="iRecojoEstablecido === 0" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 0">Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -132,14 +157,25 @@
                                 <div v-if="iDeliveryEstablecido === 0">
                                     <p>Datos de delivery no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
-                                <div v-else>
-                                    <p class="font-weight-bold mb-0">@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos + ' ' }}</p>
-                                    <p class="mb-0"><b>DNI:</b> @{{ datosDelivery.sDocumento }}</p>
-                                    <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
-                                    <p><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
+                                <div class="row" v-else>
+                                    <div class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos}}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
+                                    </div>
+                                    <div class="col-12 col-lg-4">
+                                        <p class="mb-0"><b>DNI: </b>@{{ datosDelivery.sDocumento }}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
+                                    </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iDeliveryEstablecido === 0" v-on:click="iDeliveryConfirmado = 1" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="iDeliveryEstablecido === 0" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 0">Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -218,7 +254,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="tipo_documento" id="tipo_documento" class="form-control" v-on:change="cambiarTipoDoc()" v-model="sTipoDoc">
+                                    <select name="tipo_documento" id="tipo_documento" class="form-control" v-on:change="cambiarTipoDoc()" v-model="datosEnvio.sTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                         <option value="RUC">RUC</option>
@@ -229,7 +265,7 @@
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="documento" name="documento" v-model="direccionEnvio.sDocumento" class="form-control"  maxlength="8" required>
+                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control"  maxlength="8" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                 </div>
@@ -246,51 +282,51 @@
                         </section>
                         <div class="row">
                             <div class="col-md-12" v-if="iCargandoConsultaApi === 0">
-                                <div class="form-group" v-if="sTipoDoc === 'DNI'">
+                                <div class="form-group" v-if="datosEnvio.sTipoDoc === 'DNI'">
                                     <label>Nombres</label>
-                                    <input class="form-control" v-model="direccionEnvio.sNombres" autocomplete="off">
+                                    <input class="form-control" v-model="datosEnvio.sNombres" autocomplete="off">
                                 </div>
-                                <div class="form-group"  v-if="sTipoDoc === 'DNI'">
+                                <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'DNI'">
                                     <label>Apellidos</label>
-                                    <input class="form-control" v-model="direccionEnvio.sApellidos" autocomplete="off">
+                                    <input class="form-control" v-model="datosEnvio.sApellidos" autocomplete="off">
                                 </div>
-                                <div class="form-group"  v-if="sTipoDoc === 'RUC'">
+                                <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'RUC'">
                                     <label>Razon Social</label>
-                                    <input class="form-control" v-model="direccionEnvio.sRazon" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosEnvio.sRazon" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tel&eacute;fono o celular</label>
-                                    <input class="form-control" v-model="direccionEnvio.sTelefono" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosEnvio.sTelefono" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label>Correo electr&oacute;nico</label>
-                                    <input class="form-control" v-model="direccionEnvio.sCorreo" autocomplete="off">
+                                    <input type="email" class="form-control" v-model="datosEnvio.sEmail" autocomplete="off" required>
                                 </div>
                                 <div class="form-group">
                                     <label>Direcci&oacute;n</label>
-                                    <input class="form-control" v-model="direccionEnvio.sDireccion" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosEnvio.sDireccion" autocomplete="off">
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Departamento</label>
-                                    <select class="form-control" v-model="direccionEnvio.sDepartamento">
+                                    <select class="form-control" v-model="datosEnvio.sDepartamento">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Provincia</label>
-                                    <select class="form-control" v-model="direccionEnvio.sProvincia">
+                                    <select class="form-control" v-model="datosEnvio.sProvincia">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Distrito</label>
-                                    <select class="form-control" v-model="direccionEnvio.sDistrito">
+                                    <select class="form-control" v-model="datosEnvio.sDistrito">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
@@ -321,7 +357,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="rtipo_documento" id="rtipo_documento" class="form-control" v-on:change="rcambiarTipoDoc()" v-model="rTipoDoc">
+                                    <select name="rtipo_documento" id="rtipo_documento" class="form-control" v-on:change="rcambiarTipoDoc()" v-model="datosRecojo.rTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                     </select>
@@ -350,15 +386,19 @@
                             <div class="col-md-12" v-if="iCargandoConsultaApir === 0">
                                 <div class="form-group">
                                     <label>Nombres</label>
-                                    <input class="form-control" v-model="datosRecojo.sNombres" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosRecojo.sNombres" autocomplete="off" required>
                                 </div>
                                 <div class="form-group" >
                                     <label>Apellidos</label>
-                                    <input class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo electr&oacute;nico</label>
+                                    <input type="email" class="form-control" v-model="datosRecojo.sEmail" autocomplete="off" required>
                                 </div>
                                 <div class="form-group" >
                                     <label>Teléfono</label>
-                                    <input class="form-control" v-model="datosRecojo.sTelefono" autocomplete="off">
+                                    <input type="text" class="form-control" v-model="datosRecojo.sTelefono" autocomplete="off">
                                 </div>
                             </div>
                         </div>
@@ -386,7 +426,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="dtipo_documento" id="dtipo_documento" class="form-control" v-on:change="dcambiarTipoDoc()" v-model="dTipoDoc">
+                                    <select name="dtipo_documento" id="dtipo_documento" class="form-control" v-on:change="dcambiarTipoDoc()" v-model="datosDelivery.dTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                     </select>
@@ -445,6 +485,10 @@
                                         <option value="">Seleccionar</option>
                                         <option v-for="distrito in lstDistritosD" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Correo electr&oacute;nico</label>
+                                    <input type="email" class="form-control" v-model="datosDelivery.sEmail" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
@@ -547,6 +591,5 @@
 @endsection
 
 @section('js')
-    <script src="https://checkout.culqi.com/js/v3"></script>
     <script src="/js/website/facturacionEnvio.js?cvcn=14"></script>
 @endsection

@@ -2,38 +2,25 @@
 
 namespace App\Http\Controllers\Website;
 
-use App\DetalleCarrito;
-use App\Http\Controllers\SunatComprobantesXml;
-use App\IcbperAnual;
-use App\Mail\NotificacionComprobanteCliente;
-use App\Mail\VentaComprobanteCliente;
-use App\PrecioEnvio;
-use App\Producto;
-use App\SerieComprobante;
-use App\SunatCertificado;
-use App\SunatFacturaBoleta;
-use App\SunatFacturaBoletaDetalle;
-use App\TipoComprobante;
-use Culqi\Culqi;
-use App\Empresa;
-use App\Http\Controllers\Respuesta;
-use App\Http\Controllers\Result;
-use App\TelefonoEmpresa;
-use App\Ubigeo;
+use App\Compra;
+use App\DetalleCompra;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
-
-class FacturacionEnvio extends Website {
-
-    protected $lstTraduccionesFacturacionEnvio;
+use App\Empresa;
+use App\TelefonoEmpresa;
+use Culqi\Culqi;
+use App\Http\Controllers\Result;
+use App\Http\Controllers\Respuesta;
+use App\Ubigeo;
+use Exception;
+class PagoEnvio extends Website
+{
+    protected $lstTraduccionesPagoEnvio;
 
     public function __construct() {
         parent::__construct();
 
-        $this->lstTraduccionesFacturacionEnvio = [
+        $this->lstTraduccionesPagoEnvio = [
             'en' => [
-                'Billing and shipping' => 'Billing and shipping',
                 'empty_cart' => 'Your shopping cart is empty',
                 'update_cart' => 'Refresh shopping cart',
                 'order_summary' => 'Order summary',
@@ -76,7 +63,6 @@ class FacturacionEnvio extends Website {
                 'finish' => 'FINISH',
             ],
             'es' => [
-                'Billing and shipping' => 'Facturación y envío',
                 'empty_cart' => 'Tu carrito de compras está vacío',
                 'update_cart' => 'Actualizar carrito de compras',
                 'order_summary' => 'Resumen del pedido',
@@ -127,78 +113,132 @@ class FacturacionEnvio extends Website {
         $empresa = Empresa::with(['telefonos'])->first();
         $data = [
             'lstLocales' => $this->lstLocales[$locale],
-            'lstTraduccionesFacturacionEnvio' => $this->lstTraduccionesFacturacionEnvio[$locale],
+            'lstTraduccionesPagoEnvio' => $this->lstTraduccionesPagoEnvio[$locale],
             'iPagina' => -1,
             'empresa' => $empresa,
             'telefono_whatsapp' => TelefonoEmpresa::where('whatsapp', 1)->first(),
         ];
 
-        return view('website.facturacion_envio', $data);
+        return view('website.pago_envio', $data);
     }
 
-    public function ajaxListarPreciosEnvio() {
-        // $lstPreciosEnvio = PrecioEnvio::all();
-
-        // $respuesta = new Respuesta;
-        // $respuesta->result = Result::SUCCESS;
-        // $respuesta->data = ['lstPreciosEnvio' => $lstPreciosEnvio];
-
-        // return response()->json($respuesta);
-        $lstPreciosEnvio = Ubigeo::where('estado','ACTIVO')->get();
-
+    public function ajaxCrearCargo(Request $request) {
         $respuesta = new Respuesta;
+
+        /*$sRutaComprobanteCityo = storage_path('app/public/comprobantes/10179123261-03-B001-614.xml');
+        $sRutaComprobanteEcovalle = storage_path('app/public/comprobantes/20482089594-03-B001-13.xml');
+
+        $xmlReader = new \XMLReader();
+
+        $xmlReader->open($sRutaComprobanteCityo);
+        $xmlReader->setParserProperty(\XMLReader::VALIDATE, true);
+        $xmlCityoValido = $xmlReader->isValid();
+
+        $xmlReader->open($sRutaComprobanteEcovalle);
+        $xmlReader->setParserProperty(\XMLReader::VALIDATE, true);
+        $xmlEcovalleValido = $xmlReader->isValid();
+
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['lstPreciosEnvio' => $lstPreciosEnvio];
+        $respuesta->data = ['xmlCityoValido' => $xmlCityoValido, 'xmlEcovalleValido' => $xmlEcovalleValido];
 
-        return response()->json($respuesta);
-    }
+        return response()->json($respuesta);*/
 
-    public function ajaxListarDatosFacturacion(Request $request) {
-        //TODO VERIFICAR EL STOCK DE LOS PRODUCTOS
-
-        $cliente = $request->session()->get('cliente');
-        if ($cliente) {
-            $cliente->refresh();
-            $cliente->load('persona', 'persona.documentos', 'ubigeo');
+        $detalles = $request->get('detalles');
+        if (strlen($detalles) === 0) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'El carrito de compras está vacío.';
+            return response()->json($respuesta);
         }
 
-        $lstTiposComprobante = TipoComprobante::whereHas('tipo_comprobante_sunat', function ($sunat_tipo_comprobante) {
-            $sunat_tipo_comprobante->where('ventas', 1);
-        })->with('tipo_comprobante_sunat', 'tipo_comprobante_sunat.tipos_documento')->orderBy('id')->get();
+        $SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
+        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
-        $lstUbigeo = Ubigeo::all();
+        $token = $request->get('token');
+        $amount = $request->get('amount');
+        $email = $request->get('email');
 
-        $respuesta = new Respuesta;
+        $cargo = $culqi->Charges->create(
+            array(
+                'amount' => $amount, 
+                'currency_code' => 'PEN', 
+                'email' => $email, 
+                'source_id' => $token
+            )
+        );
+        if ($cargo === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
+            return response()->json($respuesta);
+        }
+        $cargo = '';
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['cliente' => $cliente, 'lstTiposComprobante' => $lstTiposComprobante, 'lstUbigeo' => $lstUbigeo];
-
+        $dataRespuesta = ['cargo' => $cargo];
+        $respuesta->data = $dataRespuesta;
+        $respuesta->mensaje = 'Pago realizado con exito.';
         return response()->json($respuesta);
     }
 
-    public function ajaxConsultaApi(Request $request)
+    public function ajaxCrearVenta(Request $request)
     {
-        $tipo_documento = $request->tipo_documento;
-        $documento = $request->documento;
-        if($tipo_documento == 'DNI')
-        {
-            $data = file_get_contents('https://dniruc.apisperu.com/api/v1/dni/'.$documento.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluaXN0cmFjaW9uQGVjb3ZhbGxlLnBlIn0.AA_59jy9sKMMKAur43duHJLWRwqo5INB_n2rQb6I8iE');
-        }
-        else
-        {
-            $data = file_get_contents('https://dniruc.apisperu.com/api/v1/ruc/'.$documento.'?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluaXN0cmFjaW9uQGVjb3ZhbGxlLnBlIn0.AA_59jy9sKMMKAur43duHJLWRwqo5INB_n2rQb6I8iE');
-        }
-        
-        $data = json_decode($data,false);
-        if(isset($data->success))
-        {
+        try{
             $respuesta = new Respuesta;
-            $respuesta->result = Result::ERROR;
-        }else{
-            $respuesta = new Respuesta;
-            $respuesta->result = Result::SUCCESS;
-            $respuesta->data = $data;
-        }
 
-        return response()->json($respuesta);
+            $token = $request->get('token');
+            $email = $request->get('email');
+    
+            $tipo_compra = $request->get('tipo_compra');
+            $tipo_comprobante = $request->get('tipo_comprobante');
+            $cliente = $request->get('cliente');
+            $tipo_documento = $request->get('tipo_documento');
+            $documento = $request->get('documento');
+            $telefono = $request->get('telefono');
+            $direccion = $request->get('direccion');
+            $subtotal = $request->get('subtotal');
+            $delivery = $request->get('delivery');
+            $departamento = $request->get('departamento');
+            $provincia = $request->get('provincia');
+            $distrito = $request->get('distrito');
+            $detalles = $request->get('detalles');
+            //$cliente = $request->session()->get('cliente');
+            $created_at = now();
+            $created_at = date_format($created_at, 'Y-m-d H:i');
+    
+            $venta = new Compra();
+            $venta->tipo_compra = $tipo_compra;
+            $venta->tipo_documento = $tipo_documento;
+            $venta->documento = $documento;
+            $venta->cliente = $cliente;
+            $venta->telefono = $telefono;
+            $venta->email = $email;
+            $venta->subtotal = $subtotal;
+            $venta->delivery = $delivery;
+            $venta->tipo_comprobante = $tipo_comprobante;
+            $venta->token = $token;
+            $venta->direccion = $direccion;
+            $ubigeo_id = null;
+            if($departamento != '' && $provincia != '' && $distrito != '')
+            {$ubigeo_id = Ubigeo::where('departamento',$departamento)->where('provincia',$provincia)->where('distrito',$distrito)->value('id');}
+            $venta->ubigeo_id = $ubigeo_id;
+            $venta->cliente_id = null;
+            $venta->save();
+            foreach($detalles as $det)
+            {
+                $detalle = new DetalleCompra();
+                $detalle->compra_id = $venta->id;
+                $detalle->producto_id = $det->id;
+                $detalle->cantidad = $det->cantidad;
+                $detalle->save();
+            }
+
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Compra realizada exitosamente.';
+            return response()->json($respuesta);
+        }
+        catch (Exception $e)
+        {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = $e->getMessage().'    detalles '.$detalles;
+            return response()->json($respuesta);
+        }
     }
 }

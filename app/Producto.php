@@ -64,4 +64,8 @@ class Producto extends Model {
     public function subproductos() {
         return $this->belongsToMany(Producto::class, 'productos_subproductos', 'producto_id', 'subproducto_id');
     }
+
+    public function detalles() {
+        return $this->hasMany(DetalleCompra::class, 'producto_id');
+    }
 }

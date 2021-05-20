@@ -36,6 +36,7 @@
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="/css/ecovalle/ecovalle-font.css" rel="stylesheet">
     <link href="/css/website.css?cvcn=14" rel="stylesheet">
+    @yield('izipay')
 </head>
 <body>
     <div id="content">

@@ -35,7 +35,7 @@ const $cookies = {
 
 const lstUrlParams = new URLSearchParams(location.search);
 
-const culqiEcovalle = {publicKeyTest: ' pk_test_4a577548e16f8563'};
+const culqiEcovalle = {publicKeyTest: 'pk_test_3a41617e29df7509'}; //' pk_test_4a577548e16f8563'
 
 $.ajaxSetup({
     headers: {

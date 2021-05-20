@@ -1,51 +1,3 @@
-let culqi = function () {
-    if (Culqi.token) { // ¡Objeto Token creado exitosamente!
-        let sToken = Culqi.token.id;
-
-        vueFacturacionEnvio.iPagando = 1;
-
-        let formData = new FormData();
-        formData.append('token', sToken);
-        formData.append('amount', vueFacturacionEnvio.fTotalCulqi);
-        formData.append('email', vueFacturacionEnvio.formData.sCorreo);
-        formData.append('tipo_de_comprobante', vueFacturacionEnvio.formData.iTipoComprobanteId);
-        formData.append('tipo_de_documento', vueFacturacionEnvio.formData.iTipoDocumentoId);
-        formData.append('numero_de_documento', vueFacturacionEnvio.formData.sNumeroDocumento);
-        formData.append('nombres', vueFacturacionEnvio.formData.sNombres);
-        formData.append('apellidos', vueFacturacionEnvio.formData.sApellidos);
-        formData.append('razon_social', vueFacturacionEnvio.formData.sRazonSocial);
-        formData.append('direccion_de_envio', vueFacturacionEnvio.formData.sDireccion);
-        formData.append('detalles', vueFacturacionEnvio.formData.sDetallesCarritoCompras);
-
-        axios.post('/carrito-compras/ajax/crearCargo', formData)
-            .then(response => {
-                let respuesta = response.data;
-                vueFacturacionEnvio.sEtapaCompra = 'resumen';
-                vueFacturacionEnvio.respuestaPago = respuesta;
-                vueFacturacionEnvio.iPagando = 0;
-
-                vueFacturacionEnvio.lstCarritoCompras = [];
-                vueFacturacionEnvio.guardarLstCarritoCompras();
-            })
-            .catch(error => {
-                let respuesta = error.response.data;
-                let message = JSON.parse(respuesta.responseJSON.message);
-                vueFacturacionEnvio.sMensajeError = message.merchant_message;
-                vueFacturacionEnvio.iPagando = 0;
-            });
-    } else {
-        alert(Culqi.error.user_message);
-    }
-};
-
-Culqi.publicKey = culqiEcovalle.publicKeyTest; // Configura tu llave pública
-Culqi.options({
-    style: {
-        logo: 'https://ecovalle.pe/img/logo_ecovalle_240x240.png',
-        maincolor: '#009D65',
-    }
-});
-
 let vueFacturacionEnvio = new Vue({
     el: '#content',
     data: {
@@ -66,36 +18,46 @@ let vueFacturacionEnvio = new Vue({
         lstPreciosEnvioNacional: [],
         lstPreciosDelivery: [],
 
-        direccionEnvio: {
+        datosEnvio: {
+            sCabecera: 'NN',
+            sTipoDoc: '',
             sDocumento: '',
             sNombres: '',
             sApellidos: '',
             sRazon: '',
+            sEmail: '',
             sTelefono: '',
-            sCorreo: '',
             sDepartamento: '',
             sProvincia: '',
             sDistrito: '',
-            iUbigeoId: 0,
             sDireccion: '',
+            sOpcion: 0,
         },
 
         datosRecojo: {
+            sCabecera: 'RT',
+            rTipoDoc: '',
             sDocumento: '',
             sNombres: '',
             sApellidos: '',
+            sEmail: '',
             sTelefono: '',
+            sOpcion: 0,
         },
         
         datosDelivery: {
+            sCabecera: 'ED',
+            dTipoDoc: '',
             sDocumento: '',
             sNombres: '',
             sApellidos: '',
+            sEmail: '',
             sTelefono: '',
             sDepartamento: 'LA LIBERTAD',
             sProvincia: 'TRUJILLO',
             sDistrito: '',
             sDireccion: '',
+            sOpcion: 0,
         }, 
 
         iDireccionEnvioEstablecida: 0,
@@ -115,11 +77,7 @@ let vueFacturacionEnvio = new Vue({
 
         sTipoDoc:'',
         iCargandoConsultaApi: 0,
-
-        iPagando: 0,
         sMensajeError: '',
-
-        respuestaPago: null
     },
     computed: {
         lstPreciosDeliveryFiltrado: function () {
@@ -135,24 +93,29 @@ let vueFacturacionEnvio = new Vue({
             );
         },
         bDireccionEnvioValida: function () {
-            return this.direccionEnvio.sTelefono.trim().length > 0
-                && this.direccionEnvio.sCorreo.trim().length > 0
-                && this.direccionEnvio.sDepartamento.trim().length > 0
-                && this.direccionEnvio.sProvincia.trim().length > 0
-                && this.direccionEnvio.sDistrito.trim().length > 0
-                && this.direccionEnvio.sDireccion.trim().length > 0
-                && this.direccionEnvio.sDocumento.trim().length > 0;
+            return this.datosEnvio.sTelefono.trim().length > 0
+                && this.datosEnvio.sEmail.trim().length > 0
+                && this.datosEnvio.sDepartamento.trim().length > 0
+                && this.datosEnvio.sProvincia.trim().length > 0
+                && this.datosEnvio.sDistrito.trim().length > 0
+                && this.datosEnvio.sDireccion.trim().length > 0
+                && this.datosEnvio.sTipoDoc.trim().length > 0
+                && this.datosEnvio.sDocumento.trim().length > 0;
         },
         bRecojoValida: function () {
             return this.datosRecojo.sDocumento.trim().length > 0
+                && this.datosRecojo.rTipoDoc.trim().length > 0
                 && this.datosRecojo.sNombres.trim().length > 0
                 && this.datosRecojo.sApellidos.trim().length > 0
-                && this.datosRecojo.sTelefono.trim().length > 0;
+                && this.datosRecojo.sTelefono.trim().length > 0
+                && this.datosRecojo.sEmail.trim().length > 0;
         },
         bDeliveryValida: function () {
             return this.datosDelivery.sDocumento.trim().length > 0
+                && this.datosDelivery.dTipoDoc.trim().length > 0
                 && this.datosDelivery.sNombres.trim().length > 0
                 && this.datosDelivery.sApellidos.trim().length > 0
+                && this.datosDelivery.sEmail.trim().length > 0
                 && this.datosDelivery.sTelefono.trim().length > 0
                 && this.datosDelivery.sDireccion.trim().length > 0
                 && this.datosDelivery.sDepartamento.trim().length > 0
@@ -163,21 +126,21 @@ let vueFacturacionEnvio = new Vue({
             return this.lstPreciosEnvioNacional.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
         },*/
         bVerificaDni: function() {
-            return this.sTipoDoc == 'DNI' && this.direccionEnvio.sNombres.trim().length > 0 && this.direccionEnvio.sApellidos.trim().length > 0;
+            return this.datosEnvio.sTipoDoc == 'DNI' && this.datosEnvio.sNombres.trim().length > 0 && this.datosEnvio.sApellidos.trim().length > 0;
         },
         bVerificaRuc: function(){
-            return this.sTipoDoc == 'RUC' && this.direccionEnvio.sRazon.trim().length > 0
+            return this.datosEnvio.sTipoDoc == 'RUC' && this.datosEnvio.sRazon.trim().length > 0
         },
         fDelivery: function () {
             if(this.sNNacional == 0)
             {
                 for (let precioEnvio of this.lstPreciosEnvioNacional) {
-                    if (this.direccionEnvio.sDepartamento !== ''
-                        && this.direccionEnvio.sProvincia !== ''
-                        && this.direccionEnvio.sDistrito !== ''
-                        && precioEnvio.distrito === this.direccionEnvio.sDistrito
-                        && precioEnvio.provincia === this.direccionEnvio.sProvincia
-                        && precioEnvio.departamento === this.direccionEnvio.sDepartamento) return precioEnvio.tarifa;
+                    if (this.datosEnvio.sDepartamento !== ''
+                        && this.datosEnvio.sProvincia !== ''
+                        && this.datosEnvio.sDistrito !== ''
+                        && precioEnvio.distrito === this.datosEnvio.sDistrito
+                        && precioEnvio.provincia === this.datosEnvio.sProvincia
+                        && precioEnvio.departamento === this.datosEnvio.sDepartamento) return precioEnvio.tarifa;
                 }
                 return 0;
             }
@@ -233,29 +196,29 @@ let vueFacturacionEnvio = new Vue({
             return lst;
         },
         lstProvincias: function () {
-            let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.direccionEnvio.sDepartamento);
+            let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.datosEnvio.sDepartamento);
             let lst = [];
             for (let ubigeo of lstUbigeoFiltrado) {
                 if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1  && ubigeo.estado === 'ACTIVO' && ubigeo.provincia != 'TRUJILLO') {
                     lst.push(ubigeo.provincia);
                 }
             }
-            if(this.direccionEnvio.sDepartamento == '')
+            if(this.datosEnvio.sDepartamento == '')
             {
-                this.direccionEnvio.sProvincia = '';
-                this.direccionEnvio.sProvincia = '';
+                this.datosEnvio.sProvincia = '';
+                this.datosEnvio.sProvincia = '';
             }
             return lst;
         },
         lstDistritos: function () {
-            if(this.direccionEnvio.sProvincia == '')
+            if(this.datosEnvio.sProvincia == '')
             {
-                this.direccionEnvio.sDistrito = '';
-                this.direccionEnvio.sDistrito = '';
+                this.datosEnvio.sDistrito = '';
+                this.datosEnvio.sDistrito = '';
             }
             return this.lstUbigeo.filter(ubigeo =>
-                ubigeo.departamento === this.direccionEnvio.sDepartamento
-                && ubigeo.provincia === this.direccionEnvio.sProvincia
+                ubigeo.departamento === this.datosEnvio.sDepartamento
+                && ubigeo.provincia === this.datosEnvio.sProvincia
                 && ubigeo.estado === 'ACTIVO');
         },
         lstDistritosD: function () {
@@ -287,24 +250,57 @@ let vueFacturacionEnvio = new Vue({
             let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
             let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
 
+            let cookiedatosEnvio = $cookies.get('datosEnvio');
+            let datosEnvio = cookiedatosEnvio ? cookiedatosEnvio : this.datosEnvio;
+            $this.datosEnvio = datosEnvio;
+            $this.datosEnvio.sOpcion = 1;
+
+            let cookiedatosRecojo = $cookies.get('datosRecojo');
+            let datosRecojo = cookiedatosRecojo ? cookiedatosRecojo : this.datosRecojo;
+            $this.datosRecojo = datosRecojo;
+            $this.datosRecojo.sOpcion = 0;
+
+            let cookiedatosDelivery = $cookies.get('datosDelivery');
+            let datosDelivery = cookiedatosDelivery ? cookiedatosDelivery : this.datosDelivery;
+            $this.datosDelivery = datosDelivery;
+            $this.datosDelivery.sOpcion = 0;
+
             $this.lstCarritoCompras = lstCarritoCompras;
             $this.guardarLstCarritoCompras();
             $this.ajaxListarPreciosEnvio();
+            $this.guardarCookieDatos();
             $this.iCargando = 0;
-
             $this.ajaxListarDatosFacturacion();
             $('#modalEditarDireccionEnvio').modal('show'); 
         }).then(() => {
+            let cookiedatosEnvio = $cookies.get('datosEnvio');
+            cookiedatosEnvio.sDocumento != '' ? this.iDireccionEnvioEstablecida = 1 : this.iDireccionEnvioEstablecida = 0;
+
+            let cookiedatosRecojo = $cookies.get('datosRecojo');
+            cookiedatosRecojo.sDocumento != '' ? this.iRecojoEstablecido = 1 : this.iRecojoEstablecido = 0;
+
+            let cookiedatosDelivery = $cookies.get('datosDelivery');
+            cookiedatosDelivery.sDocumento != '' ? this.iDeliveryEstablecido = 1 : this.iDeliveryEstablecido = 0;
+
             if ($this.lstCarritoCompras.length === 0) {
                 location = '/carrito-compras';
             }
         }));
     },
     methods: {
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
         sDeliveryFn: function(){
             this.sDelivery = 0;
             this.sNNacional = 1;
             this.sRTienda = 1;
+
+            this.datosDelivery.sOpcion = 1;
+            this.datosRecojo.sOpcion = 0;
+            this.datosEnvio.sOpcion = 0;
+
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
 
             $('#modalEditarDelivery').modal('show');
         },
@@ -312,18 +308,34 @@ let vueFacturacionEnvio = new Vue({
             this.sNNacional = 0;
             this.sDelivery = 1;
             this.sRTienda = 1;
+
+            this.datosDelivery.sOpcion = 0;
+            this.datosRecojo.sOpcion = 0;
+            this.datosEnvio.sOpcion = 1;
+
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
+
             $('#modalEditarDireccionEnvio').modal('show'); 
         },
-
         sRTiendaFn: function(){
             this.sDelivery = 1;
             this.sRTienda = 0;
             this.sNNacional = 1;
+
+            this.datosDelivery.sOpcion = 0;
+            this.datosRecojo.sOpcion = 1;
+            this.datosEnvio.sOpcion = 0;
+
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
+
             $('#modalEditarRecojo').modal('show');
         },
-
         cambiarTipoDoc: function(){
-            switch (this.sTipoDoc) {
+            switch (this.datosEnvio.sTipoDoc) {
                 case 'DNI':
                     $('#documento').removeAttr('minlength','11');
                     $('#documento').removeAttr('maxlength','11');
@@ -332,16 +344,10 @@ let vueFacturacionEnvio = new Vue({
                     $('#razon_social').attr('required',false);
                     $('#nombres').attr('required',true);
                     $('#apellidos').attr('required',true);
-                    this.direccionEnvio.sDocumento = '';
-                    this.direccionEnvio.sNombres = '';
-                    this.direccionEnvio.sApellidos = '';
-                    this.direccionEnvio.sRazon = '';
-                    this.direccionEnvio.sTelefono = '';
-                    this.direccionEnvio.sCorreo = '';
-                    this.direccionEnvio.sDepartamento = '';
-                    this.direccionEnvio.sProvincia = '';
-                    this.direccionEnvio.sDistrito = '';
-                    this.direccionEnvio.sDireccion = '';
+                    this.datosEnvio.sDocumento = '';
+                    this.datosEnvio.sNombres = '';
+                    this.datosEnvio.sApellidos = '';
+                    this.datosEnvio.sRazon = '';
                     break;
                 case 'RUC':
                     $('#documento').removeAttr('minlength','8');
@@ -351,38 +357,25 @@ let vueFacturacionEnvio = new Vue({
                     $('#razon_social').attr('required',true);
                     $('#nombres').attr('required',false);
                     $('#apellidos').attr('required',false);
-                    this.direccionEnvio.sDocumento = '';
-                    this.direccionEnvio.sNombres = '';
-                    this.direccionEnvio.sApellidos = '';
-                    this.direccionEnvio.sRazon = '';
-                    this.direccionEnvio.sTelefono = '';
-                    this.direccionEnvio.sCorreo = '';
-                    this.direccionEnvio.sDepartamento = '';
-                    this.direccionEnvio.sProvincia = '';
-                    this.direccionEnvio.sDistrito = '';
-                    this.direccionEnvio.sDireccion = '';
+                    this.datosEnvio.sDocumento = '';
+                    this.datosEnvio.sNombres = '';
+                    this.datosEnvio.sApellidos = '';
+                    this.datosEnvio.sRazon = '';
                     break;
                 default:
                     $('#documento').removeAttr('minlength','11');
                     $('#documento').removeAttr('maxlength','11');
                     $('#documento').attr('minlength','8');
                     $('#documento').attr('maxlength','8');
-                    this.direccionEnvio.sDocumento = '';
-                    this.direccionEnvio.sNombres = '';
-                    this.direccionEnvio.sApellidos = '';
-                    this.direccionEnvio.sRazon = '';
-                    this.direccionEnvio.sTelefono = '';
-                    this.direccionEnvio.sCorreo = '';
-                    this.direccionEnvio.sDepartamento = '';
-                    this.direccionEnvio.sProvincia = '';
-                    this.direccionEnvio.sDistrito = '';
-                    this.direccionEnvio.sDireccion = '';
+                    this.datosEnvio.sDocumento = '';
+                    this.datosEnvio.sNombres = '';
+                    this.datosEnvio.sApellidos = '';
+                    this.datosEnvio.sRazon = '';
                     break;
             }
         },
-
         rcambiarTipoDoc: function(){
-            switch (this.rTipoDoc) {
+            switch (this.datosRecojo.rTipoDoc) {
                 case 'DNI':
                     $('#rdocumento').removeAttr('minlength','11');
                     $('#rdocumento').removeAttr('maxlength','11');
@@ -405,9 +398,8 @@ let vueFacturacionEnvio = new Vue({
                     break;
             }
         },
-
         dcambiarTipoDoc: function(){
-            switch (this.dTipoDoc) {
+            switch (this.datosDelivery.dTipoDoc) {
                 case 'DNI':
                     $('#ddocumento').removeAttr('minlength','11');
                     $('#ddocumento').removeAttr('maxlength','11');
@@ -416,8 +408,6 @@ let vueFacturacionEnvio = new Vue({
                     this.datosDelivery.sDocumento = '';
                     this.datosDelivery.sNombres = '';
                     this.datosDelivery.sApellidos = '';
-                    this.datosDelivery.sTelefono = '';
-                    this.datosDelivery.sDireccion = '';
                     break;
                 default:
                     $('#ddocumento').removeAttr('minlength','11');
@@ -427,35 +417,32 @@ let vueFacturacionEnvio = new Vue({
                     this.datosDelivery.sDocumento = '';
                     this.datosDelivery.sNombres = '';
                     this.datosDelivery.sApellidos = '';
-                    this.datosDelivery.sTelefono = '';
-                    this.datosDelivery.sDireccion = '';
                     break;
             }
         },
-
         ajaxConsultaApi: function(){
             let formData = new FormData();
             var mensaje = '';
             var verifica = true;
-            if(this.sTipoDoc == '')
+            if(this.datosEnvio.sTipoDoc == '')
             {
                 verifica = false;
                 mensaje = 'Seleccionar tipo de documento';
             }
 
-            if(this.direccionEnvio.sDocumento == '')
+            if(this.datosEnvio.sDocumento == '')
             {
                 verifica = false;
                 mensaje = 'Ingrese documento';
             }
 
-            if(this.sTipoDoc == 'DNI' && this.direccionEnvio.sDocumento.length < 8)
+            if(this.datosEnvio.sTipoDoc == 'DNI' && this.datosEnvio.sDocumento.length < 8)
             {
                 verifica = false;
                 mensaje = 'Faltan digitos al número de dni';
             }
 
-            if(this.sTipoDoc == 'RUC' && this.direccionEnvio.sDocumento.length < 11)
+            if(this.datosEnvio.sTipoDoc == 'RUC' && this.datosEnvio.sDocumento.length < 11)
             {
                 verifica = false;
                 mensaje = 'Faltan digitos al número de ruc';
@@ -464,26 +451,26 @@ let vueFacturacionEnvio = new Vue({
             if(verifica)
             {
                 this.iCargandoConsultaApi = 1;
-                formData.append('tipo_documento',this.sTipoDoc);
-                formData.append('documento',this.direccionEnvio.sDocumento);
+                formData.append('tipo_documento',this.datosEnvio.sTipoDoc);
+                formData.append('documento',this.datosEnvio.sDocumento);
                 axios.post('/facturacion-envio/ajax/consultaApi', formData)
                     .then(response => {
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
-                            if(this.sTipoDoc == 'DNI')
+                            if(this.datosEnvio.sTipoDoc == 'DNI')
                             {
-                                this.direccionEnvio.sNombres = respuesta.data.nombres;
-                                this.direccionEnvio.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
+                                this.datosEnvio.sNombres = respuesta.data.nombres;
+                                this.datosEnvio.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
                             }
-                            if(this.sTipoDoc == 'RUC')
+                            if(this.datosEnvio.sTipoDoc == 'RUC')
                             {
-                                this.direccionEnvio.sRazon = respuesta.data.razonSocial;
-                                this.direccionEnvio.sDepartamento = respuesta.data.departamento;
-                                this.direccionEnvio.sProvincia = respuesta.data.provincia;
-                                this.direccionEnvio.sDistrito = respuesta.data.distrito;
-                                this.direccionEnvio.sDireccion = respuesta.data.direccion;
+                                this.datosEnvio.sRazon = respuesta.data.razonSocial;
+                                this.datosEnvio.sDepartamento = respuesta.data.departamento;
+                                this.datosEnvio.sProvincia = respuesta.data.provincia;
+                                this.datosEnvio.sDistrito = respuesta.data.distrito;
+                                this.datosEnvio.sDireccion = respuesta.data.direccion;
                             }
-                            if(this.sTipoDoc == '')
+                            if(this.datosEnvio.sTipoDoc == '')
                             {
                                 toastr.clear();
                                 toastr.options = {
@@ -526,12 +513,11 @@ let vueFacturacionEnvio = new Vue({
                 toastr.error(mensaje);
             }
         },
-
         ajaxConsultaApir: function(){
             let formData = new FormData();
             var mensaje = '';
             var verifica = true;
-            if(this.rTipoDoc == '')
+            if(this.datosRecojo.rTipoDoc == '')
             {
                 verifica = false;
                 mensaje = 'Seleccionar tipo de documento';
@@ -543,7 +529,7 @@ let vueFacturacionEnvio = new Vue({
                 mensaje = 'Ingrese documento';
             }
 
-            if(this.sTipoDoc == 'DNI' && this.datosRecojo.sDocumento.length < 8)
+            if(this.datosRecojo.rTipoDoc == 'DNI' && this.datosRecojo.sDocumento.length < 8)
             {
                 verifica = false;
                 mensaje = 'Faltan digitos al número de dni';
@@ -552,18 +538,18 @@ let vueFacturacionEnvio = new Vue({
             if(verifica)
             {
                 this.iCargandoConsultaApir = 1;
-                formData.append('tipo_documento',this.rTipoDoc);
+                formData.append('tipo_documento',this.datosRecojo.rTipoDoc);
                 formData.append('documento',this.datosRecojo.sDocumento);
                 axios.post('/facturacion-envio/ajax/consultaApi', formData)
                     .then(response => {
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
-                            if(this.rTipoDoc == 'DNI')
+                            if(this.datosRecojo.rTipoDoc == 'DNI')
                             {
                                 this.datosRecojo.sNombres = respuesta.data.nombres;
                                 this.datosRecojo.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
                             }
-                            if(this.rTipoDoc == '')
+                            if(this.datosRecojo.rTipoDoc == '')
                             {
                                 toastr.clear();
                                 toastr.options = {
@@ -606,12 +592,11 @@ let vueFacturacionEnvio = new Vue({
                 toastr.error(mensaje);
             }
         },
-
         ajaxConsultaApid: function(){
             let formData = new FormData();
             var mensaje = '';
             var verifica = true;
-            if(this.dTipoDoc == '')
+            if(this.datosDelivery.dTipoDoc == '')
             {
                 verifica = false;
                 mensaje = 'Seleccionar tipo de documento';
@@ -623,7 +608,7 @@ let vueFacturacionEnvio = new Vue({
                 mensaje = 'Ingrese documento';
             }
 
-            if(this.dTipoDoc == 'DNI' && this.datosDelivery.sDocumento.length < 8)
+            if(this.datosDelivery.dTipoDoc == 'DNI' && this.datosDelivery.sDocumento.length < 8)
             {
                 verifica = false;
                 mensaje = 'Faltan digitos al número de dni';
@@ -632,18 +617,18 @@ let vueFacturacionEnvio = new Vue({
             if(verifica)
             {
                 this.iCargandoConsultaApid = 1;
-                formData.append('tipo_documento',this.dTipoDoc);
+                formData.append('tipo_documento',this.datosDelivery.dTipoDoc);
                 formData.append('documento',this.datosDelivery.sDocumento);
                 axios.post('/facturacion-envio/ajax/consultaApi', formData)
                     .then(response => {
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
-                            if(this.dTipoDoc == 'DNI')
+                            if(this.datosDelivery.dTipoDoc == 'DNI')
                             {
                                 this.datosDelivery.sNombres = respuesta.data.nombres;
                                 this.datosDelivery.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
                             }
-                            if(this.dTipoDoc == '')
+                            if(this.datosDelivery.dTipoDoc == '')
                             {
                                 toastr.clear();
                                 toastr.options = {
@@ -686,7 +671,6 @@ let vueFacturacionEnvio = new Vue({
                 toastr.error(mensaje);
             }
         },
-
         ajaxListarPreciosEnvio: function () {
             let $this = this;
             axios.get('/facturacion-envio/ajax/listarPreciosEnvio').then(response => {
@@ -694,33 +678,27 @@ let vueFacturacionEnvio = new Vue({
                 $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO')
             });
         },
-
         guardarLstCarritoCompras: function () {
             $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
         },
-
         confirmarDireccionEnvio: function () {
             this.iDireccionEnvioEstablecida = 1;
-            //$cookies.set('direccionEnvio', this.direccionEnvio, 12);
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
             $('#modalEditarDireccionEnvio').modal('hide');
         },
-
         confirmarRecojo: function () {
             this.iRecojoEstablecido = 1;
-            //$cookies.set('Recojo', this.Recojo, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
             $('#modalEditarRecojo').modal('hide');
         },
-
         confirmarDelivery: function () {
             this.iDeliveryEstablecido = 1;
-            //$cookies.set('Recojo', this.Recojo, 12);
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
             $('#modalEditarDelivery').modal('hide');
         },
-
         ajaxListarDatosFacturacion: function () {
             let $this = this;
             $this.iCargandoDatosFacturacion = 1;
-
             axios.post('/facturacion-envio/ajax/listarDatosFacturacion').then(response => {
                 let respuesta = response.data;
                 if (respuesta.result === result.success) {
@@ -730,73 +708,31 @@ let vueFacturacionEnvio = new Vue({
                     /*if ($this.lstTiposComprobante.length > 0) {
                         $this.formData.iTipoComprobanteId = $this.lstTiposComprobante[0].id;
                     }*/
-
                     if (data.cliente) {
                         let cliente = data.cliente;
                         let persona = cliente.persona;
-                        $this.direccionEnvio.sNombres = persona.nombres;
-                        $this.direccionEnvio.sApellidos = persona.apellido_1 + ' ' + persona.apellido_2;
-                        $this.direccionEnvio.sDireccion = cliente.direccion;
-                        $this.direccionEnvio.sCorreo = cliente.correo;
+                        $this.datosEnvio.sNombres = persona.nombres;
+                        $this.datosEnvio.sApellidos = persona.apellido_1 + ' ' + persona.apellido_2;
+                        $this.datosEnvio.sDireccion = cliente.direccion;
+                        $this.datosEnvio.sEmail = cliente.correo;
 
                         if (cliente.ubigeo) {
                             let ubigeo = cliente.ubigeo;
-                            $this.direccionEnvio.sDepartamento = ubigeo.departamento;
-                            $this.direccionEnvio.sProvincia = ubigeo.provincia;
-                            $this.direccionEnvio.sDistrito = ubigeo.distrito;
+                            $this.datosEnvio.sDepartamento = ubigeo.departamento;
+                            $this.datosEnvio.sProvincia = ubigeo.provincia;
+                            $this.datosEnvio.sDistrito = ubigeo.distrito;
                         }
                     }
                 }
             }).then(() => $this.iCargandoDatosFacturacion = 0);
         },
-
-        mostrarModalPago: function () {
-            this.sMensajeError = '';
-
-            Culqi.settings({
-                title: 'Ecovalle',
-                currency: 'PEN',
-                description: 'Pedido Ecovalle',
-                amount: this.fTotalCulqi
-            });
-
-            Culqi.open();
+        guardarCookieDatos: function(){
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
         },
-        ajaxEnviarContanciaYapePlin: function () {
-            this.iPagando = 1;
-
-            let formData = new FormData();
-            formData.append('amount', this.fTotal);
-            formData.append('email', this.formData.sCorreo);
-            formData.append('tipo_de_comprobante', this.formData.iTipoComprobanteId);
-            formData.append('tipo_de_documento', this.formData.iTipoDocumentoId);
-            formData.append('numero_de_documento', this.formData.sNumeroDocumento);
-            formData.append('nombres', this.formData.sNombres);
-            formData.append('apellidos', this.formData.sApellidos);
-            formData.append('razon_social', this.formData.sRazonSocial);
-            formData.append('direccion_de_envio', this.formData.sDireccion);
-            formData.append('detalles', this.formData.sDetallesCarritoCompras);
-
-            let $this = this;
-            axios.post('/carrito-compras/ajax/enviarConstanciaYapePlin', formData)
-                .then(response => {
-                    let respuesta = response.data;
-                    $this.sEtapaCompra = 'resumen';
-                    $this.respuestaPago = respuesta;
-                    $this.iPagando = 0;
-
-                    $this.lstCarritoCompras = [];
-                    $this.guardarLstCarritoCompras();
-                })
-                .catch(error => {
-                    let respuesta = error.response.data;
-                    $this.sMensajeError = sHtmlErrores(respuesta.errors);
-                    $this.iPagando = 0;
-                });
-        },
-
-        ajaxEnviarConstanciaTransferencia: function () {
-        },
-
+        confirmarFacturacion: function(){
+            location = '/pago-envio';
+        }
     }
 });
