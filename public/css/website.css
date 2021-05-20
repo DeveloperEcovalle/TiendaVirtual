@@ -796,3 +796,50 @@ button.btn-round:hover{
     border: none;
     outline: none;
 }
+
+/*---------------------------------------------------------*/
+.modal-pago{
+    display: inline-block;
+    position: relative;
+}
+
+.modal-pago.active{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    z-index: 80;
+}
+
+.modal-pago.active::after{
+    content:  '';
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.56);
+    z-index: 80;
+}
+
+@media (min-width: 360px) {
+    .modal-pago.active img {
+        z-index: 99;
+        width: 70%;
+        height: 60%;
+        max-width: 640px;
+    }
+}
+
+@media (min-width: 640px) {
+    .modal-pago.active img {
+        z-index: 99;
+        width: 60%;
+        height: 80%;
+        max-width: 760px;
+    }
+}

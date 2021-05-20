@@ -1,9 +1,6 @@
 let culqi = function () {
     if (Culqi.token) { // ¡Objeto Token creado exitosamente!
         let sToken = Culqi.token.id;
-
-        vuePagoEnvio.iPagando = 1;
-
         var sTipoCompra = '';
         var sTipoDoc = '';
         var sDocumento = '';
@@ -70,7 +67,7 @@ let culqi = function () {
         formData.append('token', sToken);
         formData.append('amount', vuePagoEnvio.fTotalCulqi);
         formData.append('email', sEmail);
-        formData.append('detalles', carrito)
+        formData.append('detalles', JSON.stringify(carrito));
         formData.append('tipo_compra', sTipoCompra)
         formData.append('tipo_comprobante', sTipoComprobante);
         formData.append('tipo_documento', sTipoDoc);
@@ -89,9 +86,52 @@ let culqi = function () {
                 let respuesta = response.data;
                 if(respuesta.result == 'success')
                 {
-                    if (respuesta.result === 'success') {
-                        vuePagoEnvio.lstCarritoCompras = [];
-                        vuePagoEnvio.guardarLstCarritoCompras();
+                    vuePagoEnvio.iPagando = 1;
+                    axios({
+                        url: '/pago-envio/ajax/crearVenta',
+                        method: 'post',
+                        data: formData
+                      })
+                      .then(function (response) {
+                        let respuesta = response.data;
+                        if (respuesta.result === 'success') {
+                            vuePagoEnvio.lstCarritoCompras = [];
+                            vuePagoEnvio.guardarLstCarritoCompras();
+                            toastr.clear();
+                            toastr.options = {
+                                iconClasses: {
+                                    error: 'bg-danger',
+                                    info: 'bg-info',
+                                    success: 'bg-success',
+                                    warning: 'bg-warning',
+                                },
+                            };
+                            toastr.info(respuesta.mensaje);
+                            setTimeout(() => {
+                                vuePagoEnvio.iPagado = 1;
+                                vuePagoEnvio.iPagando = 0;
+                                //location = '/tienda';
+                            }, 3000);
+                        } else {
+                            vuePagoEnvio.iPagado = 0;
+                            setTimeout(() => {
+                                vuePagoEnvio.iPagando = 0;
+                            }, 3000);
+                            toastr.clear();
+                            toastr.options = {
+                               iconClasses: {
+                                    error: 'bg-danger',
+                                    info: 'bg-info',
+                                    success: 'bg-success',
+                                    warning: 'bg-warning',
+                                },
+                            };
+                            toastr.error(respuesta.mensaje);
+                        }
+                    })
+                    .catch(error => {
+                        let respuesta = error.response.data;
+                        let message = JSON.parse(respuesta.message);
                         toastr.clear();
                         toastr.options = {
                             iconClasses: {
@@ -101,70 +141,9 @@ let culqi = function () {
                                 warning: 'bg-warning',
                             },
                         };
-                        toastr.info(respuesta.mensaje);
-                        setTimeout(() => {
-                            location = '/tienda';
-                          }, 3000);
-                    } else {
-                        toastr.clear();
-                        toastr.options = {
-                            iconClasses: {
-                                error: 'bg-danger',
-                                info: 'bg-info',
-                                success: 'bg-success',
-                                warning: 'bg-warning',
-                            },
-                        };
-                        toastr.error(respuesta.mensaje);
-                        console.log(respuesta.mensaje);
-                    }
-
-                    // $.ajax({
-                    //     type: 'post',
-                    //     url: '/pago-envio/ajax/crearVenta',
-                    //     data: formData,
-                    //     dataType: 'json',
-                    //     success: function (respuesta) {
-                    //         if (respuesta.result === 'success') {
-                    //             //vuePagoEnvio.lstCarritoCompras = [];
-                    //             vuePagoEnvio.guardarLstCarritoCompras();
-                    //             toastr.clear();
-                    //             toastr.options = {
-                    //                 iconClasses: {
-                    //                     error: 'bg-danger',
-                    //                     info: 'bg-info',
-                    //                     success: 'bg-success',
-                    //                     warning: 'bg-warning',
-                    //                 },
-                    //             };
-                    //             toastr.success(respuesta.mensaje);
-                    //         } else {
-                    //             toastr.clear();
-                    //             toastr.options = {
-                    //                 iconClasses: {
-                    //                     error: 'bg-danger',
-                    //                     info: 'bg-info',
-                    //                     success: 'bg-success',
-                    //                     warning: 'bg-warning',
-                    //                 },
-                    //             };
-                    //             toastr.error(respuesta.mensaje);
-                    //             console.log(respuesta.mensaje);
-                    //         }
-                    //     },
-                    //     error: function () {
-                    //         toastr.clear();
-                    //         toastr.options = {
-                    //             iconClasses: {
-                    //                 error: 'bg-danger',
-                    //                 info: 'bg-info',
-                    //                 success: 'bg-success',
-                    //                 warning: 'bg-warning',
-                    //             },
-                    //         };
-                    //         toastr.error('Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.');
-                    //     }
-                    // });
+                        toastr.error(message.merchant_message);
+                        vuePagoEnvio.iPagando = 0;
+                    });
 
                 }else{
                     toastr.clear();
@@ -177,6 +156,7 @@ let culqi = function () {
                         },
                     };
                     toastr.error(respuesta.mensaje);
+                    console.log(respuesta.mensaje);
                 }
             })
             .catch(error => {
@@ -279,6 +259,7 @@ let vuePagoEnvio = new Vue({
             sOpcion: 0,
         },
         iPagando: 0,
+        iPagado: 0,
         sMensajeError: '',
 
         respuestaPago: null

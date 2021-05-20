@@ -12,6 +12,8 @@ use App\Http\Controllers\Result;
 use App\Http\Controllers\Respuesta;
 use App\Ubigeo;
 use Exception;
+use Illuminate\Support\Facades\DB;
+
 class PagoEnvio extends Website
 {
     protected $lstTraduccionesPagoEnvio;
@@ -170,7 +172,7 @@ class PagoEnvio extends Website
             $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
             return response()->json($respuesta);
         }
-        $cargo = '';
+        //$cargo = '';
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
@@ -181,6 +183,8 @@ class PagoEnvio extends Website
     public function ajaxCrearVenta(Request $request)
     {
         try{
+
+            DB::beginTransaction();
             $respuesta = new Respuesta;
 
             $token = $request->get('token');
@@ -221,23 +225,27 @@ class PagoEnvio extends Website
             $venta->ubigeo_id = $ubigeo_id;
             $venta->cliente_id = null;
             $venta->save();
-            foreach($detalles as $det)
+            $detalles = json_decode($detalles,false);
+            $cont = 0;
+            while($cont < count($detalles))
             {
                 $detalle = new DetalleCompra();
                 $detalle->compra_id = $venta->id;
-                $detalle->producto_id = $det->id;
-                $detalle->cantidad = $det->cantidad;
+                $detalle->producto_id = $detalles[$cont]->id;
+                $detalle->cantidad = $detalles[$cont]->cantidad;
                 $detalle->save();
+                $cont = $cont + 1;
             }
-
+            DB::commit();
             $respuesta->result = Result::SUCCESS;
-            $respuesta->mensaje = 'Compra realizada exitosamente.';
+            $respuesta->mensaje = 'Compra realizada exitosamente. ';
             return response()->json($respuesta);
         }
         catch (Exception $e)
         {
+            DB::rollBack();
             $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = $e->getMessage().'    detalles '.$detalles;
+            $respuesta->mensaje = $e->getMessage();
             return response()->json($respuesta);
         }
     }

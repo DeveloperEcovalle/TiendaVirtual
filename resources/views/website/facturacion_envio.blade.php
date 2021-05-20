@@ -27,7 +27,7 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
+                    <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
                         1. {{ $lstLocales['Shopping cart'] }}
                     </a>
                 </div>

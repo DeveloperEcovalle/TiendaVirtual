@@ -13,6 +13,10 @@
         </nav>
     </div>
 
+    <div class="modal-pago active" v-if="iPagando === 1">
+        <img src="/img/carrito.gif" alt="Shopping">
+    </div>
+
     <section class="pt-5 pb-5" v-if="iCargando === 1" v-cloak>
         <div class="container-xl">
             <div class="row">
@@ -23,7 +27,7 @@
         </div>
     </section>
 
-    <section class="pt-4 pb-5" v-if="lstCarritoCompras.length > 0 && iCargando === 0" v-cloak>
+    <section class="pt-4 pb-5" v-if="lstCarritoCompras.length > 0 && iCargando === 0 && iPagado === 0" v-cloak>
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
@@ -37,7 +41,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0 active">
+                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
                         3. {{ $lstTraduccionesPagoEnvio['payment'] }}
                     </a>
                 </div>
@@ -216,6 +220,19 @@
                                 <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="pt-4 pb-5" v-if="iPagado === 1"> 
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-12 p-5 bg-white text-justify">
+                    <p class="mb-0" style="font-size: 25px;">Su compra se ha realizado satisfactoriamente, se le enviará un correo electronico con el comprobante de pago que ha solicitado. ¡Muchas Gracias!</p>
+                    <p class="font-weight-bold h5  text-ecovalle" style="font-size: 25px;">ECOVALLE</p>
+                    <div class="text-center">
+                        <a href="/tienda" class="btn btn-ecovalle">Continuar comprando</a>
                     </div>
                 </div>
             </div>
