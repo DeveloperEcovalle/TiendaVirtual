@@ -9,6 +9,7 @@ listarMenus(function (lstModulos, lstMenus) {
             iIdSeleccionado: 0,
             iError: 0,
             sBuscar: '',
+            sListarUbigeo: 1,
         },
         computed: {
             lstUbigeoFiltrados: function () {

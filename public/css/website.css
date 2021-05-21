@@ -822,24 +822,57 @@ button.btn-round:hover{
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.56);
+    background-color: rgba(0, 0, 0, 0.80);
     z-index: 80;
 }
 
 @media (min-width: 360px) {
     .modal-pago.active img {
         z-index: 99;
-        width: 70%;
-        height: 60%;
-        max-width: 640px;
+        width: 50%;
+        height: 25%;
+        max-width: 480px;
+    }
+
+    .modal-pago.active b{
+        z-index: 99;
+        top: 55%;
+        color:#EE9722;
+        font-size: 15px;
+        position:absolute;
     }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 760px) {
     .modal-pago.active img {
         z-index: 99;
-        width: 60%;
-        height: 80%;
-        max-width: 760px;
+        width: 20%;
+        height: 42%;
+        max-width: 1080px;
+    }
+
+    .modal-pago.active b{
+        z-index: 99;
+        top: 58%;
+        color:#EE9722;
+        font-size: 10px;
+        position:absolute;
+    }
+}
+
+@media (min-width: 1080px) {
+    .modal-pago.active img {
+        z-index: 99;
+        width: 20%;
+        height: 38%;
+        max-width: 1920px;
+    }
+
+    .modal-pago.active b{
+        z-index: 99;
+        top: 58%;
+        color:#EE9722;
+        font-size: 20px;
+        position:absolute;
     }
 }

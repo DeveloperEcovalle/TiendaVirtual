@@ -110,7 +110,10 @@
                                         <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sTelefono }}</p>
                                     </div>
                                     <div class="col-12">
-                                        <p><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
+                                        <p class="mb-0"><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
+                                    </div>
+                                    <div class="col-12">
+                                        <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                     </div>
                                 </div>
                                 <div class="text-center">
@@ -293,6 +296,13 @@
                                 <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'RUC'">
                                     <label>Razon Social</label>
                                     <input type="text" class="form-control" v-model="datosEnvio.sRazon" autocomplete="off">
+                                </div>
+                                <div class="form-group" >
+                                    <label>Agencia</label>
+                                    <select  class="form-control" v-model="datosEnvio.sAgencia">
+                                        <option value="">Seleccionar</option>
+                                        <option v-for="agencia in lstAgencias" :value="agencia.nombre">@{{agencia.nombre}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">

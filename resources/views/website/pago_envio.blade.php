@@ -15,6 +15,7 @@
 
     <div class="modal-pago active" v-if="iPagando === 1">
         <img src="/img/carrito.gif" alt="Shopping">
+        <b><span>Por favor, espere ...</span></b>
     </div>
 
     <section class="pt-5 pb-5" v-if="iCargando === 1" v-cloak>
@@ -41,7 +42,7 @@
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
                         3. {{ $lstTraduccionesPagoEnvio['payment'] }}
                     </a>
                 </div>
@@ -71,7 +72,10 @@
                                             <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sTelefono }}</p>
                                         </div>
                                         <div class="col-12">
-                                            <p><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
+                                            <p class="mb-0"><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
+                                        </div>
+                                        <div class="col-12">
+                                            <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                         </div>
                                         <div class="col-12">
                                             <div style="background-color: #EE9722;color:#ffffff">
@@ -79,7 +83,7 @@
                                                     <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                         <div class="radio">
                                                             <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-on:click="fnComprobante(tipo.nombre)">
-                                                            <label :for="tipo.nombre">
+                                                            <label :for="tipo.nombre" style="font-size: 15px;">
                                                                 <b>@{{ tipo.nombre }}</b>
                                                             </label>
                                                         </div>

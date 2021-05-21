@@ -710,6 +710,25 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/actualizarCertificadoDigital', 'FacturacionElectronica@ajaxActualizarCertificadoDigital');
                         });
                     });
+
+                    Route::prefix('/agencias')->group(function () {
+                        Route::get('/', 'Agencia@index');
+                        Route::get('/nuevo', 'Agencia@index');
+                        Route::get('/{iIdInterno?}/editar', 'Agencia@index');
+
+                        Route::prefix('/ajax')->group(function () {
+                            Route::get('/panelListar', 'Agencia@ajaxPanelListar');
+                            Route::get('/panelNuevo', 'Agencia@ajaxPanelNuevo');
+                            Route::get('/panelEditar', 'Agencia@ajaxPanelEditar');
+                            Route::post('/editar/listarPerfiles', 'Agencia@ajaxEditarListarPerfiles');
+
+                            Route::post('/listar', 'Agencia@ajaxListar');
+                            Route::post('/insertar', 'Agencia@ajaxInsertar');
+                            Route::post('/actualizar', 'Agencia@ajaxActualizar');
+                            Route::post('/actualizarContrasena', 'Agencia@ajaxActualizarContrasena');
+                            Route::post('/eliminar', 'Agencia@ajaxEliminar');
+                        });
+                    });
                 });
             });
         });

@@ -202,6 +202,7 @@ class PagoEnvio extends Website
             $departamento = $request->get('departamento');
             $provincia = $request->get('provincia');
             $distrito = $request->get('distrito');
+            $agencia = $request->get('agencia');
             $detalles = $request->get('detalles');
             //$cliente = $request->session()->get('cliente');
             $created_at = now();
@@ -224,6 +225,7 @@ class PagoEnvio extends Website
             {$ubigeo_id = Ubigeo::where('departamento',$departamento)->where('provincia',$provincia)->where('distrito',$distrito)->value('id');}
             $venta->ubigeo_id = $ubigeo_id;
             $venta->cliente_id = null;
+            $venta->agencia = $agencia;
             $venta->save();
             $detalles = json_decode($detalles,false);
             $cont = 0;

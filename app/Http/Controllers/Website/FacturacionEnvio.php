@@ -23,6 +23,7 @@ use App\Ubigeo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use App\Agencia;
 
 class FacturacionEnvio extends Website {
 
@@ -145,10 +146,11 @@ class FacturacionEnvio extends Website {
 
         // return response()->json($respuesta);
         $lstPreciosEnvio = Ubigeo::where('estado','ACTIVO')->get();
+        $lstAgencias = Agencia::where('estado','ACTIVO')->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['lstPreciosEnvio' => $lstPreciosEnvio];
+        $respuesta->data = ['lstPreciosEnvio' => $lstPreciosEnvio,'lstAgencias' => $lstAgencias];
 
         return response()->json($respuesta);
     }

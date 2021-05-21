@@ -17,6 +17,7 @@ let vueFacturacionEnvio = new Vue({
         lstTiposComprobante: [],
         lstPreciosEnvioNacional: [],
         lstPreciosDelivery: [],
+        lstAgencias: [],
 
         datosEnvio: {
             sCabecera: 'NN',
@@ -31,6 +32,7 @@ let vueFacturacionEnvio = new Vue({
             sProvincia: '',
             sDistrito: '',
             sDireccion: '',
+            sAgencia: '',
             sOpcion: 0,
         },
 
@@ -100,6 +102,7 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosEnvio.sDistrito.trim().length > 0
                 && this.datosEnvio.sDireccion.trim().length > 0
                 && this.datosEnvio.sTipoDoc.trim().length > 0
+                && this.datosEnvio.sAgencia.trim().length > 0
                 && this.datosEnvio.sDocumento.trim().length > 0;
         },
         bRecojoValida: function () {
@@ -675,7 +678,9 @@ let vueFacturacionEnvio = new Vue({
             let $this = this;
             axios.get('/facturacion-envio/ajax/listarPreciosEnvio').then(response => {
                 $this.lstPreciosEnvioNacional = response.data.data.lstPreciosEnvio.filter(direccion => direccion.provincia !== 'TRUJILLO');
-                $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO')
+                $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO');
+                $this.lstAgencias = response.data.data.lstAgencias;
+                console.log(response.data.data);
             });
         },
         guardarLstCarritoCompras: function () {

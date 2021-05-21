@@ -11,6 +11,7 @@ let culqi = function () {
         var sDelivery = vuePagoEnvio.fDelivery;
         var sTipoComprobante = vuePagoEnvio.sTipoComprobante;
         var sDireccion = '';
+        var sAgencia = '';
         var sDepartamento = '';
         var sProvincia = '';
         var sDistrito = '';
@@ -28,6 +29,7 @@ let culqi = function () {
             sTelefono = vuePagoEnvio.datosEnvio.sTelefono;
             sEmail = vuePagoEnvio.datosEnvio.sEmail;
             sDireccion = vuePagoEnvio.datosEnvio.sDireccion;
+            sAgencia = vuePagoEnvio.datosEnvio.sAgencia;
             sDepartamento = vuePagoEnvio.datosEnvio.sDepartamento;
             sProvincia = vuePagoEnvio.datosEnvio.sProvincia;
             sDistrito = vuePagoEnvio.datosEnvio.sDistrito;
@@ -75,18 +77,18 @@ let culqi = function () {
         formData.append('cliente', sCliente);
         formData.append('telefono', sTelefono);
         formData.append('direccion', sDireccion);
+        formData.append('agencia', sAgencia);
         formData.append('subtotal', sSubTotal);
         formData.append('delivery', sDelivery);
         formData.append('departamento', sDepartamento);
         formData.append('provincia', sProvincia);
         formData.append('distrito', sDistrito);
-
+        vuePagoEnvio.iPagando = 1;
         axios.post('/pago-envio/ajax/crearCargo', formData)
             .then(response => {
                 let respuesta = response.data;
                 if(respuesta.result == 'success')
                 {
-                    vuePagoEnvio.iPagando = 1;
                     axios({
                         url: '/pago-envio/ajax/crearVenta',
                         method: 'post',
@@ -230,6 +232,7 @@ let vuePagoEnvio = new Vue({
             sProvincia: '',
             sDistrito: '',
             sDireccion: '',
+            sAgencia: '',
             sOpcion: 0,
         },
 
