@@ -8,7 +8,7 @@ class Cliente extends Model {
 
     protected $table = 'clientes';
     protected $primaryKey = 'id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function persona() {
         return $this->belongsTo(Persona::class, 'id');

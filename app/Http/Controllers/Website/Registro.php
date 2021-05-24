@@ -12,6 +12,13 @@ use App\Persona;
 use App\TelefonoEmpresa;
 use Illuminate\Http\Request;
 
+use App\Ubigeo;
+use Exception;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
+
 class Registro extends Website {
 
     protected $lstTraduccionesRegistro;
@@ -80,78 +87,124 @@ class Registro extends Website {
     }
 
     public function ajaxRegistrar(Request $request) {
-        $request->validate([
-            'tipo_de_documento' => 'required',
-            'numero_de_documento' => 'required|unique:documentos,numero',
-            'nombres' => 'required',
-            'apellidos' => 'required_if:tipo_de_dcoumento,1',
-            'fecha_de_nacimiento' => 'required|date_format:Y-m-d',
-            'correo_electronico' => 'required|email',
-            'contrasena' => 'required|confirmed',
-            'acepto_terminos_y_condiciones_y_politica_de_privacidad' => 'required',
-        ]);
+        try{
+            DB::beginTransaction();
+            $respuesta = new Respuesta;
+            $data = $request->all();
+            $rules = [
+                'nombres' => 'required',
+                'tipo_documento' => 'required',
+                'documento' => 'required|unique:personas,documento',
+                'apellidos' => 'required_if:tipo_documento,DNI',
+                'correo' => 'required|email|unique:personas,correo',
+                'password' => 'required|',
+                'cpassword' => 'required|same:password',
+                'direccion' => 'required',
+                'departamento' => 'required',
+                'provincia' => 'required',
+                'distrito' => 'required',
+    
+            ];
+            $message = [
+                'nombres.required' => 'El campo nombres es obligatorio.',
+                'apellidos.required' => 'El campo apellidos es obligatorio.',
+                'password.required' => 'El campo contraseña es obligatorio.',
+                'cpassword.required' => 'El campo confirmar contraseña es obligatorio.',
+                'cpassword.same' => 'Contraseñas diferentes.',
+                'departamento.required' => 'El campo departamento es obligatorio.',
+                'provincia.required' => 'El campo provincia es obligatorio.',
+                'distrito.required' => 'El campo distrito es obligatorio.',
+                'tipo_documento.required' => 'El campo tipo documento es obligatorio.',
+                'direccion.required' => 'El campo direccion es obligatorio.',
+                'documento.required' => 'El documento ingresado ya se encuentra registrado.',
+                'documento.unique' => 'El campo documento debe ser único',
+                'correo.required' => 'El campo correo es obligatorio.',
+                'correo.email' => 'El campo correo debe ser un email.',
+                'correo.unique' => 'El correo electrónico ingresado ya se encuentra registrado.',
+            ];
+    
+            $validator =  Validator::make($data, $rules, $message);
 
-        $iTipoDocumento = $request->get('tipo_de_documento');
-        $sNumeroDocumento = $request->get('numero_de_documento');
-        $sNombres = $request->get('nombres');
-        $sApellidos = $request->get('apellidos');
-        $sFechaNacimiento = $request->get('fecha_de_nacimiento');
-        $sEmail = $request->get('correo_electronico');
-        $sContrasena = $request->get('contrasena');
+            if ($validator->fails()) {
+
+                DB::rollBack();
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'Ocurrió un error de validación.';
+                $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
+                return response()->json($respuesta);
+    
+            }
+    
+            $iTipoDocumento = $request->get('tipo_documento');
+            $sDocumento = $request->get('documento');
+            $sNombres = $request->get('nombres');
+            $sApellidos = $request->get('apellidos');
+            $sTelefono = $request->get('telefono');
+            $sTelefono_fijo = $request->get('telefono_fijo');
+            $sDireccion = $request->get('direccion');
+            $sFechaNacimiento = $request->get('fecha_nacimiento');
+            $sEmail = $request->get('correo');
+            $sGenero = $request->get('genero');
+            $sContrasena = $request->get('password');
+    
+            $cliente_correo_registrado = Cliente::where('email', $sEmail)->first();
+            if ($cliente_correo_registrado) {
+                DB::rollBack();
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'El correo electrónico ingresado ya se encuentra registrado.';
+                return response()->json($respuesta);
+            }
+    
+            $lstApellidos = explode(' ', $sApellidos);
+            $sApellido1 = $lstApellidos[0];
+            $sApellido2 = count($lstApellidos) > 1 ? $lstApellidos[1] : null;
+    
+            $persona = new Persona;
+            $persona->nombres = $sNombres;
+            $persona->apellido_1 = $sApellido1;
+            $persona->apellido_2 = $sApellido2;
+            $persona->tipo_documento = $iTipoDocumento;
+            $persona->documento = $sDocumento;
+            $persona->correo = $sEmail;
+            $persona->telefono = $sTelefono;
+            $persona->genero = $sGenero;
+            $persona->telefono_fijo = $sTelefono_fijo;
+            $persona->direccion = $sDireccion;
+            $persona->fecha_nacimiento = $sFechaNacimiento;
+            $ubigeo = Ubigeo::where('departamento',$request->departamento)->where('provincia',$request->provincia)->where('distrito',$request->distrito)->first();
+            $persona->ubigeo_id = $ubigeo ? $ubigeo->id : null;
+            $persona->save();
+    
+            $cliente = new Cliente;
+            $cliente->persona_id = $persona->id;
+            $cliente->email = $sEmail;
+            $cliente->password = md5($sContrasena);
+            $cliente->save();
+    
+            $clienteSesion = Cliente::find($cliente->id);
+            $request->session()->put('cliente', $clienteSesion);
+            
+            DB::commit();
+            $respuesta->result = Result::SUCCESS;
+            return response()->json($respuesta);
+        }catch(Exception $e)
+        {
+            DB::rollBack();
+            $respuesta = new Respuesta();
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = $e->getMessage();
+            return response()->json($respuesta);
+        }
+    }
+
+    public function ajaxListarDatos() {
+
+        $lstUbigeo = Ubigeo::all();
 
         $respuesta = new Respuesta;
-
-        $cliente_correo_registrado = Cliente::where('correo', $sEmail)->first();
-        if ($cliente_correo_registrado) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'El correo electrónico ingresado ya se encuentra registrado.';
-            return response()->json($respuesta);
-        }
-
-        $documento_registrado = Documento::where('sunat_06_codigo', $iTipoDocumento)->where('numero', $sNumeroDocumento)->first();
-        if ($documento_registrado) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'El documento ingresado ya se encuentra registrado.';
-            return response()->json($respuesta);
-        }
-
-        $fecha_reg = now()->toDateTimeString();
-
-        $lstApellidos = explode(' ', $sApellidos);
-        $sApellido1 = $lstApellidos[0];
-        $sApellido2 = count($lstApellidos) > 1 ? $lstApellidos[1] : null;
-
-        $persona = new Persona;
-        $persona->nombres = $sNombres;
-        $persona->apellido_1 = $sApellido1;
-        $persona->apellido_2 = $sApellido2;
-        $persona->correo = $sEmail;
-        $persona->usuario_reg = 1;
-        $persona->fecha_reg = $fecha_reg;
-        $persona->save();
-
-        $cliente = new Cliente;
-        $cliente->id = $persona->id;
-        $cliente->clientes_varios = 0;
-        $cliente->usuario_web = 1;
-        $cliente->fecha_nacimiento = $sFechaNacimiento;
-        $cliente->correo = $sEmail;
-        $cliente->contrasena = md5($sContrasena);
-        $cliente->usuario_reg = 1;
-        $cliente->fecha_reg = $fecha_reg;
-        $cliente->save();
-
-        $documento = new Documento;
-        $documento->sunat_06_codigo = $iTipoDocumento;
-        $documento->numero = $sNumeroDocumento;
-        $documento->usuario_reg = 1;
-        $documento->fecha_reg = $fecha_reg;
-        $persona->documentos()->save($documento);
-
-        $clienteSesion = Cliente::with(['persona'])->find($persona->id);
-        $request->session()->put('cliente', $clienteSesion);
-
         $respuesta->result = Result::SUCCESS;
+        $respuesta->data = ['lstUbigeo' => $lstUbigeo];
+
         return response()->json($respuesta);
     }
 }

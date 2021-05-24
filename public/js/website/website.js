@@ -225,7 +225,7 @@ let ajaxSetLocale = locale => {
     });
 };
 
-let vueInicioSesion = new Vue({
+/*let vueInicioSesion = new Vue({
     el: '#inicioSesion',
     data: {
         iComprobando: 0,
@@ -247,7 +247,6 @@ let vueInicioSesion = new Vue({
     methods: {
         ajaxIngresar: function () {
             this.iComprobando = 1;
-
             let frmIniciarSesion = document.getElementById('frmIniciarSesion');
             let formData = new FormData(frmIniciarSesion);
             formData.append('sLstCarritoCompras', this.sLstCarritoCompras);
@@ -256,6 +255,7 @@ let vueInicioSesion = new Vue({
             axios.post('/iniciar-sesion/ajax/ingresar', formData)
                 .then(response => {
                     let respuesta = response.data;
+                    console.log(respuesta);
                     if (respuesta.result === result.success) {
                         location.reload();
                     } else {
@@ -272,7 +272,7 @@ let vueInicioSesion = new Vue({
                     de no ser así, comuníquese con el administrador del sistema.`;
                 });
 
-            /*$.ajax({
+            $.ajax({
                 type: 'post',
                 url: '/iniciar-sesion/ajax/ingresar',
                 data: $('#frmIniciarSesion').serialize() + '&sLstCarritoCompras=' + $this.sLstCarritoCompras,
@@ -291,10 +291,10 @@ let vueInicioSesion = new Vue({
                     $this.sClase = 'alert-danger';
                     $this.sMensaje = 'Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.';
                 }
-            });*/
+            });
         }
     }
-});
+});*/
 
 let chunk = (array, size) => Array.from({length: Math.ceil(array.length / size)}, (v, i) => array.slice(i * size, i * size + size));
 

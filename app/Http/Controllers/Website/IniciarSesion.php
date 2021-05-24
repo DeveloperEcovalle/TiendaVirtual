@@ -46,7 +46,7 @@ class IniciarSesion extends Controller {
         $sEmail = $request->get('email');
         $sContrasena = $request->get('contrasena');
 
-        $cliente = Cliente::where('correo', $sEmail)->where('contrasena', md5($sContrasena))->where('usuario_web', 1)->with(['persona'])->first();
+        $cliente = Cliente::where('email', $sEmail)->where('password', md5($sContrasena))->first();
 
         if ($cliente) {
             $request->session()->put('cliente', $cliente);

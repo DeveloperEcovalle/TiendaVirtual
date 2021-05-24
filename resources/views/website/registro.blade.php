@@ -16,98 +16,117 @@
                     <div class="col-11 col-md-5">
                         <div class="form-group">
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Email'] . ' (' . $lstTraduccionesRegistro['this_will_be_your_user'] . ')' }} <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['Email'] }}" autocomplete="off">
+                            <input type="email" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['Email'] }}" name="correo" autocomplete="off">
                         </div>
                     </div>
                 </div>
                 <div class="row justify-content-center justify-content-md-between">
                     <div class="col-11 col-md-5">
-                        <div class="form-group">
+                        <div class="form-group" v-cloak>
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Password'] }} <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['Password'] }}" autocomplete="off">
+                            <input type="password" class="form-control" :class="sPassword != sCPassword ? 'is-invalid' : ''" v-model="sPassword" name="password"  required="required" placeholder="{{ $lstTraduccionesRegistro['Password'] }}" autocomplete="off" minlength="6">
+                            <span v-if="sPassword != sCPassword">
+                                <strong style="color: red;font-size: 12px;">Contraseñas diferentes</strong>
+                            </span>
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
-                        <div class="form-group">
+                        <div class="form-group" v-cloak>
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Confirm password'] }} <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['Confirm password'] }}" autocomplete="off">
+                            <input type="password" class="form-control" :class="sPassword != sCPassword ? 'is-invalid' : ''" required="required" name="cpassword" v-model="sCPassword" placeholder="{{ $lstTraduccionesRegistro['Confirm password'] }}" autocomplete="off">
+                            <span v-if="sPassword != sCPassword">
+                                <strong style="color: red;font-size: 12px;">Contraseñas diferentes</strong>
+                            </span>
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
                         <div class="form-group">
-                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Name'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['Name'] }}" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group" v-if="sTipoDocumento == 1">
-                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Last Name'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" :required="sTipoDocumento == 1" placeholder="{{ $lstTraduccionesRegistro['Last Name'] }}" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group">
-                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['address'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['address'] }}" autocomplete="off">
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Departamento <span class="text-danger">*</span></label>
-                            <select name="departamento" class="form-control" required="required"></select>
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Provincia <span class="text-danger">*</span></label>
-                            <select name="provincia" class="form-control" required="required"></select>
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Distrito <span class="text-danger">*</span></label>
-                            <select name="distrito" class="form-control" required="required"></select>
-                        </div>
-                    </div>
-                    <div class="col-11 col-md-5">
-                        <div class="form-group">
-                            <label class="font-weight-bold">Documento</label>
+                            <label class="font-weight-bold">Documento <span class="text-danger">*</span></label>
                             <div class="row">
                                 <div class="col-12 col-md-4">
-                                    <select class="form-control" v-model="sTipoDocumento">
-                                        <option value="1">DNI</option>
-                                        <option value="6">RUC</option>
+                                    <select class="form-control" name="tipo_documento" v-model="sTipoDocumento" required>
+                                        <option value="DNI">DNI</option> <!-- 1 -->
+                                        <option value="RUC">RUC</option> <!-- 6 -->
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input class="form-control" :maxlength="sTipoDocumento == 1 ? 8 : 11" required="required" placeholder="{{ $lstTraduccionesRegistro['ID Number'] }}" autocomplete="off">
+                                    <input class="form-control" name="documento" :maxlength="sTipoDocumento == 'DNI' ? 8 : 11" required placeholder="{{ $lstTraduccionesRegistro['ID Number'] }}" autocomplete="off">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
                         <div class="form-group">
-                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['gender'] }}</label>
-                            <select name="provincia" class="form-control"></select>
+                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Name'] }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" required="required" name="nombres" placeholder="{{ $lstTraduccionesRegistro['Name'] }}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group" v-if="sTipoDocumento == 'DNI'">
+                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Last Name'] }} <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" :required="sTipoDocumento == 1" placeholder="{{ $lstTraduccionesRegistro['Last Name'] }}" name="apellidos" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
                         <div class="form-group">
-                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['landline_phone'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['landline_phone'] }}" autocomplete="off">
+                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['address'] }} <span class="text-danger">*</span></label>
+                            <input type="text" name="direccion" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['address'] }}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Departamento <span class="text-danger">*</span></label>
+                            <select name="departamento" class="form-control" v-model="sDepartamento" required="required">
+                                <option value="">Seleccionar</option>
+                                <option v-for="departamento in lstDepartamentos" :value="departamento">@{{departamento}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Provincia <span class="text-danger">*</span></label>
+                            <select name="provincia" v-model="sProvincia" class="form-control" required="required">
+                                <option value="">Seleccionar</option>
+                                <option v-for="provincia in lstProvincias" :value="provincia">@{{provincia}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group">
+                            <label class="font-weight-bold">Distrito <span class="text-danger">*</span></label>
+                            <select name="distrito" class="form-control" v-model="sDistrito" required="required">
+                                <option value="">Seleccionar</option>
+                                <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{distrito.distrito}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group">
+                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['gender'] }}</label>
+                            <select name="genero" class="form-control">
+                                <option value="">Seleccionar</option>
+                                <option value="M">M</option>
+                                <option value="F">F</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
                         <div class="form-group">
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['cell_phone'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" required="required" placeholder="{{ $lstTraduccionesRegistro['cell_phone'] }}" autocomplete="off">
+                            <input type="text" class="form-control" required="required" name="telefono" placeholder="{{ $lstTraduccionesRegistro['cell_phone'] }}" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-11 col-md-5">
+                        <div class="form-group">
+                            <label class="font-weight-bold">{{ $lstTraduccionesRegistro['landline_phone'] }}</label>
+                            <input type="text" class="form-control" name="telefono_fijo" placeholder="{{ $lstTraduccionesRegistro['landline_phone'] }}" autocomplete="off">
                         </div>
                     </div>
 
                     <div class="col-11 col-md-5">
                         <div class="form-group">
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['date_of_birth'] }}</label>
-                            <input type="date" class="form-control" required="required" autocomplete="off">
+                            <input type="date" name="fecha_nacimiento" class="form-control" autocomplete="off">
                         </div>
                     </div>
 
@@ -115,7 +134,7 @@
                         <div class="form-group mt-5" v-cloak>
                             <div v-icheck>
                                 <label class="m-0">
-                                    <input type="checkbox" required="required">&nbsp;{!! $lstTraduccionesRegistro['accept'] !!}
+                                    <input type="checkbox" name="acepto_terminos_y_condiciones_y_politica_de_privacidad" required>&nbsp;{!! $lstTraduccionesRegistro['accept'] !!}
                                 </label>
                             </div>
                         </div>

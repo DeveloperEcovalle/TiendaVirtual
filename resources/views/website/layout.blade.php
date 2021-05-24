@@ -64,8 +64,8 @@
                                 <ul class="nav align-items-center justify-content-between" id="navUsuario">
                                     <li class="nav-item">
                                         @if(session()->has('cliente'))
-                                        <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="/mi-cuenta">
-                                            <span class="mr-1" style="line-height: 1.2">Hola,<br>{{ session('cliente')->persona->nombres }}</span>
+                                        <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#"> <!-- /mi-cuenta -->
+                                            <span class="mr-1" style="line-height: 1.2">{{ session('cliente')->persona->nombres }}</span>
                                             <i class="ecovalle-usuario fa-2x"></i>
                                         </a>
                                         @else
@@ -318,22 +318,22 @@
                                     <div class="col-10 col-lg-7">
                                         <img src="/img/logo_ecovalle.svg" class="img-fluid">
                                     </div>
-                                    <div class="col-10 col-lg-8">
+                                    <div class="col-10 col-lg-8" v-cloak>
                                         <h5 class="text-center mt-4 mb-3">Iniciar sesi&oacute;n</h5>
-                                        <form role="form" id="frmIniciarSesion" v-on:submit.prevent="ajaxIngresar()" v-cloak>
+                                        <form role="form" id="frmIniciarSesion">
                                             <div class="form-group">
                                                 <input class="form-control" type="email" name="email" placeholder="{{ $lstLocales['Email'] }}" required="required" autocomplete="off" v-on:keyup="sMensaje = null">
                                             </div>
                                             <div class="form-group">
                                                 <input class="form-control" type="password" name="contrasena" placeholder="{{ $lstLocales['Password'] }}" required="required" autocomplete="off" v-on:keyup="sMensaje = null">
                                             </div>
-                                            <div class="alert text-center p-2" :class="sClase" v-if="sMensaje">
-                                                @{{ sMensaje }}
+                                            <div class="alert text-center p-2" id="sMensaje">
+                                                
                                             </div>
-                                            <div class="form-group mb-1" v-cloak>
-                                                <button type="submit" class="btn btn-block btn-ecovalle" :disabled="iComprobando === 1">
-                                                    <span v-if="iComprobando === 1"><i class="fas fa-circle-notch fa-spin"></i> Comprobando</span>
-                                                    <span v-else>Iniciar sesi&oacute;n</span>
+                                            <div class="form-group mb-1">
+                                                <button type="submit" class="btn btn-block btn-ecovalle" id="iSubmit">
+                                                    <span id="iComprobando" class="d-none"><i class="fas fa-circle-notch fa-spin"></i> Comprobando</span>
+                                                    <span class="signIn">Iniciar sesi&oacute;n</span>
                                                 </button>
                                             </div>
                                         </form>

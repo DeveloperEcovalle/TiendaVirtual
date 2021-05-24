@@ -5,8 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use App\Ubigeo;
 
 /*
 |--------------------------------------------------------------------------
@@ -198,6 +197,7 @@ Route::middleware([Locale::class])->group(function () {
         Route::prefix('/registro')->group(function () {
             Route::get('/', 'Registro@index')->middleware([ClienteAutenticado::class]);
             Route::post('/ajax/registrar', 'Registro@ajaxRegistrar');
+            Route::get('/ajax/listarDatos', 'Registro@ajaxListarDatos');
         });
     });
 });
@@ -736,7 +736,6 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $fecha_emision = now();
-    $fecha_emision = date_format($fecha_emision, 'Y-m-d H:i');
-    return $fecha_emision;
+    //session()->forget('cliente');
+    session()->flush();
 });
