@@ -175,7 +175,7 @@ let vueFacturacionEnvio = new Vue({
                     (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
             }
-            return fSubtotal;
+            return Math.round(fSubtotal * 10) / 10;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;

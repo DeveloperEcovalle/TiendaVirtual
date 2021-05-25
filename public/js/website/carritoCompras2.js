@@ -30,7 +30,7 @@ let vueCarritoCompras = new Vue({
                     (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
             }
-            return fSubtotal;
+            return Math.round(fSubtotal * 10) / 10;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;
@@ -97,7 +97,7 @@ let vueCarritoCompras = new Vue({
         ajaxAumentarCantidadProductoCarrito: function (producto, i) {
             let iProductoId = producto.id;
             let $this = this;
-            if($this.lstCarritoCompras[i].cantidad + 1 === $this.lstCarritoCompras[i].producto.stock_actual)
+            if(producto.cantidad + 1 === producto.stock_actual)
             {
                 toastr.clear();
                 toastr.options = {
@@ -108,9 +108,9 @@ let vueCarritoCompras = new Vue({
                         warning: 'bg-warning',
                     },
                 };
-                toastr.info($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
+                toastr.info(producto.stock_actual + ' en stock.');
 
-                var cantidad = $this.lstCarritoCompras[i].producto.stock_actual;
+                var cantidad = producto.stock_actual;
                 ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
                     .then(response => {
                         let respuesta = response.data;
@@ -127,7 +127,7 @@ let vueCarritoCompras = new Vue({
                         }
                     });
             }
-            if($this.lstCarritoCompras[i].cantidad + 1 < $this.lstCarritoCompras[i].producto.stock_actual)
+            else if(producto.cantidad + 1 < producto.stock_actual)
             {
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
                     .then(response => {

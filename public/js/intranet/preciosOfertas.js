@@ -482,7 +482,6 @@ listarMenus(function (lstModulos, lstMenus) {
                                     }
                                 });
                             },
-
                             ajaxInsertarPromocion: function () {
                                 let $this = this;
                                 $this.iInsertandoPromocion = 1;
@@ -521,6 +520,32 @@ listarMenus(function (lstModulos, lstMenus) {
                                     },
                                     complete: function () {
                                         $this.iInsertandoPromocion = 0;
+                                    }
+                                });
+                            },
+                            ajaxEliminarPromocion: function (iPromocionId) {
+                                let $this = this;
+                                $this.iEliminandoPromocion = 1;
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-productos/precios-ofertas/ajax/eliminarPromocion',
+                                    data: {id: iPromocionId},
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            $this.ajaxListarUltimasPromociones(function () {
+                                                $this.ajaxListarProducto();
+                                            });
+                                        }
+
+                                        toastr[respuesta.result](respuesta.mensaje);
+                                    },
+                                    error: function (respuesta) {
+                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr[result.error](sHtmlMensaje);
+                                    },
+                                    complete: function () {
+                                        $this.iEliminandoPromocion = 0;
                                     }
                                 });
                             },

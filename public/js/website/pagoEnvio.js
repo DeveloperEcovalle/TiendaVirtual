@@ -307,13 +307,13 @@ let vuePagoEnvio = new Vue({
                     (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
             }
-            return fSubtotal;
+            return Math.round(fSubtotal * 10) / 10;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;
         },
         fTotalCulqi: function () {
-            return ((Math.round(this.fSubtotal * 10) / 10) * 100) + (this.fDelivery * 100);
+            return (this.fSubtotal * 100) + (this.fDelivery * 100);
         },
         sDetallesCarritoCompras: function () {
             let sDetalles = '';

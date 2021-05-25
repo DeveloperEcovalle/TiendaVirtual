@@ -208,7 +208,7 @@ let vueTiendaProducto = new Vue({
                         warning: 'bg-warning',
                     },
                 };
-                toastr.error('Stock insuficiente');
+                toastr.error(producto.stock_actual + ' en stock.');
             }
         },
 
