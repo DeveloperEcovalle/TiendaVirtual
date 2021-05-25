@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\Mail\NotificacionContactoContigo;
+use App\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -176,13 +177,17 @@ class Website extends Controller {
 
         if ($bClienteEnSesion) {
             $cliente = $session->get('cliente');
+            $persona = Persona::find($cliente->persona_id);
             $lstCarrito = DetalleCarrito::where('cliente_id', $cliente->id)
                 ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente'])->get();
+        }
+        else{
+            $persona = null;
         }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['bClienteEnSesion' => $bClienteEnSesion, 'lstCarrito' => $lstCarrito];
+        $respuesta->data = ['bClienteEnSesion' => $persona, 'lstCarrito' => $lstCarrito];
         return response()->json($respuesta);
     }
 

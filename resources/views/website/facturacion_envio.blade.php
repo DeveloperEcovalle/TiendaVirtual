@@ -85,13 +85,28 @@
                         <div class="col-12 mb-3" v-if="sNNacional === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
-                                <p>
-                                    <span class="font-weight-bold">Datos de env&iacute;o</span>
-                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                </p>
+                                <div class="row">
+                                    <p class="col-12 col-lg-4">
+                                        <span class="font-weight-bold">Datos de env&iacute;o</span>
+                                    </p>
+                                    <div v-if="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" class="col-8 col-lg-6" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    </div>
+                                    <div v-else class="col-8 col-lg-6"></div>
+                                    @if(session()->has('cliente'))
+                                    <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @else
+                                    <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @endif
+                                </div>
+                                @if(session()->has('cliente'))
                                 <div v-if="iDireccionEnvioEstablecida === 0">
                                     <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
+                                @else
+                                <div v-if="iDireccionEnvioEstablecida === 0">
+                                    <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Registrarse'.</p>
+                                </div>
+                                @endif
                                 <div class="row" v-else>
                                     <div v-if="datosEnvio.sNombres != ''" class="col-12">
                                         <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosEnvio.sNombres + ' ' + datosEnvio.sApellidos + ' ' }}</p>
@@ -117,20 +132,37 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iDireccionEnvioEstablecida === 0" v-on:click="confirmarFacturacion()" v-if="iDireccionEnvioConfirmada === 0">Continuar</button>
+                                    @if(session()->has('cliente'))
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni) && iDireccionEnvioConfirmada === 1" v-on:click="confirmarFacturacion()" v-if="iDireccionEnvioConfirmada === 1">Continuar</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 mb-3" v-if="sRTienda === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de recojo en tienda</h1>
-                                <p>
-                                    <span class="font-weight-bold">Datos de recojo</span>
-                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarRecojo">Editar</a> <!--v-if="iRecojoConfirmado === 0"-->
-                                </p>
+                                <div class="row">
+                                    <p class="col-12 col-lg-4">
+                                        <span class="font-weight-bold">Datos de recojo</span>
+                                    </p>
+                                    <div v-if="!bRecojoValida" class="col-8 col-lg-6 items-center" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    </div>
+                                    <div v-else class="col-8 col-lg-6"></div>
+                                    @if(session()->has('cliente'))
+                                    <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarRecojo">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @else
+                                    <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @endif
+                                </div>
+                                @if(session()->has('cliente'))
                                 <div v-if="iRecojoEstablecido === 0">
                                     <p>Datos de recojo no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
+                                @else
+                                <div v-if="iRecojoEstablecido === 0">
+                                    <p>Datos de recojo no establecidos. Click en 'Registrarse'.</p>
+                                </div>
+                                @endif
                                 <div class="row" v-else>
                                     <div class="col-12">
                                         <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos}}</p>
@@ -146,20 +178,37 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iRecojoEstablecido === 0" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                    @if(session()->has('cliente'))
+                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida && iRecojoConfirmado === 1" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 1">Continuar</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <div class="col-12 mb-3" v-if="sDelivery === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n delivery Trujillo</h1>
-                                <p>
-                                    <span class="font-weight-bold">Datos de delivery</span>
-                                    <a class="float-right btn btn-primary" href="#" data-toggle="modal" data-target="#modalEditarDelivery">Editar</a> <!--v-if="iRecojoConfirmado === 0"-->
-                                </p>
+                                <div class="row">
+                                    <p class="col-12 col-lg-4">
+                                        <span class="font-weight-bold">Datos de delivery</span>
+                                    </p>
+                                    <div v-if="!bDeliveryValida" class="col-6 col-lg-6 items-center" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    </div>
+                                    <div v-else class="col-8 col-lg-6"></div>
+                                    @if(session()->has('cliente'))
+                                    <a class="col-6 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDelivery">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @else
+                                    <a class="col-6 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
+                                    @endif
+                                </div>
+                                @if(session()->has('cliente'))
                                 <div v-if="iDeliveryEstablecido === 0">
                                     <p>Datos de delivery no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
                                 </div>
+                                @else
+                                <div v-if="iDeliveryEstablecido === 0">
+                                    <p>Datos de delivery no establecidos. Click en 'Registrarse'.</p>
+                                </div>
+                                @endif
                                 <div class="row" v-else>
                                     <div class="col-12">
                                         <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos}}</p>
@@ -178,7 +227,9 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-ecovalle" :disabled="iDeliveryEstablecido === 0" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 0">Continuar</button>
+                                    @if(session()->has('cliente'))
+                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida && iDeliveryConfirmado === 1" v-on:click="confirmarFacturacion()" v-if="iDeliveryConfirmado === 1">Continuar</button>
+                                    @endif
                                 </div>
                             </div>
                         </div>

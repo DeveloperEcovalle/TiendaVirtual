@@ -33,6 +33,8 @@ let vueContactanos = new Vue({
             });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxEnviarMensaje: function () {
             let $this = this;
             $this.iEnviandoMensaje = 1;

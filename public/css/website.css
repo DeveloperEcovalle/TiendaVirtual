@@ -542,6 +542,20 @@ a.img-producto:hover > .img-background-thumbnail {
     z-index: 1;
 }
 
+.badge-promocion {
+    top: 20%;
+    border-radius: 5px;
+    left: 70%;
+    z-index: 1;
+    width: 100px;
+    height: auto;
+    font-size: 10px;
+    padding: 5px;
+    color: #ffffff;
+    text-align: justify;
+    text-justify: auto;
+}
+
 .badge-nuevo {
     top: 10px;
     left: auto;
@@ -875,4 +889,37 @@ button.btn-round:hover{
         font-size: 20px;
         position:absolute;
     }
+}
+/*-------------------------------*/
+.shield__container{
+    background-color: transparent;
+    width: 12.5rem;
+    height: 8.5rem;
+  }
+
+.container__star,
+.container__star::before,
+.container__star::after{
+    width: 0;
+    border-color: transparent transparent #02793C transparent;
+    border-width: 0 4rem 2.5rem 4rem;
+    border-style: solid;
+    position: absolute;
+    transform: rotate(180deg);
+    margin-top: 2.75rem;
+    margin-left: 0.25rem;    
+}
+
+.container__star::before{
+    content: '';
+    margin-top: -0.15rem;
+    margin-left: -4.3rem;
+    transform: rotate(70deg);
+}
+
+.container__star::after{
+    content: '';
+    margin-top: -0.29rem;
+    margin-left: -3.87rem;
+    transform: rotate(-70deg);
 }

@@ -36,6 +36,7 @@ let vueServicios = new Vue({
             });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListar: function () {
             let $this = this;

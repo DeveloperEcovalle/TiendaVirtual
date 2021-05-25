@@ -192,6 +192,7 @@ Route::middleware([Locale::class])->group(function () {
         Route::prefix('/iniciar-sesion')->group(function () {
             //Route::get('/', 'IniciarSesion@index')->middleware([ClienteAutenticado::class]);
             Route::post('/ajax/ingresar', 'IniciarSesion@ajaxIngresar');
+            Route::post('/ajax/salir', 'IniciarSesion@ajaxSalir');
         });
 
         Route::prefix('/registro')->group(function () {
@@ -247,6 +248,7 @@ Route::namespace('Intranet')->group(function () {
                 });
 
                 Route::prefix('/gestion-productos')->group(function () {
+
                     Route::prefix('/categorias')->group(function () {
                         Route::get('/', 'CategoriasProductos@index');
                         Route::get('/nuevo', 'CategoriasProductos@index');
@@ -328,6 +330,11 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/listarOfertas', 'PreciosOfertas@ajaxListarOfertas');
                             Route::post('/insertarOferta', 'PreciosOfertas@ajaxInsertarOferta');
                             Route::post('/eliminarOferta', 'PreciosOfertas@ajaxEliminarOferta');
+
+                            Route::post('/listarUltimasPromociones', 'PreciosOfertas@ajaxListarUltimasPromociones');
+                            Route::post('/listarPromociones', 'PreciosOfertas@ajaxListarPromociones');
+                            Route::post('/insertarPromocion', 'PreciosOfertas@ajaxInsertarPromocion');
+                            Route::post('/eliminarPromocion', 'PreciosOfertas@ajaxEliminarPromocion');
                         });
                     });
                 });
@@ -736,6 +743,6 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    //session()->forget('cliente');
-    session()->flush();
+    session()->forget('cliente');
+    //session()->flush();
 });

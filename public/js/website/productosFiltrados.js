@@ -73,6 +73,7 @@ let vueProductosFiltrados = new Vue({
             });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         onSelectAutocompleteProducto: function (e, ui) {
             let producto = JSON.parse(JSON.stringify(ui.item));

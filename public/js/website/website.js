@@ -30,7 +30,7 @@ const $cookies = {
         }
 
         return cookie.sValor;
-    }
+    },
 };
 
 const lstUrlParams = new URLSearchParams(location.search);
@@ -222,6 +222,17 @@ let ajaxSetLocale = locale => {
         if (respuesta.result === result.success) {
             location.reload();
         }
+    });
+};
+
+let ajaxSalir = function() {
+    let sUrl = '/iniciar-sesion/ajax/salir/';
+    axios.post(sUrl).then(response => {
+        localStorage.removeItem('datosEnvio');
+        localStorage.removeItem('datosRecojo');
+        localStorage.removeItem('datosDelivery');
+        localStorage.removeItem('lstCarritoCompras');
+        location.reload();
     });
 };
 

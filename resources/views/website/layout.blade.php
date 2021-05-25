@@ -62,12 +62,20 @@
                             </div>
                             <div class="col-md-6">
                                 <ul class="nav align-items-center justify-content-between" id="navUsuario">
-                                    <li class="nav-item">
+                                    <li class="nav-item dropdown">
                                         @if(session()->has('cliente'))
-                                        <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#"> <!-- /mi-cuenta -->
-                                            <span class="mr-1" style="line-height: 1.2">{{ session('cliente')->persona->nombres }}</span>
+                                        <a class="nav-link nav-ecovalle-blanco dropdown py-0 d-flex align-items-center text-right" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <!-- /mi-cuenta -->
+                                            <span class="mr-13" style="line-height: 1.2">{{ session('cliente')->persona->nombres }}</span>
                                             <i class="ecovalle-usuario fa-2x"></i>
                                         </a>
+                                        <div class="dropdown-menu rounded py-0" style="min-width: auto" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-item py-2 px-3" href="#">
+                                                <i class="fa fa-user"></i> Mi Cuenta
+                                            </a>
+                                            <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSalir()">
+                                                <i class="fa fa-sign-out"></i> Salir
+                                            </a>
+                                        </div>
                                         @else
                                         <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#" data-toggle="modal" data-target="#modalInicioSesion">
                                             <span class="mr-1">{{ $lstLocales['Sign In'] }}</span>
@@ -322,12 +330,12 @@
                                         <h5 class="text-center mt-4 mb-3">Iniciar sesi&oacute;n</h5>
                                         <form role="form" id="frmIniciarSesion">
                                             <div class="form-group">
-                                                <input class="form-control" type="email" name="email" placeholder="{{ $lstLocales['Email'] }}" required="required" autocomplete="off" v-on:keyup="sMensaje = null">
+                                                <input class="form-control" type="email" name="email" placeholder="{{ $lstLocales['Email'] }}" required="required" autocomplete="off">
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control" type="password" name="contrasena" placeholder="{{ $lstLocales['Password'] }}" required="required" autocomplete="off" v-on:keyup="sMensaje = null">
+                                                <input class="form-control" type="password" name="contrasena" placeholder="{{ $lstLocales['Password'] }}" required="required" autocomplete="off">
                                             </div>
-                                            <div class="alert text-center p-2" id="sMensaje">
+                                            <div class="alert text-center p-2 d-none" id="sMensaje">
                                                 
                                             </div>
                                             <div class="form-group mb-1">
@@ -384,6 +392,38 @@
     <script>
         $(document).ready(function() {
             autocompletar();
+            $('#frmIniciarSesion').submit(function(e){
+                e.preventDefault();
+                $('.signIn').addClass('d-none');
+                $('#iComprobando').removeClass('d-none');
+                let frmIniciarSesion = document.getElementById('frmIniciarSesion');
+                let formData = new FormData(frmIniciarSesion);
+                let lstCarritoCompras = $cookies.get('lstCarritoCompras');
+                formData.append('sLstCarritoCompras', this.sLstCarritoCompras);
+
+                axios.post('/iniciar-sesion/ajax/ingresar', formData)
+                    .then(response => {
+                        let respuesta = response.data;
+                        console.log(respuesta);
+                        if (respuesta.result === 'success') {
+                            location.reload();
+                        } else {
+                            $('.signIn').removeClass('d-none');
+                            $('#iComprobando').addClass('d-none');
+                            let sClase = respuesta.result === 'error' ? 'alert-danger' : ('alert-' + respuesta.result);
+                            $('#sMensaje').html(respuesta.mensaje)
+                            $('#sMensaje').removeClass('d-none');
+                            $('#sMensaje').addClass(sClase);
+                        }
+                    })
+                    .catch(error => {
+                        $('.signIn').removeClass('d-none');
+                        $('#iComprobando').addClass('d-none');
+                        $('#sMensaje').removeClass('d-none');
+                        $('#sMensaje').addClass('alert-danger');
+                        $('#sMensaje').html('Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.');
+                    });
+            })
         });
     </script>
     @yield('js')

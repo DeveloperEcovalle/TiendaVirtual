@@ -17,6 +17,10 @@ let vueTiendaProducto = new Vue({
             oferta_vigente: {
                 porcentaje: null,
                 monto: null
+            },
+            promocion_vigente: {
+                porcentaje: null,
+                monto: null
             }
         },
         iImagenSeleccionada: -1,
@@ -72,6 +76,7 @@ let vueTiendaProducto = new Vue({
             });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListarProducto: function () {
             let formData = new FormData();
@@ -83,6 +88,7 @@ let vueTiendaProducto = new Vue({
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
                         let producto = respuesta.data.producto;
+                        console.log(producto);
                         $this.producto = producto;
                         $this.producto['control_max'] = 1;
                         $this.producto['control_min'] = 1;

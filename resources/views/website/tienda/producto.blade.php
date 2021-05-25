@@ -33,8 +33,11 @@
                 </div>
                 <div class="col-md-4">
                     <span class="badge badge-danger badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
-                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
+                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                     </span>
+                    <div class="bg-danger badge-promocion position-absolute" v-if="producto.promocion_vigente">
+                        <b>@{{ producto.promocion_vigente.descripcion }}</b>
+                    </div>
                     <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                           v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                         @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
@@ -93,6 +96,9 @@
                                     <span class="small" v-if="iAgregandoAlCarrito === 1 && iProductoId === producto.id"><i class="fas fa-circle-notch fa-spin"></i></span>
                                     <span v-else><i class="fas fa-shopping-cart"></i>&nbsp;{{ $lstLocalesTiendaListaProductos['Add to cart'] }}</span>
                                 </button>
+                                {{-- <div class="shield__container">
+                                    <div class="container__star"></div>
+                                </div> --}}
                             </div>
                         </div>
                         <div class="col-6 col-sm-5 col-md-7 col-lg-8 text-right">
@@ -150,8 +156,11 @@
                                         <div class="card my-2 shadow-lg">
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
-                                                    - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
+                                                    - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                                                 </span>
+                                                <div class="bg-danger badge-promocion position-absolute" v-if="producto.promocion_vigente">
+                                                    <b>@{{ producto.promocion_vigente.descripcion }}</b>
+                                                </div>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                                                     @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}

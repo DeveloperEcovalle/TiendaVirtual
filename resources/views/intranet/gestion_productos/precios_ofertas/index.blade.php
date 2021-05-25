@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row m-0" v-if="iError === 0">
-        <div class="col-12 col-md-8 p-0">
+        <div class="col-12 col-md-6 p-0">
             <div class="border-bottom border-right d-flex white-bg">
                 <div class="col-12 py-3">
                     <ol class="breadcrumb">
@@ -30,6 +30,7 @@
                             <th class="bg-primary">Producto</th>
                             <th class="bg-primary text-right">Precio actual</th>
                             <th class="bg-primary text-right">Oferta vigente</th>
+                            <th class="bg-primary text-right">Promoci&oacute;n vigente</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -46,9 +47,16 @@
                                 </p>
                                 <p class="m-0" v-else>-</p>
                             </td>
+                            <td class="text-right">
+                                <p class="m-0" v-if="producto.promocion_vigente">
+                                    <span v-if="producto.promocion_vigente.monto">S/ @{{ producto.promocion_vigente.monto.toFixed(2) }}</span>
+                                    <span v-if="producto.promocion_vigente.porcentaje">@{{ producto.promocion_vigente.porcentaje.toFixed(2) }}%</span>
+                                </p>
+                                <p class="m-0" v-else>-</p>
+                            </td>
                         </tr>
                         <tr v-if="lstProductosFiltrados.length === 0" v-cloak>
-                            <td colspan="3" class="text-center">No hay datos para mostrar</td>
+                            <td colspan="4" class="text-center">No hay datos para mostrar</td>
                         </tr>
                     </tbody>
                 </table>
@@ -56,7 +64,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-4 p-0" id="panel">
+        <div class="col-12 col-md-6 p-0" id="panel">
         </div>
     </div>
     <div class="row m-0 justify-content-center" v-else v-cloak>

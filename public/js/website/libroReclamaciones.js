@@ -115,6 +115,7 @@ vueLibroReclamaciones = new Vue({
         });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListar: function (onSuccess) {
             let $this = this;

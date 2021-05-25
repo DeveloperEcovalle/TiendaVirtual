@@ -7,6 +7,7 @@ use App\DetalleCarrito;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
+use Exception;
 use Illuminate\Http\Request;
 
 class IniciarSesion extends Controller {
@@ -38,46 +39,88 @@ class IniciarSesion extends Controller {
     }
 
     public function ajaxIngresar(Request $request) {
-        $request->validate([
-            'email' => 'required|email',
-            'contrasena' => 'required',
-        ]);
+       try{
 
-        $sEmail = $request->get('email');
-        $sContrasena = $request->get('contrasena');
+            $data=request()->validate([
+                'email'=>'required',
+                'contrasena'=>'required'
+            ],
+            [
+                'email.required'=>'Ingrese Usuario',
+                'contrasena.required'=>'Ingrese Contraseña',
+            ]);
 
-        $cliente = Cliente::where('email', $sEmail)->where('password', md5($sContrasena))->first();
+            $sEmail = $request->get('email');
+            $sContrasena = $request->get('contrasena');
 
-        if ($cliente) {
-            $request->session()->put('cliente', $cliente);
-
-            $sLstCarritoCompras = $request->get('sLstCarritoCompras');
-            if (strlen($sLstCarritoCompras) > 0) {
-                DetalleCarrito::where('cliente_id', $cliente->id)->delete();
-
-                $lstDetallesCarritoInsertar = array();
-                $fecha_reg = now()->toDateTimeString();
-
-                $lstCarritoCompras = explode('|', $sLstCarritoCompras);
-                foreach ($lstCarritoCompras as $sDetalle) {
-                    $detalle = explode(';', $sDetalle);
-
-                    array_push($lstDetallesCarritoInsertar, array(
-                        'cliente_id' => $cliente->id,
-                        'producto_id' => $detalle[0],
-                        'cantidad' => $detalle[1],
-                        'fecha_reg' => $fecha_reg,
-                    ));
+            $cliente = Cliente::where('email', $sEmail)->where('password', md5($sContrasena))->first();
+            $mensaje = '';
+            $query = Cliente::where('email','=',$sEmail)->get();
+            if($query->count()!=0)
+            {
+                // $hashp = $query[0]->password;
+                // $password = $sContrasena;
+                if($cliente)
+                {
+                    $request->session()->put('cliente', $cliente);
                 }
-
-                DetalleCarrito::insert($lstDetallesCarritoInsertar);
+                else
+                {
+                    $mensaje = 'Contraseña no válida';
+                }
             }
-        }
+            else{
+                $mensaje = 'No tienes una cuenta';
+            }
+            /*if ($cliente) {
+                $request->session()->put('cliente', $cliente);
 
+                // $sLstCarritoCompras = $request->get('sLstCarritoCompras');
+                // if (strlen($sLstCarritoCompras) > 0) {
+                //     DetalleCarrito::where('cliente_id', $cliente->id)->delete();
+
+                //     $lstDetallesCarritoInsertar = array();
+                //     $fecha_reg = now()->toDateTimeString();
+
+                //     $lstCarritoCompras = explode('|', $sLstCarritoCompras);
+                //     foreach ($lstCarritoCompras as $sDetalle) {
+                //         $detalle = explode(';', $sDetalle);
+
+                //         array_push($lstDetallesCarritoInsertar, array(
+                //             'cliente_id' => $cliente->id,
+                //             'producto_id' => $detalle[0],
+                //             'cantidad' => $detalle[1],
+                //             'fecha_reg' => $fecha_reg,
+                //         ));
+                //     }
+
+                //     DetalleCarrito::insert($lstDetallesCarritoInsertar);
+                // }
+            }else{
+                $mensaje = 'No tienes una cuenta';
+            }*/
+
+            $respuesta = new Respuesta;
+            $respuesta->result = $cliente != null ? Result::SUCCESS : Result::WARNING;
+            $respuesta->data = $cliente;
+            $respuesta->mensaje = $mensaje;
+
+            return response()->json($respuesta);
+       }
+       catch(Exception $e)
+       {
+            $respuesta = new Respuesta;
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = $e->getMessage();
+            return response()->json($respuesta);
+       }
+    }
+
+    public function ajaxSalir(Request $request)
+    {
+        session()->forget('cliente');
         $respuesta = new Respuesta;
-        $respuesta->result = $cliente !== null ? Result::SUCCESS : Result::WARNING;
-        $respuesta->data = $cliente;
-
+        $respuesta->result = Result::SUCCESS;
         return response()->json($respuesta);
     }
 }

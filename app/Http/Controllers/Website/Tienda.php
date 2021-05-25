@@ -237,7 +237,7 @@ class Tienda extends Website {
             }
         }
 
-        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])->get();
+        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -282,7 +282,7 @@ class Tienda extends Website {
     public function ajaxListarProducto(Request $request) {
         $iProductoId = $request->get('iProductoId');
 
-        $producto = Producto::with(['precio_actual', 'oferta_vigente', 'categorias', 'documentos', 'imagenes'])->find($iProductoId);
+        $producto = Producto::with(['precio_actual', 'oferta_vigente', 'categorias', 'documentos', 'imagenes', 'promocion_vigente'])->find($iProductoId);
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -304,7 +304,7 @@ class Tienda extends Website {
 
         $lstProductosRelacionados = Producto::whereHas('productos_categorias', function (Builder $producto_categoria) {
             $producto_categoria->whereIn('categoria_id', $GLOBALS['lstCategorias']);
-        })->where('id', '<>', $iProductoId)->whereHas('precio_actual')->with(['imagenes', 'precio_actual', 'oferta_vigente'])->get();
+        })->where('id', '<>', $iProductoId)->whereHas('precio_actual')->with(['imagenes', 'precio_actual', 'oferta_vigente', 'promocion_vigente'])->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;

@@ -57,6 +57,8 @@ let vueRegistro = new Vue({
         })
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxRegistrar: function () {
             let $this = this;
             $this.iRegistrando = 1;

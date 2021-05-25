@@ -41,6 +41,23 @@ class Producto extends Model {
             ->whereRaw('? between fecha_inicio and fecha_vencimiento', [$sHoy]);
     }
 
+    /*------------------------*/
+    public function promociones() {
+        return $this->hasMany(Promocion::class, 'producto_id')->orderBy('fecha_reg', 'desc');
+    }
+
+    public function ultimas_promociones() {
+        return $this->promociones()->take(5);
+    }
+
+    public function promocion_vigente() {
+        $sHoy = today()->toDateString();
+        return $this->hasOne(Promocion::class, 'producto_id')
+            ->where('eliminado', 0)
+            ->whereRaw('? between fecha_inicio and fecha_vencimiento', [$sHoy]);
+    }
+    /*------------------------*/
+
     public function documentos() {
         return $this->hasMany(DocumentoProducto::class, 'producto_id');
     }

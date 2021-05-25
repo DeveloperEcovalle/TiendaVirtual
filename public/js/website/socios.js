@@ -22,6 +22,7 @@ let vueSocios = new Vue({
             .then(() => $this.ajaxListar());
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListar: function () {
             let $this = this;

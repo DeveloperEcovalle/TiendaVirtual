@@ -104,6 +104,8 @@ let vueBlogLista = new Vue({
         }
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
         actualizarUrl: function () {
             let sUrl = '/blog?pagina=' + this.iPaginaSeleccionada + '&categoria=' + this.iCategoriaSeleccionada;
             window.history.replaceState({}, 'Ecovalle | Blog', sUrl);

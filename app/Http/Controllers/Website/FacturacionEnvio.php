@@ -158,11 +158,11 @@ class FacturacionEnvio extends Website {
     public function ajaxListarDatosFacturacion(Request $request) {
         //TODO VERIFICAR EL STOCK DE LOS PRODUCTOS
 
-        $cliente = $request->session()->get('cliente');
-        if ($cliente) {
-            $cliente->refresh();
-            $cliente->load('persona', 'persona.documentos', 'ubigeo');
-        }
+        // $cliente = $request->session()->get('cliente');
+        // if ($cliente) {
+        //     $cliente->refresh();
+        //     $cliente->load('persona', 'persona.documentos', 'ubigeo');
+        // }
 
         $lstTiposComprobante = TipoComprobante::whereHas('tipo_comprobante_sunat', function ($sunat_tipo_comprobante) {
             $sunat_tipo_comprobante->where('ventas', 1);
@@ -172,7 +172,7 @@ class FacturacionEnvio extends Website {
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['cliente' => $cliente, 'lstTiposComprobante' => $lstTiposComprobante, 'lstUbigeo' => $lstUbigeo];
+        $respuesta->data = ['lstTiposComprobante' => $lstTiposComprobante, 'lstUbigeo' => $lstUbigeo];
 
         return response()->json($respuesta);
     }

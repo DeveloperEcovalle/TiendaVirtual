@@ -33,6 +33,7 @@ let vueFacturacionEnvio = new Vue({
             sDistrito: '',
             sDireccion: '',
             sAgencia: '',
+            sUbigeo: '',
             sOpcion: 0,
         },
 
@@ -72,6 +73,7 @@ let vueFacturacionEnvio = new Vue({
         iRecojoConfirmado: 0,
 
         rTipoDoc:'',
+        bClienteEnSesion: null,
         iCargandoConsultaApir: 0,
 
         dTipoDoc:'',
@@ -167,8 +169,10 @@ let vueFacturacionEnvio = new Vue({
             let fSubtotal = 0;
             for (let detalle of this.lstCarritoCompras) {
                 let producto = detalle.producto;
-                let fPrecio = producto.oferta_vigente === null ? producto.precio_actual.monto :
-                    (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto));
+                let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                    (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                let fPrecio = (producto.oferta_vigente === null ? producto.precio_actual.monto :
+                    (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
             }
             return fSubtotal;
@@ -236,7 +240,7 @@ let vueFacturacionEnvio = new Vue({
                 sDetalles += `${detalle.producto_id};${detalle.cantidad}|`;
             }
             return sDetalles.substr(0, sDetalles.length - 1);
-        }
+        },
     },
     mounted: function () {
         let $this = this;
@@ -248,12 +252,72 @@ let vueFacturacionEnvio = new Vue({
             let data = respuesta.data;
 
             let lstCarritoComprasServer = data.lstCarrito;
-            //let bClienteEnSesion = data.bClienteEnSesion;
+            let bClienteEnSesion = data.bClienteEnSesion;
+            $this.bClienteEnSesion = bClienteEnSesion;
+            if(bClienteEnSesion == null)
+            {
+                localStorage.removeItem('datosEnvio');
+                localStorage.removeItem('datosRecojo');
+                localStorage.removeItem('datosDelivery');
+                $('#modalInicioSesion').modal('show'); 
+            }
+            else{
+                let cookiedatosEnvio = $cookies.get('datosEnvio');
+                if(cookiedatosEnvio)
+                {
+                    $this.datosEnvio = cookiedatosEnvio;
+                }else{
+                    $this.datosEnvio.sTipoDoc = bClienteEnSesion.tipo_documento;
+                    $this.datosEnvio.sDocumento = bClienteEnSesion.documento;
+                    $this.datosEnvio.sNombres = bClienteEnSesion.nombres;
+                    $this.datosEnvio.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+                    $this.datosEnvio.sEmail = bClienteEnSesion.correo;
+                    $this.datosEnvio.sTelefono = bClienteEnSesion.telefono;
+                    $this.datosEnvio.sUbigeo = bClienteEnSesion.ubigeo_id;
+                    $this.datosEnvio.sDireccion = bClienteEnSesion.direccion;
+                }
+                $this.datosEnvio.sOpcion = 1;
+
+                let cookiedatosRecojo = $cookies.get('datosRecojo');
+                if(cookiedatosRecojo)
+                {
+                    $this.datosRecojo = cookiedatosRecojo;
+                }else{
+                    $this.datosRecojo.rTipoDoc = bClienteEnSesion.tipo_documento;
+                    $this.datosRecojo.sDocumento = bClienteEnSesion.documento;
+                    $this.datosRecojo.sNombres = bClienteEnSesion.nombres;
+                    $this.datosRecojo.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+                    $this.datosRecojo.sEmail = bClienteEnSesion.correo;
+                    $this.datosRecojo.sTelefono = bClienteEnSesion.telefono;
+                }
+                $this.datosRecojo.sOpcion = 0;
+
+                let cookiedatosDelivery = $cookies.get('datosDelivery');
+                if(cookiedatosDelivery)
+                {
+                    $this.datosDelivery = cookiedatosDelivery;
+                }else{
+                    $this.datosDelivery.dTipoDoc = bClienteEnSesion.tipo_documento;
+                    $this.datosDelivery.sDocumento = bClienteEnSesion.documento;
+                    $this.datosDelivery.sNombres = bClienteEnSesion.nombres;
+                    $this.datosDelivery.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+                    $this.datosDelivery.sEmail = bClienteEnSesion.correo;
+                    $this.datosDelivery.sDireccion = bClienteEnSesion.direccion;
+                    $this.datosDelivery.sTelefono = bClienteEnSesion.telefono;
+                }
+                $this.datosDelivery.sOpcion = 0;
+
+                // let cookiedatosDelivery = $cookies.get('datosDelivery');
+                // let datosDelivery = cookiedatosDelivery ? cookiedatosDelivery : this.datosDelivery;
+                // $this.datosDelivery = datosDelivery;
+                // $this.datosDelivery.sOpcion = 0;
+                $this.guardarCookieDatos();
+            }
 
             let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
             let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
 
-            let cookiedatosEnvio = $cookies.get('datosEnvio');
+            /*let cookiedatosEnvio = $cookies.get('datosEnvio');
             let datosEnvio = cookiedatosEnvio ? cookiedatosEnvio : this.datosEnvio;
             $this.datosEnvio = datosEnvio;
             $this.datosEnvio.sOpcion = 1;
@@ -266,31 +330,38 @@ let vueFacturacionEnvio = new Vue({
             let cookiedatosDelivery = $cookies.get('datosDelivery');
             let datosDelivery = cookiedatosDelivery ? cookiedatosDelivery : this.datosDelivery;
             $this.datosDelivery = datosDelivery;
-            $this.datosDelivery.sOpcion = 0;
+            $this.datosDelivery.sOpcion = 0;*/
 
             $this.lstCarritoCompras = lstCarritoCompras;
+            
             $this.guardarLstCarritoCompras();
             $this.ajaxListarPreciosEnvio();
-            $this.guardarCookieDatos();
+            
             $this.iCargando = 0;
             $this.ajaxListarDatosFacturacion();
-            $('#modalEditarDireccionEnvio').modal('show'); 
+            //$('#modalEditarDireccionEnvio').modal('show'); 
         }).then(() => {
-            let cookiedatosEnvio = $cookies.get('datosEnvio');
-            cookiedatosEnvio.sDocumento != '' ? this.iDireccionEnvioEstablecida = 1 : this.iDireccionEnvioEstablecida = 0;
-
-            let cookiedatosRecojo = $cookies.get('datosRecojo');
-            cookiedatosRecojo.sDocumento != '' ? this.iRecojoEstablecido = 1 : this.iRecojoEstablecido = 0;
-
-            let cookiedatosDelivery = $cookies.get('datosDelivery');
-            cookiedatosDelivery.sDocumento != '' ? this.iDeliveryEstablecido = 1 : this.iDeliveryEstablecido = 0;
+            if(this.bClienteEnSesion != null)
+            {
+                let cookiedatosEnvio = $cookies.get('datosEnvio');
+                cookiedatosEnvio.sDocumento != '' ? this.iDireccionEnvioEstablecida = 1 : this.iDireccionEnvioEstablecida = 0;
+    
+                let cookiedatosRecojo = $cookies.get('datosRecojo');
+                cookiedatosRecojo.sDocumento != '' ? this.iRecojoEstablecido = 1 : this.iRecojoEstablecido = 0;
+    
+                let cookiedatosDelivery = $cookies.get('datosDelivery');
+                cookiedatosDelivery.sDocumento != '' ? this.iDeliveryEstablecido = 1 : this.iDeliveryEstablecido = 0;
+            }
 
             if ($this.lstCarritoCompras.length === 0) {
                 location = '/carrito-compras';
             }
+        }).then(()=>{
+            this.verificaDatos();
         }));
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         sDeliveryFn: function(){
             this.sDelivery = 0;
@@ -305,7 +376,7 @@ let vueFacturacionEnvio = new Vue({
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $cookies.set('datosEnvio', this.datosEnvio, 12);
 
-            $('#modalEditarDelivery').modal('show');
+            //$('#modalEditarDelivery').modal('show');
         },
         sNNacionalFn: function(){
             this.sNNacional = 0;
@@ -320,7 +391,7 @@ let vueFacturacionEnvio = new Vue({
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $cookies.set('datosEnvio', this.datosEnvio, 12);
 
-            $('#modalEditarDireccionEnvio').modal('show'); 
+            //$('#modalEditarDireccionEnvio').modal('show'); 
         },
         sRTiendaFn: function(){
             this.sDelivery = 1;
@@ -335,7 +406,7 @@ let vueFacturacionEnvio = new Vue({
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $cookies.set('datosEnvio', this.datosEnvio, 12);
 
-            $('#modalEditarRecojo').modal('show');
+            //$('#modalEditarRecojo').modal('show');
         },
         cambiarTipoDoc: function(){
             switch (this.datosEnvio.sTipoDoc) {
@@ -681,6 +752,15 @@ let vueFacturacionEnvio = new Vue({
                 $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO');
                 $this.lstAgencias = response.data.data.lstAgencias;
                 console.log(response.data.data);
+            }).then(() => {
+                let iIndice = this.lstPreciosEnvioNacional.findIndex(ubigeo => ubigeo.id === this.datosEnvio.sUbigeo);
+                let ubigeo = $this.lstPreciosEnvioNacional[iIndice];
+                if(ubigeo)
+                {
+                    this.datosEnvio.sDepartamento = ubigeo.departamento;
+                    this.datosEnvio.sProvincia = ubigeo.provincia;
+                    this.datosEnvio.sDistrito = ubigeo.distrito;
+                }
             });
         },
         guardarLstCarritoCompras: function () {
@@ -688,16 +768,19 @@ let vueFacturacionEnvio = new Vue({
         },
         confirmarDireccionEnvio: function () {
             this.iDireccionEnvioEstablecida = 1;
+            this.iDireccionEnvioConfirmada = 1;
             $cookies.set('datosEnvio', this.datosEnvio, 12);
             $('#modalEditarDireccionEnvio').modal('hide');
         },
         confirmarRecojo: function () {
             this.iRecojoEstablecido = 1;
+            this.iRecojoConfirmado = 1;
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $('#modalEditarRecojo').modal('hide');
         },
         confirmarDelivery: function () {
             this.iDeliveryEstablecido = 1;
+            this.iDeliveryConfirmado = 1;
             $cookies.set('datosDelivery', this.datosDelivery, 12);
             $('#modalEditarDelivery').modal('hide');
         },
@@ -738,6 +821,20 @@ let vueFacturacionEnvio = new Vue({
         },
         confirmarFacturacion: function(){
             location = '/pago-envio';
+        },
+        verificaDatos: function(){
+            if(this.bDireccionEnvioValida && (this.bVerificaDni || this.bVerificaRuc))
+            {
+                this.iDireccionEnvioConfirmada = 1;
+            }
+            if(this.bRecojoValida)
+            {
+                this.iRecojoConfirmado = 1;
+            }
+            if(this.bDeliveryValida)
+            {
+                this.iDeliveryConfirmado = 1;
+            }
         }
     }
 });

@@ -7,10 +7,11 @@ use App\Http\Controllers\Result;
 use App\Oferta;
 use App\Precio;
 use App\Producto;
+use App\Promocion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use Exception;
 class PreciosOfertas extends Intranet {
 
     protected $sPermisoListarPrecios;
@@ -70,7 +71,7 @@ class PreciosOfertas extends Intranet {
 
         $id = $request->get('id');
         $producto = Producto::find($id);
-        $producto->load('precio_actual', 'oferta_vigente');
+        $producto->load('precio_actual', 'oferta_vigente', 'promocion_vigente');
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -82,16 +83,17 @@ class PreciosOfertas extends Intranet {
     public function ajaxListarAnios(Request $request) {
         $lstAniosPrecios = DB::table('precios')->select(DB::raw('year(fecha_reg) as value'))->distinct()->get();
         $lstAniosOfertas = DB::table('ofertas')->select(DB::raw('year(fecha_reg) as value'))->distinct()->get();
+        $lstAniosPromociones = DB::table('promociones')->select(DB::raw('year(fecha_reg) as value'))->distinct()->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['lstAniosPrecios' => $lstAniosPrecios, 'lstAniosOfertas' => $lstAniosOfertas];
+        $respuesta->data = ['lstAniosPrecios' => $lstAniosPrecios, 'lstAniosOfertas' => $lstAniosOfertas, 'lstAniosPromociones' => $lstAniosPromociones];
 
         return response()->json($respuesta);
     }
 
     public function ajaxListarProductos() {
-        $lstProductos = Producto::with(['precio_actual', 'oferta_vigente'])->get();
+        $lstProductos = Producto::with(['precio_actual', 'oferta_vigente', 'promocion_vigente'])->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -339,5 +341,124 @@ class PreciosOfertas extends Intranet {
         $respuesta->mensaje = 'Oferta eliminada correctamente.';
 
         return response()->json($respuesta);
+    }
+
+    /*----------------------------------------------------*/
+    public function ajaxListarUltimasPromociones(Request $request) {
+        $this->init();
+
+        $permisoListarPromociones = $this->perfil->permisos->where('codigo', $this->sPermisoListarOfertas)->first();
+
+        $lstUltimasPromociones = [];
+
+        if ($permisoListarPromociones) {
+            $id = $request->get('id');
+            $producto = Producto::find($id);
+            $lstUltimasPromociones = $producto->ultimas_promociones;
+        }
+
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = ['lstUltimasPromociones' => $lstUltimasPromociones];
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxListarPromociones(Request $request) {
+        $this->init();
+
+        $permisoListarPromociones = $this->perfil->permisos->where('codigo', $this->sPermisoListarOfertas)->first();
+
+        $lstPromociones = [];
+
+        if ($permisoListarPromociones) {
+            $id = $request->get('id');
+            $fecha_desde = $request->get('fecha_desde');
+            $fecha_hasta = $request->get('fecha_hasta');
+
+            $producto = Producto::find($id);
+            $lstPromociones = $producto->promociones->whereBetween('fecha_reg', [$fecha_desde, $fecha_hasta]);
+        }
+
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = ['lstPromociones' => $lstPromociones];
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxInsertarPromocion(Request $request) {
+        $this->init();
+        try
+        {
+            $request->validate([
+                'tipo_de_promocion' => 'required',
+                'descripcion' => 'required',
+                'nueva_promocion' => 'required|numeric',
+                'fecha_de_inicio' => 'required|date_format:Y-m-d',
+                'fecha_de_vencimiento' => 'required|date_format:Y-m-d',
+            ]);
+    
+            $respuesta = new Respuesta;
+            $respuesta->result = Result::WARNING;
+    
+            $fNuevaPromocion = $request->get('nueva_promocion');
+            $fDescripcionPromocion = $request->get('descripcion');
+            $fMinPromocion = $request->get('min');
+            $fMaxPromocion = $request->get('max');
+    
+            if (floatval($fNuevaPromocion) <= 0) {
+                $respuesta->mensaje = 'La nueva promocion ingresada debe ser mayor a cero.';
+                return response()->json($respuesta);
+            }
+    
+            $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoInsertarOfertas)->first();
+            if ($permiso == null) {
+                $respuesta->mensaje = 'No tiene permiso para realizar esta acción.';
+                return response()->json($respuesta);
+            }
+    
+            $id = $request->get('id');
+    
+            $fecha_inicio = $request->get('fecha_de_inicio');
+            $lstPromocionesExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_inicio])->get();
+            if ($lstPromocionesExistentes->count()) {
+                $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con otra promocion ya registrada.';
+                return response()->json($respuesta);
+            }
+    
+            $fecha_vencimiento = $request->get('fecha_de_vencimiento');
+            $lstPromocionesExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_vencimiento])->get();
+            if ($lstPromocionesExistentes->count()) {
+                $respuesta->mensaje = 'Las fecha de vencimiento ingresada coincide con otra promocion ya registrada.';
+                return response()->json($respuesta);
+            }
+    
+            $tipo_promocion = $request->get('tipo_de_promocion');
+    
+            $nueva_promocion = new Promocion();
+            $nueva_promocion->porcentaje = $tipo_promocion === 'Porcentaje' ? $fNuevaPromocion : null;
+            $nueva_promocion->monto = $tipo_promocion === 'Monto' ? $fNuevaPromocion : null;
+            $nueva_promocion->fecha_inicio = $fecha_inicio;
+            $nueva_promocion->descripcion = $fDescripcionPromocion;
+            $nueva_promocion->min = $fMinPromocion;
+            $nueva_promocion->max = $fMaxPromocion;
+            $nueva_promocion->fecha_vencimiento = $fecha_vencimiento;
+            $nueva_promocion->eliminado = 0;
+            $nueva_promocion->usuario_reg = $this->usuario->id;
+            $nueva_promocion->fecha_reg = now()->toDateTimeString();
+    
+            $producto = Producto::find($id);
+            $producto->promociones()->save($nueva_promocion);
+    
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Promoción registrada correctamente.';
+    
+            return response()->json($respuesta);
+        }catch(Exception $e)
+        {
+            $respuesta->mensaje = $e->getMessage();
+            return response()->json($respuesta);
+        }
     }
 }

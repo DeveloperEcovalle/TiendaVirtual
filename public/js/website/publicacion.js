@@ -68,5 +68,9 @@ let vuePublicacion = new Vue({
                 $this.iCargandoPublicacion = 0;
             }
         });
+    },
+    methods: {
+        ajaxSalir: () => ajaxSalir(),
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
     }
 });

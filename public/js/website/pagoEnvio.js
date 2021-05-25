@@ -301,8 +301,10 @@ let vuePagoEnvio = new Vue({
             let fSubtotal = 0;
             for (let detalle of this.lstCarritoCompras) {
                 let producto = detalle.producto;
-                let fPrecio = producto.oferta_vigente === null ? producto.precio_actual.monto :
-                    (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto));
+                let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                    (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                let fPrecio = (producto.oferta_vigente === null ? producto.precio_actual.monto :
+                    (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
             }
             return fSubtotal;
@@ -311,7 +313,7 @@ let vuePagoEnvio = new Vue({
             return this.fSubtotal + this.fDelivery;
         },
         fTotalCulqi: function () {
-            return (this.fSubtotal * 100) + (this.fDelivery * 100);
+            return ((Math.round(this.fSubtotal * 10) / 10) * 100) + (this.fDelivery * 100);
         },
         sDetallesCarritoCompras: function () {
             let sDetalles = '';
@@ -371,6 +373,7 @@ let vuePagoEnvio = new Vue({
         }));
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         guardarLstCarritoCompras: function () {
             $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);

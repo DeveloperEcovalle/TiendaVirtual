@@ -53,6 +53,7 @@ let vueInicio = new Vue({
             });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListarData: function () {
             let $this = this;

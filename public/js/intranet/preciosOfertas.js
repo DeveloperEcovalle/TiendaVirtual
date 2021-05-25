@@ -108,7 +108,26 @@ listarMenus(function (lstModulos, lstMenus) {
                             sFechaVencimiento: '',
                             sNuevaOferta: '',
                             iInsertandoOferta: 0,
-                            iEliminandoOferta: 1
+                            iEliminandoOferta: 1,
+
+                            iCargandoUltimasPromociones: 1,
+                            lstUltimasPromociones: [],
+
+                            iCargandoPromociones: 1,
+                            iMesPromociones: iMes,
+                            iAnioPromociones: iAnio,
+                            lstAniosPromociones: [],
+                            lstPromociones: [],
+
+                            sTipoPromocion: '',
+                            sFechaInicioP: '',
+                            sFechaVencimientoP: '',
+                            sMinPromocion: '',
+                            sMaxPromocion: '',
+                            sNuevaPromocion: '',
+                            sDescripcionPromocion: '',
+                            iInsertandoPromocion: 0,
+                            iEliminandoPromocion: 1
                         },
                         computed: {
                             sFechaDesdePrecios: function () {
@@ -129,6 +148,16 @@ listarMenus(function (lstModulos, lstMenus) {
                                 let sHasta = this.iAnioOfertas + '-' + (parseInt(this.iMesOfertas) + 1).toString().padStart(2, '0') + '-' + date.getDate() + ' 23:59:59';
                                 return sHasta;
                             },
+
+                            sFechaDesdePromociones: function () {
+                                let sDesde = this.iAnioPromociones + '-' + (parseInt(this.iMesPromociones) + 1).toString().padStart(2, '0') + '-01 00:00:00';
+                                return sDesde;
+                            },
+                            sFechaHastaPromociones: function () {
+                                let date = new Date(this.iAnioPromociones, (parseInt(this.iMesPromociones) + 1), 0);
+                                let sHasta = this.iAnioPromociones + '-' + (parseInt(this.iMesPromociones) + 1).toString().padStart(2, '0') + '-' + date.getDate() + ' 23:59:59';
+                                return sHasta;
+                            },
                         },
                         watch: {
                             iMesPrecios: function () {
@@ -143,6 +172,7 @@ listarMenus(function (lstModulos, lstMenus) {
                             $this.ajaxListarAnios(function () {
                                 $this.ajaxListarUltimosPrecios();
                                 $this.ajaxListarUltimasOfertas();
+                                $this.ajaxListarUltimasPromociones();
                             });
                         },
                         methods: {
@@ -162,6 +192,7 @@ listarMenus(function (lstModulos, lstMenus) {
                                             let iIndiceProducto = vuePreciosOfertas.lstProductos.findIndex(p => p.id === parseInt(iId));
                                             vuePreciosOfertas.lstProductos[iIndiceProducto].precio_actual = producto.precio_actual;
                                             vuePreciosOfertas.lstProductos[iIndiceProducto].oferta_vigente = producto.oferta_vigente;
+                                            vuePreciosOfertas.lstProductos[iIndiceProducto].promocion_vigente = producto.promocion_vigente;
                                         }
                                     }
                                 });
@@ -178,6 +209,7 @@ listarMenus(function (lstModulos, lstMenus) {
                                             let data = respuesta.data;
                                             $this.lstAniosPrecios = data.lstAniosPrecios;
                                             $this.lstAniosOfertas = data.lstAniosOfertas;
+                                            $this.lstAniosPromociones = data.lstAniosPromociones;
 
                                             let date = new Date();
                                             let iAnioActual = date.getFullYear();
@@ -189,6 +221,10 @@ listarMenus(function (lstModulos, lstMenus) {
 
                                             if ($this.lstAniosOfertas.findIndex(a => a.value == iAnioActual) === -1) {
                                                 $this.lstAniosOfertas.splice(0, 0, objAnio);
+                                            }
+
+                                            if ($this.lstAniosPromociones.findIndex(a => a.value == iAnioActual) === -1) {
+                                                $this.lstAniosPromociones.splice(0, 0, objAnio);
                                             }
 
                                             if (onSuccess) {
@@ -400,6 +436,91 @@ listarMenus(function (lstModulos, lstMenus) {
                                     },
                                     complete: function () {
                                         $this.iEliminandoOferta = 0;
+                                    }
+                                });
+                            },
+
+                            ajaxListarUltimasPromociones: function (onSuccess) {
+                                let $this = this;
+                                $this.iCargandoUltimasPromociones = 0;
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-productos/precios-ofertas/ajax/listarUltimasPromociones',
+                                    data: {id: iId},
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            let data = respuesta.data;
+                                            $this.lstUltimasPromociones = data.lstUltimasPromociones;
+
+                                            if (onSuccess) {
+                                                onSuccess();
+                                            }
+                                        }
+                                    },
+                                    complete: function () {
+                                        $this.iCargandoUltimasPromociones = 0;
+                                    }
+                                });
+                            },
+                            ajaxListarPromociones: function () {
+                                let $this = this;
+                                $this.iCargandoPromociones = 0;
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-productos/precios-ofertas/ajax/listarPromociones',
+                                    data: {id: iId, fecha_desde: $this.sFechaDesdePromociones, fecha_hasta: $this.sFechaHastaPromociones},
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            let data = respuesta.data;
+                                            $this.lstPromociones = data.lstPromociones;
+                                        }
+                                    },
+                                    complete: function () {
+                                        $this.iCargandoPromociones = 0;
+                                    }
+                                });
+                            },
+
+                            ajaxInsertarPromocion: function () {
+                                let $this = this;
+                                $this.iInsertandoPromocion = 1;
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-productos/precios-ofertas/ajax/insertarPromocion',
+                                    data: {
+                                        id: iId, tipo_de_promocion: $this.sTipoPromocion,
+                                        fecha_de_inicio: $this.sFechaInicioP, fecha_de_vencimiento: $this.sFechaVencimientoP,
+                                        nueva_promocion: $this.sNuevaPromocion,
+                                        descripcion: $this.sDescripcionPromocion,
+                                        min: $this.sMinPromocion,
+                                        max: $this.sMaxPromocion,
+                                    },
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            $this.sTipoPromocion = '';
+                                            $this.sFechaInicioP = '';
+                                            $this.sFechaVencimientoP = '';
+                                            $this.sNuevaPromocion = '';
+                                            $this.sDescripcionPromocion = ''; 
+                                            $this.sMinPromocion = '';
+                                            $this.sMaxPromocion = '';
+
+                                            $this.ajaxListarUltimasPromociones(function () {
+                                                $this.ajaxListarProducto();
+                                            });
+                                        }
+
+                                        toastr[respuesta.result](respuesta.mensaje);
+                                    },
+                                    error: function (respuesta) {
+                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr[result.error](sHtmlMensaje);
+                                    },
+                                    complete: function () {
+                                        $this.iInsertandoPromocion = 0;
                                     }
                                 });
                             },

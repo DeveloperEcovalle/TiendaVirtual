@@ -113,6 +113,7 @@ let vueLineasProductos = new Vue({
         }
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListarLineasProductos: function () {
             let $this = this;

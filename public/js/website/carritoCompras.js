@@ -217,6 +217,8 @@ let vueCarritoCompras = new Vue({
         });
     },
     methods: {
+        ajaxSalir: () => ajaxSalir(),
+        ajaxSetLocale: locale => ajaxSetLocale(locale),
         ajaxListarPreciosEnvio: function () {
             let $this = this;
             axios.post('/carrito-compras/ajax/listarPreciosEnvio')

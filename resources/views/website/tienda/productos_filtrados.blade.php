@@ -34,6 +34,9 @@
                                 <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
                                     - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
                                 </span>
+                                <div class="bg-ecovalle-2 badge-promocion position-absolute" v-if="producto.promocion_vigente">
+                                    <b>@{{ producto.promocion_vigente.descripcion }}</b>
+                                </div>
                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 90">
                                     @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
