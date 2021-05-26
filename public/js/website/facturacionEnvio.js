@@ -254,7 +254,6 @@ let vueFacturacionEnvio = new Vue({
             let lstCarritoComprasServer = data.lstCarrito;
             let bClienteEnSesion = data.bClienteEnSesion;
             $this.bClienteEnSesion = bClienteEnSesion;
-            let sApellido_2 = bClienteEnSesion.apellido_2 === null ? '' : bClienteEnSesion.apellido_2;
             if(bClienteEnSesion == null)
             {
                 localStorage.removeItem('datosEnvio');
@@ -263,6 +262,7 @@ let vueFacturacionEnvio = new Vue({
                 $('#modalInicioSesion').modal('show'); 
             }
             else{
+                let sApellido_2 = bClienteEnSesion.apellido_2 === null ? '' : bClienteEnSesion.apellido_2;
                 let cookiedatosEnvio = $cookies.get('datosEnvio');
                 if(cookiedatosEnvio)
                 {
