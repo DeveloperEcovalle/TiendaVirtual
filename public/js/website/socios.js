@@ -219,7 +219,7 @@ let vueSocios = new Vue({
         map.data.loadGeoJson("https://erpecovalle.ga/api/mapa/peru");
 
         map.data.loadGeoJson(
-            "https://erpecovalle.ga/api/mapa/peru/departamentos"
+            "https://ecovalle.pe/Json/departamentos.json"
         );
     },
     methods: {
