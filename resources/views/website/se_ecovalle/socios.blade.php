@@ -29,6 +29,9 @@
     <section class="py-4" v-if="iCargando === 0">
         <div class="container-xl pb-4" v-html="locale === 'es' ? pagina.contenido_espanol : pagina.contenido_ingles"></div>
     </section>
+    <div id="mapa" style="width:100%;height:500px;">
+
+    </div>
 
     <section class="pt-5 pb-4 bg-ecovalle-6">
         <div class="row justify-content-center">
@@ -73,5 +76,6 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/socios.js?cvcn=14"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS6qv64RYCHFJOygheJS7DvBDYB0iV2wI"></script>
+<script src="/js/website/socios.js?cvcn=14"></script>
 @endsection

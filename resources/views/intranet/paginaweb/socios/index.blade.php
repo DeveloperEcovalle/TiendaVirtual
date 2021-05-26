@@ -4,6 +4,8 @@
 
 @section('head')
     <link href="/css/website.css" rel="stylesheet">
+    <link href="/css/gps.css" rel="stylesheet">
+
 @endsection
 
 @section('content')
@@ -32,28 +34,38 @@
                                 <h5>Imagen de portada</h5>
                             </div>
                             <div class="ibox-content">
-                                <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + sContenidoNuevaImagen + ')' }" v-if="nuevaImagenPortada"></div>
-                                <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + pagina.ruta_imagen_portada + ')' }" v-else></div>
-                                <form role="form" class="mt-4" id="frmEditarImagenPortada" v-on:submit.prevent="ajaxActualizarImagenPortada" v-cloak>
+                                <div class="masthead"
+                                    v-bind:style="{ backgroundImage: 'url(' + sContenidoNuevaImagen + ')' }"
+                                    v-if="nuevaImagenPortada"></div>
+                                <div class="masthead"
+                                    v-bind:style="{ backgroundImage: 'url(' + pagina.ruta_imagen_portada + ')' }" v-else>
+                                </div>
+                                <form role="form" class="mt-4" id="frmEditarImagenPortada"
+                                    v-on:submit.prevent="ajaxActualizarImagenPortada" v-cloak>
                                     <div class="form-group row">
                                         <label class="col-form-label col-md-3">Cambiar imagen de portada:</label>
                                         <div class="col-md-9">
                                             <div class="custom-file">
-                                                <input id="aImagen" type="file" class="custom-file-input" name="imagen_de_portada" v-on:change="cambiarImagen">
-                                                <label for="aImagen" class="custom-file-label">@{{ sNombreNuevaImagen }}</label>
+                                                <input id="aImagen" type="file" class="custom-file-input"
+                                                    name="imagen_de_portada" v-on:change="cambiarImagen">
+                                                <label for="aImagen"
+                                                    class="custom-file-label">@{{ sNombreNuevaImagen }}</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-form-label col-md-3">Enlace imagen de portada:</label>
                                         <div class="col-md-9">
-                                            <input type="text" class="form-control" name="enlace_de_imagen_de_portada" autocomplete="off" v-model="pagina.enlace_imagen_portada">
+                                            <input type="text" class="form-control" name="enlace_de_imagen_de_portada"
+                                                autocomplete="off" v-model="pagina.enlace_imagen_portada">
                                         </div>
                                     </div>
                                     <div class="form-group text-right mb-0">
-                                        <button type="submit" class="btn btn-primary" v-bind:disabled="iActualizandoImagenPortada === 1">
+                                        <button type="submit" class="btn btn-primary"
+                                            v-bind:disabled="iActualizandoImagenPortada === 1">
                                             <span v-if="iActualizandoImagenPortada === 0">Guardar</span>
-                                            <span v-else><i class="fas fa-circle-notch fa-spin"></i> Por favor, espere...</span>
+                                            <span v-else><i class="fas fa-circle-notch fa-spin"></i> Por favor,
+                                                espere...</span>
                                         </button>
                                     </div>
                                 </form>
@@ -68,7 +80,8 @@
                             <div class="ibox-content">
                                 <div id="sContenidoEspanol"></div>
                                 <div class="form-group mb-0 mt-2 text-right">
-                                    <button class="btn btn-primary" :disabled="iActualizandoContenidoEspanol === 1" v-on:click="ajaxActualizarContenidoEspanol">
+                                    <button class="btn btn-primary" :disabled="iActualizandoContenidoEspanol === 1"
+                                        v-on:click="ajaxActualizarContenidoEspanol">
                                         <span v-if="iActualizandoContenidoEspanol === 0">Guardar</span>
                                         <span v-else><i class="fas fa-circle-notch fa-spin"></i></span>
                                     </button>
@@ -84,10 +97,60 @@
                             <div class="ibox-content">
                                 <div id="sContenidoIngles"></div>
                                 <div class="form-group mb-0 mt-2 text-right">
-                                    <button class="btn btn-primary" :disabled="iActualizandoContenidoIngles === 1" v-on:click="ajaxActualizarContenidoIngles">
+                                    <button class="btn btn-primary" :disabled="iActualizandoContenidoIngles === 1"
+                                        v-on:click="ajaxActualizarContenidoIngles">
                                         <span v-if="iActualizandoContenidoIngles === 0">Guardar</span>
                                         <span v-else><i class="fas fa-circle-notch fa-spin"></i></span>
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-9">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Mapa clientes</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <div id="mapa" style="height:700px;">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                    <label style="font-size:14px;">Coordenadas clientes</label>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <button class="btn btn-primary" v-on:click="guardarposiciones">Guardar</button>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <input type="search" name="client" id="cliente" class="form-control"
+                                            placeholder="Buscar" v-model="search">
+                                        <section class="py-4" v-if="iCargando === 0">
+                                            <input type="checkbox" name="checkall" checked id="checkall"   @change="check($event)">
+                                            <span>Seleccionar todos</span>
+                                            <div class="contenedor_gps">
+                                                <table class="table table-bordered table-hover">
+                                                    <tr v-for="post in filteredList">
+                                                        <td style="border:none;"><input type="checkbox" v-bind:id="post.id" v-model="post.checked"></td>
+                                                        <td style="border:none;" v-on:click="vermarcador(post.nombre)">
+
+                                                            @{{ post . nombre }}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </section>
+                                        <section class="py-4" v-if="iCargando === 1">
+                                            Cargando clientes......
+                                        </section>
+
+
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -109,8 +172,18 @@
             </h3>
         </div>
     </div>
+
+
+
+    </div>
+
+
 @endsection
 
 @section('js')
+    <script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS6qv64RYCHFJOygheJS7DvBDYB0iV2wI"></script>
+    <script src="/js/info/infobox.js"></script>
     <script src="/js/intranet/socios.js?cvcn=14"></script>
+
 @endsection
