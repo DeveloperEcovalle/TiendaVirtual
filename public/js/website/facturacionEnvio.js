@@ -254,6 +254,7 @@ let vueFacturacionEnvio = new Vue({
             let lstCarritoComprasServer = data.lstCarrito;
             let bClienteEnSesion = data.bClienteEnSesion;
             $this.bClienteEnSesion = bClienteEnSesion;
+            let sApellido_2 = bClienteEnSesion.apellido_2 === null ? '' : bClienteEnSesion.apellido_2;
             if(bClienteEnSesion == null)
             {
                 localStorage.removeItem('datosEnvio');
@@ -270,7 +271,8 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosEnvio.sTipoDoc = bClienteEnSesion.tipo_documento;
                     $this.datosEnvio.sDocumento = bClienteEnSesion.documento;
                     $this.datosEnvio.sNombres = bClienteEnSesion.nombres;
-                    $this.datosEnvio.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+
+                    $this.datosEnvio.sApellidos = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                     $this.datosEnvio.sEmail = bClienteEnSesion.correo;
                     $this.datosEnvio.sTelefono = bClienteEnSesion.telefono;
                     $this.datosEnvio.sUbigeo = bClienteEnSesion.ubigeo_id;
@@ -286,7 +288,7 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosRecojo.rTipoDoc = bClienteEnSesion.tipo_documento;
                     $this.datosRecojo.sDocumento = bClienteEnSesion.documento;
                     $this.datosRecojo.sNombres = bClienteEnSesion.nombres;
-                    $this.datosRecojo.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+                    $this.datosRecojo.sApellidos = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                     $this.datosRecojo.sEmail = bClienteEnSesion.correo;
                     $this.datosRecojo.sTelefono = bClienteEnSesion.telefono;
                 }
@@ -300,7 +302,7 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosDelivery.dTipoDoc = bClienteEnSesion.tipo_documento;
                     $this.datosDelivery.sDocumento = bClienteEnSesion.documento;
                     $this.datosDelivery.sNombres = bClienteEnSesion.nombres;
-                    $this.datosDelivery.sApellidos = bClienteEnSesion.apellido_1 + bClienteEnSesion.apellido_2;
+                    $this.datosDelivery.sApellidos = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                     $this.datosDelivery.sEmail = bClienteEnSesion.correo;
                     $this.datosDelivery.sDireccion = bClienteEnSesion.direccion;
                     $this.datosDelivery.sTelefono = bClienteEnSesion.telefono;

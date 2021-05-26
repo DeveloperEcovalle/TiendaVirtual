@@ -18,6 +18,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class Registro extends Website {
 
@@ -166,6 +167,7 @@ class Registro extends Website {
             $persona->tipo_documento = $iTipoDocumento;
             $persona->documento = $sDocumento;
             $persona->correo = $sEmail;
+            $persona->password = $sContrasena;
             $persona->telefono = $sTelefono;
             $persona->genero = $sGenero;
             $persona->telefono_fijo = $sTelefono_fijo;
@@ -183,6 +185,12 @@ class Registro extends Website {
     
             $clienteSesion = Cliente::find($cliente->id);
             $request->session()->put('cliente', $clienteSesion);
+
+            Mail::send('website.email.register',compact("persona"), function ($mail) use ($persona) {
+                $mail->subject('BIENVENID@ A ECOVALLE');
+                $mail->to($persona->correo);
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
             
             DB::commit();
             $respuesta->result = Result::SUCCESS;

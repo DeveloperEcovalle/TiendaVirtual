@@ -179,7 +179,7 @@ class Website extends Controller {
             $cliente = $session->get('cliente');
             $persona = Persona::find($cliente->persona_id);
             $lstCarrito = DetalleCarrito::where('cliente_id', $cliente->id)
-                ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente'])->get();
+                ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente', 'producto.promocion_vigente'])->get();
         }
         else{
             $persona = null;

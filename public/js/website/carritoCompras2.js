@@ -19,13 +19,6 @@ let vueCarritoCompras = new Vue({
                 let producto = detalle.producto;
                 let fPromocion = producto.promocion_vigente === null ? 0.00 :
                     (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
-                    // if(producto.promocion_vigente != null)
-                    // {
-                    //     if(producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max)
-                    //     {
-                    //         fPromocion = producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto);
-                    //     }
-                    // }
                 let fPrecio = (producto.oferta_vigente === null ? producto.precio_actual.monto :
                     (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
                 fSubtotal += detalle.cantidad * fPrecio;
