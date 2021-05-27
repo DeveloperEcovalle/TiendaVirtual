@@ -409,7 +409,7 @@
                                 </div>
                             </div>
                             <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
-                                <label><b>Datos de quien recoje el pedido</b></label>
+                                <label><b>Datos de quien recoge el pedido</b></label>
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">

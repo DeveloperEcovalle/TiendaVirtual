@@ -184,7 +184,7 @@ class PagoEnvio extends Website
             $mail->to($email);
             $mail->from('website@ecovalle.pe','ECOVALLE');
         });
-        
+
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
@@ -198,9 +198,6 @@ class PagoEnvio extends Website
 
             DB::beginTransaction();
             $respuesta = new Respuesta;
-
-            $session = $request->session();
-            $bClienteEnSesion = $session->has('cliente');
 
             $token = $request->get('token');
             $email = $request->get('email');
@@ -222,11 +219,9 @@ class PagoEnvio extends Website
             $distrito = $request->get('distrito');
             $agencia = $request->get('agencia');
             $detalles = $request->get('detalles');
-            $cliente_id = null;
-            if($bClienteEnSesion)
-            {
-                $cliente_id = $session->get('cliente')->id;
-            }
+
+            $cliente_id = session()->has('cliente') ? session()->get('cliente')->id : null;
+
             $created_at = now();
             $created_at = date_format($created_at, 'Y-m-d H:i');
     
@@ -249,7 +244,7 @@ class PagoEnvio extends Website
             if($departamento != '' && $provincia != '' && $distrito != '')
             {$ubigeo_id = Ubigeo::where('departamento',$departamento)->where('provincia',$provincia)->where('distrito',$distrito)->value('id');}
             $venta->ubigeo_id = $ubigeo_id;
-            $venta->cliente_id = null;
+            $venta->cliente_id = $cliente_id;
             $venta->agencia = $agencia;
             $venta->save();
 
