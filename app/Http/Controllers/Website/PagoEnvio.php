@@ -156,33 +156,35 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        //$SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
-        //$culqi = new Culqi(array('api_key' => $SECRET_KEY));
+        $SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
+        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
         $token = $request->get('token');
         $amount = $request->get('amount');
         $email = $request->get('email');
         $cliente = $request->get('cliente');
 
-        // $cargo = $culqi->Charges->create(
-        //     array(
-        //         'amount' => $amount, 
-        //         'currency_code' => 'PEN', 
-        //         'email' => $email, 
-        //         'source_id' => $token
-        //     )
-        // );
-        // if ($cargo === null) {
-        //     $respuesta->result = Result::WARNING;
-        //     $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
-        //     return response()->json($respuesta);
-        // }
-        $cargo = '';
+        $cargo = $culqi->Charges->create(
+            array(
+                'amount' => $amount, 
+                'currency_code' => 'PEN', 
+                'email' => $email, 
+                'source_id' => $token
+            )
+        );
+        if ($cargo === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
+            return response()->json($respuesta);
+        }
+        //$cargo = '';
+
         Mail::send('website.email.confirm_pedido',compact("cliente"), function ($mail) use ($email) {
             $mail->subject('PEDIDO CONFIRMADO');
             $mail->to($email);
             $mail->from('website@ecovalle.pe','ECOVALLE');
         });
+        
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
@@ -290,11 +292,26 @@ class PagoEnvio extends Website
                 ->save(public_path().'/storage/pedidos/' . $venta->codigo.'.pdf');
                 
             Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($pdf,$venta) {
-                $mail->to($venta->email); //comunity.rrss@ecovalle.pe
+                $mail->to($venta->email);
                 $mail->subject('PEDIDO COD: '.$venta->codigo);
                 $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
                 $mail->from('website@ecovalle.pe','ECOVALLE');
             });
+            
+            $empresa = Empresa::first();
+            if($empresa->correo_pedidos)
+            {
+                Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                    $mail->to($empresa->correo_pedidos);
+                    $mail->subject('PEDIDO COD: '.$venta->codigo);
+                    $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                    $mail->from('website@ecovalle.pe','ECOVALLE');
+                });
+            }
+            if($empresa->telefono_pedidos)
+            {
+                $result = enviapedido($venta, $empresa->telefono_pedidos);
+            }
 
             //-----ENVÍO DE CORREO PEDIDO-----
 

@@ -1,0 +1,2 @@
+<h2>¡¡ NUEVO PEDIDO !!</h2>
+<h2>RESUMEN DE PEDIDO</h2>

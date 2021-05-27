@@ -718,6 +718,15 @@ Route::namespace('Intranet')->group(function () {
                         });
                     });
 
+                    Route::prefix('/recepcion')->group(function () {
+                        Route::get('/', 'Recepcion@index');
+
+                        Route::prefix('/ajax')->group(function () {
+                            Route::post('/listar', 'Recepcion@ajaxListar');
+                            Route::post('/actualizar', 'Recepcion@ajaxActualizar');
+                        });
+                    });
+
                     Route::prefix('/agencias')->group(function () {
                         Route::get('/', 'Agencia@index');
                         Route::get('/nuevo', 'Agencia@index');
@@ -743,19 +752,31 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $id = '123';
-    $f_actual = Carbon::now();
-    $anio = date_format($f_actual,'Y');
-    $tam = (int)mb_strlen($id);
-    $codigo = '';
-    if($tam < 7)
-    {
-        while($tam < 6)
-        {
-            $codigo = $codigo.'0';
-            $tam ++;
-        }
-    }
-    $codigo = $codigo.$id.'-'.$anio;
-    return $codigo;
+    $file = file_get_contents('storage/pedidos/ghUJ1d6-2021.pdf');
+    $data_file = base64_encode($file);
+    $mime = mime_content_type('storage/pedidos/ghUJ1d6-2021.pdf');
+    $str_file = 'data:'.$mime.';base64,'.$data_file;
+            
+    $data = [
+        'phone' => '51950837445', // Receivers phone
+        'body' => $str_file,
+        'filename' => 'ghUJ1d6-2021.pdf',
+        'caption' => (string)"PEDIDO COD: ".'ghUJ1d6-2021.pdf', // Message// Message
+    ];
+
+    $json = json_encode($data); // Encode data to JSON
+     // URL for request POST /message
+    $token = 'n34tqely1k2fiwzi';
+    $instanceId = '242825';
+    $url = 'https://api.chat-api.com/instance'.$instanceId.'/sendFile?token='.$token;
+    // Make a POST request
+    $options = stream_context_create(['http' => [
+        'method'  => 'POST',
+            'header'  => 'Content-type: application/json',
+            'content' => $json
+        ]
+    ]);
+    // Send a request
+    $result = file_get_contents($url, false, $options);
+    return $result;
 });
