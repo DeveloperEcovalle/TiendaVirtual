@@ -137,7 +137,8 @@
                                                 <div class="form-group row p-4 align-items-end">
                                                     <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                         <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosRecojo.rTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
                                                             <label :for="tipo.nombre">
                                                                 <b>@{{ tipo.nombre }}</b>
                                                             </label>
@@ -179,7 +180,8 @@
                                                 <div class="form-group row p-4 align-items-end">
                                                     <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                         <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosDelivery.dTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
                                                             <label :for="tipo.nombre">
                                                                 <b>@{{ tipo.nombre }}</b>
                                                             </label>
