@@ -102,7 +102,7 @@ let culqi = function () {
                             vuePagoEnvio.datosDelivery.sOpcion = 0;
                             vuePagoEnvio.datosRecojo.sOpcion = 0;
                             $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
-                            $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12);
+                            $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12); 
                             $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
                             vuePagoEnvio.guardarLstCarritoCompras();
                             toastr.clear();
