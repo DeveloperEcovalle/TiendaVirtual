@@ -5,7 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use App\Producto;
+use Illuminate\Support\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -743,6 +743,19 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $number = 8.34;
-    return round(($number * 10) / 10,1);
+    $id = '123';
+    $f_actual = Carbon::now();
+    $anio = date_format($f_actual,'Y');
+    $tam = (int)mb_strlen($id);
+    $codigo = '';
+    if($tam < 7)
+    {
+        while($tam < 6)
+        {
+            $codigo = $codigo.'0';
+            $tam ++;
+        }
+    }
+    $codigo = $codigo.$id.'-'.$anio;
+    return $codigo;
 });

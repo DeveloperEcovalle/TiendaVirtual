@@ -75,6 +75,21 @@
                                             <p class="mb-0"><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
                                         </div>
                                         <div class="col-12">
+                                            <div style="border: solid 1px #EE9722;border-radius:5px;padding: 4px;">
+                                                <div class="row">
+                                                    <div class="col-12 col-lg-8">
+                                                        <p class="mb-0"><b>¿Quién recoge?: </b>@{{ datosEnvio.sRecoge.sRazonSocial }}</p>
+                                                    </div>
+                                                    <div class="col-12 col-lg-4">
+                                                        <p class="mb-0"><b>DNI: </b>@{{ datosEnvio.sRecoge.sDocumento }}</p>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sRecoge.sTelefono }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
                                             <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                         </div>
                                         <div class="col-12">
@@ -82,7 +97,8 @@
                                                 <div class="form-group row p-4 align-items-end">
                                                     <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                         <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosEnvio.sTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
+                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
                                                             <label :for="tipo.nombre" style="font-size: 15px;">
                                                                 <b>@{{ tipo.nombre }}</b>
                                                             </label>

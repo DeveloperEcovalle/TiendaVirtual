@@ -33,6 +33,11 @@ let vueFacturacionEnvio = new Vue({
             sDistrito: '',
             sDireccion: '',
             sAgencia: '',
+            sRecoge: {
+                sDocumento: '',
+                sRazonSocial: '',
+                sTelefono: '',
+            },
             sUbigeo: '',
             sOpcion: 0,
         },
@@ -103,6 +108,9 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosEnvio.sProvincia.trim().length > 0
                 && this.datosEnvio.sDistrito.trim().length > 0
                 && this.datosEnvio.sDireccion.trim().length > 0
+                && this.datosEnvio.sRecoge.sRazonSocial.trim().length > 0
+                && this.datosEnvio.sRecoge.sDocumento.trim().length > 0
+                && this.datosEnvio.sRecoge.sTelefono.trim().length > 0
                 && this.datosEnvio.sTipoDoc.trim().length > 0
                 && this.datosEnvio.sAgencia.trim().length > 0
                 && this.datosEnvio.sDocumento.trim().length > 0;
@@ -271,12 +279,15 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosEnvio.sTipoDoc = bClienteEnSesion.tipo_documento;
                     $this.datosEnvio.sDocumento = bClienteEnSesion.documento;
                     $this.datosEnvio.sNombres = bClienteEnSesion.nombres;
-
                     $this.datosEnvio.sApellidos = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                     $this.datosEnvio.sEmail = bClienteEnSesion.correo;
                     $this.datosEnvio.sTelefono = bClienteEnSesion.telefono;
                     $this.datosEnvio.sUbigeo = bClienteEnSesion.ubigeo_id;
                     $this.datosEnvio.sDireccion = bClienteEnSesion.direccion;
+
+                    $this.datosEnvio.sRecoge.sRazonSocial = bClienteEnSesion.nombres + ' ' + bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
+                    $this.datosEnvio.sRecoge.sDocumento = bClienteEnSesion.documento;
+                    $this.datosEnvio.sRecoge.sTelefono = bClienteEnSesion.telefono;
                 }
                 $this.datosEnvio.sOpcion = 1;
 
@@ -806,6 +817,9 @@ let vueFacturacionEnvio = new Vue({
             $cookies.set('datosDelivery', this.datosDelivery, 12);
         },
         confirmarFacturacion: function(){
+            $cookies.set('datosEnvio', this.datosEnvio, 12);
+            $cookies.set('datosRecojo', this.datosRecojo, 12);
+            $cookies.set('datosDelivery', this.datosDelivery, 12);
             location = '/pago-envio';
         },
         verificaDatos: function(){

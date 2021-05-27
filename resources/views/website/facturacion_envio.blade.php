@@ -128,6 +128,21 @@
                                         <p class="mb-0"><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
                                     </div>
                                     <div class="col-12">
+                                        <div style="border: solid 1px #EE9722;border-radius:5px;padding: 4px;">
+                                            <div class="row">
+                                                <div class="col-12 col-lg-8">
+                                                    <p class="mb-0"><b>¿Quién recoge?: </b>@{{ datosEnvio.sRecoge.sRazonSocial }}</p>
+                                                </div>
+                                                <div class="col-12 col-lg-4">
+                                                    <p class="mb-0"><b>DNI: </b>@{{ datosEnvio.sRecoge.sDocumento }}</p>
+                                                </div>
+                                                <div class="col-12">
+                                                    <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sRecoge.sTelefono }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
                                         <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                     </div>
                                 </div>
@@ -348,7 +363,7 @@
                                     <label>Razon Social</label>
                                     <input type="text" class="form-control" v-model="datosEnvio.sRazon" autocomplete="off">
                                 </div>
-                                <div class="form-group" >
+                                <div class="form-group">
                                     <label>Agencia</label>
                                     <select  class="form-control" v-model="datosEnvio.sAgencia">
                                         <option value="">Seleccionar</option>
@@ -391,6 +406,29 @@
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
+                                </div>
+                            </div>
+                            <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
+                                <label><b>Datos de quien recoje el pedido</b></label>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Nombres y Apellidos</label>
+                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sRazonSocial" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Documento (DNI)</label>
+                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sDocumento" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Tel&eacute;fono</label>
+                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sTelefono" autocomplete="off">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -15,6 +15,9 @@ let culqi = function () {
         var sDepartamento = '';
         var sProvincia = '';
         var sDistrito = '';
+        var sRecoge = '';
+        var sRecogeDocumento = '';
+        var sRecogeTelefono = '';
 
         if(vuePagoEnvio.datosEnvio.sOpcion == 1)
         {
@@ -29,6 +32,9 @@ let culqi = function () {
             sTelefono = vuePagoEnvio.datosEnvio.sTelefono;
             sEmail = vuePagoEnvio.datosEnvio.sEmail;
             sDireccion = vuePagoEnvio.datosEnvio.sDireccion;
+            sRecoge = vuePagoEnvio.datosEnvio.sRecoge.sRazonSocial;
+            sRecogeDocumento = vuePagoEnvio.datosEnvio.sRecoge.sDocumento;
+            sRecogeTelefono = vuePagoEnvio.datosEnvio.sRecoge.sTelefono;
             sAgencia = vuePagoEnvio.datosEnvio.sAgencia;
             sDepartamento = vuePagoEnvio.datosEnvio.sDepartamento;
             sProvincia = vuePagoEnvio.datosEnvio.sProvincia;
@@ -77,6 +83,9 @@ let culqi = function () {
         formData.append('cliente', sCliente);
         formData.append('telefono', sTelefono);
         formData.append('direccion', sDireccion);
+        formData.append('recoge', sRecoge);
+        formData.append('recoge_documento', sRecogeDocumento);
+        formData.append('recoge_telefono', sRecogeTelefono);
         formData.append('agencia', sAgencia);
         formData.append('subtotal', sSubTotal);
         formData.append('delivery', sDelivery);
@@ -238,6 +247,11 @@ let vuePagoEnvio = new Vue({
             sProvincia: '',
             sDistrito: '',
             sDireccion: '',
+            sRecoge: {
+                sDocumento: '',
+                sRazonSocial: '',
+                sTelefono: '',
+            },
             sAgencia: '',
             sOpcion: 0,
         },

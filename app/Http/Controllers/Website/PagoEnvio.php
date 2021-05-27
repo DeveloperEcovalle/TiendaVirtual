@@ -210,6 +210,9 @@ class PagoEnvio extends Website
             $documento = $request->get('documento');
             $telefono = $request->get('telefono');
             $direccion = $request->get('direccion');
+            $recoge = $request->get('recoge');
+            $recoge_documento = $request->get('recoge_documento');
+            $recoge_telefono = $request->get('recoge_telefono');
             $subtotal = $request->get('subtotal');
             $delivery = $request->get('delivery');
             $departamento = $request->get('departamento');
@@ -237,6 +240,9 @@ class PagoEnvio extends Website
             $venta->tipo_comprobante = $tipo_comprobante;
             $venta->token = $token;
             $venta->direccion = $direccion;
+            $venta->recoge = $recoge;
+            $venta->recoge_documento = $recoge_documento;
+            $venta->recoge_telefono = $recoge_telefono;
             $ubigeo_id = null;
             if($departamento != '' && $provincia != '' && $distrito != '')
             {$ubigeo_id = Ubigeo::where('departamento',$departamento)->where('provincia',$provincia)->where('distrito',$distrito)->value('id');}
@@ -247,7 +253,7 @@ class PagoEnvio extends Website
 
             $f_actual = Carbon::now();
             $anio = date_format($f_actual,'Y');
-            $codigo = substr($token,9,4).substr($venta->id,0,1).'-'.$anio;
+            $codigo = substr($token,9,6).substr($venta->id,0,1).'-'.$anio;
             $venta->codigo = $codigo;
             $venta->update();
 

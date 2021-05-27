@@ -98,6 +98,14 @@
                                     <br>
                                     <strong>Fecha Emisión: </strong>&nbsp; {{ date_format($venta->created_at, 'Y/m/d')}}
                                     <br>
+                                    @if ($venta->recoge)
+                                    <strong>Encargado recojo:</strong>&nbsp; {{ $venta->recoge }}
+                                    <br>
+                                    <strong>DNI:</strong>&nbsp; {{ $venta->recoge_documento }}
+                                    <br>
+                                    <strong>Teléfono:</strong>&nbsp; {{ $venta->recoge_telefono }}
+                                    <br>
+                                    @endif
                                     <strong>Tipo Moneda: </strong>&nbsp; SOLES/PEN.
                                 </td>
                             </tr>
