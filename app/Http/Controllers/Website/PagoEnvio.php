@@ -10,9 +10,13 @@ use App\TelefonoEmpresa;
 use Culqi\Culqi;
 use App\Http\Controllers\Result;
 use App\Http\Controllers\Respuesta;
+use App\Producto;
 use App\Ubigeo;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Carbon;
 
 class PagoEnvio extends Website
 {
@@ -152,27 +156,33 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        $SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
-        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
+        //$SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
+        //$culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
         $token = $request->get('token');
         $amount = $request->get('amount');
         $email = $request->get('email');
+        $cliente = $request->get('cliente');
 
-        $cargo = $culqi->Charges->create(
-            array(
-                'amount' => $amount, 
-                'currency_code' => 'PEN', 
-                'email' => $email, 
-                'source_id' => $token
-            )
-        );
-        if ($cargo === null) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
-            return response()->json($respuesta);
-        }
-        //$cargo = '';
+        // $cargo = $culqi->Charges->create(
+        //     array(
+        //         'amount' => $amount, 
+        //         'currency_code' => 'PEN', 
+        //         'email' => $email, 
+        //         'source_id' => $token
+        //     )
+        // );
+        // if ($cargo === null) {
+        //     $respuesta->result = Result::WARNING;
+        //     $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
+        //     return response()->json($respuesta);
+        // }
+        $cargo = '';
+        Mail::send('website.email.confirm_pedido',compact("cliente"), function ($mail) use ($email) {
+            $mail->subject('PEDIDO CONFIRMADO');
+            $mail->to($email);
+            $mail->from('website@ecovalle.pe','ECOVALLE');
+        });
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
@@ -186,6 +196,9 @@ class PagoEnvio extends Website
 
             DB::beginTransaction();
             $respuesta = new Respuesta;
+
+            $session = $request->session();
+            $bClienteEnSesion = $session->has('cliente');
 
             $token = $request->get('token');
             $email = $request->get('email');
@@ -204,7 +217,11 @@ class PagoEnvio extends Website
             $distrito = $request->get('distrito');
             $agencia = $request->get('agencia');
             $detalles = $request->get('detalles');
-            //$cliente = $request->session()->get('cliente');
+            $cliente_id = null;
+            if($bClienteEnSesion)
+            {
+                $cliente_id = $session->get('cliente')->id;
+            }
             $created_at = now();
             $created_at = date_format($created_at, 'Y-m-d H:i');
     
@@ -227,6 +244,13 @@ class PagoEnvio extends Website
             $venta->cliente_id = null;
             $venta->agencia = $agencia;
             $venta->save();
+
+            $f_actual = Carbon::now();
+            $anio = date_format($f_actual,'Y');
+            $codigo = substr($token,9,4).substr($venta->id,0,1).'-'.$anio;
+            $venta->codigo = $codigo;
+            $venta->update();
+
             $detalles = json_decode($detalles,false);
             $cont = 0;
             while($cont < count($detalles))
@@ -238,7 +262,38 @@ class PagoEnvio extends Website
                 $detalle->save();
                 $cont = $cont + 1;
             }
+
+            //-------ENVÍO DE CORREO PEDIDO---------
+            $carrito = array();
+            $i = 0;
+            while($i < count($detalles))
+            {
+                $producto = Producto::find($detalles[$i]->id);
+                $producto->cantidad = $detalles[$i]->cantidad;
+                $fPromocion = $producto->promocion_vigente === null ? 0.00 :
+                    ($producto->cantidad >= $producto->promocion_vigente->min && $producto->cantidad <= $producto->promocion_vigente->max ? ($producto->promocion_vigente->porcentaje ? (($producto->precio_actual->monto * $producto->promocion_vigente->porcentaje) / 100) : ($producto->promocion_vigente->monto)) : 0.00);
+                $fPrecio = ($producto->oferta_vigente === null ? $producto->precio_actual->monto :
+                    ($producto->oferta_vigente->porcentaje ? ($producto->precio_actual->monto * (100 - $producto->oferta_vigente->porcentaje) / 100) : ($producto->precio_actual->monto - $producto->oferta_vigente->monto))) - $fPromocion;
+                $producto->pFinal = $fPrecio;
+                array_push($carrito,$producto);
+                $i = $i + 1;
+            }
+
+            $pdf = PDF::loadview('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])->setPaper('a4')->setWarnings(false);
+            PDF::loadView('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])
+                ->save(public_path().'/storage/pedidos/' . $venta->codigo.'.pdf');
+                
+            Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($pdf,$venta) {
+                $mail->to($venta->email); //comunity.rrss@ecovalle.pe
+                $mail->subject('PEDIDO COD: '.$venta->codigo);
+                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
+
+            //-----ENVÍO DE CORREO PEDIDO-----
+
             DB::commit();
+
             $respuesta->result = Result::SUCCESS;
             $respuesta->mensaje = 'Compra realizada exitosamente. ';
             return response()->json($respuesta);

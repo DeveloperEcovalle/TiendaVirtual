@@ -178,8 +178,8 @@ class Website extends Controller {
         if ($bClienteEnSesion) {
             $cliente = $session->get('cliente');
             $persona = Persona::find($cliente->persona_id);
-            $lstCarrito = DetalleCarrito::where('cliente_id', $cliente->id)
-                ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente', 'producto.promocion_vigente'])->get();
+            // $lstCarrito = DetalleCarrito::where('cliente_id', $cliente->id)
+            //     ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente', 'producto.promocion_vigente'])->get();
         }
         else{
             $persona = null;
@@ -197,12 +197,12 @@ class Website extends Controller {
             $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
 
-            $detalle_carrito = new DetalleCarrito;
-            $detalle_carrito->cliente_id = $cliente->id;
-            $detalle_carrito->cantidad = 1;
-            $detalle_carrito->producto_id = $producto_id;
-            $detalle_carrito->fecha_reg = now()->toDateTimeString();
-            $detalle_carrito->save();
+            // $detalle_carrito = new DetalleCarrito;
+            // $detalle_carrito->cliente_id = $cliente->id;
+            // $detalle_carrito->cantidad = 1;
+            // $detalle_carrito->producto_id = $producto_id;
+            // $detalle_carrito->fecha_reg = now()->toDateTimeString();
+            // $detalle_carrito->save();
         }
 
         $respuesta = new Respuesta;
@@ -220,7 +220,10 @@ class Website extends Controller {
             $lstDetalleCarrito = DetalleCarrito::where('cliente_id', $cliente->id)->where('producto_id', $producto_id)->get();
             $detalle_carrito = $lstDetalleCarrito->get(0);
 
-            $detalle_carrito->delete();
+            if($detalle_carrito)
+            {
+                $detalle_carrito->delete();
+            }
         }
 
         $respuesta = new Respuesta;

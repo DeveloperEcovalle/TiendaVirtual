@@ -231,7 +231,7 @@ let ajaxSalir = function() {
         localStorage.removeItem('datosEnvio');
         localStorage.removeItem('datosRecojo');
         localStorage.removeItem('datosDelivery');
-        localStorage.removeItem('lstCarritoCompras');
+        //localStorage.removeItem('lstCarritoCompras');
         location.reload();
     });
 };
@@ -417,7 +417,12 @@ function autocompletar()
                     break;
                 case 13: //enter
                     e.preventDefault();
-                    items[indexFocus].click();
+                    if(items[indexFocus])
+                    {
+                        items[indexFocus].click();
+                    }else{
+                        $('#search-form').submit();
+                    }
                     indexFocus = -1;
                     break;
                 default:

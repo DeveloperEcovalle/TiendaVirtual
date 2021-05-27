@@ -158,7 +158,7 @@
                     <input type="text" class="form-control" name="max_promocion" v-model="sMaxPromocion" placeholder="Condición máxima de compra" required="required" autocomplete="off">
                 </div>
                 <div class="col-12">
-                    <label for="">Descripci&oacute;n <span class="text-danger">(lo que el usuario visualizará)*</span></label>
+                    <label for="">Descripci&oacute;n <span class="text-danger">*</span></label>
                     <textarea class="form-control" name="descripcion" id="descripcion" v-model="sDescripcionPromocion" rows="2">
                         Mayor a @{{sMinPromocion}} productos y menor a @{{sMaxPromocion}} llevatelos con @{{sNuevaPromocion}} de dscto.
                     </textarea>

@@ -29,7 +29,7 @@ let vueCarritoCompras = new Vue({
             return this.fSubtotal + this.fDelivery;
         }
     },
-    mounted: function () {
+    created: function () {
         let $this = this;
         ajaxWebsiteLocale().then(response => {
             let respuesta = response.data;
@@ -46,9 +46,8 @@ let vueCarritoCompras = new Vue({
                 let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
 
                 $this.lstCarritoCompras = lstCarritoCompras;
-                $this.guardarLstCarritoCompras();
                 $this.iCargando = 0;
-            });
+            }).then(() => this.guardarLstCarritoCompras());
         });
     },
     methods: {

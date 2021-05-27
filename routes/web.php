@@ -5,7 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use App\Ubigeo;
+use App\Producto;
 
 /*
 |--------------------------------------------------------------------------
@@ -743,6 +743,6 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    session()->forget('cliente');
-    //session()->flush();
+    $number = 8.34;
+    return round(($number * 10) / 10,1);
 });

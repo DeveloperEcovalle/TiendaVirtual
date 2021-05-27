@@ -98,6 +98,12 @@ let culqi = function () {
                         let respuesta = response.data;
                         if (respuesta.result === 'success') {
                             vuePagoEnvio.lstCarritoCompras = [];
+                            vuePagoEnvio.datosEnvio.sOpcion = 0;
+                            vuePagoEnvio.datosDelivery.sOpcion = 0;
+                            vuePagoEnvio.datosRecojo.sOpcion = 0;
+                            $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
+                            $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12);
+                            $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
                             vuePagoEnvio.guardarLstCarritoCompras();
                             toastr.clear();
                             toastr.options = {

@@ -319,30 +319,14 @@ let vueFacturacionEnvio = new Vue({
             let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
             let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
 
-            /*let cookiedatosEnvio = $cookies.get('datosEnvio');
-            let datosEnvio = cookiedatosEnvio ? cookiedatosEnvio : this.datosEnvio;
-            $this.datosEnvio = datosEnvio;
-            $this.datosEnvio.sOpcion = 1;
-
-            let cookiedatosRecojo = $cookies.get('datosRecojo');
-            let datosRecojo = cookiedatosRecojo ? cookiedatosRecojo : this.datosRecojo;
-            $this.datosRecojo = datosRecojo;
-            $this.datosRecojo.sOpcion = 0;
-
-            let cookiedatosDelivery = $cookies.get('datosDelivery');
-            let datosDelivery = cookiedatosDelivery ? cookiedatosDelivery : this.datosDelivery;
-            $this.datosDelivery = datosDelivery;
-            $this.datosDelivery.sOpcion = 0;*/
-
             $this.lstCarritoCompras = lstCarritoCompras;
-            
-            $this.guardarLstCarritoCompras();
+
             $this.ajaxListarPreciosEnvio();
-            
             $this.iCargando = 0;
             $this.ajaxListarDatosFacturacion();
             //$('#modalEditarDireccionEnvio').modal('show'); 
         }).then(() => {
+            $this.guardarLstCarritoCompras();
             if(this.bClienteEnSesion != null)
             {
                 let cookiedatosEnvio = $cookies.get('datosEnvio');

@@ -35,9 +35,9 @@
                     <span class="badge badge-danger badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
                         - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                     </span>
-                    <div class="bg-danger badge-promocion position-absolute" v-if="producto.promocion_vigente">
-                        <b>@{{ producto.promocion_vigente.descripcion }}</b>
-                    </div>
+                    <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
+                        +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
+                    </span>
                     <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                           v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                         @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
@@ -72,7 +72,7 @@
                     <p v-html="producto.beneficios_en" v-else></p>
                     <hr>
                     <div class="row justify-content-center justify-content-md-start pb-3">
-                        <div class="col-6 col-sm-7 col-md-5 col-lg-4">
+                        <div class="col-6 col-sm-6 col-md-4 col-lg-4">
                             <div v-if="producto.stock_actual - producto.stock_separado === 0">
                                 <button class="btn btn-sm btn-block btn-danger font-weight-bold py-2" disabled="disabled">
                                     @{{ locale === 'es' ? 'AGOTADO' : 'SOLD OUT' }}
@@ -96,12 +96,14 @@
                                     <span class="small" v-if="iAgregandoAlCarrito === 1 && iProductoId === producto.id"><i class="fas fa-circle-notch fa-spin"></i></span>
                                     <span v-else><i class="fas fa-shopping-cart"></i>&nbsp;{{ $lstLocalesTiendaListaProductos['Add to cart'] }}</span>
                                 </button>
-                                {{-- <div class="shield__container">
-                                    <div class="container__star"></div>
-                                </div> --}}
                             </div>
                         </div>
-                        <div class="col-6 col-sm-5 col-md-7 col-lg-8 text-right">
+                        <div class="col-6 col-sm-3 col-md-4 col-lg-4">
+                            <div class="badg  badge-danger badge-promocion-div text-center align-items-center" v-if="producto.promocion_vigente">
+                                <b>+@{{ producto.promocion_vigente.min }}__ @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO. __-@{{ producto.promocion_vigente.max }}</b>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-3 col-md-4 col-lg-4">
                             <a href="/carrito-compras" class="d-inline-block mt-2"><i class="fas fa-shopping-cart"></i> Ver carrito de compras</a>
                         </div>
                     </div>
@@ -158,9 +160,9 @@
                                                 <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
                                                     - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                                                 </span>
-                                                <div class="bg-danger badge-promocion position-absolute" v-if="producto.promocion_vigente">
-                                                    <b>@{{ producto.promocion_vigente.descripcion }}</b>
-                                                </div>
+                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
+                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
+                                                </span>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                                                     @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}

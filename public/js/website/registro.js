@@ -52,6 +52,13 @@ let vueRegistro = new Vue({
         ajaxWebsiteLocale().then(response => {
             let respuesta = response.data;
             $this.locale = respuesta.data.locale;
+
+            let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
+            let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
+
+            $this.lstCarritoCompras = lstCarritoCompras;
+            $this.guardarLstCarritoCompras();
+
         }).then(() => {
             $this.ajaxListarDatos();
         })
@@ -95,6 +102,9 @@ let vueRegistro = new Vue({
                     let respuesta = response.data;
                     this.lstUbigeo = respuesta.data.lstUbigeo;
                 })
-        }
+        },
+        guardarLstCarritoCompras: function () {
+            $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
+        },
     }
 });
