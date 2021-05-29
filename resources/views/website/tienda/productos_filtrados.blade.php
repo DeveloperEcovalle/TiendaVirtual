@@ -98,7 +98,7 @@
                                         <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                     </button>
                                 </span>
-                                    <input type="text" class="form-control text-center" :value="producto.cantidad" readonly>
+                                    <input type="text" class="form-control text-center" :value="producto.cantidad" readonly onkeypress="return isNumber(event)">
                                 <span class="input-group-append">
                                     <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
                                         <i class="fas fa-plus"></i>

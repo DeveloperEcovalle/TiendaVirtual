@@ -170,6 +170,10 @@ let vueCarritoCompras = new Vue({
             {
                 cant = parseInt('1');
             }
+            if(cant == 0)
+            {
+                cant = parseInt('1');
+            }
 
             if(cantidad != '')
             {
@@ -177,7 +181,7 @@ let vueCarritoCompras = new Vue({
                 let $this = this;
                 if(cant <= $this.lstCarritoCompras[i].producto.stock_actual)
                 {
-                    ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                    ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cant)
                         .then(response => {
                             let respuesta = response.data;
                             if (respuesta.result === result.success) {

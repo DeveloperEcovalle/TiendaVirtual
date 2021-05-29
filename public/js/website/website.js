@@ -43,6 +43,10 @@ $.ajaxSetup({
     }
 });
 
+function isNumber(e) {
+    return (e.charCode == 8 || e.charCode == 0 || e.charCode == 13) ? null : e.charCode >= 48 && e.charCode <= 57;
+}
+
 let sHtmlErrores = function (lstErrores) {
     let sHtmlMensaje = '';
     Object.values(lstErrores).forEach(lstError => {

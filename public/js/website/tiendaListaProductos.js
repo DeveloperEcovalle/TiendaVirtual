@@ -382,6 +382,11 @@ let vueTiendaListaProductos = new Vue({
                 cant = parseInt('1');
             }
 
+            if(cant == 0)
+            {
+                cant = parseInt('1');
+            }
+
             if(cantidad != '')
             {
                 let iProductoId = producto.id;

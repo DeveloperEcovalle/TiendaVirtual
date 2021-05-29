@@ -240,12 +240,13 @@ let vueTiendaProducto = new Vue({
         changeCantidad: function(producto)
         {
             var cantidad = $('#cantidad').val();
-            if(cant == '' || cant == null)
-            {
-                cant = 1;
-            }
             var cant = parseInt(cantidad);
             if(isNaN(cant))
+            {
+                cant = parseInt('1');
+            }
+
+            if(cant == 0)
             {
                 cant = parseInt('1');
             }

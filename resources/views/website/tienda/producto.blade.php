@@ -85,7 +85,7 @@
                                             <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                         </button>
                                     </span>
-                                    <input type="text" class="form-control text-center" :value="producto.cantidad" v-on:keyup="changeCantidad(producto)" :placeholder="producto.cantidad" id="cantidad">
+                                    <input type="text" class="form-control text-center" :value="producto.cantidad" v-on:keyup="changeCantidad(producto)" :placeholder="producto.cantidad" id="cantidad" onkeypress="return isNumber(event)">
                                     <span class="input-group-append">
                                         <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
                                             <i class="fas fa-plus"></i>
