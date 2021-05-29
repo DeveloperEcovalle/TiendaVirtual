@@ -242,7 +242,6 @@ let vueTiendaListaProductos = new Vue({
                 })
                 .then(() => $this.iCargandoProductos = 0);
         },
-
         ajaxAgregarAlCarrito: function (producto) {
             let $this = this;
             $this.iAgregandoAlCarrito = 1;
@@ -295,6 +294,139 @@ let vueTiendaListaProductos = new Vue({
                         $this.guardarLstCarritoCompras();
                     }
                 });
+        },
+
+        ajaxDisminuirCantidadProductoCarritoA: function (producto, i) {
+            let iProductoId = producto.id;
+            let $this = this;
+            ajaxWebsiteDisminuirCantidadProductoCarrito(iProductoId)
+                .then(response => {
+                    let respuesta = response.data;
+                    if (respuesta.result === result.success) {
+                        let detalle = $this.lstCarritoCompras[i];
+                        detalle.cantidad = detalle.cantidad - 1;
+                        detalle.producto.cantidad = detalle.cantidad;
+
+                        $this.guardarLstCarritoCompras($this.lstCarritoCompras);
+                    }
+                });
+        },
+        ajaxAumentarCantidadProductoCarritoA: function (producto, i) {
+            let iProductoId = producto.id;
+            let $this = this;
+            if(producto.cantidad + 1 === producto.stock_actual)
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info(producto.stock_actual + ' en stock.');
+
+                var cantidad = producto.stock_actual;
+                ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            producto.cantidad = cantidad;
+                            $this.actualizarLstProductos();
+
+                            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+                            let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
+                            detalle.cantidad = cantidad;
+                            detalle.producto.cantidad = cantidad;
+
+                            $this.guardarLstCarritoCompras();
+                        }
+                    });
+            }
+            else if(producto.cantidad + 1 < producto.stock_actual)
+            {
+                ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            let detalle = $this.lstCarritoCompras[i];
+                            producto.cantidad = producto.cantidad + 1; 
+                            detalle.cantidad = detalle.cantidad + 1;
+                            detalle.producto.cantidad = detalle.cantidad;
+                            $this.actualizarLstProductos();
+
+                            $this.guardarLstCarritoCompras();
+                        }
+                    });
+            }
+            else{
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
+            }
+        },
+        changeCantidad: function(producto,i){
+            var cantidad = $('#cantidad'+i.toString()).val();
+
+            var cant = parseInt(cantidad);
+            if(isNaN(cant))
+            {
+                cant = parseInt('1');
+            }
+
+            if(cantidad != '')
+            {
+                let iProductoId = producto.id;
+                let $this = this;
+                if(cant <= $this.lstCarritoCompras[i].producto.stock_actual)
+                {
+                    ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
+                        .then(response => {
+                            let respuesta = response.data;
+                            if (respuesta.result === result.success) {
+                                let detalle = $this.lstCarritoCompras[i];
+                                detalle.cantidad = cant;
+                                detalle.producto.cantidad = cant;
+                                //$this.actualizarLstProductos();
+        
+                                $this.guardarLstCarritoCompras();
+                            }
+                        });
+                }else{
+                    let cant_aux = $this.lstCarritoCompras[i].producto.stock_actual;
+                    ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cant_aux)
+                        .then(response => {
+                            let respuesta = response.data;
+                            if (respuesta.result === result.success) {
+                                let detalle = $this.lstCarritoCompras[i];
+                                detalle.cantidad = cant_aux;
+                                detalle.producto.cantidad = cant_aux;
+                                //$this.actualizarLstProductos();
+        
+                                $this.guardarLstCarritoCompras();
+                            }
+                        });
+                    toastr.clear();
+                    toastr.options = {
+                        iconClasses: {
+                            error: 'bg-danger',
+                            info: 'bg-info',
+                            success: 'bg-success',
+                            warning: 'bg-warning',
+                        },
+                    };
+                    toastr.error($this.lstCarritoCompras[i].producto.stock_actual +' en stock.');
+                    $('#cantidad'+i.toString()).val(cant_aux);
+                }                    
+            }
         },
 
         actualizarLstProductos: function () {

@@ -193,17 +193,17 @@ class Website extends Controller {
 
     public function ajaxAgregarAlCarrito(Request $request) {
         $session = $request->session();
-        if ($session->has('cliente')) {
+        /*if ($session->has('cliente')) {
             $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
 
-            // $detalle_carrito = new DetalleCarrito;
-            // $detalle_carrito->cliente_id = $cliente->id;
-            // $detalle_carrito->cantidad = 1;
-            // $detalle_carrito->producto_id = $producto_id;
-            // $detalle_carrito->fecha_reg = now()->toDateTimeString();
-            // $detalle_carrito->save();
-        }
+            $detalle_carrito = new DetalleCarrito;
+            $detalle_carrito->cliente_id = $cliente->id;
+            $detalle_carrito->cantidad = 1;
+            $detalle_carrito->producto_id = $producto_id;
+            $detalle_carrito->fecha_reg = now()->toDateTimeString();
+            $detalle_carrito->save();
+        }*/
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -213,8 +213,8 @@ class Website extends Controller {
 
     public function ajaxEliminarDelCarrito(Request $request) {
         $session = $request->session();
-        if ($session->has('cliente')) {
-            $cliente = $session->get('cliente');
+        /*if ($session->has('cliente')) {
+           $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
 
             $lstDetalleCarrito = DetalleCarrito::where('cliente_id', $cliente->id)->where('producto_id', $producto_id)->get();
@@ -224,7 +224,7 @@ class Website extends Controller {
             {
                 $detalle_carrito->delete();
             }
-        }
+        }*/
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -234,7 +234,7 @@ class Website extends Controller {
 
     public function ajaxDisminuirCantidadProductoCarrito(Request $request) {
         $session = $request->session();
-        if ($session->has('cliente')) {
+        /*if ($session->has('cliente')) {
             $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
 
@@ -247,7 +247,7 @@ class Website extends Controller {
             } else {
                 $detalle_carrito->save();
             }
-        }
+        }*/
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -257,7 +257,7 @@ class Website extends Controller {
 
     public function ajaxAumentarCantidadProductoCarrito(Request $request) {
         $session = $request->session();
-        if ($session->has('cliente')) {
+        /*if ($session->has('cliente')) {
             $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
 
@@ -266,7 +266,7 @@ class Website extends Controller {
 
             $detalle_carrito->cantidad = $detalle_carrito->cantidad + 1;
             $detalle_carrito->save();
-        }
+        }*/
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -276,7 +276,7 @@ class Website extends Controller {
 
     public function ajaxAumentarCantidadProductoCarritoCantidad(Request $request) {
         $session = $request->session();
-        if ($session->has('cliente')) {
+        /*if ($session->has('cliente')) {
             $cliente = $session->get('cliente');
             $producto_id = $request->get('iProductoId');
             $cantidad = $request->get('iCantidad');
@@ -286,7 +286,7 @@ class Website extends Controller {
 
             $detalle_carrito->cantidad = $detalle_carrito->cantidad + $cantidad;
             $detalle_carrito->save();
-        }
+        }*/
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;

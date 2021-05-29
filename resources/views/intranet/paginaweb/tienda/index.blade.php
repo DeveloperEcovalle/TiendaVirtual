@@ -56,6 +56,40 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-5">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Baner publicitario</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + sContenidoNuevoBaner + ')' }" v-if="nuevoBaner"></div>
+                                <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + pagina.ruta_baner_publicitario + ')' }" v-else></div>
+                                <form role="form" class="mt-4" id="frmEditarBaner" v-on:submit.prevent="ajaxActualizarBaner" v-cloak>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-3">Cambiar baner:</label>
+                                        <div class="col-md-9">
+                                            <div class="custom-file">
+                                                <input id="aImagenB" type="file" class="custom-file-input" name="baner_publicitario" v-on:change="cambiarBaner">
+                                                <label for="aImagenB" class="custom-file-label">@{{ sNombreNuevoBaner }}</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-3">Enlace baner: </label>
+                                        <div class="col-md-9">
+                                            <input type="text" class="form-control" name="enlace_de_baner" autocomplete="off" v-model="pagina.enlace_baner_publicitario">
+                                        </div>
+                                    </div>
+                                    <div class="form-group text-right mb-0">
+                                        <button type="submit" class="btn btn-primary" v-bind:disabled="iActualizandoBaner === 1">
+                                            <span v-if="iActualizandoBaner === 0">Guardar</span>
+                                            <span v-else><i class="fas fa-circle-notch fa-spin"></i> Por favor, espere...</span>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-12 col-md-6">
                         <div class="ibox">
                             <div class="ibox-title">

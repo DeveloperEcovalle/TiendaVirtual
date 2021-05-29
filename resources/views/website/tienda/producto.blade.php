@@ -35,7 +35,7 @@
                     <span class="badge badge-danger badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
                         - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                     </span>
-                    <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
+                    <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
                         +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
                     </span>
                     <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"

@@ -85,6 +85,12 @@
                             </div>
                         </div>
                     </form>
+                    <div class="py-5 py-lg-0">
+                        <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
+                            <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                        </a>
+                        <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                    </div>
                 </div>
 
                 <div class="col-lg-9">
@@ -141,6 +147,9 @@
                                             <div class="carousel-inner">
                                                 <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
                                                     - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
+                                                </span>
+                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
+                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
                                                 </span>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 90">
@@ -199,13 +208,13 @@
                                             <div v-else>
                                                 <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
                                                 <span class="input-group-prepend">
-                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarrito(producto)">
+                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto, i)">
                                                         <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                                     </button>
                                                 </span>
-                                                    <input type="text" class="form-control text-center" :value="producto.cantidad">
-                                                    <span class="input-group-append">
-                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
+                                                    <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i">
+                                                <span class="input-group-append">
+                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
                                                         <i class="fas fa-plus"></i>
                                                     </button>
                                                 </span>

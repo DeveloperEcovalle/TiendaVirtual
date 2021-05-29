@@ -518,6 +518,7 @@ Route::namespace('Intranet')->group(function () {
                         Route::prefix('/ajax')->group(function () {
                             Route::post('/listar', 'Tienda@ajaxListar');
                             Route::post('/actualizarImagenPortada', 'Tienda@ajaxActualizarImagenPortada');
+                            Route::post('/actualizarBaner', 'Tienda@ajaxActualizarBaner');
                             Route::post('/actualizarContenidoEspanol', 'Tienda@ajaxActualizarContenidoEspanol');
                             Route::post('/actualizarContenidoIngles', 'Tienda@ajaxActualizarContenidoIngles');
                         });

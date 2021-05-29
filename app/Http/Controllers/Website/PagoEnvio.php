@@ -131,24 +131,6 @@ class PagoEnvio extends Website
     public function ajaxCrearCargo(Request $request) {
         $respuesta = new Respuesta;
 
-        /*$sRutaComprobanteCityo = storage_path('app/public/comprobantes/10179123261-03-B001-614.xml');
-        $sRutaComprobanteEcovalle = storage_path('app/public/comprobantes/20482089594-03-B001-13.xml');
-
-        $xmlReader = new \XMLReader();
-
-        $xmlReader->open($sRutaComprobanteCityo);
-        $xmlReader->setParserProperty(\XMLReader::VALIDATE, true);
-        $xmlCityoValido = $xmlReader->isValid();
-
-        $xmlReader->open($sRutaComprobanteEcovalle);
-        $xmlReader->setParserProperty(\XMLReader::VALIDATE, true);
-        $xmlEcovalleValido = $xmlReader->isValid();
-
-        $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['xmlCityoValido' => $xmlCityoValido, 'xmlEcovalleValido' => $xmlEcovalleValido];
-
-        return response()->json($respuesta);*/
-
         $detalles = $request->get('detalles');
         if (strlen($detalles) === 0) {
             $respuesta->result = Result::WARNING;
@@ -156,15 +138,15 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        $SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
-        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
+        /*$SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
+        $culqi = new Culqi(array('api_key' => $SECRET_KEY));*/
 
         $token = $request->get('token');
         $amount = $request->get('amount');
         $email = $request->get('email');
         $cliente = $request->get('cliente');
 
-        $cargo = $culqi->Charges->create(
+        /*$cargo = $culqi->Charges->create(
             array(
                 'amount' => $amount, 
                 'currency_code' => 'PEN', 
@@ -176,8 +158,8 @@ class PagoEnvio extends Website
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
             return response()->json($respuesta);
-        }
-        //$cargo = '';
+        }*/
+        $cargo = '';
 
         Mail::send('website.email.confirm_pedido',compact("cliente"), function ($mail) use ($email) {
             $mail->subject('PEDIDO CONFIRMADO');
@@ -303,6 +285,7 @@ class PagoEnvio extends Website
                     $mail->from('website@ecovalle.pe','ECOVALLE');
                 });
             }
+            
             if($empresa->telefono_pedidos)
             {
                 $result = enviapedido($venta, $empresa->telefono_pedidos);
