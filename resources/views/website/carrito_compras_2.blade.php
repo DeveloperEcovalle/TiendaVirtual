@@ -137,6 +137,7 @@
                             <div class="p-4 bg-white">
                                 <p class="mb-0 text-muted">@{{ lstCarritoCompras.length }} detalles</p>
                                 <p class="mb-3 text-muted">@{{ iArticulos }} art&iacute;culos</p>
+                                <p class="mb-0 font-weight-bold">Descuento <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-0 font-weight-bold">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
                                 <a class="btn btn-block btn-ecovalle mt-3" href="/facturacion-envio">Ir  a Comprar</a>
                             </div>

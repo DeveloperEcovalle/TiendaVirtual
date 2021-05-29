@@ -173,6 +173,16 @@ let vueFacturacionEnvio = new Vue({
 
             return 0;
         },
+        fDescuento: function () {
+            let fDescuento = 0;
+            for (let detalle of this.lstCarritoCompras) {
+                let producto = detalle.producto;
+                let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                    (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                fDescuento += detalle.cantidad * fPromocion;
+            }
+            return Math.round(fDescuento * 10) / 10;
+        },
         fSubtotal: function () {
             let fSubtotal = 0;
             for (let detalle of this.lstCarritoCompras) {
