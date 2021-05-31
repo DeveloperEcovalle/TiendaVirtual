@@ -116,7 +116,7 @@ class IniciarSesion extends Controller {
        }
     }
 
-    public function ajaxSalir(Request $request)
+    public function ajaxSalir()
     {
         session()->forget('cliente');
         $respuesta = new Respuesta;
