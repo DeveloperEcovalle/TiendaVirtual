@@ -230,7 +230,7 @@ let ajaxSetLocale = locale => {
 };
 
 let ajaxSalir = function() {
-    let sUrl = '/iniciar-sesion/ajax/salir/';
+    let sUrl = '/iniciar-sesion/ajax/salir';
     axios.post(sUrl).then(response => {
         localStorage.removeItem('datosEnvio');
         localStorage.removeItem('datosRecojo');
