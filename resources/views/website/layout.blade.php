@@ -256,8 +256,10 @@
                                 <div class="col-11 col-md-4 mb-4 mb-md-0">
                                     <h5 class="h6 font-weight-bold text-uppercase titulo-subrayado-amarillo">{{ $lstLocales['user_area'] }}</h5>
                                     <ul>
+                                        @if(session()->has('cliente'))
                                         <li><a href="/mi-cuenta">{{ $lstLocales['My account'] }}</a></li>
                                         <li><a href="/mi-cuenta/actualizar-datos">{{ $lstLocales['Update profile'] }}</a></li>
+                                        @endif
                                         <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
