@@ -8,44 +8,6 @@
     </div>
 </div>
 <div class="p-4 bg-white border-top" id="layoutRight">
-    <h4 class="mt-0">Documentos</h4>
-    <form role="form" v-on:submit.prevent="agregarDocumento">
-        <div class="form-group mb-1 row" v-if="cliente.clientes_varios === 0">
-            <label class="col-md-3">
-                <select class="form-control" v-model="sTipoDocumentoCodigo" v-cloak>
-                    <option v-for="tipoDocumento in lstTiposDocumento" :value="tipoDocumento.codigo">@{{ tipoDocumento.abreviatura }}</option>
-                </select>
-            </label>
-            <div class="col-md-9">
-                <input type="text" class="form-control d-inline" v-model="sNumeroDocumento" placeholder="Número de documento" style="width: calc(100% - 50px)">
-                <button type="submit" class="btn btn-primary float-right">
-                    <i class="fas fa-arrow-down"></i>
-                </button>
-                <p class="mb-0" v-if="iConsultandoDocumento === 1" v-cloak><i class="fas fa-circle-notch fa-spin"></i> Consultando n&uacute;mero de documento</p>
-            </div>
-        </div>
-    </form>
-    <table class="table table-bordered" v-cloak>
-        <thead>
-            <tr>
-                <th>Tipo de documento</th>
-                <th class="text-center">N&uacute;mero</th>
-                <th class="text-center" v-if="cliente.clientes_varios === 0">Eliminar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(documento, i) in cliente.persona.documentos">
-                <td>@{{ documento.tipo_documento.abreviatura }}</td>
-                <td class="text-center">@{{ documento.numero }}</td>
-                <td class="text-center" v-if="cliente.clientes_varios === 0">
-                    <a href="#" v-on:click.prevent="eliminarDocumento(i)"><i class="text-danger fas fa-trash-alt"></i></a>
-                </td>
-            </tr>
-            <tr v-if="cliente.persona.documentos.length === 0">
-                <td :colspan="cliente.clientes_varios === 1 ? 2 : 3" class="text-center">No hay documentos agregados</td>
-            </tr>
-        </tbody>
-    </table>
     <form role="form" v-on:submit.prevent="ajaxActualizar" class="w-100" id="frmEditar">
         <h4 class="mt-4">Datos personales</h4>
         <div class="form-group row">
@@ -70,13 +32,13 @@
         <div class="form-group row">
             <label class="col-md-3 py-md-2">Correo</label>
             <div class="col-md-9">
-                <input type="email" class="form-control" name="correo" v-model="cliente.correo" autocomplete="off">
+                <input type="email" class="form-control" name="correo" v-model="cliente.email" autocomplete="off">
             </div>
         </div>
         <div class="form-group row">
             <label class="col-md-3 py-md-2">Tel&eacute;fono</label>
             <div class="col-md-9">
-                <input type="text" class="form-control" name="telefono" v-model="cliente.telefono" autocomplete="off">
+                <input type="text" class="form-control" name="telefono" v-model="cliente.persona.telefono" autocomplete="off">
             </div>
         </div>
         <div class="form-group row">
@@ -106,7 +68,7 @@
         <div class="form-group row">
             <label class="col-md-3 py-md-2">Direcci&oacute;n</label>
             <div class="col-md-9">
-                <input type="text" class="form-control" name="direccion" v-model="cliente.direccion" autocomplete="off">
+                <input type="text" class="form-control" name="direccion" v-model="cliente.persona.direccion" autocomplete="off">
             </div>
         </div>
         <div class="form-group text-right" v-if="cliente.clientes_varios === 0">

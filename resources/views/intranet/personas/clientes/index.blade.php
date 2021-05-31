@@ -33,7 +33,7 @@
                             <th class="bg-primary">Nombres / Raz&oacute;n social</th>
                             <th class="bg-primary">Apellido Paterno</th>
                             <th class="bg-primary">Apellido Materno</th>
-                            <th class="bg-primary">Documentos</th>
+                            <th class="bg-primary">Documento</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -41,9 +41,7 @@
                             <td>@{{ cliente.persona.nombres }}</td>
                             <td>@{{ cliente.persona.apellido_1 }}</td>
                             <td>@{{ cliente.persona.apellido_2 }}</td>
-                            <td>
-                                <p class="mb-0" v-for="documento in cliente.persona.documentos">@{{ documento.tipo_documento.abreviatura + ' ' + documento.numero }}</p>
-                            </td>
+                            <td>@{{ cliente.persona.tipo_documento }} @{{ cliente.persona.documento }}</td>
                         </tr>
                         <tr v-if="lstClientesFiltrados.length === 0" v-cloak>
                             <td colspan="4" class="text-center">No hay datos para mostrar</td>

@@ -74,7 +74,8 @@ class Clientes extends Intranet {
 
         $lstClientes = [];
         if ($permiso) {
-            $lstClientes = Cliente::with(['persona', 'persona.documentos', 'persona.documentos.tipo_documento', 'ubigeo'])->get();
+            // $lstClientes = Cliente::with(['persona', 'persona.documentos', 'persona.documentos.tipo_documento', 'ubigeo'])->get();
+            $lstClientes = Cliente::with(['persona', 'persona.ubigeo'])->get();
         }
 
         $respuesta = new Respuesta;
@@ -92,7 +93,7 @@ class Clientes extends Intranet {
         $lstTiposDocumento = [];
         $lstUbigeo = [];
         if ($permiso) {
-            $lstTiposDocumento = Sunat06TipoDocumento::where('cliente', 1)->orderBy('orden')->get();
+            //$lstTiposDocumento = Sunat06TipoDocumento::where('cliente', 1)->orderBy('orden')->get();
             $lstUbigeo = Ubigeo::all();
         }
 
@@ -229,7 +230,7 @@ class Clientes extends Intranet {
         $lstTiposDocumento = [];
         $lstUbigeo = [];
         if ($permiso) {
-            $lstTiposDocumento = Sunat06TipoDocumento::where('cliente', 1)->orderBy('orden')->get();
+            //$lstTiposDocumento = Sunat06TipoDocumento::where('cliente', 1)->orderBy('orden')->get();
             $lstUbigeo = Ubigeo::all();
         }
 

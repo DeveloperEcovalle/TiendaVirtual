@@ -54,7 +54,7 @@ let vueRegistro = new Vue({
             $this.locale = respuesta.data.locale;
 
             let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
-            let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
+            let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : this.lstCarritoCompras;
 
             $this.lstCarritoCompras = lstCarritoCompras;
             $this.guardarLstCarritoCompras();

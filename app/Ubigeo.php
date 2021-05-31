@@ -10,4 +10,8 @@ class Ubigeo extends Model {
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    public function personas() {
+        return $this->hasMany(Persona::class, 'ubigeo_id');
+    }
+
 }

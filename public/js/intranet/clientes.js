@@ -317,9 +317,10 @@ $(document).ready(function () {
 
                     let iIndice = $this.lstClientes.findIndex((cliente) => cliente.id === parseInt(iId));
                     let cliente = Object.assign({}, $this.lstClientes[iIndice]);
-                    let sDepartamentoSeleccionado = cliente.ubigeo ? cliente.ubigeo.departamento : '';
-                    let sProvinciaSeleccionada = cliente.ubigeo ? cliente.ubigeo.provincia : '';
-                    let sDistritoSeleccionado = cliente.ubigeo ? cliente.ubigeo.id : '';
+                    let sDepartamentoSeleccionado = cliente.persona.ubigeo ? cliente.persona.ubigeo.departamento : '';
+                    let sProvinciaSeleccionada = cliente.persona.ubigeo ? cliente.persona.ubigeo.provincia : '';
+                    let sDistritoSeleccionado = cliente.persona.ubigeo ? cliente.persona.ubigeo.id : '';
+                    console.log(cliente);
 
                     $('#panel').load('/intranet/app/personas/clientes/ajax/panelEditar', function () {
                         let vueEditar = new Vue({
@@ -386,7 +387,7 @@ $(document).ready(function () {
                                         let data = respuesta.data;
                                         $this.lstTiposDocumento = data.lstTiposDocumento;
                                         $this.lstUbigeo = data.lstUbigeo;
-                                        $this.sTipoDocumentoCodigo = data.lstTiposDocumento[0].codigo;
+                                       //$this.sTipoDocumentoCodigo = data.lstTiposDocumento[0].codigo;
                                     }
                                 });
                             },

@@ -13,4 +13,8 @@ class Persona extends Model {
     public function documentos() {
         return $this->hasMany(Documento::class, 'persona_id');
     }
+
+    public function ubigeo() {
+        return $this->belongsTo(Ubigeo::class, 'id');
+    }
 }
