@@ -15,6 +15,6 @@ class Persona extends Model {
     }
 
     public function ubigeo() {
-        return $this->belongsTo(Ubigeo::class, 'id');
+        return $this->belongsTo(Ubigeo::class, 'ubigeo_id');
     }
 }

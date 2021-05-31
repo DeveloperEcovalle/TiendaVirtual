@@ -5,6 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
+use App\Persona;
 use Illuminate\Support\Carbon;
 
 /*
@@ -780,5 +781,6 @@ Route::get('ruta', function () {
     // // Send a request
     // $result = file_get_contents($url, false, $options);
     // return $result;
-    return session()->get('cliente')->id;
+    $persona = Persona::find(1);
+    return $persona->ubigeo;
 });

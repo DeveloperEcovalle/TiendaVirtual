@@ -253,6 +253,11 @@ class PagoEnvio extends Website
             $i = 0;
             while($i < count($detalles))
             {
+                /*-------------------*/
+                $producto_update = Producto::find($detalles[$i]->id);
+                $producto_update->stock_actual  = $producto_update->stock_actual - $detalles[$i]->cantidad;
+                $producto_update->update();
+                /*-------------------*/
                 $producto = Producto::find($detalles[$i]->id);
                 $producto->cantidad = $detalles[$i]->cantidad;
                 $fPromocion = $producto->promocion_vigente === null ? 0.00 :
