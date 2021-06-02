@@ -31,35 +31,39 @@
     <section class="py-4" v-if="iCargando === 0">
         <div class="container-xl pb-4" v-html="locale === 'es' ? pagina.contenido_espanol : pagina.contenido_ingles"></div>
     </section>
-    <div class="row">
-        <div class="col-lg-9">
-            <div id="mapa" style="width:100%;height:500px;">
+    <div class="container-xl pb-4">
+        <div class="row">
+            <div class="col-lg-9">
+                <div id="mapa" style="width:100%;height:500px;">
 
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="input-group">
-                <input type="text" class="form-control" v-model="search" style="width:300px!important;" placeholder="Buscar cliente">
-                <div class="input-group-append">
-                  <button class="btn" style="background-color:#02793C;" type="button">
-                    <i class="fa fa-search" style="color:white;"></i>
-                  </button>
                 </div>
-              </div>
-            <br>
-            <div class="contenedor_gps websitegps" >
-                <table class="table table-bordered table-hover">
-                    <tr v-for="post in filteredList">
-                        <td style="border:none;cursor: pointer;">
-                            <i class="fa fa-arrow-circle-o-right" aria-hidden="true" v-on:click="generarRuta(post.nombre)"></i>
-                        </td>
-                        <td style="border:none;font-size: 12px;" v-on:click="vermarcador(post.nombre)">
-                            @{{ post . nombre }}
-                        </td>
-                    </tr>
-                </table>
             </div>
+            <div class="col-lg-3">
+                <div class="input-group">
+                    <input type="text" class="form-control" v-model="search"
+                        placeholder="Buscar cliente">
+                    <div class="input-group-append">
+                        <button class="btn" style="background-color:#02793C;" type="button">
+                            <i class="fa fa-search" style="color:white;"></i>
+                        </button>
+                    </div>
+                </div>
+                <br>
+                <div class="contenedor_gps websitegps">
+                    <table class="table table-bordered table-hover">
+                        <tr v-for="post in filteredList">
+                            <td style="border:none;cursor: pointer;">
+                                <i class="fa fa-arrow-circle-o-right" aria-hidden="true"
+                                    v-on:click="generarRuta(post.nombre)"></i>
+                            </td>
+                            <td style="border:none;font-size: 12px;" v-on:click="vermarcador(post.nombre)">
+                                @{{ post . nombre }}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
 
+            </div>
         </div>
     </div>
 
