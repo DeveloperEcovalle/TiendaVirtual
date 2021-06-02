@@ -1,16 +1,38 @@
+var map;
+var markers = [];
 let vueSocios = new Vue({
     el: "#content",
     data: {
         locale: "es",
+        search: "",
         lstCarritoCompras: [],
-
+        markersroute:[],
+        ruta:[],
+        lstclientes: [],
         iCargando: 1,
         pagina: {
             ruta_imagen_portada: "",
         },
-
         iEnviandoMensaje: 0,
         respuesta: null,
+    },
+    computed: {
+        filteredList() {
+            var gps_cliente = this.lstclientes.filter((post) => {
+                return post.nombre
+                    .toLowerCase()
+                    .includes(this.search.toLowerCase());
+            });
+            if (gps_cliente.length <= 10) {
+                $(".contenedor_gps").css(
+                    "height",
+                    gps_cliente.length * 30 + "px"
+                );
+            } else {
+                $(".contenedor_gps").css("height", "400px");
+            }
+            return gps_cliente;
+        },
     },
     mounted: function () {
         let $this = this;
@@ -52,7 +74,7 @@ let vueSocios = new Vue({
                     elementType: "geometry.stroke",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -61,7 +83,7 @@ let vueSocios = new Vue({
                     elementType: "geometry.stroke",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -73,7 +95,7 @@ let vueSocios = new Vue({
                             visibility: "on",
                         },
                         {
-                            color: "#F2F2F2",
+                            color: "#F8F9FA",
                         },
                     ],
                 },
@@ -82,7 +104,7 @@ let vueSocios = new Vue({
                     elementType: "labels",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -91,7 +113,7 @@ let vueSocios = new Vue({
                     elementType: "all",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -100,10 +122,7 @@ let vueSocios = new Vue({
                     elementType: "all",
                     stylers: [
                         {
-                            color: "#FF0000",
-                        },
-                        {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -112,7 +131,7 @@ let vueSocios = new Vue({
                     elementType: "labels",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -121,7 +140,7 @@ let vueSocios = new Vue({
                     elementType: "labels.icon",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -130,7 +149,7 @@ let vueSocios = new Vue({
                     elementType: "geometry",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -139,7 +158,7 @@ let vueSocios = new Vue({
                     elementType: "labels.text",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -148,7 +167,7 @@ let vueSocios = new Vue({
                     elementType: "geometry",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -157,7 +176,7 @@ let vueSocios = new Vue({
                     elementType: "labels",
                     stylers: [
                         {
-                            visibility: "off",
+                            visibility: "on",
                         },
                     ],
                 },
@@ -166,7 +185,7 @@ let vueSocios = new Vue({
                     elementType: "geometry",
                     stylers: [
                         {
-                            color: "#F2F2F2",
+                            // color: "#F2F2F2",
                         },
                     ],
                 },
@@ -182,47 +201,178 @@ let vueSocios = new Vue({
             ],
         };
         var mapElement = document.getElementById("mapa");
-        var map = new google.maps.Map(mapElement, mapOptions);
-        const image = {
-            url: "https://erpecovalle.ga/img/gps_ecovalle.png",
-            // This marker is 20 pixels wide by 32 pixels high.
-            scaledSize: new google.maps.Size(40, 40),
-            // The origin for this image is (0, 0).
-        };
+        map = new google.maps.Map(mapElement, mapOptions);
+
+        var datos;
         axios
             .get("https://erpecovalle.ga/api/clientes/direccion")
             .then(function (response) {
-                var datos = response.data;
-
-                for (var i = 0; i < datos.length; i++) {
-                    if (datos[i].ver == 1) {
-                        marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(
-                                datos[i].latitud,
-                                datos[i].longitud
-                            ),
-                            map: map,
-                            icon: image,
-                        });
-                    }
-                }
-            });
+                datos = response.data;
+            })
+            .then(() => this.clientes(datos));
 
         //setting overlay color, etc.
         map.data.setStyle({
-            fillColor: "white",
+            fillColor: "#F8F9FA",
             strokeWeight: 1,
             strokeColor: "#EE9D32",
             fillOpacity: 1,
         });
 
         map.data.loadGeoJson("https://erpecovalle.ga/api/mapa/peru");
+        /* $.getJSON("/Json/departamentos.json", function(json) {
+            map.data.addGeoJson(json);
 
+        });*/
+        /* var directionsDisplay = new google.maps.DirectionsRenderer({'draggable': false});
+            var directionsService = new google.maps.DirectionsService();
+         this.displayRoute("DRIVING", new google.maps.LatLng(-7.418596,-79.503464),
+                                  new google.maps.LatLng(-7.418032,-79.510502),directionsService,directionsDisplay);
         map.data.loadGeoJson(
-            "https://ecovalle.pe/Json/departamentos.json"
-        );
+                departamentos);*/
     },
     methods: {
+        eliminarRuta: function()
+        {
+            for (let i = 0; i < this.ruta.length; i++) {
+                    this.ruta[i].direction.setMap(null);
+            }
+            for (let j = 0; j < this.markersroute.length; j++) {
+                    this.markersroute[j].marker.setMap(null);
+            }
+        },
+        generarRuta: function (nombre) {
+            $this = this;
+            var posicion= -1;
+            for (let t = 0; t < markers.length; t++) {
+                if (markers[t].nombre == nombre) {
+                    posicion= t;
+                }
+            }
+
+            if (navigator.geolocation) {
+                const image = {
+                    url: "http://127.0.0.1:8000/img/gpa_red_ecovalle.png",
+                    scaledSize: new google.maps.Size(40, 40),
+                };
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    localStorage.latitud=position.coords.latitude;
+                    localStorage.longitud=position.coords.longitude;
+                    $this.eliminarRuta();
+                    var directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true
+                    });
+                    var directionsService = new google.maps.DirectionsService();
+                    $this.ruta.push({direction: directionsDisplay});
+                    $this.displayRoute(
+                        "DRIVING",
+                        new google.maps.LatLng(localStorage.latitud,localStorage.longitud),
+                        new google.maps.LatLng(markers[posicion].marker.getPosition().lat(),markers[posicion].marker.getPosition().lng()),
+                        directionsService,
+                        directionsDisplay
+                    );
+                });
+            } else {
+                console.log("sin permisos");
+            }
+        },
+        vermarcador: function (nombre) {
+            var position = -1;
+            for (let t = 0; t < markers.length; t++) {
+                if (markers[t].nombre == nombre) {
+                    position = t;
+                }
+            }
+            var contentString =
+                "<div>Nombre del Cliente:" + nombre + "<br></div>";
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString,
+                width: 192,
+                height: 100,
+            });
+            map.setCenter(markers[position].marker.getPosition());
+            map.setZoom(18);
+            infowindow.open(map, markers[position].marker);
+        },
+        clientes: function (datos) {
+            const image = {
+                url: "https://erpecovalle.ga/img/gps_ecovalle.png",
+                // This marker is 20 pixels wide by 32 pixels high.
+                scaledSize: new google.maps.Size(40, 40),
+                // The origin for this image is (0, 0).
+            };
+            var data = [];
+            for (var i = 0; i < datos.length; i++) {
+                if (datos[i].ver == 1) {
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(
+                            datos[i].latitud,
+                            datos[i].longitud
+                        ),
+                        map: map,
+                        icon: image,
+                    });
+                    data.push({
+                        direccion: datos[i].direccion,
+                        lat: datos[i].latitud,
+                        lng: datos[i].longitud,
+                        nombre: datos[i].nombre,
+                    });
+                    markers.push({ marker: marker, nombre: datos[i].nombre });
+                }
+            }
+            this.lstclientes = data;
+        },
+        displayRoute(
+            travel_mode,
+            origin,
+            destination,
+            directionsService,
+            directionsDisplay
+        ) {
+            $this=this;
+            directionsService.route(
+                {
+                    origin: origin,
+                    destination: destination,
+                    travelMode: travel_mode,
+                    avoidTolls: true,
+                },
+                function (response, status) {
+                    if (status === "OK") {
+
+                        var leg = response.routes[ 0 ].legs[ 0 ];
+                        directionsDisplay.setMap(map);
+                        directionsDisplay.setDirections(response);
+                        $this.drawnmarkers(leg)
+                    } else {
+                        directionsDisplay.setMap(null);
+                        directionsDisplay.setDirections(null);
+                        alert("Could not display directions due to: " + status);
+                    }
+                }
+            );
+        },
+        drawnmarkers:function(position){
+            const imginicio= {
+                url: "http://127.0.0.1:8000/img/inicioecovalle.png",
+                scaledSize: new google.maps.Size(50, 50),
+            };
+            const imgfinal = {
+                url: "http://127.0.0.1:8000/img/finalecovalle.png",
+                scaledSize: new google.maps.Size(50, 50),
+            };
+            markerinicio = new google.maps.Marker({
+                position: position.start_location,
+                map: map,
+                icon: imginicio})
+            markerfinal= new google.maps.Marker({
+                        position: position.end_location,
+                        map: map,
+                        icon: imgfinal})
+                        this.markersroute.push({marker:markerinicio})
+                        this.markersroute.push({marker:markerfinal});
+
+        },
         ajaxSetLocale: (locale) => ajaxSetLocale(locale),
         ajaxListar: function () {
             let $this = this;
