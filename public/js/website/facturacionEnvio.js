@@ -25,7 +25,6 @@ let vueFacturacionEnvio = new Vue({
             sDocumento: '',
             sNombres: '',
             sApellidos: '',
-            sRazon: '',
             sEmail: '',
             sTelefono: '',
             sDepartamento: '',
@@ -142,7 +141,7 @@ let vueFacturacionEnvio = new Vue({
             return this.datosEnvio.sTipoDoc == 'DNI' && this.datosEnvio.sNombres.trim().length > 0 && this.datosEnvio.sApellidos.trim().length > 0;
         },
         bVerificaRuc: function(){
-            return this.datosEnvio.sTipoDoc == 'RUC' && this.datosEnvio.sRazon.trim().length > 0
+            return this.datosEnvio.sTipoDoc == 'RUC' && this.datosEnvio.sNombres.trim().length > 0
         },
         fDelivery: function () {
             if(this.sNNacional == 0)
@@ -422,26 +421,18 @@ let vueFacturacionEnvio = new Vue({
                     $('#documento').removeAttr('maxlength','11');
                     $('#documento').attr('minlength','8');
                     $('#documento').attr('maxlength','8');
-                    $('#razon_social').attr('required',false);
                     $('#nombres').attr('required',true);
                     $('#apellidos').attr('required',true);
                     this.datosEnvio.sDocumento = '';
-                    this.datosEnvio.sNombres = '';
-                    this.datosEnvio.sApellidos = '';
-                    this.datosEnvio.sRazon = '';
                     break;
                 case 'RUC':
                     $('#documento').removeAttr('minlength','8');
                     $('#documento').removeAttr('maxlength','8');
                     $('#documento').attr('minlength','11');
                     $('#documento').attr('maxlength','11');
-                    $('#razon_social').attr('required',true);
-                    $('#nombres').attr('required',false);
+                    $('#nombres').attr('required',true);
                     $('#apellidos').attr('required',false);
                     this.datosEnvio.sDocumento = '';
-                    this.datosEnvio.sNombres = '';
-                    this.datosEnvio.sApellidos = '';
-                    this.datosEnvio.sRazon = '';
                     break;
                 default:
                     $('#documento').removeAttr('minlength','11');
@@ -449,9 +440,6 @@ let vueFacturacionEnvio = new Vue({
                     $('#documento').attr('minlength','8');
                     $('#documento').attr('maxlength','8');
                     this.datosEnvio.sDocumento = '';
-                    this.datosEnvio.sNombres = '';
-                    this.datosEnvio.sApellidos = '';
-                    this.datosEnvio.sRazon = '';
                     break;
             }
         },
@@ -462,11 +450,14 @@ let vueFacturacionEnvio = new Vue({
                     $('#rdocumento').removeAttr('maxlength','11');
                     $('#rdocumento').attr('minlength','8');
                     $('#rdocumento').attr('maxlength','8');
-                    $('#d').attr('required',true);
-                    $('#rapellidos').attr('required',true);
                     this.datosRecojo.sDocumento = '';
-                    this.datosRecojo.sNombres = '';
-                    this.datosRecojo.sApellidos = '';
+                    break;
+                case 'RUC':
+                    $('#rdocumento').removeAttr('minlength','8');
+                    $('#rdocumento').removeAttr('maxlength','8');
+                    $('#rdocumento').attr('minlength','11');
+                    $('#rdocumento').attr('maxlength','11');
+                    this.datosRecojo.sDocumento = '';
                     break;
                 default:
                     $('#rdocumento').removeAttr('minlength','11');
@@ -474,8 +465,6 @@ let vueFacturacionEnvio = new Vue({
                     $('#rdocumento').attr('minlength','8');
                     $('#rdocumento').attr('maxlength','8');
                     this.datosRecojo.sDocumento = '';
-                    this.datosRecojo.sNombres = '';
-                    this.datosRecojo.sApellidos = '';
                     break;
             }
         },
@@ -487,17 +476,19 @@ let vueFacturacionEnvio = new Vue({
                     $('#ddocumento').attr('minlength','8');
                     $('#ddocumento').attr('maxlength','8');
                     this.datosDelivery.sDocumento = '';
-                    this.datosDelivery.sNombres = '';
-                    this.datosDelivery.sApellidos = '';
                     break;
+                case 'DNI':
+                    $('#ddocumento').removeAttr('minlength','8');
+                    $('#ddocumento').removeAttr('maxlength','8');
+                    $('#ddocumento').attr('minlength','11');
+                    $('#ddocumento').attr('maxlength','11');
+                    this.datosDelivery.sDocumento = '';
                 default:
                     $('#ddocumento').removeAttr('minlength','11');
                     $('#ddocumento').removeAttr('maxlength','11');
                     $('#ddocumento').attr('minlength','8');
                     $('#ddocumento').attr('maxlength','8');
                     this.datosDelivery.sDocumento = '';
-                    this.datosDelivery.sNombres = '';
-                    this.datosDelivery.sApellidos = '';
                     break;
             }
         },
@@ -545,11 +536,11 @@ let vueFacturacionEnvio = new Vue({
                             }
                             if(this.datosEnvio.sTipoDoc == 'RUC')
                             {
-                                this.datosEnvio.sRazon = respuesta.data.razonSocial;
-                                this.datosEnvio.sDepartamento = respuesta.data.departamento;
+                                this.datosEnvio.sNombres = respuesta.data.razonSocial;
+                                /*this.datosEnvio.sDepartamento = respuesta.data.departamento;
                                 this.datosEnvio.sProvincia = respuesta.data.provincia;
                                 this.datosEnvio.sDistrito = respuesta.data.distrito;
-                                this.datosEnvio.sDireccion = respuesta.data.direccion;
+                                this.datosEnvio.sDireccion = respuesta.data.direccion;*/
                             }
                             if(this.datosEnvio.sTipoDoc == '')
                             {
@@ -630,6 +621,10 @@ let vueFacturacionEnvio = new Vue({
                                 this.datosRecojo.sNombres = respuesta.data.nombres;
                                 this.datosRecojo.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
                             }
+                            if(this.datosRecojo.rTipoDoc == 'RUC')
+                            {
+                                this.datosRecojo.sNombres = respuesta.data.razonSocial;
+                            }
                             if(this.datosRecojo.rTipoDoc == '')
                             {
                                 toastr.clear();
@@ -708,6 +703,10 @@ let vueFacturacionEnvio = new Vue({
                             {
                                 this.datosDelivery.sNombres = respuesta.data.nombres;
                                 this.datosDelivery.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
+                            }
+                            if(this.datosDelivery.dTipoDoc == 'RUC')
+                            {
+                                this.datosDelivery.sNombres = respuesta.data.razonSocial;
                             }
                             if(this.datosDelivery.dTipoDoc == '')
                             {

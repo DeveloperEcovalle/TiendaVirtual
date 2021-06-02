@@ -97,6 +97,7 @@ let vueCarritoCompras = new Vue({
                 });
         },
         ajaxAumentarCantidadProductoCarrito: function (producto, i) {
+            console.log(i);
             let iProductoId = producto.id;
             let $this = this;
             if(producto.cantidad + 1 === producto.stock_actual)

@@ -186,7 +186,7 @@ let ajaxWebsiteAgregarAlCarrito = function (producto, actualizarLstProductos, ls
             producto.cantidad = 1;
             actualizarLstProductos();
 
-            let detalle = {cliente_id: null, cantidad: 1, producto_id: producto.id, producto: producto, control_max: 1, control_min: 1};
+            let detalle = {cliente_id: null, cantidad: 1, producto_id: producto.id, producto: producto};
             lstCarritoCompras.push(detalle);
 
             guardarLstCarritoCompras();

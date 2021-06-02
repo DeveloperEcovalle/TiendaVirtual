@@ -266,4 +266,37 @@ class MiCuenta extends Website
             return response()->json($respuesta);
         }
     }
+
+    public function ajaxListarPanelOrders(){
+        return view('website.micuenta.panel_orders');
+    }
+
+    public function ajaxListarOrders(){
+        $respuesta = new Respuesta();
+        $lstOrders = [];
+        $lstOrders = session('cliente')->compras;
+        foreach($lstOrders as $compra)
+        {
+            foreach($compra->detalles as $detalle)
+            {
+                $detalle->producto;
+            }
+        }
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = array('lstOrders' => $lstOrders);
+        return response()->json($respuesta);
+
+
+    }
+
+    public function ajaxDownload($codigo)
+    {
+        $ruta = public_path().'/storage/pedidos/'.$codigo.'.pdf';
+        return response()->download($ruta);
+    }
+
+    public function ajaxListarPanelShow(){
+        return view('website.micuenta.panel_show');
+    }
 }

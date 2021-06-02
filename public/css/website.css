@@ -209,6 +209,10 @@ strong{
     border: none;
 }
 
+.table-hover tbody tr:hover, .table tbody tr.selected {
+    background-color: #CCE6F4;
+}
+
 .panel-atributo-ecovalle > .img-atributo-ecovalle.hover {
     display: none;
 }

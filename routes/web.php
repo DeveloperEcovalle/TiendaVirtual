@@ -171,6 +171,12 @@ Route::middleware([Locale::class])->group(function () {
 
                 Route::get('/panelAddress', 'MiCuenta@ajaxListarPanelAddress');
                 Route::post('/actualizarAddress', 'MiCuenta@ajaxActualizarAddress');
+
+                Route::get('/panelOrders', 'MiCuenta@ajaxListarPanelOrders');
+                Route::get('/listarOrders', 'MiCuenta@ajaxListarOrders');
+                Route::get('/download/{codigo}', 'MiCuenta@ajaxDownload');
+
+                Route::get('/panelShow', 'MiCuenta@ajaxListarPanelShow');
             });
         });
 
@@ -795,7 +801,13 @@ Route::get('ruta', function () {
     // // Send a request
     // $result = file_get_contents($url, false, $options);
     // return $result;
-    $persona = Persona::find(1);
-    $persona->ubigeo;
-    return session('cliente')->compras;
+    $compras = session('cliente')->compras;
+    foreach($compras as $compra)
+    {
+        foreach($compra->detalles as $detalle)
+        {
+            $detalle->producto;
+        }
+    }
+    return $compras;
 });

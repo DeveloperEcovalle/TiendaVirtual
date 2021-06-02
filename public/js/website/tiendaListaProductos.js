@@ -303,17 +303,24 @@ let vueTiendaListaProductos = new Vue({
                 .then(response => {
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
-                        let detalle = $this.lstCarritoCompras[i];
+                        producto.cantidad = producto.cantidad - 1;
+                        $this.actualizarLstProductos();
+                        let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
+                        let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                         detalle.cantidad = detalle.cantidad - 1;
                         detalle.producto.cantidad = detalle.cantidad;
+                        if (detalle.cantidad === 0) {
+                            $this.lstCarritoCompras.splice(iIndiceDetalleCarrito, 1);
+                        }
 
                         $this.guardarLstCarritoCompras($this.lstCarritoCompras);
                     }
                 });
         },
         ajaxAumentarCantidadProductoCarritoA: function (producto, i) {
-            let iProductoId = producto.id;
             let $this = this;
+            let iProductoId = producto.id;
+            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
             if(producto.cantidad + 1 === producto.stock_actual)
             {
                 toastr.clear();
@@ -335,7 +342,6 @@ let vueTiendaListaProductos = new Vue({
                             producto.cantidad = cantidad;
                             $this.actualizarLstProductos();
 
-                            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
                             let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                             detalle.cantidad = cantidad;
                             detalle.producto.cantidad = cantidad;
@@ -350,7 +356,7 @@ let vueTiendaListaProductos = new Vue({
                     .then(response => {
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
-                            let detalle = $this.lstCarritoCompras[i];
+                            let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                             producto.cantidad = producto.cantidad + 1; 
                             detalle.cantidad = detalle.cantidad + 1;
                             detalle.producto.cantidad = detalle.cantidad;
@@ -370,12 +376,14 @@ let vueTiendaListaProductos = new Vue({
                         warning: 'bg-warning',
                     },
                 };
-                toastr.error($this.lstCarritoCompras[i].producto.stock_actual + ' en stock.');
+                toastr.error($this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual + ' en stock.');
             }
         },
         changeCantidad: function(producto,i){
+            let $this = this;
+            let iProductoId = producto.id;
+            let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
             var cantidad = $('#cantidad'+i.toString()).val();
-
             var cant = parseInt(cantidad);
             if(isNaN(cant))
             {
@@ -389,15 +397,13 @@ let vueTiendaListaProductos = new Vue({
 
             if(cantidad != '')
             {
-                let iProductoId = producto.id;
-                let $this = this;
-                if(cant <= $this.lstCarritoCompras[i].producto.stock_actual)
+                if(cant <= $this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual)
                 {
                     ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
                         .then(response => {
                             let respuesta = response.data;
                             if (respuesta.result === result.success) {
-                                let detalle = $this.lstCarritoCompras[i];
+                                let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                                 detalle.cantidad = cant;
                                 detalle.producto.cantidad = cant;
                                 //$this.actualizarLstProductos();
@@ -406,12 +412,12 @@ let vueTiendaListaProductos = new Vue({
                             }
                         });
                 }else{
-                    let cant_aux = $this.lstCarritoCompras[i].producto.stock_actual;
+                    let cant_aux = $this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual;
                     ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cant_aux)
                         .then(response => {
                             let respuesta = response.data;
                             if (respuesta.result === result.success) {
-                                let detalle = $this.lstCarritoCompras[i];
+                                let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                                 detalle.cantidad = cant_aux;
                                 detalle.producto.cantidad = cant_aux;
                                 //$this.actualizarLstProductos();
@@ -428,7 +434,7 @@ let vueTiendaListaProductos = new Vue({
                             warning: 'bg-warning',
                         },
                     };
-                    toastr.error($this.lstCarritoCompras[i].producto.stock_actual +' en stock.');
+                    toastr.error($this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual +' en stock.');
                     $('#cantidad'+i.toString()).val(cant_aux);
                 }                    
             }

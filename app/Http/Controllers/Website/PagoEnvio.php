@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Cliente;
 use App\Compra;
 use App\DetalleCompra;
 use Illuminate\Http\Request;
@@ -138,7 +139,7 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        /*$SECRET_KEY = "sk_test_d6a0afc0096d705a"; //sk_test_yE35C4w9LPOqh1qp
+        /*$SECRET_KEY = "sk_test_DDIXikjr5xQLViGo"; //sk_test_yE35C4w9LPOqh1qp
         $culqi = new Culqi(array('api_key' => $SECRET_KEY));*/
 
         $token = $request->get('token');
@@ -237,6 +238,7 @@ class PagoEnvio extends Website
             $venta->update();
 
             $detalles = json_decode($detalles,false);
+            $fDescuento = 0;
             $cont = 0;
             while($cont < count($detalles))
             {
@@ -244,9 +246,23 @@ class PagoEnvio extends Website
                 $detalle->compra_id = $venta->id;
                 $detalle->producto_id = $detalles[$cont]->id;
                 $detalle->cantidad = $detalles[$cont]->cantidad;
+                /*----------------------------------*/
+                $producto = Producto::find($detalles[$cont]->id);
+                $fPromocion = $producto->promocion_vigente === null ? 0.00 :
+                    ($detalles[$cont]->cantidad >= $producto->promocion_vigente->min && $detalles[$cont]->cantidad <= $producto->promocion_vigente->max ? ($producto->promocion_vigente->porcentaje ? (($producto->precio_actual->monto * $producto->promocion_vigente->porcentaje) / 100) : ($producto->promocion_vigente->monto)) : 0.00);
+                $fPrecio = ($producto->oferta_vigente === null ? $producto->precio_actual->monto :
+                    ($producto->oferta_vigente->porcentaje ? ($producto->precio_actual->monto * (100 - $producto->oferta_vigente->porcentaje) / 100) : ($producto->precio_actual->monto - $producto->oferta_vigente->monto)));
+                $detalle->precio_actual = $producto->precio_actual->monto;
+                $detalle->precio_venta = number_format(round(($fPrecio * 10) / 10, 1), 2);
+                $detalle->promocion = number_format(round(($fPromocion * 10) / 10, 1), 2);
+                 /*----------------------------------*/
                 $detalle->save();
+                $fDescuento = $fDescuento + ($fPromocion * $detalles[$cont]->cantidad);
                 $cont = $cont + 1;
             }
+
+            $venta->descuento = number_format(round(($fDescuento * 10) / 10, 1), 2);
+            $venta->update();
 
             //-------ENVÍO DE CORREO PEDIDO---------
             $carrito = array();
@@ -297,6 +313,13 @@ class PagoEnvio extends Website
             }
 
             //-----ENVÍO DE CORREO PEDIDO-----
+
+            //-----ACTUALIZAR SESSION CLIENTE
+
+            $cliente = Cliente::find(session('cliente')->id);
+            session()->put('cliente', $cliente);
+
+            //-----ACTUALIZAR SESSION CLIENTE
 
             DB::commit();
 

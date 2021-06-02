@@ -18,6 +18,10 @@ class Cliente extends Model {
         return $this->belongsTo(Ubigeo::class, 'ubigeo_id');
     }
 
+    public function compras() {
+        return $this->hasMany(Compra::class, 'cliente_id');
+    }
+
     public function detalles_carrito() {
         return $this->hasMany(DetalleCarrito::class, 'cliente_id');
     }

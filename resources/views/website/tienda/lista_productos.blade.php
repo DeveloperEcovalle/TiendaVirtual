@@ -214,7 +214,7 @@
                                                 </span>
                                                     <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i" onkeypress="return isNumber(event)">
                                                 <span class="input-group-append">
-                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
+                                                    <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
                                                         <i class="fas fa-plus"></i>
                                                     </button>
                                                 </span>

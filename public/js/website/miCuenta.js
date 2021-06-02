@@ -74,7 +74,7 @@ let vueMiCuentaLista = new Vue({
                     break;
                 }
                 case 3: {
-                    $this.panelOrders(iId);
+                    $this.panelOrders();
                     break;
                 }
                 default:{
@@ -278,8 +278,47 @@ let vueMiCuentaLista = new Vue({
                 let vueOrders = new Vue({
                     el: '#panel',
                     data: {
+                        iCargandoOrders: 0,
+                        sBuscar: '',
+                        iIdSeleccionado: 0,
+                        lstOrders: [],
+                    },
+                    computed: {
+                        lstOrdersFiltrado: function () {
+                            return this.lstOrders.filter(order =>
+                                order.codigo.includes(this.sBuscar)
+                            );
+                        },
+                    },
+                    mounted: function(){
+                        let $this = this;
+                        $this.ajaxListarDatos();
                     },
                     methods: {
+                        ajaxListarDatos: function(){
+                            this.iCargandoOrders = 1;
+                            axios.get('/mi-cuenta/ajax/listarOrders')
+                                .then(response => {
+                                    let respuesta = response.data;
+                                    console.log(respuesta);
+                                    this.lstOrders = respuesta.data.lstOrders;
+                                }).then(() => this.iCargandoOrders = 0);
+                        },
+                        panelShow: function(iId){
+                            $('#pedido').load('/mi-cuenta/ajax/panelShow', function () {
+
+                                let iIndice = vueOrders.lstOrders.findIndex((order) => order.id === parseInt(iId));
+                                let order = Object.assign({}, vueOrders.lstOrders[iIndice]);
+                                let vueShow = new Vue({
+                                    el: '#pedido',
+                                    data: {
+                                        order: order,
+                                    },
+                                });
+                                $('#modalOrder').modal('show');
+                            });
+                            this.iIdSeleccionado = iId;
+                        }
                     }
                 });
                 setTimeout(() => {

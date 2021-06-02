@@ -108,14 +108,14 @@
                                 </div>
                                 @endif
                                 <div class="row" v-else>
-                                    <div v-if="datosEnvio.sNombres != ''" class="col-12">
+                                    <div v-if="datosEnvio.sTipoDoc === 'DNI'" class="col-12">
                                         <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosEnvio.sNombres + ' ' + datosEnvio.sApellidos + ' ' }}</p>
                                     </div>
                                     <div v-else class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosEnvio.sRazon}}</p>
+                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosEnvio.sNombres}}</p>
                                     </div>
                                     <div class="col-12">
-                                        <p class="mb-0"><b>Direcci&oacute;n: </b>@{{ datosEnvio.sDireccion + ', ' + datosEnvio.sDistrito + ', ' + datosEnvio.sProvincia + ', ' + datosEnvio.sDepartamento }}</p>
+                                        <p class="mb-0"><b>Direcci&oacute;n: </b>@{{ datosEnvio.sDireccion + ' - ' + datosEnvio.sDistrito + ' / ' + datosEnvio.sProvincia + ' / ' + datosEnvio.sDepartamento }}</p>
                                     </div>
                                     <div class="col-12 col-lg-4">
                                         <p class="mb-0" v-if="datosEnvio.sTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosEnvio.sDocumento }}</p>
@@ -148,7 +148,7 @@
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni) && iDireccionEnvioConfirmada === 1" v-on:click="confirmarFacturacion()" v-if="iDireccionEnvioConfirmada === 1">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -179,14 +179,18 @@
                                 </div>
                                 @endif
                                 <div class="row" v-else>
-                                    <div class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos}}</p>
+                                    <div v-if="datosRecojo.rTipoDoc === 'DNI'" class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
+                                    </div>
+                                    <div v-else class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosRecojo.sNombres}}</p>
                                     </div>
                                     <div class="col-12 col-lg-4">
                                         <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosRecojo.sTelefono }}</p>
                                     </div>
                                     <div class="col-12 col-lg-4">
-                                        <p class="mb-0"><b>DNI: </b>@{{ datosRecojo.sDocumento }}</p>
+                                        <p class="mb-0" v-if="datosRecojo.rTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosRecojo.sDocumento }}</p>
+                                        <p class="mb-0" v-else><b>RUC: </b>@{{ datosRecojo.sDocumento }}</p>
                                     </div>
                                     <div class="col-12">
                                         <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
@@ -194,7 +198,7 @@
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida && iRecojoConfirmado === 1" v-on:click="confirmarFacturacion()" v-if="iRecojoConfirmado === 1">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -225,8 +229,11 @@
                                 </div>
                                 @endif
                                 <div class="row" v-else>
-                                    <div class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos}}</p>
+                                    <div v-if="datosDelivery.dTipoDoc === 'DNI'" class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos + ' ' }}</p>
+                                    </div>
+                                    <div v-else class="col-12">
+                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosDelivery.sNombres}}</p>
                                     </div>
                                     <div class="col-12">
                                         <p class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
@@ -235,7 +242,8 @@
                                         <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
                                     </div>
                                     <div class="col-12 col-lg-4">
-                                        <p class="mb-0"><b>DNI: </b>@{{ datosDelivery.sDocumento }}</p>
+                                        <p class="mb-0" v-if="datosDelivery.dTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosDelivery.sDocumento }}</p>
+                                        <p class="mb-0" v-else><b>RUC: </b>@{{ datosDelivery.sDocumento }}</p>
                                     </div>
                                     <div class="col-12">
                                         <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
@@ -243,21 +251,9 @@
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida && iDeliveryConfirmado === 1" v-on:click="confirmarFacturacion()" v-if="iDeliveryConfirmado === 1">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3 d-none">
-                            <div class="p-4 bg-white">
-                                <h1 class="h5 font-weight-bold text-ecovalle-2">1. Informaci&oacute;n de facturaci&oacute;n</h1>
-                                <p class="font-weight-bold"></p>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3 d-none">
-                            <div class="p-4 bg-white">
-                                <h1 class="h5 font-weight-bold text-ecovalle-2">2. Medio de pago</h1>
-                                <p class="font-weight-bold">Seleccionar forma de pago</p>
                             </div>
                         </div>
                     </div>
@@ -352,17 +348,13 @@
                         </section>
                         <div class="row">
                             <div class="col-md-12" v-if="iCargandoConsultaApi === 0">
-                                <div class="form-group" v-if="datosEnvio.sTipoDoc === 'DNI'">
-                                    <label>Nombres</label>
+                                <div class="form-group">
+                                    <label>Nombres / Raz&oacute;n Social</label>
                                     <input class="form-control" v-model="datosEnvio.sNombres" autocomplete="off">
                                 </div>
                                 <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'DNI'">
                                     <label>Apellidos</label>
                                     <input class="form-control" v-model="datosEnvio.sApellidos" autocomplete="off">
-                                </div>
-                                <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'RUC'">
-                                    <label>Razon Social</label>
-                                    <input type="text" class="form-control" v-model="datosEnvio.sRazon" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label>Agencia</label>
@@ -460,6 +452,7 @@
                                     <select name="rtipo_documento" id="rtipo_documento" class="form-control" v-on:change="rcambiarTipoDoc()" v-model="datosRecojo.rTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
+                                        <option value="RUC">RUC</option>
                                     </select>
                                 </div>
                             </div>
@@ -488,7 +481,7 @@
                                     <label>Nombres</label>
                                     <input type="text" class="form-control" v-model="datosRecojo.sNombres" autocomplete="off" required>
                                 </div>
-                                <div class="form-group" >
+                                <div class="form-group" v-if="datosRecojo.rTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
                                     <input type="text" class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off" required>
                                 </div>
@@ -529,6 +522,7 @@
                                     <select name="dtipo_documento" id="dtipo_documento" class="form-control" v-on:change="dcambiarTipoDoc()" v-model="datosDelivery.dTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
+                                        <option value="RUC">RUC</option>
                                     </select>
                                 </div>
                             </div>
@@ -557,7 +551,7 @@
                                     <label>Nombres</label>
                                     <input class="form-control" v-model="datosDelivery.sNombres" autocomplete="off">
                                 </div>
-                                <div class="form-group" >
+                                <div class="form-group" v-if="datosDelivery.dTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
                                     <input class="form-control" v-model="datosDelivery.sApellidos" autocomplete="off">
                                 </div>

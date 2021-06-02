@@ -40,174 +40,180 @@
     </style>
     </head>
 <body class="white-bg" style="font-family:'Verdana'">
-<table style="width: 100%">
-<tbody><tr>
-<td style="padding:30px;">
-    <table width="100%" height="200px" border="0" aling="center" cellpadding="0" cellspacing="0">
+    <table style="width: 100%">
         <tbody>
             <tr>
-                <td valign="bottom">
-    
-                    <table width="100%" height="100%" border="0" border-radius="" cellpadding="9" cellspacing="0">
+                <td style="padding:30px;">
+                    <table width="100%" height="200px" border="0" aling="center" cellpadding="0" cellspacing="0">
                         <tbody>
                             <tr>
-                                <td width="50%" height="90" align="center">
-                                    <span>
-                                        <img src="https://www.ecovalle.pe/img/logo_ecovalle.png" height="80" style="text-align:center"
-                                            border="0">
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-    
-                                <td align="center" style="text-transform: uppercase;">
-                                    <strong>
-                                        <span style="font-size:15px">AGROENSANCHA S.R.L</span>
-                                    </strong>
-                                    <br>
-                                    <strong>
-                                        <span style="font-size:15px" text-align="center">R.U.C: 20482089594</span>
-                                    </strong>
-                                    <br>
-                                    <strong>Dirección : </strong>Jr. José Martí 2184 La Esperanza 13007 Trujillo, Perú
-                                    <br>    
-    
-                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:20px" text-align="center">P E D I D O</span>
-                                    <br>
-                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:19px" text-align="center">C O N F I R M A D O</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td align="center">
-                                    COD:
-                                    <span>{{ $venta->codigo }}</span>
-                                </td>
-                            </tr>
-    
-                            <tr>
-                                <td width="60%" height="15" align="left">
-                                    <strong>Tipo Compra:</strong>&nbsp; {{ $venta->tipo_compra }}
-                                    <br>
-                                    <strong>Tipo Comprobante:</strong>&nbsp; {{ $venta->tipo_comprobante }}
-                                    <br>
-                                    <strong>Razón Social:</strong>&nbsp; {{ $venta->cliente }}
-                                    <br>
-                                    <strong>{{ $venta->tipo_documento == 'RUC' ? 'R.U.C:' : 'DNI:' }}</strong>&nbsp; {{  $venta->documento }}
-                                    <br>
-                                    <strong>Dirección: </strong>&nbsp; {{  $venta->direccion }}
-                                    <br>
-                                    <strong>Fecha Emisión: </strong>&nbsp; {{ date_format($venta->created_at, 'Y/m/d')}}
-                                    <br>
-                                    @if ($venta->recoge)
-                                    <strong>Encargado recojo:</strong>&nbsp; {{ $venta->recoge }}
-                                    <br>
-                                    <strong>DNI:</strong>&nbsp; {{ $venta->recoge_documento }}
-                                    <br>
-                                    <strong>Teléfono:</strong>&nbsp; {{ $venta->recoge_telefono }}
-                                    <br>
-                                    @endif
-                                    <strong>Tipo Moneda: </strong>&nbsp; SOLES/PEN.
+                                <td valign="bottom">
+                    
+                                    <table width="100%" height="100%" border="0" border-radius="" cellpadding="9" cellspacing="0">
+                                        <tbody>
+                                            <tr>
+                                                <td width="50%" height="90" align="center">
+                                                    <span>
+                                                        <img src="https://www.ecovalle.pe/img/logo_ecovalle.png" height="80" style="text-align:center"
+                                                            border="0">
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                    
+                                                <td align="center" style="text-transform: uppercase;">
+                                                    <strong>
+                                                        <span style="font-size:15px">AGROENSANCHA S.R.L</span>
+                                                    </strong>
+                                                    <br>
+                                                    <strong>
+                                                        <span style="font-size:15px" text-align="center">R.U.C: 20482089594</span>
+                                                    </strong>
+                                                    <br>
+                                                    <strong>Dirección : </strong>Jr. José Martí 2184 La Esperanza 13007 Trujillo, Perú
+                                                    <br>    
+                    
+                                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:20px" text-align="center">P E D I D O</span>
+                                                    <br>
+                                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:19px" text-align="center">C O N F I R M A D O</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center">
+                                                    COD:
+                                                    <span>{{ $venta->codigo }}</span>
+                                                </td>
+                                            </tr>
+                    
+                                            <tr>
+                                                <td width="60%" height="15" align="left">
+                                                    <strong>Tipo Compra:</strong>&nbsp; {{ $venta->tipo_compra }}
+                                                    <br>
+                                                    <strong>Tipo Comprobante:</strong>&nbsp; {{ $venta->tipo_comprobante }}
+                                                    <br>
+                                                    <strong>Razón Social:</strong>&nbsp; {{ $venta->cliente }}
+                                                    <br>
+                                                    <strong>{{ $venta->tipo_documento == 'RUC' ? 'R.U.C:' : 'DNI:' }}</strong>&nbsp; {{  $venta->documento }}
+                                                    <br>
+                                                    <strong>Dirección: </strong>&nbsp; {{  $venta->direccion }}
+                                                    <br>
+                                                    <strong>Fecha Emisión: </strong>&nbsp; {{ date_format($venta->created_at, 'Y/m/d')}}
+                                                    <br>
+                                                    @if ($venta->recoge)
+                                                    <strong>Encargado recojo:</strong>&nbsp; {{ $venta->recoge }}
+                                                    <br>
+                                                    <strong>DNI:</strong>&nbsp; {{ $venta->recoge_documento }}
+                                                    <br>
+                                                    <strong>Teléfono:</strong>&nbsp; {{ $venta->recoge_telefono }}
+                                                    <br>
+                                                    @endif
+                                                    <strong>Tipo Moneda: </strong>&nbsp; SOLES/PEN.
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                    
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-    
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <table width="100%" border="0" cellpadding="5" cellspacing="0">
-        <tbody>
-            <tr>
-                <td align="center" class="bold">Cantidad</td>
-                <!--<th align="center" class="bold">Unidad Medida</th>-->
-                <!--<td align="center" class="bold">Código</td>-->
-                <td align="center" class="bold">Descripción</td>
-                <td align="center" class="bold">Valor Unitario</td>
-                <td align="center" class="bold">Precio Total</td>
-            </tr>
-            @foreach ($carrito as $producto)
-            <tr class="border_top">
-                <td align="center">
-                    {{ $producto->cantidad }} UND
-                </td>
-                <td align="center" width="300px">
-                    <span>{{ $producto->nombre_es }}</span>
-                    <br>
-                </td>
-                <td align="center">
-                    S/. {{ number_format(round(($producto->pFinal * 10) / 10,1), 2) }}
-                </td>
-                <td align="center">
-                    S/. {{ number_format(round((($producto->cantidad * $producto->pFinal) * 10) / 10, 1),2) }}
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <table width="100%" border="0" cellpadding="0" cellspacing="0">
-        <tbody>
-            <tr>
-                <td width="50%" valign="top">
+                    
                     <table width="100%" border="0" cellpadding="5" cellspacing="0">
                         <tbody>
-                            <tr class="border_top">
-                                <td align="left">
-                                    <strong>SubTotal:</strong>
-                                </td>
-                                <td width="50" align="left">
-                                    <span>S/. {{ number_format($venta->subtotal,2) }}</span>
-                                </td>
-                            </tr>
-                            <tr class="border_top">
-                                <td align="left">
-                                    <strong>Delivery:</strong>
-                                </td>
-                                <td width="50" align="left">
-                                    <span>S/. {{ number_format($venta->delivery,2) }}</span>
-                                </td>
-                            </tr>
-                            <tr class="border_top">
-                                <td align="left">
-                                    <strong>Total a Pagar:</strong>
-                                </td>
-                                <td width="250" align="left">
-                                    <span id="ride-importeTotal" class="ride-totalPagar">S/. {{ number_format($venta->subtotal + $venta->delivery,2) }}</span>
-                                </td>
-                            </tr>
-                            <!--Anticipos-->
-                            <!--End Anticipos-->
                             <tr>
-                                <td colspan="4">
-                                    <br>
-                                    <br>
-                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:12px" text-align="center">
-                                        <strong>-------------------------------------------------------</strong>
-                                    </span>
-                                    <br>
+                                <td align="center" class="bold">Cantidad</td>
+                                <!--<th align="center" class="bold">Unidad Medida</th>-->
+                                <!--<td align="center" class="bold">Código</td>-->
+                                <td align="center" class="bold">Descripción</td>
+                                <td align="center" class="bold">Valor Unitario</td>
+                                <td align="center" class="bold">Precio Total</td>
+                            </tr>
+                            @foreach ($carrito as $producto)
+                            <tr class="border_top">
+                                <td align="center">
+                                    {{ $producto->cantidad }} UND
+                                </td>
+                                <td align="center" width="300px">
+                                    <span>{{ $producto->nombre_es }}</span>
                                     <br>
                                 </td>
+                                <td align="center">
+                                    S/. {{ number_format(round(($producto->pFinal * 10) / 10,1), 2) }}
+                                </td>
+                                <td align="center">
+                                    S/. {{ number_format(round((($producto->cantidad * $producto->pFinal) * 10) / 10, 1),2) }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    
+                    <table width="70%" border="0" cellpadding="0" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td width="100%" valign="top">
+                                    <table width="100%" border="0" cellpadding="5" cellspacing="0">
+                                        <tbody>
+                                            <tr class="border_top">
+                                                <td align="left">
+                                                    <strong>SubTotal:</strong>
+                                                </td>
+                                                <td width="50" align="left">
+                                                    <span>S/. {{ number_format($venta->subtotal,2) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="border_top">
+                                                <td align="left">
+                                                    <strong>Descuento:</strong>
+                                                </td>
+                                                <td width="50" align="left">
+                                                    <span>S/. {{ number_format($venta->descuento,2) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="border_top">
+                                                <td align="left">
+                                                    <strong>Delivery:</strong>
+                                                </td>
+                                                <td width="50" align="left">
+                                                    <span>S/. {{ number_format($venta->delivery,2) }}</span>
+                                                </td>
+                                            </tr>
+                                            <tr class="border_top">
+                                                <td align="left">
+                                                    <strong>Total a Pagar:</strong>
+                                                </td>
+                                                <td width="50" align="left">
+                                                    <span id="ride-importeTotal" class="ride-totalPagar">S/. {{ number_format($venta->subtotal + $venta->delivery,2) }}</span>
+                                                </td>
+                                            </tr>
+                                            <!--Anticipos-->
+                                            <!--End Anticipos-->
+                                            <tr style="display: none;">
+                                                <td colspan="4">
+                                                    <br>
+                                                    <br>
+                                                    <span style="font-family:Tahoma, Geneva, sans-serif; font-size:12px" text-align="center">
+                                                        <strong>-------------------------------------------------------</strong>
+                                                    </span>
+                                                    <br>
+                                                    <br>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                    
                             </tr>
                         </tbody>
                     </table>
-    
+                    
+                    <!-- Este div lo que hace es que si el contenido no entra completamente en la pagina te lo envia a una nueva pagina. Evitando que una imagen se divida por ejemplo-->
+                    <div>
+                        <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #666; margin: 20px 0; padding: 0;">
+                    </div>
+                
                 </td>
-    
             </tr>
         </tbody>
-    </table>
-    
-    <br>
-    <br>
-    
-    <!-- Este div lo que hace es que si el contenido no entra completamente en la pagina te lo envia a una nueva pagina. Evitando que una imagen se divida por ejemplo-->
-    <div>
-        <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #666; margin: 20px 0; padding: 0;">
-    </div>
-    
-    </td>
-    </tr>
-    </tbody>
     </table>
 </body></html>

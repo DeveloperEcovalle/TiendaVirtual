@@ -17,4 +17,8 @@ class Compra extends Model
     public function detalles() {
         return $this->hasMany(DetalleCompra::class, 'compra_id');
     }
+
+    public function cliente(){
+        return $this->belongsTo(Cliente::class, 'id', 'cliente_id');
+    }
 }

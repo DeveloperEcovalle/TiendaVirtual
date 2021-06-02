@@ -55,7 +55,7 @@
                                     @csrf
                                     <div class="autocompletar">
                                         <input type="text" id="inputSearch" name="keyword" placeholder="{{ session('locale') === 'es' ? 'Buscar ...' : 'Search ...' }}" autocomplete="off">
-                                        <button class="icon" type="button"><i class="fa fa-search"></i></button>
+                                        <button class="icon" type="button" onclick="$('#search-form').submit()"><i class="fa fa-search"></i></button>
                                     </div>
                                 </form>
                             </div>

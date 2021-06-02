@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="form-group">
-                    <label>Nombres <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nombres" placeholder="Nombres" v-model="user.nombres" required>
+                    <label>Nombres / Raz&oacute;n Social <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="nombres" placeholder="Nombres / Raz&oacute;n Social" v-model="user.nombres" required>
                 </div>
                 <div class="form-group">
                     <label>Tipo Documento <span class="text-danger">*</span></label>
@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div class="col-12 col-lg-6">
-                <div class="form-group">
+                <div class="form-group" v-if="user.tipo_documento == 'DNI'">
                     <label>Apellidos <span class="text-danger">*</span></label>
                     <input type="text" name="apellidos" class="form-control" placeholder="Apellidos" v-model="user.apellidos" required>
                 </div>

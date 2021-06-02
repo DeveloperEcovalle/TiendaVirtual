@@ -12,7 +12,7 @@
         </nav>
     </div>
 
-    <section class="py-5" v-cloak>
+    <section v-cloak>
         <div class="container-xl">
             <div class="row">
                 <div class="col-lg-4 mb-2">
@@ -25,7 +25,7 @@
                                 <div class="col-12 py-2">
                                     <div class="row">
                                         <div class="col-12 col-sm-4 col-lg-12 px-3">
-                                            <div class="w-100 py-2 mi-cuenta" :class="iMenuSeleccionado === 0 ? 'bg-ecovalle' : ''" v-on:click="panelDesk()" style="cursor: pointer;" v-cloak>
+                                            <div class="w-100 py-2 mi-cuenta" v-bind:class="iMenuSeleccionado === 0 ? 'bg-ecovalle' : ''" v-on:click="panelDesk()" style="cursor: pointer;" v-cloak>
                                                 <div class="d-inline-block">
                                                     <label class="m-0">
                                                         &nbsp;@{{ locale === 'es' ? 'Escritorio' : 'Desk' }}
@@ -83,13 +83,16 @@
                     </div>
                 </div>
 
-                <div class="col-lg-8">
+                <div class="col-lg-8 mb-2">
                     <div class="row">
                         <div class="col-12">
                             <div class="row mx-0 border rounded shadow" id="panel">
                                 <div class="col-12 text-center" v-if="iCargandoPanel === 1">
                                     <img src="/img/spinner.svg">
                                 </div>
+                            </div>
+                            <div class="modal-pedido" id="pedido">
+                                
                             </div>
                         </div>
                     </div>

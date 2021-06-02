@@ -27,7 +27,7 @@ let culqi = function () {
             if(sTipoDoc == 'DNI'){
                 sCliente = vuePagoEnvio.datosEnvio.sNombres + ' ' + vuePagoEnvio.datosEnvio.sApellidos;
             }else{
-                sCliente = vuePagoEnvio.datosEnvio.sRazon;
+                sCliente = vuePagoEnvio.datosEnvio.sNombres;
             }
             sTelefono = vuePagoEnvio.datosEnvio.sTelefono;
             sEmail = vuePagoEnvio.datosEnvio.sEmail;
@@ -343,7 +343,7 @@ let vuePagoEnvio = new Vue({
             return this.fSubtotal + this.fDelivery;
         },
         fTotalCulqi: function () {
-            return (this.fSubtotal * 100) + (this.fDelivery * 100);
+            return Math.round(((this.fSubtotal * 100) + (this.fDelivery * 100)) * 10) / 10;
         },
         sDetallesCarritoCompras: function () {
             let sDetalles = '';
