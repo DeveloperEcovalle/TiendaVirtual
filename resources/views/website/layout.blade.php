@@ -68,11 +68,11 @@
                                             <i class="ecovalle-usuario fa-2x"></i>
                                         </a>
                                         <div class="dropdown-menu rounded py-0" style="min-width: auto" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item py-2 px-3" href="#">
-                                                <i class="fa fa-user"></i> Mi Cuenta
+                                            <a class="dropdown-item py-2 px-3" href="/mi-cuenta">
+                                                <i class="fa fa-user"></i> {{ $lstLocales['My account'] }}
                                             </a>
                                             <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSalir()">
-                                                <i class="fa fa-sign-out"></i> Salir
+                                                <i class="fa fa-sign-out"></i> {{ $lstLocales['Logout'] }}
                                             </a>
                                         </div>
                                         @else
@@ -258,7 +258,7 @@
                                     <ul>
                                         @if(session()->has('cliente'))
                                         <li><a href="/mi-cuenta">{{ $lstLocales['My account'] }}</a></li>
-                                        <li><a href="/mi-cuenta/actualizar-datos">{{ $lstLocales['Update profile'] }}</a></li>
+                                        <li><a href="/mi-cuenta?menu=1">{{ $lstLocales['Update profile'] }}</a></li>
                                         @endif
                                         <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>

@@ -32,17 +32,17 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
+                    <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3">
                         1. {{ $lstLocales['Shopping cart'] }}
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="/facturacion-envio" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
+                    <a href="/facturacion-envio" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3">
                         2. {{ $lstTraduccionesPagoEnvio['billing_and_delivery'] }}
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3">
                         3. {{ $lstTraduccionesPagoEnvio['payment'] }}
                     </a>
                 </div>

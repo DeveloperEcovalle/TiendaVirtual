@@ -211,7 +211,6 @@ let vueTiendaProducto = new Vue({
                 toastr.error(producto.stock_actual + ' en stock.');
             }
         },
-
         actualizarLstProductosRelacionados: function () {
             this.lstProductosRelacionados = [...this.lstProductosRelacionados];
         },

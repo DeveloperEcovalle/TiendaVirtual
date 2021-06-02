@@ -89,6 +89,20 @@ let vueBlogLista = new Vue({
                     $this.ajaxListarPublicaciones().then(() => {
                     });
                 });
+            }).then(() => {
+                ajaxWebsiteListarCarritoCompras().then(response => {
+                    let respuesta = response.data;
+                    let data = respuesta.data;
+    
+                    let lstCarritoComprasServer = data.lstCarrito;
+                    //let bClienteEnSesion = data.bClienteEnSesion;
+    
+                    let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
+    
+                    let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
+    
+                    $this.lstCarritoCompras = lstCarritoCompras;
+                });
             });
     },
     watch: {

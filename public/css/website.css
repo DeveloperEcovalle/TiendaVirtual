@@ -927,3 +927,16 @@ button.btn-round:hover{
     margin-left: -3.87rem;
     transform: rotate(-70deg);
 }
+
+.password-update{
+    height: auto;
+    width: 100%;
+    border: 1px solid #012717;
+}
+
+.title-password{
+    width: 165px;
+    margin-top: -12px;
+    margin-left: 7px;
+    background: #6BBD99;
+}

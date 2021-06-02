@@ -319,8 +319,7 @@ $(document).ready(function () {
                     let cliente = Object.assign({}, $this.lstClientes[iIndice]);
                     let sDepartamentoSeleccionado = cliente.persona.ubigeo ? cliente.persona.ubigeo.departamento : '';
                     let sProvinciaSeleccionada = cliente.persona.ubigeo ? cliente.persona.ubigeo.provincia : '';
-                    let sDistritoSeleccionado = cliente.persona.ubigeo ? cliente.persona.ubigeo.id : '';
-                    console.log(cliente);
+                    let sDistritoSeleccionado = cliente.persona.ubigeo ? cliente.persona.ubigeo.distrito : '';
 
                     $('#panel').load('/intranet/app/personas/clientes/ajax/panelEditar', function () {
                         let vueEditar = new Vue({

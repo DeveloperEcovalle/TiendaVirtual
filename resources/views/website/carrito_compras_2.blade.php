@@ -6,7 +6,7 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb bg-transparent px-0">
-                <li class="breadcrumb-item"><a href="/">{{ $lstLocales['Home'] }}</a></li>
+                <li class="breadcrumb-item"><a href="/index">{{ $lstLocales['Home'] }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{{ $lstLocales['Shopping cart'] }}</li>
             </ol>
         </nav>
@@ -45,17 +45,17 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3 mb-md-0">
+                    <a href="#" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3">
                         1. {{ $lstLocales['Shopping cart'] }}
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="/facturacion-envio" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0">
+                    <a href="/facturacion-envio" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3">
                         2. {{ $lstTraduccionesCarritoCompras['billing_and_delivery'] }}
                     </a>
                 </div>
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3 mb-md-0" disabled>
+                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3" disabled>
                         3. {{ $lstTraduccionesCarritoCompras['payment'] }}
                     </a>
                 </div>

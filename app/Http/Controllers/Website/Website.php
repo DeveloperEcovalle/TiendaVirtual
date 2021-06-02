@@ -63,6 +63,7 @@ class Website extends Controller {
                 'Shopping guide' => 'Shopping guide',
                 'Returning orders' => 'Returning orders',
                 'My account' => 'My account',
+                'Logout' => 'Logout',
                 'Shopping cart' => 'Shopping cart',
                 'Update profile' => 'Update my profile',
                 'My wish list' => 'My wish list',
@@ -126,6 +127,7 @@ class Website extends Controller {
                 'Shopping guide' => 'Guía de compra',
                 'Returning orders' => 'Devoluciones de pedidos',
                 'My account' => 'Mi cuenta',
+                'Logout' => 'Salir',
                 'Shopping cart' => 'Carrito de compras',
                 'Update profile' => 'Actualizar mis datos',
                 'My wish list' => 'Mi lista de deseos',
@@ -178,6 +180,7 @@ class Website extends Controller {
         if ($bClienteEnSesion) {
             $cliente = $session->get('cliente');
             $persona = Persona::find($cliente->persona_id);
+            $persona->ubigeo;
             // $lstCarrito = DetalleCarrito::where('cliente_id', $cliente->id)
             //     ->with(['producto', 'producto.imagenes', 'producto.precio_actual', 'producto.oferta_vigente', 'producto.promocion_vigente'])->get();
         }

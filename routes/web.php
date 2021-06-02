@@ -160,6 +160,20 @@ Route::middleware([Locale::class])->group(function () {
             });
         });
 
+        Route::prefix('/mi-cuenta')->group(function () {
+            Route::get('/', 'MiCuenta@index');
+
+            Route::prefix('/ajax')->group(function () {
+                Route::get('/panelDesk', 'MiCuenta@ajaxListarPanelDesk');
+
+                Route::get('/panelAccount', 'MiCuenta@ajaxListarPanelAccount');
+                Route::post('/actualizarAccount', 'MiCuenta@ajaxActualizarAccount');
+
+                Route::get('/panelAddress', 'MiCuenta@ajaxListarPanelAddress');
+                Route::post('/actualizarAddress', 'MiCuenta@ajaxActualizarAddress');
+            });
+        });
+
         Route::prefix('/contactanos')->group(function () {
             Route::get('/', 'Contactanos@index');
             Route::post('/ajax/enviar', 'Contactanos@ajaxEnviar');
@@ -782,5 +796,6 @@ Route::get('ruta', function () {
     // $result = file_get_contents($url, false, $options);
     // return $result;
     $persona = Persona::find(1);
-    return $persona->ubigeo;
+    $persona->ubigeo;
+    return session('cliente')->compras;
 });

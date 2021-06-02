@@ -117,7 +117,7 @@ class Registro extends Website {
                 'distrito.required' => 'El campo distrito es obligatorio.',
                 'tipo_documento.required' => 'El campo tipo documento es obligatorio.',
                 'direccion.required' => 'El campo direccion es obligatorio.',
-                'documento.required' => 'El documento ingresado ya se encuentra registrado.',
+                'documento.required' => 'El campo documento es obligatorio.',
                 'documento.unique' => 'El campo documento debe ser único',
                 'correo.required' => 'El campo correo es obligatorio.',
                 'correo.email' => 'El campo correo debe ser un email.',
