@@ -59,7 +59,7 @@ let vueSocios = new Vue({
                 opened: false,
             },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            styles: [
+          /*  styles: [
                 {
                     featureType: "administrative",
                     elementType: "labels",
@@ -198,7 +198,7 @@ let vueSocios = new Vue({
                         },
                     ],
                 },
-            ],
+            ],*/
         };
         var mapElement = document.getElementById("mapa");
         map = new google.maps.Map(mapElement, mapOptions);
@@ -219,7 +219,7 @@ let vueSocios = new Vue({
             fillOpacity: 1,
         });
 
-        map.data.loadGeoJson("https://erpecovalle.ga/api/mapa/peru");
+        //map.data.loadGeoJson("https://erpecovalle.ga/api/mapa/peru");
         /* $.getJSON("/Json/departamentos.json", function(json) {
             map.data.addGeoJson(json);
 
