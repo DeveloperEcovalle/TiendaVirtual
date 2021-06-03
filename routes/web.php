@@ -6,6 +6,7 @@ use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
 use App\Persona;
+use App\Producto;
 use Illuminate\Support\Carbon;
 
 /*
@@ -774,40 +775,12 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    // $file = file_get_contents('storage/pedidos/ghUJ1d6-2021.pdf');
-    // $data_file = base64_encode($file);
-    // $mime = mime_content_type('storage/pedidos/ghUJ1d6-2021.pdf');
-    // $str_file = 'data:'.$mime.';base64,'.$data_file;
-            
-    // $data = [
-    //     'phone' => '51950837445', // Receivers phone
-    //     'body' => $str_file,
-    //     'filename' => 'ghUJ1d6-2021.pdf',
-    //     'caption' => (string)"PEDIDO COD: ".'ghUJ1d6-2021.pdf', // Message// Message
-    // ];
-
-    // $json = json_encode($data); // Encode data to JSON
-    //  // URL for request POST /message
-    // $token = 'n34tqely1k2fiwzi';
-    // $instanceId = '242825';
-    // $url = 'https://api.chat-api.com/instance'.$instanceId.'/sendFile?token='.$token;
-    // // Make a POST request
-    // $options = stream_context_create(['http' => [
-    //     'method'  => 'POST',
-    //         'header'  => 'Content-type: application/json',
-    //         'content' => $json
-    //     ]
-    // ]);
-    // // Send a request
-    // $result = file_get_contents($url, false, $options);
-    // return $result;
-    $compras = session('cliente')->compras;
-    foreach($compras as $compra)
+    $productos =  Producto::all();
+    foreach($productos as $producto)
     {
-        foreach($compra->detalles as $detalle)
-        {
-            $detalle->producto;
-        }
+        $producto->stock_actual = 10;
+        $producto->update();
     }
-    return $compras;
+
+    return 'ok';
 });

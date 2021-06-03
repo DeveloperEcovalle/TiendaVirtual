@@ -56,7 +56,6 @@ listarMenus(function (lstModulos, lstMenus) {
             }
         },
         mounted: function () {
-            console.log(this.lstModulos);
             let $this = this;
             $this.ajaxListarAnios(function () {
                 $this.ajaxListar($this.cargarPanel);
@@ -100,6 +99,7 @@ listarMenus(function (lstModulos, lstMenus) {
                     success: function (respuesta) {
                         if (respuesta.result === result.success) {
                             let data = respuesta.data;
+                            console.log(data);
                             $this.lstVentas = data.lstVentas;
 
                             if (onSuccess) {

@@ -53,7 +53,7 @@ listarMenus(function (lstModulos, lstMenus) {
                     case 'Diario': {
                         return new Date(this.iAnio, this.iMes, this.iDia, 0, 0, 0, 0).getTime();
                     }
-                    case 'Mensual' : {
+                    case 'Mensual': {
                         return new Date(this.iAnio, this.iMes, 1, 0, 0, 0, 0).getTime();
                     }
                 }

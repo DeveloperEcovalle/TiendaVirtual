@@ -9,6 +9,7 @@ use App\Producto;
 use App\SunatFacturaBoleta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Compra;
 use Illuminate\Support\Facades\DB;
 
 class Ventas extends Intranet {
@@ -69,8 +70,8 @@ class Ventas extends Intranet {
         $lstAnios = [];
 
         if ($permiso) {
-            $lstAnios = DB::table('sunat_factura_boleta')
-                ->select(DB::raw('year(fecha_emision) as value'))
+            $lstAnios = DB::table('compras')
+                ->select(DB::raw('year(created_at) as value'))
                 ->distinct()
                 ->orderBy('value', 'desc')
                 ->get();
@@ -96,8 +97,7 @@ class Ventas extends Intranet {
             $sFechaDesde = Carbon::createFromTimestamp(intval($lFechaDesde) / 1000)->format('Y-m-d');
             $sFechaHasta = Carbon::createFromTimestamp(intval($lFechaHasta) / 1000)->format('Y-m-d');
 
-            $lstVentas = SunatFacturaBoleta::whereBetween('fecha_emision', [$sFechaDesde, $sFechaHasta])
-                ->with('tipo_comprobante', 'detalles')
+            $lstVentas = Compra::whereBetween('fecha_reg', [$sFechaDesde, $sFechaHasta])
                 ->orderBy('id', 'desc')
                 ->get();
         }
