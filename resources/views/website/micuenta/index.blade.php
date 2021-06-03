@@ -103,6 +103,5 @@
 @endsection
 
 @section('js')
-    <script src="https://checkout.culqi.com/js/v3"></script>
     <script src="/js/website/miCuenta.js?cvcn=14"></script>
 @endsection

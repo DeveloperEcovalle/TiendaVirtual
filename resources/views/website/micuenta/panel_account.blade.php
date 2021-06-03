@@ -43,13 +43,13 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Nueva contraseña (d&eacute;jalo en blanco para no cambiarla)</label>
-                                <input type="password" name="password_nueva" id="password_nueva" class="form-control" placeholder="Contraseña nueva">
+                                <input type="password" name="password_nueva" id="password_nueva" class="form-control" minlength="6" placeholder="Contraseña nueva">
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Confirmar nueva contraseña (&eacute; en blanco para no cambiarla)</label>
-                                <input type="password" name="password_confirm" id="password_confirm" class="form-control" placeholder="Confirmar contraseña">
+                                <input type="password" name="password_confirm" id="password_confirm" class="form-control" minlength="6" placeholder="Confirmar contraseña">
                             </div>
                         </div>
                     </div>

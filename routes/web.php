@@ -5,9 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use App\Persona;
-use App\Producto;
-use Illuminate\Support\Carbon;
+use App\Cliente;
 
 /*
 |--------------------------------------------------------------------------
@@ -178,6 +176,13 @@ Route::middleware([Locale::class])->group(function () {
                 Route::get('/download/{codigo}', 'MiCuenta@ajaxDownload');
 
                 Route::get('/panelShow', 'MiCuenta@ajaxListarPanelShow');
+            });
+        });
+
+        Route::prefix('/olvide-mi-contrasenannn')->group(function(){
+            Route::get('/', 'RecuperarContra@index');
+            Route::prefix('/ajax')->group(function () {
+                Route::post('/enviar', 'RecuperarContra@ajaxEnviar');
             });
         });
 
@@ -776,15 +781,9 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $productos =  Producto::all();
-    foreach($productos as $producto)
-    {
-        $producto->stock_actual = 10;
-        $producto->update();
+    $cliente = Cliente::where('email','ccubas@uonitru.edu.pe')->first();
+    if(!empty($cliente)){
+                return 'ok';
     }
-
-    //return 'ok';
-    $fecha_reg = now();
-    $fecha_reg = date_format($fecha_reg, 'Y-m-d');
-    return $fecha_reg;
+    return 'no';
 });

@@ -248,7 +248,7 @@
                                         <li><a href="/servicios">{{ $lstLocales['Services'] }}</a></li>
                                         <li><a href="/blog">Blog</a></li>
                                         <li><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
-                                        <li><a href="/guia-de-compra" class="d-none">{{ $lstLocales['Shopping guide'] }}</a></li>
+                                        <li class="d-none"><a href="/guia-de-compra">{{ $lstLocales['Shopping guide'] }}</a></li>
                                         <li><a href="/politica-privacidad">{{ $lstLocales['Policy and Privacy'] }}</a></li>
                                         <li><a href="/terminos-condiciones">{{ $lstLocales['Terms and Conditions'] }}</a></li>
                                     </ul>
@@ -260,7 +260,7 @@
                                         <li><a href="/mi-cuenta">{{ $lstLocales['My account'] }}</a></li>
                                         <li><a href="/mi-cuenta?menu=1">{{ $lstLocales['Update profile'] }}</a></li>
                                         @endif
-                                        <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
+                                        <li><a href="#">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
                                         <li><a href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a></li>
