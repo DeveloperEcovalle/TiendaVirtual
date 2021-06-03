@@ -782,5 +782,8 @@ Route::get('ruta', function () {
         $producto->update();
     }
 
-    return 'ok';
+    //return 'ok';
+    $fecha_reg = now();
+    $fecha_reg = date_format($fecha_reg, 'Y-m-d');
+    return $fecha_reg;
 });

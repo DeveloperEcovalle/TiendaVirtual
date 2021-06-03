@@ -205,8 +205,8 @@ class PagoEnvio extends Website
 
             $cliente_id = session()->has('cliente') ? session()->get('cliente')->id : null;
 
-            $created_at = now();
-            $created_at = date_format($created_at, 'Y-m-d H:i');
+            $fecha_reg = now();
+            $fecha_reg = date_format($fecha_reg, 'Y-m-d');
     
             $venta = new Compra();
             $venta->tipo_compra = $tipo_compra;
@@ -229,6 +229,7 @@ class PagoEnvio extends Website
             $venta->ubigeo_id = $ubigeo_id;
             $venta->cliente_id = $cliente_id;
             $venta->agencia = $agencia;
+            $venta->fecha_reg = $fecha_reg;
             $venta->save();
 
             $f_actual = Carbon::now();
