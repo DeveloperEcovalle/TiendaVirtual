@@ -159,7 +159,7 @@
                                                     <strong>SubTotal:</strong>
                                                 </td>
                                                 <td width="50" align="left">
-                                                    <span>S/. {{ number_format($venta->subtotal,2) }}</span>
+                                                    <span>S/. {{ number_format($venta->subtotal + $venta->descuento,2) }}</span>
                                                 </td>
                                             </tr>
                                             <tr class="border_top">

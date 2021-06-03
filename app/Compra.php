@@ -11,7 +11,7 @@ class Compra extends Model
     public $timestamps = true;
 
     public function ubigeo() {
-        return $this->belongsTo(Ubigeo::class, 'id', 'ubigeo_id');
+        return $this->belongsTo(Ubigeo::class, 'ubigeo_id');
     }
 
     public function detalles() {

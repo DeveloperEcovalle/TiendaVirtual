@@ -36,7 +36,7 @@
                                 <tr style="border-bottom: 1px solid #333333;">
                                     <td class="w-60" style="width: 60%;"><b>SubTotal</b></td>
                                     <td class="text-right">S/.</td>
-                                    <td class="text-right"> @{{ (order.subtotal).toFixed(2) }}</td>
+                                    <td class="text-right"> @{{ (order.subtotal + order.descuento).toFixed(2) }}</td>
                                 </tr>
                                 <tr style="border-bottom: 1px solid #333333;">
                                     <td class="w-60"><b>Descuento</b></td>

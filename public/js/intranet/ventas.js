@@ -150,6 +150,28 @@ listarMenus(function (lstModulos, lstMenus) {
                         el: '#panel',
                         data: {
                             venta: venta,
+                            estado: venta.estado,
+                        },
+                        methods: {
+                            ajaxEditarEstado: function(){
+                                let $this = this;
+                                /*let frmEditar = document.getElementById('frmEstado');
+                                let formData = new FormData(frmEditar);
+                                formData.append('id',$this.venta.id)*/
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-ventas/ventas/ajax/editarEstado',
+                                    data: {estado: $this.estado, id: $this.venta.id},
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            vueVentas.ajaxListar();
+                                        }
+                                    },
+                                    error: function (respuesta) {
+                                        toastr.error('Ocurrió un error, vuelva a intentar.');
+                                    }
+                                })
+                            }
                         },
                     });
 

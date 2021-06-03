@@ -253,6 +253,7 @@ Route::namespace('Intranet')->group(function () {
 
                             Route::post('/listarAnios', 'Ventas@ajaxListarAnios');
                             Route::post('/listar', 'Ventas@ajaxListar');
+                            Route::post('/editarEstado', 'Ventas@ajaxEditarEstado');
                             /*Route::post('/listarProducto', 'Ventas@ajaxListarProducto');
                             Route::post('/insertarAjuste', 'Ventas@ajaxInsertarAjuste');*/
                         });

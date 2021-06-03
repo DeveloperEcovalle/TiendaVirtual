@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row m-0" v-if="iError === 0">
-        <div class="col-12 col-md-8 p-0">
+        <div class="col-12 col-md-7 p-0">
             <div class="border-bottom border-right d-flex white-bg">
                 <div class="col-12 py-3">
                     <ol class="breadcrumb">
@@ -72,24 +72,22 @@
                         <tr>
                             <th class="bg-primary text-center">#</th>
                             <th class="bg-primary text-center">Tipo</th>
-                            <th class="bg-primary text-center">Comprobante</th>
                             <th class="bg-primary text-center">C&oacute;digo</th>
                             <th class="bg-primary text-center">Documento</th>
                             <th class="bg-primary text-center">Cliente</th>
                             <th class="bg-primary text-right">Total</th>
-                            <th class="bg-primary text-right">Descuento</th>
+                            <th class="bg-primary text-center">Estado</th>
                         </tr>
                         </thead>
                         <tbody class="bg-white">
                         <tr v-for="venta of lstVentas" v-bind:class="{selected: iIdSeleccionado === venta.id}" v-on:click="panelEditar(venta.id)" style="cursor: pointer;" v-cloak>
                             <td class="text-center">@{{ venta.id }}</td>
                             <td class="text-center">@{{ venta.tipo_compra }}</td>
-                            <td class="text-center">@{{ venta.tipo_comprobante }}</td>
                             <td class="text-center">@{{ venta.codigo }}</td>
                             <td class="text-center">@{{ venta.documento }}</td>
                             <td class="text-center">@{{ venta.cliente }}</td>
                             <td class="text-right">S/. @{{ (venta.subtotal + venta.delivery).toFixed(2) }}</td>
-                            <td class="text-right">S/. @{{ venta.descuento.toFixed(2) }}</td>
+                            <td class="text-center" :class="{ 'bg-danger': venta.estado == 'POR ATENDER', 'bg-ecovalle': venta.estado == 'ATENDIDO' }">@{{ venta.estado }}</td>
                         </tr>
                         <tr v-if="lstVentas.length === 0" v-cloak>
                             <td colspan="9" class="text-center">No hay datos para mostrar</td>
@@ -101,7 +99,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-4 p-0" id="panel">
+        <div class="col-12 col-md-5 p-0" id="panel">
         </div>
     </div>
     <div class="row m-0 justify-content-center" v-else v-cloak>

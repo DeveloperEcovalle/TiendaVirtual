@@ -98,6 +98,7 @@ class Ventas extends Intranet {
             $sFechaHasta = Carbon::createFromTimestamp(intval($lFechaHasta) / 1000)->format('Y-m-d');
 
             $lstVentas = Compra::whereBetween('fecha_reg', [$sFechaDesde, $sFechaHasta])
+                ->with(['detalles','detalles.producto','detalles.producto.precio_actual', 'ubigeo'])
                 ->orderBy('id', 'desc')
                 ->get();
         }
@@ -106,6 +107,18 @@ class Ventas extends Intranet {
         $respuesta->result = Result::SUCCESS;
         $respuesta->data = ['lstVentas' => $lstVentas];
 
+        return response()->json($respuesta);
+    }
+
+    public function ajaxEditarEstado(Request $request)
+    {
+        $respuesta = new Respuesta;
+
+        $venta = Compra::find($request->id);
+        $venta->estado = $request->estado;
+        $venta->update();
+
+        $respuesta->result = Result::SUCCESS;
         return response()->json($respuesta);
     }
 

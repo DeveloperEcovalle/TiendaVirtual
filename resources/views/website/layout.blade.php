@@ -248,7 +248,7 @@
                                         <li><a href="/servicios">{{ $lstLocales['Services'] }}</a></li>
                                         <li><a href="/blog">Blog</a></li>
                                         <li><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
-                                        <li><a href="/guia-de-compra">{{ $lstLocales['Shopping guide'] }}</a></li>
+                                        <li><a href="/guia-de-compra" class="d-none">{{ $lstLocales['Shopping guide'] }}</a></li>
                                         <li><a href="/politica-privacidad">{{ $lstLocales['Policy and Privacy'] }}</a></li>
                                         <li><a href="/terminos-condiciones">{{ $lstLocales['Terms and Conditions'] }}</a></li>
                                     </ul>

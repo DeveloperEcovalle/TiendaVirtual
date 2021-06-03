@@ -1,5 +1,6 @@
 :root {
     --verde-ecovalle: #02793C;
+    --verde-ecovalle-2: #41AB61;
 }
 
 @media (min-width: 768px) {
@@ -51,6 +52,11 @@
     .note-editor.note-frame {
         border: 1px solid #e5e6e7;
     }
+}
+
+.bg-ecovalle{
+    background-color: var(--verde-ecovalle-2) !important;
+    color: #ffffff;
 }
 
 .pace .pace-progress {
