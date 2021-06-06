@@ -5,7 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use App\Cliente;
+use App\Publicidad;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +36,7 @@ Route::middleware([Locale::class])->group(function () {
             Route::post('/aumentarCantidadProductoCarrito', 'Website@ajaxAumentarCantidadProductoCarrito');
             Route::post('/aumentarCantidadProductoCarritoCantidad', 'Website@ajaxAumentarCantidadProductoCarritoCantidad');
             Route::post('/findproducto', 'Website@findproducto');
+            Route::get('/publicidad', 'Website@ajaxPublicidad');
         });
 
         Route::prefix('/nosotros')->group(function () {
@@ -179,7 +180,7 @@ Route::middleware([Locale::class])->group(function () {
             });
         });
 
-        Route::prefix('/olvide-mi-contrasenannn')->group(function(){
+        Route::prefix('/olvide-mi-contrasena')->group(function(){
             Route::get('/', 'RecuperarContra@index');
             Route::prefix('/ajax')->group(function () {
                 Route::post('/enviar', 'RecuperarContra@ajaxEnviar');
@@ -774,6 +775,23 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/eliminar', 'Agencia@ajaxEliminar');
                         });
                     });
+
+                    Route::prefix('/publicidad')->group(function () {
+                        Route::get('/', 'Publicidad@index');
+                        Route::get('/nuevo', 'Publicidad@index');
+                        Route::get('/{iIdInterno?}/editar', 'Publicidad@index');
+
+                        Route::prefix('/ajax')->group(function () {
+                            Route::get('/panelListar', 'Publicidad@ajaxPanelListar');
+                            Route::get('/panelNuevo', 'Publicidad@ajaxPanelNuevo');
+                            Route::get('/panelEditar', 'Publicidad@ajaxPanelEditar');
+
+                            Route::post('/listar', 'Publicidad@ajaxListar');
+                            Route::post('/insertar', 'Publicidad@ajaxInsertar');
+                            Route::post('/actualizar', 'Publicidad@ajaxActualizar');
+                            Route::post('/eliminar', 'Publicidad@ajaxEliminar');
+                        });
+                    });
                 });
             });
         });
@@ -781,9 +799,10 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $cliente = Cliente::where('email','ccubas@uonitru.edu.pe')->first();
-    if(!empty($cliente)){
-                return 'ok';
-    }
-    return 'no';
+    $actual = now();
+        $publicidad = Publicidad::where('f_inicio', '>=', date_format($actual, 'Y-m-d'))
+        ->orWhere('f_fin', '<=', date_format($actual, 'Y-m-d'))
+        ->first();
+
+        return response()->json($publicidad);
 });

@@ -236,7 +236,8 @@ $(document).ready(function () {
                             $this.iActualizandoContenidoIngles = 0;
                         }
                     });
-                }
+                },
+                
             }
         });
     });

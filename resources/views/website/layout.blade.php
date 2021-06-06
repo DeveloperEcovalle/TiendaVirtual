@@ -34,6 +34,7 @@
     <link href="/css/plugins/jQueryUI/jquery-ui.css" rel="stylesheet">
     <link href="/js/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="/css/popup/magnific-popup.css" rel="stylesheet">
     <link href="/css/ecovalle/ecovalle-font.css" rel="stylesheet">
     <link href="/css/website.css?cvcn=14" rel="stylesheet">
     @yield('izipay')
@@ -260,7 +261,7 @@
                                         <li><a href="/mi-cuenta">{{ $lstLocales['My account'] }}</a></li>
                                         <li><a href="/mi-cuenta?menu=1">{{ $lstLocales['Update profile'] }}</a></li>
                                         @endif
-                                        <li><a href="#">{{ $lstLocales['forgot_my_password'] }}</a></li>
+                                        <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
                                         <li><a href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a></li>
@@ -348,7 +349,7 @@
                                         </form>
                                         <div class="row">
                                             <div class="col-12 pb-2 text-center">
-                                                <a class="nav-ecovalle-amarillo small" href="#">&iquest;Olvid&oacute; su
+                                                <a class="nav-ecovalle-amarillo small" href="/olvide-mi-contrasena">&iquest;Olvid&oacute; su
                                                     contrase&ntilde;a?</a>
                                             </div>
                                             <div class="col-12 text-center">
@@ -366,6 +367,26 @@
             </div>
         </div>
     </div>
+    
+    <!--<div class="container-all" id="popup" v-on:click="cerrar"> 
+        
+        <div class="popup">
+            <div class="img">
+                <a href="#">
+                    <img class="img-fluid h-100 w-100" id="img-popup" src="/storage/empresa/Vy8QtpbijN949Rci2drGhUvnDxWDfIvxJM1ep9Rn.png" alt="ECO_VALLE">
+                </a>
+            </div>
+            
+            <span class="btn-close-popup" id="close" style="cursor: pointer">X</span>
+        </div>
+        
+    </div>-->
+    <!--https://www.ecovalle.pe/img/logo_ecovalle.png-->
+
+    <div id="popup"></div>
+    
+
+    
 
     @if($telefono_whatsapp)
     <div class="position-fixed" style="bottom:50px; top:auto; right:30px; left:auto; -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75); -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75); box-shadow: 8px 8px 6px 0px rgba(0,0,0,0.75); border-radius: 50%;">
@@ -388,10 +409,20 @@
     <script src="/js/plugins/starrr/starrr.js"></script>
     <script src="/js/plugins/axios/axios.js"></script>
     <script src="/js/plugins/vue/vue.js"></script>
+    <script src="/js/popup/jquery.magnific-popup.js"></script>
+    <script src="/js/popup/jquery.magnific-popup.min.js"></script>
     <script src="/js/website/website.js?cvcn=14"></script>
 
     <script>
         $(document).ready(function() {
+
+            /*$("#popup").hide().fadeIn(1000);
+
+            //close the POPUP if the button with id="close" is clicked
+            $("#close").on("click", function (e) {
+                e.preventDefault();
+                $("#popup").fadeOut(1000);
+            });*/
             autocompletar();
             $('#frmIniciarSesion').submit(function(e){
                 e.preventDefault();

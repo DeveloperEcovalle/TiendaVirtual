@@ -8,6 +8,7 @@ use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\Mail\NotificacionContactoContigo;
 use App\Persona;
+use App\Publicidad;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -335,6 +336,20 @@ class Website extends Controller {
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
         $respuesta->mensaje = 'Suscripción registrada correctamente.';
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxPublicidad()
+    {
+        $actual = now();
+        $publicidad = Publicidad::where('f_inicio', '<=', date_format($actual, 'Y-m-d'))
+        ->where('f_fin', '>=', date_format($actual, 'Y-m-d'))
+        ->where('estado', 1)
+        ->first();
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->data = array('publicidad' => $publicidad);
 
         return response()->json($respuesta);
     }

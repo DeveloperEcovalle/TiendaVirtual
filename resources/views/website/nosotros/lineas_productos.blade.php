@@ -137,7 +137,7 @@
                             <span class="fas fa-chevron-left fa-2x text-ecovalle" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
                         </a>
-                        <a class="carousel-control-next px-3 w-auto" href="#carouselLineas" role="button" data-slide="next" v-if="lstCarouselLineasProductosConImagen.length > 1">
+                        <a class="carousel-control-next px-3 w-auto" href="#carouselLineas" role="button" data-slide="next" id="next-carousel" v-if="lstCarouselLineasProductosConImagen.length > 1">
                             <span class="fas fa-chevron-right fa-2x text-ecovalle" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>

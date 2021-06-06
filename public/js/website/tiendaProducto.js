@@ -41,7 +41,6 @@ let vueTiendaProducto = new Vue({
         }
     },
     mounted: function () {
-
         let $this = this;
         ajaxWebsiteLocale()
             .then(response => {
@@ -108,7 +107,10 @@ let vueTiendaProducto = new Vue({
             let $this = this;
             return axios.post('/tienda/producto/ajax/listarProductosRelacionados', formData)
                 .then(response => $this.lstProductosRelacionados = response.data.data.lstProductosRelacionados)
-                .then(() => $this.iCargandoProductosRelacionados = 0);
+                .then(() => {
+                    $this.iCargandoProductosRelacionados = 0;
+                    $('#productos-carousel').removeClass('d-none');
+                });
         },
         ajaxAgregarAlCarrito: function (producto) {
             let $this = this;

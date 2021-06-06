@@ -240,76 +240,91 @@ let ajaxSalir = function() {
     });
 };
 
-/*let vueInicioSesion = new Vue({
-    el: '#inicioSesion',
+let vuePopup = new Vue({
+    el: '#popup',
     data: {
-        iComprobando: 0,
-        sMensaje: null,
-        sClase: null
     },
-    computed: {
-        sLstCarritoCompras: function () {
-            let lstCarritoCompras = $cookies.get('lstCarritoCompras');
+    mounted: function(){
+        /*$("#popup").hide().fadeIn(1000);
+        setTimeout(() => {
+            $('#popup').addClass('active');
+        }, 100);*/
+        // Define data for the popup
 
-            let sLstCarritoCompras = '';
-            for (let detalle of lstCarritoCompras) {
-                sLstCarritoCompras += detalle.producto_id + ';' + detalle.cantidad + '|'
-            }
+        let cookieWebsiteVisita = $cookies.get('websitevisita');
 
-            return sLstCarritoCompras.substring(0, sLstCarritoCompras.length - 1);
-        }
-    },
-    methods: {
-        ajaxIngresar: function () {
-            this.iComprobando = 1;
-            let frmIniciarSesion = document.getElementById('frmIniciarSesion');
-            let formData = new FormData(frmIniciarSesion);
-            formData.append('sLstCarritoCompras', this.sLstCarritoCompras);
+        if(!cookieWebsiteVisita)
+        {
+            axios.get('/ajax/publicidad/').then(response => {
+                let respuesta = response.data;
+                if (respuesta.result === result.success) {
+                    let publicidad = respuesta.data.publicidad;
+                    if(publicidad)
+                    {
+                        if(publicidad.enlace)
+                        {
+                            var data = [            
+                                {
+                                    userWebsite_href: publicidad.enlace,
+                                }
+                            ];
+                        }
+                        else
+                        {
+                            var data = [            
+                                {
+                                    userWebsite_href: '#',
+                                }
+                            ];
+                        }
 
-            let $this = this;
-            axios.post('/iniciar-sesion/ajax/ingresar', formData)
-                .then(response => {
-                    let respuesta = response.data;
-                    console.log(respuesta);
-                    if (respuesta.result === result.success) {
-                        location.reload();
-                    } else {
-                        $this.iComprobando = 0;
-                        $this.sClase = respuesta.result === result.error ? 'alert-danger' : ('alert-' + respuesta.result);
-                        $this.sMensaje = respuesta.mensaje;
+                
+                        // initalize popup
+                        $.magnificPopup.open({ 
+                            key: 'my-popup', 
+                            items: data,
+                            fixedContentPos: false,
+                            fixedBgPos: true,
+                            overflowY: 'auto',
+                            closeBtnInside: true,
+                            preloader: false,
+                            midClick: true,
+                            removalDelay: 500,
+                            mainClass: 'mfp-fade',
+                            type: 'inline',
+                            inline: {
+                                // Define markup. Class names should match key names.
+                                markup: '<div class="white-popup"><div class="mfp-close"></div>'+
+                                        '<a class="mfp-userWebsite">'+
+                                            '<img class="img-fluid" width="1080" height="1080"  id="img-popup" src="'+publicidad.ruta+'" alt="ECO_VALLE"></div>'+
+                                        '</a>'+
+                                        '</div>'
+                            },
+                            gallery: {
+                                enabled: true 
+                            },
+                            callbacks: {
+                                markupParse: function(template, values, item) {
+                                // optionally apply your own logic - modify "template" element based on data in "values"
+                                // console.log('Parsing:', template, values, item);
+                                },
+                            }
+                        });
+                        $cookies.set('websitevisita', 'yes', 1);
                     }
-                })
-                .catch(error => {
-                    $this.iComprobando = 0;
-                    $this.sClase = 'alert-danger';
-                    $this.sMensaje = `Ocurrió un error inesperado.
-                    Intentar una vez más debería solucionar el problema;
-                    de no ser así, comuníquese con el administrador del sistema.`;
-                });
-
-            $.ajax({
-                type: 'post',
-                url: '/iniciar-sesion/ajax/ingresar',
-                data: $('#frmIniciarSesion').serialize() + '&sLstCarritoCompras=' + $this.sLstCarritoCompras,
-                dataType: 'json',
-                success: function (respuesta) {
-                    if (respuesta.result === result.success) {
-                        location.reload();
-                    } else {
-                        $this.iComprobando = 0;
-                        $this.sClase = respuesta.result === result.error ? 'alert-danger' : ('alert-' + respuesta.result);
-                        $this.sMensaje = respuesta.mensaje;
-                    }
-                },
-                error: function () {
-                    $this.iComprobando = 0;
-                    $this.sClase = 'alert-danger';
-                    $this.sMensaje = 'Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.';
                 }
             });
         }
+        
+        
+    },
+    methods: {
+        cerrar: function () {
+            $('#popup').removeClass('active');
+            $("#popup").fadeOut(1000);
+        }
     }
-});*/
+});
 
 let chunk = (array, size) => Array.from({length: Math.ceil(array.length / size)}, (v, i) => array.slice(i * size, i * size + size));
 
