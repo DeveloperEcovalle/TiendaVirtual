@@ -44,10 +44,10 @@
                     </div>
                     <br>
                     <div class="contenedor_gps">
-                        <div v-for="post in filteredList">
+                        <div v-for="post in filteredList" id="contenedorcliente">
                             <div class="row" style="width:280px;padding-top:5px;">
                                 <div class="col-lg-12" v-on:click="marcadorcliente(post.nombre)" style="cursor: pointer;">
-                                    @{{ post . nombre }}
+                                    <i class="fa fa-user" aria-hidden="true" style="color:green;margin-right:5px;"></i>@{{ post . nombre }}
                                 </div>
                             </div>
                             <hr style="width:260px;">

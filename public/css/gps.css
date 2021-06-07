@@ -32,10 +32,10 @@ a[href^="https://maps.google.com/maps"]
     border-radius: 4px;
 }
 .contenedor_gps::-webkit-scrollbar-thumb:active {
-    background-color: #999999;
+    background-color:  #025a2d;
 }
 .contenedor_gps::-webkit-scrollbar-thumb:hover {
-    background: #b3b3b3;
+    background:  #025a2d;
     box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
 }
 /* Estilos track de scroll */
@@ -118,7 +118,7 @@ a[href^="https://maps.google.com/maps"]
     grid-template-columns: 1fr 2fr 1fr;
 }
 .onegrid {
-    padding-top: 13px;
+    padding-top: 15px;
     grid-row: 1;
 }
 .onegrid i{
@@ -132,7 +132,7 @@ a[href^="https://maps.google.com/maps"]
 }
 .threegrid {
     grid-row: 1;
-    padding-top: 13px;
+    padding-top: 15px;
 }
 .threegrid i{
     cursor: pointer;
@@ -147,4 +147,7 @@ a[href^="https://maps.google.com/maps"]
     font-size: 12px;
     padding: 2px;
     line-height: 15pt;
+}
+#contenedorcliente:hover{
+    background-color:rgb(224, 220, 220);
 }
