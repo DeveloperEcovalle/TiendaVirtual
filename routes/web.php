@@ -5,7 +5,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
-use App\Publicidad;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,14 @@ Route::middleware([Locale::class])->group(function () {
                     Route::post('/listar', 'LineasProductos@ajaxListar');
                     Route::post('/listarProductosRelacionados', 'LineasProductos@ajaxListarProductosRelacionados');
                 });
+            });
+        });
+
+        Route::prefix('/guia-compras')->group(function () {
+            Route::get('/', 'GuiaCompras@index');
+
+            Route::prefix('/ajax')->group(function () {
+                Route::post('/listar', 'GuiaCompras@ajaxListar');
             });
         });
 
@@ -541,6 +549,17 @@ Route::namespace('Intranet')->group(function () {
                         });
                     });
 
+                    Route::prefix('/guia-compras')->group(function () {
+                        Route::get('/', 'GuiaCompras@index');
+
+                        Route::prefix('/ajax')->group(function () {
+                            Route::post('/listar', 'GuiaCompras@ajaxListar');
+                            Route::post('/actualizarImagenPortada', 'GuiaCompras@ajaxActualizarImagenPortada');
+                            Route::post('/actualizarContenidoEspanol', 'GuiaCompras@ajaxActualizarContenidoEspanol');
+                            Route::post('/actualizarContenidoIngles', 'GuiaCompras@ajaxActualizarContenidoIngles');
+                        });
+                    });
+
                     Route::prefix('/tienda')->group(function () {
                         Route::get('/', 'Tienda@index');
 
@@ -799,10 +818,6 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $actual = now();
-        $publicidad = Publicidad::where('f_inicio', '>=', date_format($actual, 'Y-m-d'))
-        ->orWhere('f_fin', '<=', date_format($actual, 'Y-m-d'))
-        ->first();
-
-        return response()->json($publicidad);
+    Storage::disk('public')->delete('empresa/rsDKmMp4FnIJtEop3oPVuQ0qvbpSmbx1NEYe0xCi.png');
+    return 'ok';
 });

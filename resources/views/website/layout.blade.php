@@ -117,13 +117,14 @@
                                         <div class="dropdown-menu py-0 mt-1 rounded" aria-labelledby="navbarDropdown">
                                             <a class="dropdown-item py-2" href="/nosotros/quienes-somos">{{ $lstLocales['Who we are'] }}</a>
                                             <a class="dropdown-item py-2" href="/nosotros/certificaciones">{{ $lstLocales['Certifications'] }}</a>
+                                            <a class="dropdown-item py-2" href="/servicios">{{ $lstLocales['Services'] }}</a>
                                             <a class="dropdown-item py-2" href="/nosotros/lineas-productos">{{ $lstLocales['Product lines'] }}</a>
                                         </div>
                                     </li>
                                     <li class="nav-item {{ $iPagina === 2 ? 'active' : '' }} mt-1 mr-md-1">
                                         <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/tienda">{{ $lstLocales['Store'] }}</a>
                                     </li>
-                                    <li class="nav-item {{ $iPagina === 3 ? 'active' : '' }} mt-1 mr-md-1">
+                                    <li class="nav-item {{ $iPagina === 3 ? 'active' : '' }} mt-1 mr-md-1 d-none">
                                         <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/servicios">{{ $lstLocales['Services'] }}</a>
                                     </li>
                                     <li class="nav-item {{ $iPagina === 4 ? 'active' : '' }} dropdown mt-1 mr-md-1">
@@ -249,7 +250,7 @@
                                         <li><a href="/servicios">{{ $lstLocales['Services'] }}</a></li>
                                         <li><a href="/blog">Blog</a></li>
                                         <li><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
-                                        <li class="d-none"><a href="/guia-de-compra">{{ $lstLocales['Shopping guide'] }}</a></li>
+                                        <li><a href="/guia-compras">{{ $lstLocales['Shopping guide'] }}</a></li>
                                         <li><a href="/politica-privacidad">{{ $lstLocales['Policy and Privacy'] }}</a></li>
                                         <li><a href="/terminos-condiciones">{{ $lstLocales['Terms and Conditions'] }}</a></li>
                                     </ul>

@@ -24,11 +24,11 @@
         <link href="/css/intranet.css" rel="stylesheet">
     </head>
 
-    <body class="top-navigation fixed-nav fixed-sidebar md-skin" style="zoom: 85%">
+    <body class="top-navigation fixed-nav fixed-sidebar md-skin">
 
-        <div id="wrapper" class="overflow-auto" style="height: 100%">
-            <nav class="navbar-default navbar-static-side" role="navigation" style="height: 100%">
-                <div class="sidebar-collapse">
+        <div id="wrapper">
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse overflow-auto">
                     <ul class="nav metismenu" id="side-menu" v-cloak>
                         <li v-for="menu of lstMenus" :class="menu.id == {{ $iMenuId }} ? 'active' : ''">
                             <a v-bind:href="menu.enlace">@{{ menu.nombre }}</a>

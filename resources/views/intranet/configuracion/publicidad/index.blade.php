@@ -1,4 +1,4 @@
-@extends('intranet.layout_sidebar')
+@extends('intranet.layout')
 
 @section('title', 'PUBLICIDADS')
 
@@ -12,7 +12,7 @@
                             <a href="#" v-on:click.prevent>Ecovalle</a>
                         </li>
                         <li class="breadcrumb-item d-none d-md-block">
-                            <a>P&aacute;gina web</a>
+                            <a>Configuraci&oacute;n</a>
                         </li>
                         <li class="breadcrumb-item active">
                             <strong>Publicidads</strong>

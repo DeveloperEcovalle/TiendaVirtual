@@ -45,7 +45,7 @@ class Servicios extends Website {
             'telefono_whatsapp' => TelefonoEmpresa::where('whatsapp', 1)->first(),
             'lstLocales' => $this->lstLocales[$locale],
             'lstTraduccionesServicios' => $this->lstTraduccionesServicios[$locale],
-            'iPagina' => 3,
+            'iPagina' => 1, //3
         ];
 
         return view('website.servicios', $data);

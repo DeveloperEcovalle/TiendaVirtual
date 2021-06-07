@@ -89,9 +89,9 @@
                                     <p class="col-12 col-lg-4">
                                         <span class="font-weight-bold">Datos de env&iacute;o</span>
                                     </p>
-                                    <div v-if="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" class="col-8 col-lg-6" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    <div v-if="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" class="col-8 col-lg-6 d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
                                     </div>
-                                    <div v-else class="col-8 col-lg-6"></div>
+                                    <div class="col-8 col-lg-6"></div>
                                     @if(session()->has('cliente'))
                                     <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
                                     @else
@@ -157,17 +157,20 @@
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de recojo en tienda</h1>
                                 <div class="row">
-                                    <p class="col-12 col-lg-4">
+                                    <p class="col-12 col-lg-4 m-0">
                                         <span class="font-weight-bold">Datos de recojo</span>
                                     </p>
-                                    <div v-if="!bRecojoValida" class="col-8 col-lg-6 items-center" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    <div v-if="!bRecojoValida" class="col-8 col-lg-6 items-center d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
                                     </div>
-                                    <div v-else class="col-8 col-lg-6"></div>
+                                    <div class="col-8 col-lg-6"></div>
                                     @if(session()->has('cliente'))
                                     <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarRecojo">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
                                     @else
                                     <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
                                     @endif
+                                    <p class="col-12 text-justify">
+                                        <span class="font-weight-bold text-ecovalle-2 h3">Direcci&oacute;n de recojo en Av. Prolongación Vallejo Urb. Galeno 1 Mz. I Lote 2, Trujillo - Trujillo (Ref. a media cuadra del Real Plaza)</span>
+                                    </p>
                                 </div>
                                 @if(session()->has('cliente'))
                                 <div v-if="iRecojoEstablecido === 0">
@@ -210,9 +213,9 @@
                                     <p class="col-12 col-lg-4">
                                         <span class="font-weight-bold">Datos de delivery</span>
                                     </p>
-                                    <div v-if="!bDeliveryValida" class="col-6 col-lg-6 items-center" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    <div v-if="!bDeliveryValida" class="col-6 col-lg-6 items-center d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
                                     </div>
-                                    <div v-else class="col-8 col-lg-6"></div>
+                                    <div class="col-8 col-lg-6"></div>
                                     @if(session()->has('cliente'))
                                     <a class="col-6 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDelivery">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
                                     @else
