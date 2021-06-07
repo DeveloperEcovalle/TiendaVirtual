@@ -28,7 +28,7 @@ if (!function_exists('generaPassword')) {
         $key = '';
         $pattern = '1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $max = strlen($pattern)-1;
-        for($i=0;$i < $longitud;$i++) $key .= $pattern{mt_rand(0,$max)};
+        for($i=0;$i < $longitud;$i++) $key .= $pattern[mt_rand(0,$max)];
         return $key;
     }
 }
@@ -41,7 +41,7 @@ if (!function_exists('enviapedido')) {
             $data_file = base64_encode($file);
             $mime = mime_content_type('storage/pedidos/'.$venta->codigo.'.pdf');
             $str_file = 'data:'.$mime.';base64,'.$data_file;
-            
+
             $data = [
                 'phone' => '51'.$telefono, // Receivers phone
                 'body' => $str_file,

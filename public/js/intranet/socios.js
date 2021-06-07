@@ -122,6 +122,7 @@ $(document).ready(function () {
 
                         for (let i = 0; i < this.lstclientes.length; i++) {
                             datos_c.push({
+                                id:this.lstclientes[i].id,
                                 direccion: this.lstclientes[i].direccion,
                                 lat: this.lstclientes[i].lat,
                                 lng: this.lstclientes[i].lng,
@@ -129,15 +130,14 @@ $(document).ready(function () {
                                 checked: this.lstclientes[i].checked,
                             });
                         }
-                        var data_gps= JSON.stringify(datos_c);
+                        var data_gps = JSON.stringify(datos_c);
 
-                       axios
+                      axios
                             .post(
                                 "https://erpecovalle.ga/api/posiciciones/clientes",
                                 {
-                                        lista:data_gps
+                                    lista: data_gps,
                                 }
-
                             )
                             .then(function (response) {
                                 console.log(response);
@@ -160,14 +160,28 @@ $(document).ready(function () {
                             position = t;
                         }
                     }
-                    var contentString =
-                        "<div>Nombre del Cliente:" + nombre + "<br></div>";
-                    var infowindow = new google.maps.InfoWindow({
-                        content: contentString,
-                        width: 192,
-                        height: 100,
-                    });
-                    infowindow.open(map, markers[position].marker);
+                    if (position == -1) {
+                        toastr.clear();
+                        toastr.options = {
+                            iconClasses: {
+                                error: "bg-danger",
+                                info: "bg-info",
+                                success: "bg-success",
+                                warning: "bg-warning",
+                            },
+                        };
+                        toastr.warning("No hay posicion en el erp");
+                    } else {
+                        var contentString =
+                            "<div>Nombre del Cliente:" + nombre + "<br></div>";
+                        var infowindow = new google.maps.InfoWindow({
+                            content: contentString,
+                            width: 192,
+                            height: 100,
+                        });
+                        infowindow.open(map, markers[position].marker);
+                    }
+
                     // info_.push(infowindow);
                 },
                 check: function (e) {
@@ -186,12 +200,12 @@ $(document).ready(function () {
                     var data_cliente = [];
 
                     for (let i = 0; i < data.length; i++) {
-                        var coordenadas = await axios.get(
+                        /*var coordenadas = await axios.get(
                             "https://maps.googleapis.com/maps/api/geocode/json?address=" +
                                 data[i].direccion +
                                 "&key=AIzaSyAS6qv64RYCHFJOygheJS7DvBDYB0iV2wI"
-                        );
-                        if (coordenadas.data.results.length !== 0) {
+                        );*/
+                        if (data[i].lat != null) {
                             const image = {
                                 url: "https://erpecovalle.ga/img/gps_ecovalle.png",
                                 // This marker is 20 pixels wide by 32 pixels high.
@@ -199,33 +213,34 @@ $(document).ready(function () {
                                 // The origin for this image is (0, 0).
                             };
                             marker = new google.maps.Marker({
-                                position:
-                                    coordenadas.data.results[0].geometry
-                                        .location,
+                                position: {
+                                    lat: parseFloat(data[i].lat),
+                                    lng: parseFloat(data[i].lng),
+                                },
                                 map: map,
                                 icon: image,
                             });
-                            var sel=false;
-
-                            if(data[i].ver==1){
-                                sel=true;
-                            }
-
-
-                            data_cliente.push({
-                                direccion: data[i].direccion,
-                                lat: coordenadas.data.results[0].geometry.location.lat,
-                                lng: coordenadas.data.results[0].geometry.location.lng,
-                                nombre: data[i].nombre,
-                                checked: sel,
-                            });
-
                             markers.push({
                                 nombre: data[i].nombre,
                                 marker: marker,
                             });
                         }
+                        var sel = false;
+
+                        if (data[i].ver == 1) {
+                            sel = true;
+                        }
+
+                        data_cliente.push({
+                            id:data[i].id,
+                            direccion: data[i].direccion,
+                            lat: data[i].lat,
+                            lng: data[i].lng,
+                            nombre: data[i].nombre,
+                            checked: sel,
+                        });
                     }
+                    console.log(markers);
                     this.iCargando = 0;
                     this.lstclientes = data_cliente;
                 },

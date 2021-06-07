@@ -23,14 +23,14 @@ let vueSocios = new Vue({
                     .toLowerCase()
                     .includes(this.search.toLowerCase());
             });
-            if (gps_cliente.length <= 10) {
+            /*if (gps_cliente.length <= 7) {
                 $(".contenedor_gps").css(
                     "height",
                     gps_cliente.length * 30 + "px"
                 );
             } else {
-                $(".contenedor_gps").css("height", "400px");
-            }
+                $(".contenedor_gps").css("height", "440px");
+            }*/
             return gps_cliente;
         },
     },
@@ -202,7 +202,7 @@ let vueSocios = new Vue({
         };
         var mapElement = document.getElementById("mapa");
         map = new google.maps.Map(mapElement, mapOptions);
-
+        map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById("sidebargps"));
         var datos;
         axios
             .get("https://erpecovalle.ga/api/clientes/direccion")
@@ -232,6 +232,26 @@ let vueSocios = new Vue({
                 departamentos);*/
     },
     methods: {
+        menugeneral: function ()
+        {
+            $("#contenidocliente").css("display","none");
+            $("#listacliente").css("display","block");
+        },
+        showSidebar: function(){
+         var gpsmenu= $("#gpsmenu");
+           if(gpsmenu.data("show")==0)
+           {
+             gpsmenu.data("show","1");
+             gpsmenu.css("display","none");
+             $(".siderbarmenu").css("display","block");
+           }
+           else
+           {
+            gpsmenu.data("show","0");
+            gpsmenu.css("display","block");
+            $(".siderbarmenu").css("display","none");
+           }
+        },
         eliminarRuta: function()
         {
             for (let i = 0; i < this.ruta.length; i++) {
@@ -241,8 +261,9 @@ let vueSocios = new Vue({
                     this.markersroute[j].marker.setMap(null);
             }
         },
-        generarRuta: function (nombre) {
+        generarRuta: function () {
             $this = this;
+            var nombre=$("#contenidocliente .threegrid").data("nombre");
             var posicion= -1;
             for (let t = 0; t < markers.length; t++) {
                 if (markers[t].nombre == nombre) {
@@ -275,8 +296,9 @@ let vueSocios = new Vue({
                 console.log("sin permisos");
             }
         },
-        vermarcador: function (nombre) {
+        vermarcador: function () {
             var position = -1;
+            var nombre=$("#contenidocliente .threegrid").data("nombre");
             for (let t = 0; t < markers.length; t++) {
                 if (markers[t].nombre == nombre) {
                     position = t;
@@ -294,6 +316,7 @@ let vueSocios = new Vue({
             infowindow.open(map, markers[position].marker);
         },
         clientes: function (datos) {
+            var $this=this;
             const image = {
                 url: "https://erpecovalle.ga/img/gps_ecovalle.png",
                 // This marker is 20 pixels wide by 32 pixels high.
@@ -305,22 +328,80 @@ let vueSocios = new Vue({
                 if (datos[i].ver == 1) {
                     marker = new google.maps.Marker({
                         position: new google.maps.LatLng(
-                            datos[i].latitud,
-                            datos[i].longitud
+                            datos[i].lat,
+                            datos[i].lng
                         ),
                         map: map,
                         icon: image,
                     });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        $this.abrirmarcador(this);
+                    });
                     data.push({
                         direccion: datos[i].direccion,
-                        lat: datos[i].latitud,
-                        lng: datos[i].longitud,
+                        lat: datos[i].lat,
+                        lng: datos[i].lng,
                         nombre: datos[i].nombre,
+                        rutaimg:datos[i].ruta_logo,
+                        numero:datos[i].celular_propietario
                     });
                     markers.push({ marker: marker, nombre: datos[i].nombre });
                 }
             }
             this.lstclientes = data;
+        },
+        marcadorcliente:function(valor){
+            var marker;
+            markers.forEach((value,index,array)=>{
+                if(value.nombre==valor)
+                {
+                   marker=array[index].marker;
+                }
+           });
+           this.abrirmarcador(marker);
+        }
+        ,
+        abrirmarcador: function(valor){
+            var nombre="-1";
+            markers.forEach((value,index,array)=>{
+                 if(value.marker==valor)
+                 {
+                    nombre=array[index].nombre;
+                 }
+            });
+            var data=this.lstclientes;
+            var imagen;
+            var direccion;
+            var celular;
+            data.forEach((value,index,array)=>{
+                if(value.nombre==nombre)
+                {
+                    imagen=value.rutaimg;
+                    direccion=value.direccion;
+                    celular=value.numero
+                }
+            });
+            $("#listacliente").css("display","none");
+            $("#contenidocliente").css("display","block");
+            var rutaimagen="https://erpecovalle.ga/storage/Clientes/img/default.png";
+            if(imagen!=null){
+               rutaimagen= "https://erpecovalle.ga/storage/"+imagen.slice(7)
+            }
+
+            $("#contenidocliente .imgpscliente").attr("src",rutaimagen);
+            $("#contenidocliente .twogrid").html(nombre)
+            $("#contenidocliente #direccion").html(direccion)
+            $("#contenidocliente #numero").html(celular)
+            $("#contenidocliente .threegrid").data("nombre",nombre);
+            var gpsmenu= $("#gpsmenu");
+           if(gpsmenu.data("show")==0)
+           {
+             gpsmenu.data("show","1");
+             gpsmenu.css("display","none");
+             $(".siderbarmenu").css("display","block");
+           }
+
+
         },
         displayRoute(
             travel_mode,
