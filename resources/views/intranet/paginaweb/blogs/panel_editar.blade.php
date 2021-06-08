@@ -26,7 +26,7 @@
             <img v-if="imagen" v-bind:src="sContenidoArchivo" class="img-fluid mb-2">
             <img v-else v-bind:src="blog.ruta_imagen_principal" class="img-fluid mb-2">
             <div class="custom-file">
-                <input id="aImagen" type="file" class="custom-file-input" name="imagen" v-on:change="cambiarImagen($event)">
+                <input id="aImagen" accept=".jpeg,.png" type="file" class="custom-file-input" name="imagen" v-on:change="cambiarImagen($event)">
                 <label for="aImagen" class="custom-file-label">@{{ sNombreArchivo }}</label>
             </div>
         </div>

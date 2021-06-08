@@ -201,81 +201,94 @@ class Blogs extends Intranet {
     }
 
     public function ajaxInsertar(Request $request) {
-        $this->init();
+        try{
+            $this->init();
 
-        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoInsertar)->first();
-
-        $respuesta = new Respuesta;
-        $data = $request->all();
-        /*$request->validate([
-            'categoria' => 'required',
-            'titulo' => 'required|string|max:255|unique:blogs,titulo',
-            'imagen' => 'required|image|mimes:jpeg,png',
-            'resumen' => 'required',
-            'contenido' => 'required',
-        ]);*/
-        $rules = [
-            'categoria' => 'required',
-            'titulo' => 'required|string|max:255|unique:blogs,titulo',
-            'imagen' => 'required|image|mimes:jpeg,png',
-            'resumen' => 'required',
-            'contenido' => 'required',
-        ];
-        $message = [
-            'categoria.required' => 'El campo categoria es obligatorio.',
-            'titulo.required' => 'El campo titulo es obligatorio.',
-            'titulo.string' => 'El campo titulo es un texto.',
-            'titulo.max' => 'El campo titulo debe tener un maximo de 255 caracteres.',
-            'titulo.unique' => 'Hay un blog con el mismo titulo.',
-            'imagen.required' => 'La imagen es obligatoria.',
-            'imagen.image' => 'Debe ser una imagen.',
-            'imagen.mimes' => 'La imagen debe ser de tipo jpeg o png.',
-            'resumen.required' => 'El campo resumen es obligatorio.',
-            'contenido.required' => 'El campo contenido es obligatorio.',
-        ];
+            DB::beginTransaction();
+            $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoInsertar)->first();
     
-        $validator =  Validator::make($data, $rules, $message);
+            $respuesta = new Respuesta;
+            $data = $request->all();
+            /*$request->validate([
+                'categoria' => 'required',
+                'titulo' => 'required|string|max:255|unique:blogs,titulo',
+                'imagen' => 'required|image|mimes:jpeg,png',
+                'resumen' => 'required',
+                'contenido' => 'required',
+            ]);*/
+            $rules = [
+                'categoria' => 'required',
+                'titulo' => 'required|string|max:255|unique:blogs,titulo',
+                'imagen' => 'required|image|mimes:jpeg,png',
+                'resumen' => 'required',
+                'contenido' => 'required',
+            ];
+            
+            $message = [
+                'categoria.required' => 'El campo categoria es obligatorio.',
+                'titulo.required' => 'El campo titulo es obligatorio.',
+                'titulo.string' => 'El campo titulo es un texto.',
+                'titulo.max' => 'El campo titulo debe tener un maximo de 255 caracteres.',
+                'titulo.unique' => 'Hay un blog con el mismo titulo.',
+                'imagen.required' => 'La imagen es obligatoria.',
+                'imagen.image' => 'Debe ser una imagen.',
+                'imagen.mimes' => 'La imagen debe ser de tipo jpeg o png.',
+                'resumen.required' => 'El campo resumen es obligatorio.',
+                'contenido.required' => 'El campo contenido es obligatorio.',
+            ];
+        
+            $validator =  Validator::make($data, $rules, $message);
+    
+            if ($validator->fails()) {
+    
+                DB::rollBack();
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'Ocurrió un error de validación.';
+                $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
+                return response()->json($respuesta);
+        
+            }
+    
+            if ($permiso === null) {
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+                return response()->json($respuesta);
+            }
+    
+            $imagen = $request->file('imagen');
+            //$ruta_imagen_principal = $imagen->store('public/blogs');
+    
+            $blog = new Blog;
+            $blog->categoria_id = $request->get('categoria');
+            $blog->titulo = $request->get('titulo');
+            if ($imagen) {
+                $ruta = public_path().'/storage/blogs';
+                $fileName = uniqid().$imagen->getClientOriginalName();
+                $imagen->move($ruta,$fileName);
+                $blog->ruta_imagen_principal = '/storage/blogs/'.$fileName;
+            }
+            //$blog->ruta_imagen_principal = str_replace('public/', '/storage/', $ruta_imagen_principal);
+            $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
+            $blog->resumen = $request->get('resumen');
+            $blog->contenido = $request->get('contenido');
+            $blog->usuario_reg = $this->usuario->id;
+            $blog->fecha_reg = now()->toDateTimeString();
+            $blog->save();
 
-        if ($validator->fails()) {
-
+            DB::commit();
+    
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Publicaci&oacute;n registrada correctamente.';
+    
+            return response()->json($respuesta);
+        }
+        catch(Exception $e){
             DB::rollBack();
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = 'Ocurrió un error de validación.';
-            $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
-            return response()->json($respuesta);
-    
-        }
-
-        if ($permiso === null) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            $respuesta->data = array('errors' => array('error' => [$e->getMessage()]));
             return response()->json($respuesta);
         }
-
-        $imagen = $request->file('imagen');
-        //$ruta_imagen_principal = $imagen->store('public/blogs');
-
-        $blog = new Blog;
-        $blog->categoria_id = $request->get('categoria');
-        $blog->titulo = $request->get('titulo');
-        if ($imagen) {
-            $ruta = public_path().'/storage/blogs';
-            $fileName = uniqid().$imagen->getClientOriginalName();
-            $imagen->move($ruta,$fileName);
-            $blog->ruta_imagen_principal = '/storage/blogs/'.$fileName;
-        }
-        //$blog->ruta_imagen_principal = str_replace('public/', '/storage/', $ruta_imagen_principal);
-        $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
-        $blog->resumen = $request->get('resumen');
-        $blog->contenido = $request->get('contenido');
-        $blog->usuario_reg = $this->usuario->id;
-        $blog->fecha_reg = now()->toDateTimeString();
-        $blog->save();
-
-        $respuesta->result = Result::SUCCESS;
-        $respuesta->mensaje = 'Publicaci&oacute;n registrada correctamente.';
-
-        return response()->json($respuesta);
     }
 
     public function ajaxEditarListarCategorias() {

@@ -318,6 +318,7 @@ listarMenus(function (lstModulos, lstMenus) {
                                         };
 
                                         toastr[respuesta.result](respuesta.mensaje);
+                                        toastr[respuesta.result](sHtmlErrores(respuesta.data.errors));
                                     },
                                     error: function (respuesta) {
                                         $this.iInsertando = 0;

@@ -19,7 +19,7 @@
             <label class="font-weight-bold">Imagen principal <span class="text-danger">*</span></label>
             <img v-if="imagen" v-bind:src="sContenidoArchivo" class="img-fluid mb-2">
             <div class="custom-file">
-                <input id="aImagen" type="file" class="custom-file-input" name="imagen" v-on:change="cambiarImagen($event)" required="required">
+                <input id="aImagen" type="file" class="custom-file-input" accept=".jpeg,.png" name="imagen" v-on:change="cambiarImagen($event)" required="required">
                 <label for="aImagen" class="custom-file-label">@{{ sNombreArchivo }}</label>
             </div>
         </div>
