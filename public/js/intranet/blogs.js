@@ -227,6 +227,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                             $('#modalNuevaCategoria').modal('hide');
                                             $('#frmNuevaCategoria')[0].reset();
                                         }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                 });
@@ -245,6 +254,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                             $('#frmNuevaCategoria')[0].reset();
                                             $('#modalNuevaCategoria').modal('hide');
                                         }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                 });
@@ -253,6 +271,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                 let $this = this;
 
                                 if ($('#sContenido').summernote('isEmpty')) {
+                                    toastr.clear();
+                                    toastr.options = {
+                                        iconClasses: {
+                                            error: 'bg-danger',
+                                            info: 'bg-info',
+                                            success: 'bg-success',
+                                            warning: 'bg-warning',
+                                        },
+                                    };
                                     toastr[result.error]('Contenido es un campo requerido.');
                                     return;
                                 }
@@ -280,12 +307,31 @@ listarMenus(function (lstModulos, lstMenus) {
                                             vueBlogs.ajaxListar();
                                         }
 
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                     error: function (respuesta) {
                                         $this.iInsertando = 0;
 
                                         let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[result.error](sHtmlMensaje);
                                     }
                                 });
@@ -376,6 +422,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                             frmNuevaCategoria.reset();
                                             $('#modalNuevaCategoria').modal('hide');
                                         }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                 });
@@ -394,6 +449,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                             $('#frmNuevaCategoria')[0].reset();
                                             $('#modalNuevaCategoria').modal('hide');
                                         }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                 });
@@ -406,6 +470,15 @@ listarMenus(function (lstModulos, lstMenus) {
                                 let $this = this;
 
                                 if ($('#sContenido').summernote('isEmpty')) {
+                                    toastr.clear();
+                                    toastr.options = {
+                                        iconClasses: {
+                                            error: 'bg-danger',
+                                            info: 'bg-info',
+                                            success: 'bg-success',
+                                            warning: 'bg-warning',
+                                        },
+                                    };
                                     toastr[result.error]('Contenido es un campo requerido.');
                                     return;
                                 }
@@ -431,12 +504,31 @@ listarMenus(function (lstModulos, lstMenus) {
                                             vueBlogs.ajaxListar();
                                         }
 
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                     error: function (respuesta) {
                                         $this.iActualizando = 0;
 
                                         let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[result.error](sHtmlMensaje);
                                     }
                                 });
@@ -460,13 +552,30 @@ listarMenus(function (lstModulos, lstMenus) {
                                                 });
                                             });
                                         }
-
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[respuesta.result](respuesta.mensaje);
                                     },
                                     error: function (respuesta) {
                                         $this.iEliminando = 0;
 
                                         let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
                                         toastr[result.error](sHtmlMensaje);
                                     }
                                 });

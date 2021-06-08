@@ -8,9 +8,11 @@ use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Exception;
 class Blogs extends Intranet {
 
@@ -204,19 +206,51 @@ class Blogs extends Intranet {
         $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoInsertar)->first();
 
         $respuesta = new Respuesta;
+        $data = $request->all();
+        /*$request->validate([
+            'categoria' => 'required',
+            'titulo' => 'required|string|max:255|unique:blogs,titulo',
+            'imagen' => 'required|image|mimes:jpeg,png',
+            'resumen' => 'required',
+            'contenido' => 'required',
+        ]);*/
+        $rules = [
+            'categoria' => 'required',
+            'titulo' => 'required|string|max:255|unique:blogs,titulo',
+            'imagen' => 'required|image|mimes:jpeg,png',
+            'resumen' => 'required',
+            'contenido' => 'required',
+        ];
+        $message = [
+            'categoria.required' => 'El campo categoria es obligatorio.',
+            'titulo.required' => 'El campo titulo es obligatorio.',
+            'titulo.string' => 'El campo titulo es un texto.',
+            'titulo.max' => 'El campo titulo debe tener un maximo de 255 caracteres.',
+            'titulo.unique' => 'Hay un blog con el mismo titulo.',
+            'imagen.required' => 'La imagen es obligatoria.',
+            'imagen.image' => 'Debe ser una imagen.',
+            'imagen.mimes' => 'La imagen debe ser de tipo jpeg o png.',
+            'resumen.required' => 'El campo resumen es obligatorio.',
+            'contenido.required' => 'El campo contenido es obligatorio.',
+        ];
+    
+        $validator =  Validator::make($data, $rules, $message);
+
+        if ($validator->fails()) {
+
+            DB::rollBack();
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'Ocurrió un error de validación.';
+            $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
+            return response()->json($respuesta);
+    
+        }
+
         if ($permiso === null) {
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
             return response()->json($respuesta);
         }
-
-        $request->validate([
-            'categoria' => 'required',
-            'titulo' => 'required|string|max:255|unique:blogs,titulo',
-            'imagen' => 'required|image|mimes:jpeg,png',
-            'resumen' => 'required|string|max:200',
-            'contenido' => 'required',
-        ]);
 
         $imagen = $request->file('imagen');
         //$ruta_imagen_principal = $imagen->store('public/blogs');
