@@ -255,19 +255,15 @@ class Blogs extends Intranet {
                 return response()->json($respuesta);
             }
     
-            $imagen = $request->file('imagen');
-            //$ruta_imagen_principal = $imagen->store('public/blogs');
-    
             $blog = new Blog;
             $blog->categoria_id = $request->get('categoria');
             $blog->titulo = $request->get('titulo');
-            if ($imagen) {
-                $ruta = public_path().'/storage/blogs';
-                $fileName = uniqid().$imagen->getClientOriginalName();
-                $imagen->move($ruta,$fileName);
-                $blog->ruta_imagen_principal = '/storage/blogs/'.$fileName;
-            }
-            //$blog->ruta_imagen_principal = str_replace('public/', '/storage/', $ruta_imagen_principal);
+
+            $imagen = $request->file('imagen');
+            $ruta_imagen_blog = $imagen ? $imagen->store('public/blogs') : null;
+            $nueva_ruta_imagen_blog = str_replace('public/', '/storage/', $ruta_imagen_blog);
+
+            $blog->ruta_imagen_principal = $nueva_ruta_imagen_blog;
             $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
             $blog->resumen = $request->get('resumen');
             $blog->contenido = $request->get('contenido');
@@ -407,32 +403,16 @@ class Blogs extends Intranet {
         $blog = Blog::find($id);
 
         $imagen = $request->file('imagen');
-        //$sRutaImagenActual = str_replace('/storage', 'public', $blog->ruta_imagen_principal);
+        $sRutaImagenActual = str_replace('/storage', 'public', $blog->ruta_imagen_principal);
         if ($imagen) {
-            $url_baner = public_path().$blog->ruta_imagen_principal;
-            try
-            {
-                unlink($url_baner);
-            }catch(Exception $e)
-            {}
-
-            $ruta = public_path().'/storage/blogs';
-            $fileName = uniqid().$imagen->getClientOriginalName();
-            $imagen->move($ruta,$fileName);
-            $nueva_ruta_imagen_principal = '/storage/blogs/'.$fileName;
-        } else {
-            $nueva_ruta_imagen_principal = $blog->ruta_imagen_principal;
+            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            Storage::disk('public')->delete($sNombreImagenActual);
         }
-        // if ($imagen) {
-        //     $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
-        //     Storage::disk('public')->delete($sNombreImagenActual);
-        // }
-        // $ruta_imagen_principal = $imagen ? $imagen->store('public/blogs') : $sRutaImagenActual;
+        $ruta_imagen_principal = $imagen ? $imagen->store('public/blogs') : $sRutaImagenActual;
 
         $blog->categoria_id = $request->get('categoria');
         $blog->titulo = $request->get('titulo');
-        //$blog->ruta_imagen_principal = str_replace('public/', '/storage/', $ruta_imagen_principal);
-        $blog->ruta_imagen_principal = $nueva_ruta_imagen_principal;
+        $blog->ruta_imagen_principal = str_replace('public/', '/storage/', $ruta_imagen_principal);
         $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
         $blog->resumen = $request->get('resumen');
         $blog->contenido = $request->get('contenido');
