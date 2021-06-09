@@ -138,7 +138,7 @@
                                         </div>-->
                                     </li>
                                     <li class="nav-item {{ $iPagina === 5 ? 'active' : '' }} mt-1 mr-md-1">
-                                        <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/blog">Blog</a>
+                                        <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/blog">Salud</a>
                                     </li>
                                     <li class="nav-item {{ $iPagina === 6 ? 'active' : '' }} mt-1 mr-md-1">
                                         <a class="nav-link text-uppercase px-2 rounded border" href="/contactanos">{{ $lstLocales['contact_us'] }}</a>
