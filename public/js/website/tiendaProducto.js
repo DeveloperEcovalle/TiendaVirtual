@@ -183,6 +183,22 @@ let vueTiendaProducto = new Vue({
             }
             else if(producto.cantidad + 1 < producto.stock_actual)
             {
+                if(producto.cantidad + 1 == 12)
+                {
+                    toastr.clear();
+                    toastr.options = {
+                        'closeButton': false, 'debug': false, 'newestOnTop': false,
+                        'progressBar': false, 'positionClass': 'toast-top-right', 'preventDuplicates': true, 'onclick': null,
+                        'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
+                        'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
+                    };
+                
+                    toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Si decea al por mayor se le puede brindar a un mejor precio. ¡¡Contáctanos!!</p>
+                    <div class="text-center mt-2">
+                    <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
+                    <a class="btn btn-sm btn-amarillo" href="/contactanos">Contactar</a>
+                    </div>`);
+                }
                 ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
                 .then(response => {
                     let respuesta = response.data;
@@ -256,6 +272,22 @@ let vueTiendaProducto = new Vue({
             {
                 if(cant <= producto.stock_actual)
                 {
+                    if(cant == 12){
+                        toastr.clear();
+                        toastr.options = {
+                            'closeButton': false, 'debug': false, 'newestOnTop': false,
+                            'progressBar': false, 'positionClass': 'toast-top-right', 'preventDuplicates': true, 'onclick': null,
+                            'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
+                            'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
+                        };
+                    
+                        toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Si decea al por mayor se le puede brindar a un mejor precio. ¡¡Contáctanos!!</p>
+                        <div class="text-center mt-2">
+                        <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
+                        <a class="btn btn-sm btn-amarillo" href="/contactanos">Contactar</a>
+                        </div>`);
+                    }
+                    
                     let iProductoId = producto.id;
                     let $this = this;
                     ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)

@@ -150,6 +150,5 @@
 @endsection
 
 @section('js')
-    <script src="https://checkout.culqi.com/js/v3"></script>
     <script src="/js/website/carritoCompras2.js?cvcn=14"></script>
 @endsection

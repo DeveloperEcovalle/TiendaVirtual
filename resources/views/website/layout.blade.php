@@ -17,7 +17,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Ecovalle | @yield('title')</title>
-    <link rel="icon" href="{{asset('img/ecologo.ico')}}" />
+    <link rel="icon" href="{{ asset('img/ecologo.ico') }}" />
     <meta name="description" content="Somos una empresa agroindustrial con más de 10 años de experiencia en el rubro de alimentos funcionales. 
           Todos nuestros productos pasan por un estricto proceso de producción y control de calidad, 
           utilizando los más altos estándares de calidad con certificación internacional.">
@@ -249,7 +249,7 @@
                                         <li><a href="/tienda">{{ $lstLocales['Store'] }}</a></li>
                                         <li><a href="/servicios">{{ $lstLocales['Services'] }}</a></li>
                                         <li><a href="/blog">Blog</a></li>
-                                        <li><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
+                                        <li class="d-none"><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
                                         <li><a href="/guia-compras">{{ $lstLocales['Shopping guide'] }}</a></li>
                                         <li><a href="/politica-privacidad">{{ $lstLocales['Policy and Privacy'] }}</a></li>
                                         <li><a href="/terminos-condiciones">{{ $lstLocales['Terms and Conditions'] }}</a></li>

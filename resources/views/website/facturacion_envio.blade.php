@@ -82,6 +82,7 @@
                         <div class="col-12 text-right" v-if="sDelivery === 0">
                             <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
                         </div>
+
                         <div class="col-12 mb-3" v-if="sNNacional === 0">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
@@ -143,12 +144,18 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
+                                        <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
+                                        <p v-else class="text-danger"><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <div v-icheck class="m-2">
+                                        <label class="m-0">
+                                            <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -169,7 +176,7 @@
                                     <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
                                     @endif
                                     <p class="col-12 text-justify">
-                                        <span class="font-weight-bold text-ecovalle-2 h3">Direcci&oacute;n de recojo en Av. Prolongación Vallejo Urb. Galeno 1 Mz. I Lote 2, Trujillo - Trujillo (Ref. a media cuadra del Real Plaza)</span>
+                                        <span class="font-weight-bold text-ecovalle-2 h5">Direcci&oacute;n de recojo en Av. Prolongación Vallejo Urb. Galeno 1 Mz. I Lote 2, Trujillo - Trujillo (Ref. a media cuadra del Real Plaza)</span>
                                     </p>
                                 </div>
                                 @if(session()->has('cliente'))
@@ -201,7 +208,12 @@
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <div v-icheck class="m-2">
+                                        <label class="m-0">
+                                            <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -239,7 +251,8 @@
                                         <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosDelivery.sNombres}}</p>
                                     </div>
                                     <div class="col-12">
-                                        <p class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
+                                        <p v-if="datosDelivery.sDistrito != ''" class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
+                                        <p v-else class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / <b class="text-danger"><i class="fa fa-exclamation-circle"></i> Seleccionar distrito</b></p>
                                     </div>
                                     <div class="col-12 col-lg-4">
                                         <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
@@ -254,7 +267,12 @@
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
-                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <div v-icheck class="m-2">
+                                        <label class="m-0">
+                                            <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>

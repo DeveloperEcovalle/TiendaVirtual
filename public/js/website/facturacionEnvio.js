@@ -40,6 +40,7 @@ let vueFacturacionEnvio = new Vue({
             sUbigeo: '',
             sOpcion: 0,
         },
+        eatermcond: [],
 
         datosRecojo: {
             sCabecera: 'RT',
@@ -51,6 +52,7 @@ let vueFacturacionEnvio = new Vue({
             sTelefono: '',
             sOpcion: 0,
         },
+        ratermcond: [],
         
         datosDelivery: {
             sCabecera: 'ED',
@@ -66,6 +68,7 @@ let vueFacturacionEnvio = new Vue({
             sDireccion: '',
             sOpcion: 0,
         }, 
+        datermcond: [],
 
         iDireccionEnvioEstablecida: 0,
         iDireccionEnvioConfirmada: 0,
