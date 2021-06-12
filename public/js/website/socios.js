@@ -318,7 +318,7 @@ let vueSocios = new Vue({
         clientes: function (datos) {
             var $this=this;
             const image = {
-                url: "https://erpecovalle.ga/img/gps_ecovalle.png",
+                url: "https://ecovalle.pe/img/marker.png",
                 // This marker is 20 pixels wide by 32 pixels high.
                 scaledSize: new google.maps.Size(40, 40),
                 // The origin for this image is (0, 0).

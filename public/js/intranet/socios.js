@@ -207,7 +207,7 @@ $(document).ready(function () {
                         );*/
                         if (data[i].lat != null) {
                             const image = {
-                                url: "https://erpecovalle.ga/img/gps_ecovalle.png",
+                                url: "https://erpecovalle.ga/img/marker.png",
                                 // This marker is 20 pixels wide by 32 pixels high.
                                 scaledSize: new google.maps.Size(40, 40),
                                 // The origin for this image is (0, 0).
