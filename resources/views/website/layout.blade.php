@@ -268,6 +268,10 @@
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
                                         <li><a href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a></li>
                                     </ul>
+
+                                    <div style="width: 80%; height: auto;">
+                                        <a href="/libro-reclamaciones"><img class="img-fluid" src="/img/libro.jpg" alt=""></a>
+                                    </div>
                                 </div>
                                 <div class="col-11 col-md-4 mb-4 mb-md-0">
                                     <h5 class="h6 font-weight-bold text-uppercase titulo-subrayado-amarillo">{{ $lstLocales['payment_methods'] }}</h5>
