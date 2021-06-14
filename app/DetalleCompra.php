@@ -11,7 +11,7 @@ class DetalleCompra extends Model
     public $timestamps = false;
 
     public function compra() {
-        return $this->belongsTo(Compra::class, 'id', 'compra_id');
+        return $this->belongsTo(Compra::class, 'compra_id', 'id');
     }
 
     public function producto() {

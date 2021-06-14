@@ -11,7 +11,7 @@ class Cliente extends Model {
     public $timestamps = true;
 
     public function persona() {
-        return $this->belongsTo(Persona::class, 'persona_id', 'id');
+        return $this->belongsTo(Persona::class, 'persona_id', 'id'); //oro
     }
 
     public function ubigeo() {

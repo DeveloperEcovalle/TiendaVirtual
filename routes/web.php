@@ -1,5 +1,6 @@
 <?php
 
+use App\Compra;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
@@ -823,5 +824,6 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    
+    $compra = Compra::find(2);
+    return $compra->detalles;
 });
