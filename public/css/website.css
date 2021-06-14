@@ -995,6 +995,16 @@ button.btn-round:hover{
         max-height: 500px;
     }
 }
+
+.module {
+    overflow: hidden;
+  }
+
+.text-limit {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
 /*------------------------------------*/
 .white-popup {
     position: relative;
@@ -1007,6 +1017,23 @@ button.btn-round:hover{
     margin: 20px auto;
     text-align: center;
     border: 1px solid #02793C;
+}
+
+.white-popup1 {
+    position: relative;
+    background: #FFF;
+    padding: 5px;
+    width: 600px;
+    max-width: 95%;
+    height: 90%;
+    max-height: 90%;
+    margin: 20px auto;
+    text-align: center;
+    border: 1px solid #02793C;
+}
+
+.img-popup{
+    height: 60%;
 }
 
 .mfp-fade.mfp-bg {

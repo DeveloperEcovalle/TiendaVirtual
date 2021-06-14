@@ -155,6 +155,47 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-md-9">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>Beneficios</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-12 mb-2">
+                                        <button class="btn btn-primary float-right" v-on:click="panelNuevo()">Nuevo</button>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar por nombre">
+                                        </div>
+                                        <div class="table-responsive" style="height: 500px;overflow: auto;">
+                                            <table class="table table-bordered table-hover" id="tblBeneficios">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center bg-primary">#</th>
+                                                        <th class="text-center bg-primary">Nombre</th>
+                                                        <th class="text-center bg-primary">Descripci&oacute;n</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="bg-white">
+                                                    <tr v-for="beneficio of lstBeneficiosFiltrado" v-bind:class="{selected: iIdSeleccionado === beneficio.id}" v-on:click="panelShow(beneficio.id)" style="cursor: pointer;" v-cloak>
+                                                        <th class="text-center w-10">@{{ beneficio.id }}</th>
+                                                        <td class="text-center">@{{ beneficio.nombre }}</td>
+                                                        <td class="">@{{ beneficio.descripcion }}</td>
+                                                    </tr>
+                                                    <tr v-if="lstBeneficiosFiltrado.length === 0" v-cloak>
+                                                        <td colspan="5" class="text-center" v-if="iCargandoBeneficios === 0">No hay beneficios para mostrar</td>
+                                                        <td colspan="5" class="text-center" v-else><i class="fas fa-circle-notch fa-spin"></i> Cargando beneficios</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

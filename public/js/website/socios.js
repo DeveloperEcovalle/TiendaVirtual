@@ -15,6 +15,7 @@ let vueSocios = new Vue({
         },
         iEnviandoMensaje: 0,
         respuesta: null,
+        lstBeneficios: []
     },
     computed: {
         filteredList() {
@@ -459,7 +460,10 @@ let vueSocios = new Vue({
             let $this = this;
             axios
                 .post("/se-ecovalle/socios/ajax/listar")
-                .then((response) => ($this.pagina = response.data.data.pagina))
+                .then((response) => {
+                    $this.pagina = response.data.data.pagina;
+                    $this.lstBeneficios = response.data.data.lstBeneficios;
+                })
                 .then(() => ($this.iCargando = 0));
         },
         ajaxEnviarMensaje: function () {
@@ -489,6 +493,52 @@ let vueSocios = new Vue({
                 })
                 .then(() => ($this.iEnviandoMensaje = 0));
         },
+        ajaxPopup: function(beneficio) {
+            var data = [
+                {
+                    username: beneficio.nombre,
+                    
+                    userWebsite_href: beneficio.ruta_enlace ? beneficio.ruta_enlace : '#',
+                    
+                    userAvatarUrl_img: beneficio.ruta_imagen,
+                    
+                    userLocation: beneficio.descripcion
+                },
+            ];
+            
+            $.magnificPopup.open({ 
+                key: 'my-popup', 
+                items: data,
+                fixedContentPos: false,
+                fixedBgPos: true,
+                overflowY: 'auto',
+                closeBtnInside: true,
+                preloader: true,
+                midClick: true,
+                removalDelay: 500,
+                mainClass: 'mfp-fade',
+                type: 'inline',
+                inline: {
+                // Define markup. Class names should match key names.
+                markup: '<div class="white-popup1"><div class="mfp-close"></div>'+
+                            '<a class="mfp-userWebsite">'+
+                            '<div class="mfp-userAvatarUrl img-popup"></div>'+
+                            '<h2 class="mfp-username"></h2>'+
+                            '</a>'+
+                            '<div class="mfp-userLocation"></div>'+
+                        '</div>'
+                },
+                gallery: {
+                enabled: true 
+                },
+                callbacks: {
+                markupParse: function(template, values, item) {
+                    // optionally apply your own logic - modify "template" element based on data in "values"
+                    // console.log('Parsing:', template, values, item);
+                }
+                }
+            });
+        }
     },
     updated: function () {
         this.$nextTick(function () {

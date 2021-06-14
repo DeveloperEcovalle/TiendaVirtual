@@ -2,7 +2,7 @@ $(document).ready(function () {
     listarMenus(function (lstModulos, lstMenus) {
         var markers = [];
         var map;
-        let vueServicios = new Vue({
+        let vueSocios = new Vue({
             el: "#wrapper",
             data: {
                 lstModulos: lstModulos,
@@ -21,8 +21,18 @@ $(document).ready(function () {
 
                 iActualizandoContenidoEspanol: 0,
                 iActualizandoContenidoIngles: 0,
+
+                iCargandoBeneficios: 1,
+                sBuscar: '',
+                iIdSeleccionado: 0,
+                lstBeneficios: [],
             },
             computed: {
+                lstBeneficiosFiltrado: function () {
+                    return this.lstBeneficios.filter(beneficio =>
+                        beneficio.nombre.toLowerCase().includes(this.sBuscar.toLowerCase())
+                    );
+                },
                 sNombreNuevaImagen: function () {
                     if (this.nuevaImagenPortada === null) {
                         return "Buscar archivo";
@@ -51,6 +61,7 @@ $(document).ready(function () {
                     }
                     return gps_cliente;
                 },
+
             },
             mounted: function () {
                 map = new google.maps.Map(document.getElementById("mapa"), {
@@ -207,7 +218,7 @@ $(document).ready(function () {
                         );*/
                         if (data[i].lat != null) {
                             const image = {
-                                url: "https://erpecovalle.ga/img/marker.png",
+                                url: "https://ecovalle.pe/img/marker.png",
                                 // This marker is 20 pixels wide by 32 pixels high.
                                 scaledSize: new google.maps.Size(40, 40),
                                 // The origin for this image is (0, 0).
@@ -240,7 +251,6 @@ $(document).ready(function () {
                             checked: sel,
                         });
                     }
-                    console.log(markers);
                     this.iCargando = 0;
                     this.lstclientes = data_cliente;
                 },
@@ -248,16 +258,231 @@ $(document).ready(function () {
                     let input = event.target;
                     this.nuevaImagenPortada = input.files[0];
                 },
+                panelShow: function(iId){
+                    $('#panel').load('/intranet/app/pagina-web/socios/ajax/ajaxPanelEditarBeneficio', function () {
+
+                        let iIndice = vueSocios.lstBeneficios.findIndex((beneficio) => beneficio.id === parseInt(iId));
+                        let beneficio = Object.assign({}, vueSocios.lstBeneficios[iIndice]);
+                        let vueShow = new Vue({
+                            el: '#panel',
+                            data: {
+                                imagen: null,
+                                beneficio: beneficio,
+                                iActualizando: 0,
+                                iEliminando: 0
+                            },
+                            computed:{
+                                sNombreArchivo: function () {
+                                    if (this.imagen === null) {
+                                        return 'Buscar archivo';
+                                    }
+    
+                                    return this.imagen.name.split('\\').pop();
+                                },
+                                sContenidoArchivo: function () {
+                                    if (this.imagen === null) {
+                                        return null;
+                                    }
+    
+                                    return URL.createObjectURL(this.imagen);
+                                }
+
+                            },
+                            methods:{
+                                cambiarImagenBeneficio: function (event) {
+                                    let input = event.target;
+                                    this.imagen = input.files[0];
+                                },
+                                ajaxActualizar: function(){
+                                    let $this = this;
+                                    $this.iActualizando = 1;
+                                    let formData = new FormData(document.getElementById('editarBeneficio'));
+                                    formData.append('id', iId);
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/intranet/app/pagina-web/socios/ajax/ajaxActualizarBeneficio',
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function (respuesta) {
+                                            if (respuesta.result === result.success) {
+                                                $this.imagen = null;
+                                                $this.beneficio.ruta_imagen = respuesta.data.sNuevaRutaImagen;
+                                                vueSocios.ajaxListar();
+                                            }
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[respuesta.result](respuesta.mensaje);
+                                        },
+                                        error: function (respuesta) {
+                                            let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[result.error](sHtmlMensaje);
+                                        },
+                                        complete: function () {
+                                            $this.iActualizando = 0;
+                                        }
+                                    });
+                                },
+                                ajaxEliminar: function()
+                                {
+                                    let $this = this;
+                                    $this.iEliminando = 1;
+                                    let formData = new FormData();
+                                    formData.append('id', iId);
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/intranet/app/pagina-web/socios/ajax/ajaxEliminarBeneficio',
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function (respuesta) {
+                                            if (respuesta.result === result.success) {
+                                                $('#modalBeneficio').modal('hide');
+                                                vueSocios.ajaxListar();
+                                            }
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[respuesta.result](respuesta.mensaje);
+                                        },
+                                        error: function (respuesta) {
+                                            let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[result.error](sHtmlMensaje);
+                                        },
+                                        complete: function () {
+                                            $this.iEliminando = 0;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        $('#modalBeneficio').modal('show');
+                    });
+                    this.iIdSeleccionado = iId;
+                },
+                panelNuevo: function(iId){
+                    $('#panel').load('/intranet/app/pagina-web/socios/ajax/ajaxPanelCrearBeneficio', function () {
+                        let vueNuevo = new Vue({
+                            el: '#panel',
+                            data: {
+                                imagen: null,
+                                iRegistrando: 0
+                            },
+                            computed:{
+                                sNombreArchivo: function () {
+                                    if (this.imagen === null) {
+                                        return 'Buscar archivo';
+                                    }
+    
+                                    return this.imagen.name.split('\\').pop();
+                                },
+                                sContenidoArchivo: function () {
+                                    if (this.imagen === null) {
+                                        return null;
+                                    }
+    
+                                    return URL.createObjectURL(this.imagen);
+                                }
+
+                            },
+                            methods:{
+                                cambiarImagenBeneficioCrear: function (event) {
+                                    let input = event.target;
+                                    this.imagen = input.files[0];
+                                },
+                                ajaxRegistrar: function(){
+                                    let $this = this;
+                                    $this.iRegistrando = 1;
+                                    let formData = new FormData(document.getElementById('crearBeneficio'));
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '/intranet/app/pagina-web/socios/ajax/ajaxCrearBeneficio',
+                                        data: formData,
+                                        cache: false,
+                                        contentType: false,
+                                        processData: false,
+                                        success: function (respuesta) {
+                                            if (respuesta.result === result.success) {
+                                                $('#modalBeneficioCrear').modal('hide');
+                                                vueSocios.ajaxListar();
+                                            }
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[respuesta.result](respuesta.mensaje);
+                                        },
+                                        error: function (respuesta) {
+                                            let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                            toastr.clear();
+                                            toastr.options = {
+                                                iconClasses: {
+                                                    error: 'bg-danger',
+                                                    info: 'bg-info',
+                                                    success: 'bg-success',
+                                                    warning: 'bg-warning',
+                                                },
+                                            };
+                                            toastr[result.error](sHtmlMensaje);
+                                        },
+                                        complete: function () {
+                                            $this.iRegistrando = 0;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                        $('#modalBeneficioCrear').modal('show');
+                    });
+                    this.iIdSeleccionado = iId;
+                },
                 ajaxListar: function (onSuccess) {
                     let $this = this;
                     $.ajax({
                         type: "post",
                         url: "/intranet/app/pagina-web/socios/ajax/listar",
-
                         success: function (respuesta) {
                             if (respuesta.result === result.success) {
                                 $this.pagina = respuesta.data.pagina;
-
+                                $this.lstBeneficios = respuesta.data.lstBeneficios;
                                 if (onSuccess) {
                                     onSuccess();
                                 }

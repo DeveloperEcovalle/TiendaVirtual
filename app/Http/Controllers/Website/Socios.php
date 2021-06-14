@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Beneficio;
 use App\CategoriaBlog;
 use App\Empresa;
 use App\Http\Controllers\Respuesta;
@@ -53,10 +54,11 @@ class Socios extends Website {
 
     public function ajaxListar() {
         $pagina = Pagina::find(9);
+        $beneficios = Beneficio::all();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['pagina' => $pagina];
+        $respuesta->data = ['pagina' => $pagina, 'lstBeneficios' => $beneficios];
 
         return response()->json($respuesta);
     }

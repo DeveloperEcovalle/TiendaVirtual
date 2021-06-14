@@ -78,7 +78,23 @@
         </div>
     </div>
     <section class="py-4" v-if="iCargando === 0">
-        <div class="container-xl pb-4" v-html="locale === 'es' ? pagina.contenido_espanol : pagina.contenido_ingles"></div>
+        <div class="container-xl" v-html="locale === 'es' ? pagina.contenido_espanol : pagina.contenido_ingles"></div>
+        <div class="container-xl">
+            <div class="py-5">
+                <h2 class="h3 font-weight-bold titulo-subrayado text-center mb-4">Beneficios</h2>
+                <div class="row justify-content-center">
+                    <div class="col-11 col-md-4" v-for="beneficio in lstBeneficios" style="cursor: pointer;" v-on:click="ajaxPopup(beneficio)">
+                        <div class="px-md-5 text-center">
+                            <img class="img-fluid" :src="beneficio.ruta_imagen">
+                            <h5 class="text-ecovalle-2 font-weight-bold text-center">@{{ beneficio.nombre }}</h5>
+                            <div class="module text-limit">
+                                <p class="text-center">@{{ beneficio.descripcion }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
     <div class="container-xl pb-4">
         <div class="row">

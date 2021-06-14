@@ -588,6 +588,11 @@ Route::namespace('Intranet')->group(function () {
 
                         Route::prefix('/ajax')->group(function () {
                             Route::post('/listar', 'Socios@ajaxListar');
+                            Route::get('/ajaxPanelEditarBeneficio', 'Socios@ajaxPanelEditarBeneficio');
+                            Route::get('/ajaxPanelCrearBeneficio', 'Socios@ajaxPanelCrearBeneficio');
+                            Route::post('/ajaxActualizarBeneficio', 'Socios@ajaxActualizarBeneficio');
+                            Route::post('/ajaxEliminarBeneficio', 'Socios@ajaxEliminarBeneficio');
+                            Route::post('/ajaxCrearBeneficio', 'Socios@ajaxCrearBeneficio');
                             Route::post('/actualizarImagenPortada', 'Socios@ajaxActualizarImagenPortada');
                             Route::post('/actualizarContenidoEspanol', 'Socios@ajaxActualizarContenidoEspanol');
                             Route::post('/actualizarContenidoIngles', 'Socios@ajaxActualizarContenidoIngles');

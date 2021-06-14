@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Intranet;
 
+use App\Beneficio;
 use App\Empresa;
 use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
@@ -46,12 +47,143 @@ class Socios extends Intranet {
             $pagina = Pagina::find($this->iPaginaId);
         }
 
+        $lstBeneficios = Beneficio::all();
+
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['pagina' => $pagina];
+        $respuesta->data = ['pagina' => $pagina, 'lstBeneficios' => $lstBeneficios ];
 
         return response()->json($respuesta);
     }
+
+    public function ajaxPanelEditarBeneficio(){
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        if ($permiso === null) {
+            return view('intranet.layout_right_sin_permiso');
+        }
+
+        return view('intranet.paginaweb.socios.panel_show');
+    }
+
+    public function ajaxActualizarBeneficio(Request $request)
+    {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+        if ($permiso === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            return response()->json($respuesta);
+        }
+
+        $request->validate([
+            'imagen' => 'nullable|image|mimes:jpeg,png,svg',
+            'ruta_enlace' => 'nullable',
+        ]);
+
+        $beneficio = Beneficio::find($request->get('id'));
+        $imagen = $request->file('imagen');
+
+        if ($imagen) {
+            $sRutaImagenActual = str_replace('/storage', 'public', $beneficio->ruta_imagen);
+            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            Storage::disk('public')->delete($sNombreImagenActual);
+
+            $ruta_imagen = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
+            $nueva_ruta_imagen = str_replace('public/', '/storage/', $ruta_imagen);
+        } else {
+            $nueva_ruta_imagen = $beneficio->ruta_imagen;
+        }
+        $beneficio->nombre= $request->get('nombre');
+        $beneficio->ruta_imagen = $nueva_ruta_imagen;
+        $beneficio->ruta_enlace= $request->get('ruta_enlace');
+        $beneficio->descripcion= $request->get('descripcion');
+        $beneficio->update();
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Beneficio actualizado correctamente.';
+        $respuesta->data = ['sNuevaRutaImagen' => $nueva_ruta_imagen];
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxPanelCrearBeneficio(){
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        if ($permiso === null) {
+            return view('intranet.layout_right_sin_permiso');
+        }
+
+        return view('intranet.paginaweb.socios.panel_crear');
+    }
+
+    public function ajaxCrearBeneficio(Request $request)
+    {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+        if ($permiso === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            return response()->json($respuesta);
+        }
+
+        $request->validate([
+            'imagen' => 'nullable|image|mimes:jpeg,png,svg',
+            'ruta_enlace' => 'nullable',
+        ]);
+
+        $beneficio = new Beneficio();
+        $imagen = $request->file('imagen');
+        $beneficio->nombre= $request->get('nombre');
+        $ruta_imagen = $imagen ? $imagen->store('public/empresa') : null;
+        $beneficio->ruta_imagen = str_replace('public/', '/storage/', $ruta_imagen);
+        $beneficio->ruta_enlace= $request->get('ruta_enlace');
+        $beneficio->descripcion= $request->get('descripcion');
+        $beneficio->save();
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Beneficio creado correctamente.';
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxEliminarBeneficio(Request $request)
+    {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+        if ($permiso === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            return response()->json($respuesta);
+        }
+
+        $beneficio = Beneficio::find($request->id);
+        if($beneficio->ruta_imagen){
+            $sRutaImagenActual = str_replace('/storage', 'public', $beneficio->ruta_imagen);
+            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            Storage::disk('public')->delete($sNombreImagenActual);
+        }
+        $beneficio->delete();
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Beneficio eliminado correctamente.';
+
+        return response()->json($respuesta);
+    }
+
 
     public function ajaxActualizarImagenPortada(Request $request) {
         $this->init();
