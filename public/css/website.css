@@ -1034,6 +1034,7 @@ button.btn-round:hover{
 
 .img-popup{
     height: 60%;
+    max-width: 90%;
 }
 
 .mfp-fade.mfp-bg {
