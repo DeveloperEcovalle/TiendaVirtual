@@ -184,7 +184,8 @@ class Registro extends Website {
             $cliente->save();
     
             $clienteSesion = Cliente::find($cliente->id);
-            $request->session()->put('cliente', $clienteSesion);
+            session()->forget('cliente');
+            session()->put('cliente', $clienteSesion);
 
             Mail::send('website.email.register',compact("persona"), function ($mail) use ($persona) {
                 $mail->subject('BIENVENID@ A ECOVALLE');

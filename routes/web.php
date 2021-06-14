@@ -823,6 +823,5 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    Storage::disk('public')->delete('empresa/rsDKmMp4FnIJtEop3oPVuQ0qvbpSmbx1NEYe0xCi.png');
-    return 'ok';
+    
 });

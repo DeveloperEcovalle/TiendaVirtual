@@ -191,7 +191,8 @@ class MiCuenta extends Website
 
             }
             $cliente->update();
-            $request->session()->put('cliente', $cliente);
+            session()->forget('cliente');
+            session()->put('cliente', $cliente);
 
             DB::commit();
             $respuesta->result = Result::SUCCESS;
@@ -250,7 +251,8 @@ class MiCuenta extends Website
             $persona->update();
 
             $cliente = Cliente::find(session('cliente')->id);
-            $request->session()->put('cliente', $cliente);
+            session()->forget('cliente');
+            session()->put('cliente', $cliente);
 
             DB::commit();
             $respuesta->result = Result::SUCCESS;
