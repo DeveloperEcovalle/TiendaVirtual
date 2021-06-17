@@ -37,6 +37,7 @@
     <link href="/css/popup/magnific-popup.css" rel="stylesheet">
     <link href="/css/ecovalle/ecovalle-font.css" rel="stylesheet">
     <link href="/css/website.css?cvcn=14" rel="stylesheet">
+    <link rel="stylesheet" href="/css/plugins/mklb/mklb.css" />
     @yield('izipay')
 </head>
 <body>
@@ -429,6 +430,7 @@
                 e.preventDefault();
                 $("#popup").fadeOut(1000);
             });*/
+
             autocompletar();
             $('#frmIniciarSesion').submit(function(e){
                 e.preventDefault();
@@ -461,7 +463,38 @@
                         $('#sMensaje').addClass('alert-danger');
                         $('#sMensaje').html('Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.');
                     });
-            })
+            });
+        });
+
+        function window_mouseout( obj, evt, fn ) {
+            if ( obj.addEventListener ) {
+
+                obj.addEventListener( evt, fn, false );
+            }
+            else if ( obj.attachEvent ) {
+
+                obj.attachEvent( 'on' + evt, fn );
+            }
+        }
+
+        window_mouseout( document, 'mouseout', event => {
+
+            event = event ? event : window.event;
+
+            var from         = event.relatedTarget || event.toElement;
+
+            // Si quieres que solo salga una vez el mensaje borra lo comentado
+            // y así se guarda en localStorage
+
+            // let leftWindow   = localStorage.getItem( 'leftWindow' ) || false;
+
+            if ( /* !leftWindow  && */ (!from || from.nodeName === 'HTML') ) {
+
+                // Haz lo que quieras aquí
+                //alert( '¿Quieres abandonar mi página?' );
+                localStorage.removeItem('websitevisita');
+                // localStorage.setItem( 'leftWindow', true );
+            }
         });
     </script>
     @yield('js')

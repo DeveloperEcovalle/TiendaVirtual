@@ -824,6 +824,5 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $compra = Compra::find(2);
-    return $compra->detalles;
+    $ruta = 'https://www.youtube.com/embed/tgbNymZ7vqY';
 });

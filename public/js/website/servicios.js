@@ -18,6 +18,12 @@ let vueServicios = new Vue({
             .then(response => {
                 let respuesta = response.data;
                 $this.locale = respuesta.data.locale;
+
+                let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
+                let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : this.lstCarritoCompras;
+
+                $this.lstCarritoCompras = lstCarritoCompras;
+                $this.guardarLstCarritoCompras();
             })
             .then(() => $this.ajaxListar());
     },
@@ -53,7 +59,10 @@ let vueServicios = new Vue({
                     };
                 })
                 .then(() => $this.iEnviandoMensaje = 0);
-        }
+        },
+        guardarLstCarritoCompras: function () {
+            $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
+        },
     },
     updated: function () {
         this.$nextTick(function () {

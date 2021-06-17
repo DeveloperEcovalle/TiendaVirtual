@@ -227,5 +227,12 @@ let vueLineasProductos = new Vue({
                 }
             }
         },
-    }
+    },
+    updated: function () {
+        this.$nextTick(function () {
+            $(".carousel").carousel({
+                interval: 3000
+            });
+        });
+    },
 });

@@ -35,6 +35,9 @@ let vueCarritoCompras = new Vue({
             }
             return Math.round(fSubtotal * 10) / 10;
         },
+        fVentaValida: function() {
+            return this.fSubtotal >= 50;
+        },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;
         }

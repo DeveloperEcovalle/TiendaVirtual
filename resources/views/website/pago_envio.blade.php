@@ -238,7 +238,7 @@
                         <div class="col-12">
                             <div class="p-3 bg-white">
                                 <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
-                                <p class="mb-0 text-muted">Descuento <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
+                                <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
                                 <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>

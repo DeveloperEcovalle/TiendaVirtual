@@ -1,12 +1,14 @@
 let vueContactanos = new Vue({
     el: '#content',
     data: {
+        locale: 'es',
         sNombres: '',
         sApellidos: '',
         sEmail: '',
         sTelefono: '',
         sAsunto: '',
         sMensaje: '',
+        lstCarritoCompras: [],
 
         respuesta: null,
 
@@ -30,6 +32,12 @@ let vueContactanos = new Vue({
             .then(response => {
                 let respuesta = response.data;
                 $this.locale = respuesta.data.locale;
+
+                let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
+                let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : this.lstCarritoCompras;
+
+                $this.lstCarritoCompras = lstCarritoCompras;
+                $this.guardarLstCarritoCompras();
             });
     },
     methods: {
@@ -67,6 +75,9 @@ let vueContactanos = new Vue({
                     $this.respuesta = {result: 'danger', mensaje: 'Ocurrió un error inesperado. Por favor, inténtelo nuevamente.'};
                 })
                 .then(() => $this.iEnviandoMensaje = 0);
-        }
+        },
+        guardarLstCarritoCompras: function () {
+            $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
+        },
     }
 });

@@ -38,12 +38,18 @@ let vueSocios = new Vue({
     mounted: function () {
         let $this = this;
         ajaxWebsiteLocale()
-            .then((response) => {
+            .then(response => {
                 let respuesta = response.data;
                 $this.locale = respuesta.data.locale;
-            })
-            .then(() => $this.ajaxListar());
-        var mapOptions = {
+                console.log('ok');
+
+                let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
+                let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : this.lstCarritoCompras;
+
+                $this.lstCarritoCompras = lstCarritoCompras;
+                $this.guardarLstCarritoCompras();
+            }).then(() => $this.ajaxListar());
+        /*var mapOptions = {
             center: new google.maps.LatLng(-9.28737, -75.168251),
             zoom: 5,
             minZoom: 5,
@@ -60,149 +66,14 @@ let vueSocios = new Vue({
                 opened: false,
             },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-          /*  styles: [
-                {
-                    featureType: "administrative",
-                    elementType: "labels",
-                    stylers: [
-                        {
-                            visibility: "off",
-                        },
-                    ],
-                },
-                {
-                    featureType: "administrative.country",
-                    elementType: "geometry.stroke",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "administrative.province",
-                    elementType: "geometry.stroke",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "landscape",
-                    elementType: "geometry",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                        {
-                            color: "#F8F9FA",
-                        },
-                    ],
-                },
-                {
-                    featureType: "landscape.natural",
-                    elementType: "labels",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "poi",
-                    elementType: "all",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "road",
-                    elementType: "all",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "road",
-                    elementType: "labels",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "transit",
-                    elementType: "labels.icon",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "transit.line",
-                    elementType: "geometry",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "transit.line",
-                    elementType: "labels.text",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "transit.station.airport",
-                    elementType: "geometry",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "transit.station.airport",
-                    elementType: "labels",
-                    stylers: [
-                        {
-                            visibility: "on",
-                        },
-                    ],
-                },
-                {
-                    featureType: "water",
-                    elementType: "geometry",
-                    stylers: [
-                        {
-                            // color: "#F2F2F2",
-                        },
-                    ],
-                },
-                {
-                    featureType: "water",
-                    elementType: "labels",
-                    stylers: [
-                        {
-                            visibility: "off",
-                        },
-                    ],
-                },
-            ],*/
         };
         var mapElement = document.getElementById("mapa");
-        map = new google.maps.Map(mapElement, mapOptions);
+        map = new google.maps.Map(mapElement, mapOptions);*/
+        map = new google.maps.Map(document.getElementById("mapa"), {
+            center: { lat: -9.28737, lng: -75.168251 },
+            zoom: 6,
+            mapTypeControl: false,
+          });
         map.controls[google.maps.ControlPosition.LEFT_TOP].push(document.getElementById("sidebargps"));
         var datos;
         axios
@@ -507,13 +378,13 @@ let vueSocios = new Vue({
             ];
             
             $.magnificPopup.open({ 
-                key: 'my-popup', 
+                key: 'beneficio', 
                 items: data,
                 fixedContentPos: false,
                 fixedBgPos: true,
                 overflowY: 'auto',
                 closeBtnInside: true,
-                preloader: true,
+                preloader: false,
                 midClick: true,
                 removalDelay: 500,
                 mainClass: 'mfp-fade',
@@ -538,7 +409,10 @@ let vueSocios = new Vue({
                 }
                 }
             });
-        }
+        },
+        guardarLstCarritoCompras: function () {
+            $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
+        },
     },
     updated: function () {
         this.$nextTick(function () {

@@ -362,7 +362,16 @@ let vueTiendaProducto = new Vue({
                 });
         }*/
 
-    }
+    },
+    updated: function () {
+        this.$nextTick(function () {
+            var options =  {"width": 350,"height":  370,"zoomWidth":350,"offset":{"vertical":0,"horizontal":0},"zoomPosition":"original"}
+            new ImageZoom(document.getElementById("img-container"), options);   
+            $(".carousel").carousel({
+                interval: 3000
+            });         
+        });
+    },
 });
 
 function fnExplota(){

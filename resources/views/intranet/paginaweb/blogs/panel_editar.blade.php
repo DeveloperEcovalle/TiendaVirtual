@@ -38,6 +38,12 @@
             <label class="font-weight-bold">Contenido <span class="text-danger">*</span></label>
             <div id="sContenido"></div>
         </div>
+
+        <div class="form-group">
+            <label class="font-weight-bold">C&oacute;digo YouTube</label>
+            <textarea name="cod_youtube" rows="4" class="form-control">@{{ blog.cod_youtube }}</textarea>
+        </div>
+
         <div class="form-group pb-4 text-right">
             <button class="btn btn-white" type="button" v-on:click="ajaxCancelar" v-bind:disabled="iActualizando === 1" v-cloak>Cancelar</button>
             <button class="btn btn-primary ml-2" type="submit" v-bind:disabled="iActualizando === 1" v-cloak>

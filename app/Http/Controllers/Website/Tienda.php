@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Blog;
 use App\DetalleCarrito;
 use App\Empresa;
 use App\Http\Controllers\Respuesta;
@@ -210,9 +211,29 @@ class Tienda extends Website {
             ->limit(8)
             ->get();
 
+        $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();
+
+        $arr = array();
+
+        foreach($lstProductos as $producto)
+        {
+            $producto['cabecera'] = 'producto';
+            array_push($arr, $producto);
+        }    
+        
+        if(count($lstBlogs) > 0)
+        {
+            foreach($lstBlogs as $blog);
+            {
+                $blog['cabecera'] = 'blog';
+                array_push($arr, $blog);
+            }
+        }
+
+
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = $lstProductos;
+        $respuesta->data = $arr;
 
         return response()->json($respuesta);
     }
@@ -268,14 +289,16 @@ class Tienda extends Website {
 
         $empresa = Empresa::with(['telefonos'])->first();
 
+        $producto = Producto::find($id);
+
         $data = [
             'lstLocales' => $this->lstLocales[$locale],
             'lstLocalesTiendaListaProductos' => $this->lstTraduccionesTiendaListaProductos[$locale],
             'iPagina' => 2,
             'empresa' => $empresa,
             'telefono_whatsapp' => TelefonoEmpresa::where('whatsapp', 1)->first(),
+            'producto' => $producto,
         ];
-
         return view('website.tienda.producto', $data);
     }
 

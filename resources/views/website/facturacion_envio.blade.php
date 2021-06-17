@@ -77,10 +77,10 @@
                         </div>
 
                         <div class="col-12 text-right" v-if="sNNacional === 0">
-                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasEnvio"><b>Ver tarifas de env&iacute;o nacional</b></a>
+                            <a href="#" class="btn btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasEnvio">Ver tarifas de env&iacute;o nacional</a>
                         </div>
                         <div class="col-12 text-right" v-if="sDelivery === 0">
-                            <a href="#" class="float-right" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
+                            <a href="#" class="btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
                         </div>
 
                         <div class="col-12 mb-3" v-if="sNNacional === 0">
@@ -145,17 +145,17 @@
                                     </div>
                                     <div class="col-12">
                                         <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
-                                        <p v-else class="text-danger"><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
+                                        <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
                                     <div v-icheck class="m-2">
                                         <label class="m-0">
-                                            <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                            <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni) && !fValidaMonto" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -210,7 +210,7 @@
                                     @if(session()->has('cliente'))
                                     <div v-icheck class="m-2">
                                         <label class="m-0">
-                                            <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                            <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
                                     <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
@@ -269,7 +269,7 @@
                                     @if(session()->has('cliente'))
                                     <div v-icheck class="m-2">
                                         <label class="m-0">
-                                            <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar t&eacute;rminos y condiciones.
+                                            <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
                                     <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
@@ -315,7 +315,7 @@
                         <div class="col-12">
                             <div class="p-3 bg-white">
                                 <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
-                                <p class="mb-0 text-muted">Descuento <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
+                                <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
                                 <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>
@@ -341,20 +341,26 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="tipo_documento" id="tipo_documento" class="form-control" v-on:change="cambiarTipoDoc()" v-model="datosEnvio.sTipoDoc">
+                                    <select name="tipo_documento" id="tipo_documento" class="form-control" :class="{'is-invalid' : datosEnvio.sTipoDoc == ''}" v-on:change="cambiarTipoDoc()" v-model="datosEnvio.sTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                         <option value="RUC">RUC</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tipo de documento</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control"  maxlength="8" required>
+                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == ''}"  maxlength="8" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
                                     </div>
+                                    <span :class="{'d-none' : datosEnvio.sDocumento != ''}">
+                                        <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -371,55 +377,82 @@
                             <div class="col-md-12" v-if="iCargandoConsultaApi === 0">
                                 <div class="form-group">
                                     <label>Nombres / Raz&oacute;n Social</label>
-                                    <input class="form-control" v-model="datosEnvio.sNombres" autocomplete="off">
+                                    <input class="form-control" :class="{'is-invalid' : datosEnvio.sNombres == ''}" v-model="datosEnvio.sNombres" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar nombres</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'DNI'">
                                     <label>Apellidos</label>
-                                    <input class="form-control" v-model="datosEnvio.sApellidos" autocomplete="off">
+                                    <input class="form-control" :class="{'is-invalid' : datosEnvio.sApellidos == ''}" v-model="datosEnvio.sApellidos" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar apellidos</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Agencia</label>
-                                    <select  class="form-control" v-model="datosEnvio.sAgencia">
+                                    <select  class="form-control" :class="{'is-invalid' : datosEnvio.sAgencia == ''}" v-model="datosEnvio.sAgencia">
                                         <option value="">Seleccionar</option>
                                         <option v-for="agencia in lstAgencias" :value="agencia.nombre">@{{agencia.nombre}}</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar agencia</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tel&eacute;fono o celular</label>
-                                    <input type="text" class="form-control" v-model="datosEnvio.sTelefono" autocomplete="off">
+                                    <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sTelefono == ''}" v-model="datosEnvio.sTelefono" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tel&eacute;fono</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Correo electr&oacute;nico</label>
-                                    <input type="email" class="form-control" v-model="datosEnvio.sEmail" autocomplete="off" required>
+                                    <input type="email" class="form-control" :class="{'is-invalid' : datosEnvio.sEmail == ''}" v-model="datosEnvio.sEmail" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar correo electr&oacute;nico</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Direcci&oacute;n</label>
-                                    <input type="text" class="form-control" v-model="datosEnvio.sDireccion" autocomplete="off">
+                                    <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sDireccion == ''}" v-model="datosEnvio.sDireccion" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar direcci&oacute;n</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Departamento</label>
-                                    <select class="form-control" v-model="datosEnvio.sDepartamento">
+                                    <select class="form-control" :class="{'is-invalid' : datosEnvio.sDepartamento == ''}" v-model="datosEnvio.sDepartamento">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar departamento</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Provincia</label>
-                                    <select class="form-control" v-model="datosEnvio.sProvincia">
+                                    <select class="form-control" :class="{'is-invalid' : datosEnvio.sProvincia == ''}" v-model="datosEnvio.sProvincia">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar provincia</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Distrito</label>
-                                    <select class="form-control" v-model="datosEnvio.sDistrito">
+                                    <select class="form-control" :class="{'is-invalid' : datosEnvio.sDistrito == ''}" v-model="datosEnvio.sDistrito">
                                         <option value="" selected>Seleccionar</option>
                                         <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar distrito</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
@@ -428,19 +461,28 @@
                                     <div class="col-12">
                                         <div class="form-group">
                                             <label>Nombres y Apellidos</label>
-                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sRazonSocial" autocomplete="off">
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sRazonSocial == ''}" v-model="datosEnvio.sRecoge.sRazonSocial" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-group">
                                             <label>Documento (DNI)</label>
-                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sDocumento" autocomplete="off">
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sDocumento == ''}" v-model="datosEnvio.sRecoge.sDocumento" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-group">
                                             <label>Tel&eacute;fono</label>
-                                            <input type="text" class="form-control" v-model="datosEnvio.sRecoge.sTelefono" autocomplete="off">
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sTelefono == ''}" v-model="datosEnvio.sRecoge.sTelefono" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

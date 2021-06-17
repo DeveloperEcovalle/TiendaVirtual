@@ -136,6 +136,7 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosDelivery.sDepartamento.trim().length > 0
                 && this.datosDelivery.sProvincia.trim().length > 0
                 && this.datosDelivery.sDistrito.trim().length > 0;
+
         },
         /*bDestinoEncontrado: function () {
             return this.lstPreciosEnvioNacional.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
@@ -196,6 +197,9 @@ let vueFacturacionEnvio = new Vue({
                 fSubtotal += detalle.cantidad * fPrecio;
             }
             return Math.round(fSubtotal * 10) / 10;
+        },
+        fVentaValida: function() {
+            return this.fSubtotal >= 50;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;

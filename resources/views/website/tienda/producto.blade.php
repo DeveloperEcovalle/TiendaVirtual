@@ -22,7 +22,7 @@
             </div>
             <div class="row mb-5" v-else v-cloak>
                 <div class="col-12 col-md-1">
-                    <div class="row mx-0">
+                    <div class="row mx-0 mb-2">
                         <div class="col-2 col-md-12 px-1" v-for="(imagen, i) in producto.imagenes">
                             <a class="overflow-hidden" href="#" v-on:click.prevent="iImagenSeleccionada = i; sRutaImagenSeleccionada = imagen.ruta">
                                 <img class="mb-0 mb-md-2 mr-2 mr-md-0 img-fluid img-thumbnail" :src="imagen.ruta"
@@ -42,13 +42,16 @@
                           v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                         @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
                     </span>
-                    <div class="modal-container" id="modal-container">
+                    <!--<div class="modal-container" id="modal-container">
                         <div class="contenido">
                             <a href="#" onclick="fnExplota()" class="controlaButton">
                                 <img class="img-fluid" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" :src="sRutaImagenSeleccionada">
                             </a>
                             <button type="button" class="btn-round position-absolute px-2 py-1 d-none" onclick="fnReduce()"><i class="fa fa-close"></i></button>
                         </div>
+                    </div>-->
+                    <div id="img-container" class="text-center">
+                        <img class="img-fluid mklbItem" id="product-image" v-bind:class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" v-bind:src="sRutaImagenSeleccionada">
                     </div>
                     <div class="pt-3 pb-4 text-center">
                         <a v-for="documento in producto.documentos" class="btn btn-amarillo" :href="documento.ruta_archivo" target="_blank">
@@ -62,6 +65,7 @@
                         <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }"></div>
                         <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
                     </div>
+
                     <h2 class="h3 text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
                         S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
                     </h2>
@@ -70,6 +74,7 @@
                     </h2>
                     <p v-html="producto.beneficios_es" v-if="locale === 'es'"></p>
                     <p v-html="producto.beneficios_en" v-else></p>
+                    <p class="h6 text-ecovalle font-weight-bold">@{{ producto.stock_actual }} disponibles</p>
                     <hr>
                     <div class="row justify-content-center justify-content-md-start pb-3">
                         <div class="col-6 col-sm-6 col-md-4 col-lg-4">
@@ -146,7 +151,7 @@
                 <div class="col-12 text-center" v-if="iCargandoProductosRelacionados === 1">
                     <img src="/img/spinner.svg">
                 </div>
-                <div class="col-12" id="productos-carousel" class="d-none">
+                <div class="col-12" v-else id="productos-carousel">
                     <div id="carouselProductos" class="carousel slide pb-5" data-ride="carousel" v-cloak>
                         <ol class="carousel-indicators" v-if="lstCarouselProductos.length > 1">
                             <li data-target="#carouselProductos" v-for="(lstProductos, i) in lstCarouselProductos" :data-slide-to="i" class="bg-ecovalle" :class="{ 'active': i === 0 }"></li>
@@ -242,107 +247,19 @@
                         </a>
                     </div>
                 </div>
-                <!--<div class="col-12">
-                    <div id="carouselExampleIndicators" class="carousel slide pb-5" data-ride="carousel" v-cloak>
-                        <ol class="carousel-indicators" v-if="lstCarouselProductos.length > 1">
-                            <li data-target="#carouselExampleIndicators" v-for="(lstProductos, i) in lstCarouselProductos" :data-slide-to="i" class="bg-ecovalle" :class="{ 'active': i === 0 }"></li>
-                        </ol>
-                        <div class="carousel-inner pb-2">
-                            <div v-for="(lstProductos, i) in lstCarouselProductos" :class="{ 'active': i === 0 }" class="carousel-item">
-                                <div class="row justify-content-center">
-                                    <div class="col-11 col-md-3" v-for="(producto, i) in lstProductos">
-                                        <div class="card my-2 shadow-lg">
-                                            <div class="card-header p-0 bg-transparent" style="height: 180px">
-                                                <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
-                                                    - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
-                                                </span>
-                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
-                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
-                                                </span>
-                                                <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
-                                                      v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
-                                                    @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
-                                                </span>
-                                                <span class="badge badge-danger badge-ultimos position-absolute px-2 py-1 text-white"
-                                                      v-if="producto.stock_actual - producto.stock_separado <= 10 && producto.stock_actual - producto.stock_separado > 1">
-                                                    @{{ locale === 'es' ? `ÚLTIMOS ${producto.stock_actual - producto.stock_separado}` : `LAST ${producto.stock_actual - producto.stock_separado}` }}
-                                                </span>
-                                                <span class="badge badge-danger badge-ultimos position-absolute px-2 py-1 text-white"
-                                                      v-if="producto.stock_actual - producto.stock_separado === 1">
-                                                    @{{ locale === 'es' ? `ULTIMO` : `LAST ONE` }}
-                                                </span>
-                                                <div class="overflow-hidden">
-                                                    <a class="img-producto" :href="'/tienda/producto/' + producto.id" v-if="producto.imagenes.length > 0">
-                                                        <div class="img-background-thumbnail producto" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }"
-                                                             :style="{ 'background-image': 'url(' + producto.imagenes[0].ruta + ')' }"></div>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                            <div class="card-body bg-light p-3">
-                                                <h6 class="card-title m-0">
-                                                    <a class="producto font-weight-bold" :href="'/tienda/producto/' + producto.id">@{{ locale === 'es' ? producto.nombre_es : producto.nombre_en }}</a>
-                                                </h6>
-                                                <div class="py-2">
-                                                    <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }"></div>
-                                                    <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
-                                                </div>
-                                                <div class="pb-2">
-                                                    <div class="text-right">
-                                                        <p class="font-bold m-0 h4">
-                                                            <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
-                                                                S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
-                                                            </span>
-                                                            <span class="text-amarillo-ecovalle font-weight-bold" v-else>
-                                                                S/ @{{ producto.precio_actual.monto.toFixed(2) }}
-                                                            </span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                                <div v-if="producto.stock_actual - producto.stock_separado === 0">
-                                                    <button class="btn btn-sm btn-block btn-danger font-weight-bold py-2" disabled="disabled">
-                                                        @{{ locale === 'es' ? 'AGOTADO' : 'SOLD OUT' }}
-                                                    </button>
-                                                </div>
-                                                <div v-else>
-                                                    <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
-                                                        <span class="input-group-prepend">
-                                                            <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarrito(producto)">
-                                                                <i class="fas" :class="{ 'fa-minus' : producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
-                                                            </button>
-                                                        </span>
-                                                        <input type="text" class="form-control text-center" :value="producto.cantidad" readonly>
-                                                        <span class="input-group-append">
-                                                            <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
-                                                                <i class="fas fa-plus"></i>
-                                                            </button>
-                                                        </span>
-                                                    </div>
-                                                    <button class="btn btn-sm btn-block btn-ecovalle py-2" v-on:click="ajaxAgregarAlCarrito(producto)" :disabled="iAgregandoAlCarrito === 1 && iProductoId === producto.id" v-else>
-                                                        <span class="small" v-if="iAgregandoAlCarrito === 1 && iProductoId === producto.id"><i class="fas fa-circle-notch fa-spin"></i></span>
-                                                        <span v-else><i class="fas fa-shopping-cart"></i>&nbsp;{{ $lstLocales['Add to cart'] }}</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev px-3 w-auto" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                          <span class="fas fa-chevron-left fa-2x text-ecovalle" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next px-3 w-auto" href="#carouselExampleIndicators" role="button" data-slide="next">
-                          <span class="fas fa-chevron-right fa-2x text-ecovalle" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                      </div>
-                </div>-->
             </div>
         </div>
     </section>
 @endsection
 
 @section('js')
+    <script src="https://unpkg.com/js-image-zoom@0.7.0/js-image-zoom.js" type="application/javascript"></script>
     <script type="text/javascript" src="/js/website/tiendaProducto.js?cvcn=14"></script>
+    <script>
+        /*$('#zoom_01').elevateZoom({
+            zoomType: "inner",
+            cursor: "crosshair",
+        }); */       
+        
+    </script>
 @endsection

@@ -267,6 +267,7 @@ class Blogs extends Intranet {
             $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
             $blog->resumen = $request->get('resumen');
             $blog->contenido = $request->get('contenido');
+            $blog->cod_youtube = $request->get('cod_youtube');
             $blog->usuario_reg = $this->usuario->id;
             $blog->fecha_reg = now()->toDateTimeString();
             $blog->save();
@@ -416,6 +417,7 @@ class Blogs extends Intranet {
         $blog->enlace = Str::of($request->get('titulo'))->ascii()->slug('-');
         $blog->resumen = $request->get('resumen');
         $blog->contenido = $request->get('contenido');
+        $blog->cod_youtube = $request->get('cod_youtube');
         $blog->usuario_act = $this->usuario->id;
         $blog->fecha_act = now()->toDateTimeString();
         $blog->save();

@@ -371,33 +371,59 @@ function autocompletar()
 
                     arr.forEach(item =>{
                         const elementoLista = document.createElement('div');
-                        elementoLista.setAttribute("class", "div-item");
-                        //elementoLista.innerHTML = `<strong>${item.nombre_es}</strong>`;
-                        if(item.stock_actual > 0)
+                        if(item.cabecera == 'producto')
                         {
-                            stock_guia = `<button class="btn btn-primary btn-sm">EN STOCK</button>`;
-                        }else{
-                            stock_guia = `<button class="btn btn-danger btn-sm">AGOTADO</button>`;
-                        }
-                        let sNombre = item.nombre_es;
-                        let sRutaImagen = item.imagenes.length > 0 ? item.imagenes[0].ruta : '';
-                        elementoLista.innerHTML = `<div class="row justify-content-between">
-                                                        <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
-                                                        <div class="col-9" class="div-contenedor">
-                                                            <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
-                                                            <div class="row justify-content-between">
-                                                                <div class="col-6"><p class="m-0 h4 text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
-                                                                <div class="col-6">`+stock_guia+`</div>
+                            elementoLista.setAttribute("class", "div-item");
+                            //elementoLista.innerHTML = `<strong>${item.nombre_es}</strong>`;
+                            if(item.stock_actual > 0)
+                            {
+                                stock_guia = `<button class="btn btn-primary btn-sm">EN STOCK</button>`;
+                            }else{
+                                stock_guia = `<button class="btn btn-danger btn-sm">AGOTADO</button>`;
+                            }
+                            let sNombre = item.nombre_es;
+                            let sRutaImagen = item.imagenes.length > 0 ? item.imagenes[0].ruta : '';
+                            elementoLista.innerHTML = `<div class="row justify-content-between">
+                                                            <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
+                                                            <div class="col-9" class="div-contenedor">
+                                                                <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
+                                                                <div class="row justify-content-between">
+                                                                    <div class="col-6"><p class="m-0 h4 text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
+                                                                    <div class="col-6">`+stock_guia+`</div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>`;
-                        
-                        elementoLista.addEventListener('click', function(){
-                            //inputSearch.value = this.innerText;
-                            cerrarLista();
-                            window.location = `/tienda/producto/${item.id}`;
-                        });
-                        divList.appendChild(elementoLista);
+                                                        </div>`;
+                            
+                            elementoLista.addEventListener('click', function(){
+                                //inputSearch.value = this.innerText;
+                                cerrarLista();
+                                window.location = `/tienda/producto/${item.id}`;
+                            });
+                            divList.appendChild(elementoLista);
+                        }else
+                        {
+                            elementoLista.setAttribute("class", "div-item");
+                            let sNombre = item.titulo;
+                            let sRutaImagen = item.ruta_imagen_principal;
+                            elementoLista.innerHTML = `<div class="row justify-content-between">
+                                                            <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
+                                                            <div class="col-9" class="div-contenedor">
+                                                                <a href="/blog?v=publicacion&publicacion=${item.enlace}&c=${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
+                                                                <div class="row justify-content-between">
+                                                                    <div class="col-12 module text-limit">
+                                                                        <p class="small" style="color: #333;">${ item.resumen }</p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>`;
+                            
+                            elementoLista.addEventListener('click', function(){
+                                //inputSearch.value = this.innerText;
+                                cerrarLista();
+                                window.location = `/blog?v=publicacion&publicacion=${item.enlace}&c=${item.id}`;
+                            });
+                            divList.appendChild(elementoLista);
+                        }
                         //console.log(item.nombre_es);
                     });
                 }

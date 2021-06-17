@@ -487,5 +487,10 @@ let vueTiendaListaProductos = new Vue({
                 }
             }
         },
-    }
+    },
+    updated: function () {
+        this.$nextTick(function () {
+            $(".carousel").carousel();
+        });
+    },
 });

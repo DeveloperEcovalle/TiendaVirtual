@@ -165,5 +165,12 @@ let vueInicio = new Vue({
         guardarLstCarritoCompras: function () {
             $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);
         },
-    }
+    },
+    updated: function () {
+        this.$nextTick(function () {
+            $(".carousel").carousel({
+                interval: 3000
+            });
+        });
+    },
 });

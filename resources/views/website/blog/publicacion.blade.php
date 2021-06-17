@@ -28,6 +28,9 @@
                     <h1 class="h2 text-ecovalle-2 font-weight-bold text-uppercase my-3">@{{ publicacion.titulo }}</h1>
                     <div class="w-100" v-html="publicacion.contenido"></div>
                 </div>
+                <div class="col-12 text-center" v-if="publicacion.cod_youtube != ''" v-html="publicacion.cod_youtube">
+                    
+                </div>
                 <div class="col-12 py-3" v-cloak>
                     <a class="btn btn-facebook" :href="'https://www.facebook.com/sharer/sharer.php?u=https://ecovalle.pe/blog?v=publicacion&publicacion=' + publicacion.enlace + '&c=' + publicacion.id" target="_blank"><i class="fab fa-facebook-f"></i> Compartir</a>
                     <a class="btn btn-twitter" :href="'https://twitter.com/intent/tweet?url=https://ecovalle.pe/blog?v=publicacion&publicacion=' + publicacion.enlace + '&c=' + publicacion.id + '&text=' + publicacion.resumen" target="_blank"><i class="fab fa-twitter"></i> Twittear</a>

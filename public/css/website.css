@@ -138,6 +138,7 @@ strong{
     background-color: #ffffff;
     border-bottom: none;
     border-top: none;
+    height: 400px;
     z-index: 99;
     white-space: normal;
     /*position the autocomplete items to be the same width as the container:*/
@@ -146,9 +147,46 @@ strong{
     right: 0;
     width: 100%;
     zoom: 85%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.lista-autocompletar-items::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.lista-autocompletar-items::-webkit-scrollbar:vertical {
+    width:10px;
+}
+
+.lista-autocompletar-items::-webkit-scrollbar-button:increment,.lista-autocompletar-items::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.lista-autocompletar-items::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.lista-autocompletar-items::-webkit-scrollbar-thumb {
+    background-color: #797979;
+    border-radius: 20px;
+    border: 2px solid #f1f2f3;
+}
+
+.lista-autocompletar-items::-webkit-scrollbar-track {
+    border-radius: 10px;  
 }
 
 .lista-autocompletar-items .div-item {
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    border-top: 1px solid #d4d4d4;
+    width: auto;
+}
+
+.lista-autocompletar-items .div-item-blog {
     padding: 5px;
     margin: 5px;
     cursor: pointer;
@@ -163,6 +201,11 @@ strong{
 }
 
 .lista-autocompletar-items .div-item:hover {
+    /*when hovering an item:*/
+    background-color: #02793C; 
+}
+
+.lista-autocompletar-items .div-item-blog:hover {
     /*when hovering an item:*/
     background-color: #02793C; 
 }
@@ -193,6 +236,17 @@ strong{
 .img-fluid_aux{
     width: 100%;
     height: 250px;
+}
+
+.text-muted-compra {
+    color: #333 !important;
+    font-size: 13px;
+}
+
+.text-ecovalle-compra {
+    color: var(--verde-ecovalle-2);
+    font-size: 13px;
+    text-decoration-line: underline;
 }
 
 .input-buscar input[type=text] {
@@ -477,6 +531,12 @@ a.img-producto:hover > .img-background-thumbnail {
     border-color: #ffffff;
     border-width: 2px;
     color: #ffffff;
+}
+
+.btn-outline-blanco:hover {
+    border-color: #ffffff;
+    border-width: 2px;
+    color: var(--amarillo-ecovalle);
 }
 
 .btn-hover-ecovalle:hover {
@@ -1069,4 +1129,21 @@ button.btn-round:hover{
   .mfp-fade.mfp-wrap.mfp-removing .mfp-content {
     opacity: 0;
   }
-
+/****===========================IFRAME=========================******/
+.container-iframe {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  }
+  
+  /* Then style the iframe to fit in the container div with full height and width */
+  .responsive-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
