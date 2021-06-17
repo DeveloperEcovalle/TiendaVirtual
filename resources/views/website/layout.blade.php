@@ -475,9 +475,9 @@
 
                 obj.attachEvent( 'on' + evt, fn );
             }
-        }
+        }*/
 
-        window_mouseout( document, 'mouseout', event => {
+        /*window_mouseout( document, 'mouseout', event => {
 
             event = event ? event : window.event;
 
@@ -488,7 +488,7 @@
 
             // let leftWindow   = localStorage.getItem( 'leftWindow' ) || false;
 
-            if ( /* !leftWindow  && */ (!from || from.nodeName === 'HTML') ) {
+            if ((!from || from.nodeName === 'HTML') ) {
 
                 // Haz lo que quieras aquí
                 //alert( '¿Quieres abandonar mi página?' );
@@ -496,6 +496,8 @@
                 // localStorage.setItem( 'leftWindow', true );
             }
         });*/
+
+        /* !leftWindow  && */ 
     </script>
     @yield('js')
 </body>
