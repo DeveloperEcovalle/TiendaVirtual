@@ -181,9 +181,6 @@
                                                         @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
                                                     </div>
                                                 </div>
-                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
-                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
-                                                </span>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                                                     @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}

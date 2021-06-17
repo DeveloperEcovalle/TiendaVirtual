@@ -58,7 +58,7 @@ class LineasProductos extends Website {
 
         $lstProductosRelacionados = Producto::whereHas('precio_actual')->whereHas('productos_lineas', function (Builder $producto_linea) {
             $producto_linea->where('linea_id', $GLOBALS['iLineaProductoId']);
-        })->with('precio_actual', 'oferta_vigente', 'imagenes')->limit(8)->get();
+        })->with('precio_actual', 'oferta_vigente', 'promocion_vigente', 'imagenes')->limit(8)->get();
 
 
         $respuesta = new Respuesta;
