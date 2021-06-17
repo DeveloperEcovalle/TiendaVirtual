@@ -45,19 +45,19 @@
         <div class="container-xl">
             <div class="row pb-5">
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3">
+                    <button href="#" class="btn btn-block btn-ecovalle-2 active font-weight-bold mb-3">
                         1. {{ $lstLocales['Shopping cart'] }}
-                    </a>
+                    </button>
                 </div>
                 <div class="col-lg-4">
-                    <a href="/facturacion-envio" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3">
+                    <button :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3">
                         2. {{ $lstTraduccionesCarritoCompras['billing_and_delivery'] }}
-                    </a>
+                    </button>
                 </div>
                 <div class="col-lg-4">
-                    <a href="#" class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3" disabled>
+                    <button class="btn btn-block btn-outline-ecovalle font-weight-bold mb-3" disabled>
                         3. {{ $lstTraduccionesCarritoCompras['payment'] }}
-                    </a>
+                    </button>
                 </div>
             </div>
             <div class="row">
