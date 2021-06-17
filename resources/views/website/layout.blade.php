@@ -466,7 +466,7 @@
             });
         });
 
-        function window_mouseout( obj, evt, fn ) {
+        /*function window_mouseout( obj, evt, fn ) {
             if ( obj.addEventListener ) {
 
                 obj.addEventListener( evt, fn, false );
@@ -495,7 +495,7 @@
                 localStorage.removeItem('websitevisita');
                 // localStorage.setItem( 'leftWindow', true );
             }
-        });
+        });*/
     </script>
     @yield('js')
 </body>
