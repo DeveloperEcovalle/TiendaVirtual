@@ -247,5 +247,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/lineasProductos.js?n=1"></script>
+    <script src="/js/website/lineasProductos.js?cvcn=14"></script>
 @endsection

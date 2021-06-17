@@ -160,5 +160,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/carritoCompras2.js?cvcn=14"></script>
+    <script src="/js/website/carritoCompras2.js?n=1"></script>
 @endsection
