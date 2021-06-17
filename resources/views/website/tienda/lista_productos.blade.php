@@ -145,10 +145,21 @@
                                     <div class="card my-2 shadow">
                                         <div id="carouselImagenesProducto" class="carousel slide" data-ride="carousel" style="height: 180px">
                                             <div class="carousel-inner">
-                                                <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
+                                                <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
+                                                    <div class="justify-content-between">
+                                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                    </div>
+                                                </div>
+                                                <span class="badge badge-success badge-oferta position-absolute px-2 py-1 d-none" v-if="producto.oferta_vigente">
                                                     - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
                                                 </span>
-                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
+                                                <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
+                                                    <div class="justify-content-between">
+                                                        +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
+                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                    </div>
+                                                </div>
+                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
                                                     +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
                                                 </span>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"

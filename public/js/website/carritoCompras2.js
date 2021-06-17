@@ -264,6 +264,23 @@ let vueCarritoCompras = new Vue({
                     $('#cantidad'+i.toString()).val(cant_aux);
                 }                    
             }
+        },
+        ajaxLocalizarFacturacion: function(){
+            if(!this.fVentaValida)
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info('¡No olvides! Tu compra mínima es desde S/. 50.00');   
+            }else{
+                location = '/facturacion-envio';
+            }
         }
     }
 });

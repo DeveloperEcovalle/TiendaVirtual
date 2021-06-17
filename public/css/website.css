@@ -608,6 +608,49 @@ a.img-producto:hover > .img-background-thumbnail {
     z-index: 1;
 }
 
+.div-oferta {
+    top: 10px;
+    left: 10px;
+    width: 70px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    background: url('/img/icono-producto.png') no-repeat center;
+    background-size: cover !important;
+    z-index: 1;
+}
+
+.div-oferta div{
+    font-weight: bolder;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 8px !important;
+}
+
+/***********************************************/
+
+.div-promocion {
+    top: 5px;
+    left: 60%;
+    width: 100px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background: url('/img/icono-producto.png') no-repeat center;
+    background-size: cover !important;
+    z-index: 1;
+}
+
+.div-promocion div{
+    font-weight: bolder;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 8px !important;
+}
+
+/***********************************************/
+
+
 .badge-promocion-div {
     border-radius: 5px;
     z-index: 1;

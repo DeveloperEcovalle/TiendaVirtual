@@ -142,14 +142,14 @@
                                 <div class="mb-0 mt-3 w-100">
                                     <p v-if="!fVentaValida" class="text-ecovalle-compra d-inline">¡No olvides!</p> <p v-if="!fVentaValida" class="text-muted-compra d-inline">Tu compra m&iacute;nima es desde S/. 50.00</p>
                                 </div>
-                                <a class="btn btn-block btn-ecovalle mt-3" href="/facturacion-envio">Ir  a Comprar</a>
+                                <button class="btn btn-block btn-amarillo mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
                                 <div class="bg-amarillo text-center p-2 mt-3">
                                     <p>
                                         <b>¿Desea al por mayor?, ¡¡Cont&aacute;ctanos!!</b>
                                     </p>
                                     <a href="/contactanos" class="btn btn-sm btn-ecovalle">Contactar</a>
                                 </div>
-                                <a href="/tienda" class="btn btn-block btn-amarillo mt-3">Continuar comprando</a>
+                                <a href="/tienda" class="btn btn-block btn-ecovalle mt-3">Continuar comprando</a>
                             </div>
                         </div>
                     </div>
