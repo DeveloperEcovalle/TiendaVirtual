@@ -219,5 +219,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/inicio.js?cvcn=14"></script>
+    <script src="/js/website/inicio.js?n=1"></script>
 @endsection

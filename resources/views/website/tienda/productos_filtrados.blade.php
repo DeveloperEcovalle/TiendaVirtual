@@ -119,5 +119,5 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="/js/website/productosFiltrados.js?cvcn=14"></script>
+    <script type="text/javascript" src="/js/website/productosFiltrados.js?n=1"></script>
 @endsection

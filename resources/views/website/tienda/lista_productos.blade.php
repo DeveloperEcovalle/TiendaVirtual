@@ -390,5 +390,5 @@
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="/js/website/tiendaListaProductos.js?cvcn=14"></script>
+    <script type="text/javascript" src="/js/website/tiendaListaProductos.js?n=1"></script>
 @endsection

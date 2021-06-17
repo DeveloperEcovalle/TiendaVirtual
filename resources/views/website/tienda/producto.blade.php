@@ -267,7 +267,7 @@
 
 @section('js')
     <script src="https://unpkg.com/js-image-zoom@0.7.0/js-image-zoom.js" type="application/javascript"></script>
-    <script type="text/javascript" src="/js/website/tiendaProducto.js?cvcn=14"></script>
+    <script type="text/javascript" src="/js/website/tiendaProducto.js?n=1"></script>
     <script>
         /*$('#zoom_01').elevateZoom({
             zoomType: "inner",

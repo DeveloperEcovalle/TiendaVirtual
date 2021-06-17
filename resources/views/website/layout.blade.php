@@ -418,7 +418,7 @@
     <script src="/js/plugins/vue/vue.js"></script>
     <script src="/js/popup/jquery.magnific-popup.js"></script>
     <script src="/js/popup/jquery.magnific-popup.min.js"></script>
-    <script src="/js/website/website.js?cvcn=14"></script>
+    <script src="/js/website/website.js?n=1"></script>
 
     <script>
         $(document).ready(function() {
