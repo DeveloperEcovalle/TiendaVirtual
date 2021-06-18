@@ -259,10 +259,11 @@ class Tienda extends Website {
         }
 
         $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
+        $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = $lstProductos;
+        $respuesta->data = array('lstProductos' => $lstProductos, 'lstBlogs' => $lstBlogs);
 
         return response()->json($respuesta);
     }

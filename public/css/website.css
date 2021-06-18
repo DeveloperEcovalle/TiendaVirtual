@@ -9,8 +9,10 @@
     --verde-ecovalle-4: #1AA74F;
     --verde-ecovalle-5: #012717;
     --verde-ecovalle-6: #F2F7F0;
+    --verde-ecovalle-7: #05783f;
+    --verde-ecovalle-8: #3fa33f;
 
-    --amarillo-ecovalle: #EE9722;
+    --amarillo-ecovalle: #FF9D28;/*EE9722*/
     --negro: #333333;
 }
 
@@ -229,6 +231,13 @@ strong{
 }
 /*--------------------------*/
 
+.hr-compra {
+    box-sizing: content-box;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: 0;
+    margin: 10px 0px 10px 0px;
+}
+
 .text-androgyne {
     font-family: Androgyne;
 }
@@ -244,9 +253,12 @@ strong{
 }
 
 .text-ecovalle-compra {
-    color: var(--verde-ecovalle-2);
+    color: var(--verde-ecovalle-7);
     font-size: 13px;
     text-decoration-line: underline;
+}
+.text-ecovalle-compra-2 {
+    color: var(--verde-ecovalle-8);
 }
 
 .input-buscar input[type=text] {
@@ -510,6 +522,21 @@ a.img-producto:hover > .img-background-thumbnail {
     color: #ffffff;
 }
 
+.btn-ecovalle-compra{
+    background: linear-gradient(to bottom, var(--verde-ecovalle) 5%, var(--verde-ecovalle-7) 100%);
+    background-color: var(--verde-ecovalle);
+    border: 1px solid var(--verde-ecovalle-7);
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627 !important;
+}
+
+.btn-ecovalle-compra:hover{
+    background: linear-gradient(to bottom, var(--verde-ecovalle-7) 5%, var(--verde-ecovalle) 100%);
+    background-color: var(--verde-ecovalle-7);
+    color: #ffffff;;
+}
+
 .btn-ecovalle-2 {
     background-color: var(--verde-ecovalle-2);
     border: 1px solid var(--verde-ecovalle-2);
@@ -611,41 +638,41 @@ a.img-producto:hover > .img-background-thumbnail {
 .div-oferta {
     top: 10px;
     left: 10px;
-    width: 70px;
-    height: 60px;
+    width: 75px;
+    height: 65px;
     display: flex;
     align-items: center;
     background: url('/img/icono-producto.png') no-repeat center;
     background-size: cover !important;
     z-index: 1;
+    padding: 5px !important;
 }
 
 .div-oferta div{
     font-weight: bolder;
     color: #ffffff;
     font-size: 12px;
-    padding: 8px !important;
 }
 
 /***********************************************/
 
 .div-promocion {
     top: 5px;
-    left: 60%;
-    width: 100px;
-    height: 80px;
+    left: 70%;
+    width: 75px;
+    height: 65px;
     display: flex;
     align-items: center;
     background: url('/img/icono-producto.png') no-repeat center;
     background-size: cover !important;
     z-index: 1;
+    padding: 5px !important;
 }
 
 .div-promocion div{
     font-weight: bolder;
     color: #ffffff;
     font-size: 12px;
-    padding: 8px !important;
 }
 
 /***********************************************/

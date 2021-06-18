@@ -33,13 +33,12 @@
                 </div>
                 <div class="col-md-4">
                     <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
-                        <div class="justify-content-between">
+                        <div class="text-center">
                             - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                         </div>
                     </div>
                     <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
-                        <div class="justify-content-between">
-                            +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
+                        <div class="text-center">
                             @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
                         </div>
                     </div>
@@ -111,7 +110,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="col-6 col-sm-3 col-md-4 col-lg-4">
+                        <div class="col-6 col-sm-3 col-md-4 col-lg-4 d-none">
                             <div class="badg  badge-danger badge-promocion-div text-center align-items-center" v-if="producto.promocion_vigente">
                                 <b>+@{{ producto.promocion_vigente.min }}__ @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO. __-@{{ producto.promocion_vigente.max }}</b>
                             </div>
@@ -171,13 +170,12 @@
                                         <div class="card my-2 shadow-lg">
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
-                                                    <div class="justify-content-between">
+                                                    <div class="text-center">
                                                         - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
-                                                    <div class="justify-content-between">
-                                                        +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
+                                                    <div class="text-center">
                                                         @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
                                                     </div>
                                                 </div>

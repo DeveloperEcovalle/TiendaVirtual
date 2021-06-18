@@ -21,6 +21,7 @@ let vueProductosFiltrados = new Vue({
 
         iCargandoProductos: 1,
         lstProductos: [],
+        lstBlogs: [],
 
         iTotalProductos: 0,
     },
@@ -50,11 +51,10 @@ let vueProductosFiltrados = new Vue({
 
                     let formData = new FormData();
                     formData.append('keyword',$('#sBuscar').val());
-                    console.log($('#sBuscar').val());
                     axios.post('/tienda/ajax/obtenerProductos',formData)
                         .then(response => {
-                            $this.lstProductos = response.data.data;
-                            console.log($this.lstProductos.length);
+                            $this.lstProductos = response.data.data.lstProductos;
+                            $this.lstBlogs = response.data.data.lstBlogs;    
                             for(var i = 0; i < $this.lstProductos.length; i++)
                             {
                                 var cantidad = 0;
@@ -210,7 +210,14 @@ let vueProductosFiltrados = new Vue({
                 }
             }
         },
-   }
+   },
+   updated: function () {
+       this.$nextTick(function () {  
+           $(".carousel").carousel({
+               interval: 3000
+           });         
+       });
+   },
 });
 
 

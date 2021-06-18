@@ -13,7 +13,7 @@
         </nav>
     </div>
 
-    <section class="pt-md-3 pb-5">
+    <section class="pt-md-3 pb-5" v-cloak>
         <div class="container-xl">
             <div class="row py-4 py-lg-0">
                 <div class="col-12" v-cloak>
@@ -31,12 +31,16 @@
                     <div class="card my-2 shadow">
                         <div id="carouselImagenesProducto" class="carousel slide" data-ride="carousel" style="height: 180px">
                             <div class="carousel-inner">
-                                <span class="badge badge-success badge-oferta position-absolute px-2 py-1" v-if="producto.oferta_vigente">
-                                    - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
-                                </span>
-                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1" v-if="producto.promocion_vigente">
-                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
-                                </span>
+                                <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
+                                    <div class="text-center">
+                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                    </div>
+                                </div>
+                                <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
+                                    <div class="text-center">
+                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                    </div>
+                                </div>
                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 90">
                                     @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
@@ -110,6 +114,36 @@
                                     <span v-else><i class="fas fa-shopping-cart"></i>&nbsp;{{ $lstLocales['Add to cart'] }}</span>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-md-3 pb-5" v-cloak>
+        <div class="container-xl">
+            <div class="row py-4 py-lg-0">
+                <div class="col-12" v-cloak>
+                    <input type="hidden" value="{{$sBuscar}}" id="sBuscar" class="form-input-p">
+                    <p><b>Encontramos @{{lstBlogs.length}} blogs para </b><em>{{$sBuscar}}</em></p>
+                </div>
+            </div>
+            <div class="row py-4 py-lg-0" v-if="iCargandoProductos === 1">
+                <div class="col-12 text-center">
+                    <p><img src="/img/spinner.svg"></p>
+                </div>
+            </div>
+            <div class="row pb-4 justify-content-center" v-else>
+                <div class="col-md-4 col-sm-10 col-11 pb-5" v-for="blog in lstBlogs">
+                    <div class="card rounded-lg shadow-lg">
+                        <a :href="'/blog?v=publicacion&publicacion=' + blog.enlace + '&c=' + blog.id">
+                            <div class="img-background-thumbnail rounded-top-lg" :style="{ 'background-image': 'url(' + blog.ruta_imagen_principal + ')' }"></div>
+                        </a>
+                        <div class="card-body rounded-bottom-lg text-center">
+                            <h5 class="card-title font-weight-bold"><a class="text-dark text-decoration-none" :href="'/blog?v=publicacion&publicacion=' + blog.enlace + '&c=' + blog.id">@{{ blog.titulo }}</a></h5>
+                            <p class="card-text small">@{{ blog.resumen }}</p>
+                            <a :href="'/blog?v=publicacion&publicacion=' + blog.enlace + '&c=' + blog.id" class="btn btn-ecovalle-2 btn-sm px-4 text-uppercase">{{ $lstLocales['view_more'] }}</a>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 @extends('website.layout')
 
-@section('title', 'Facturación y Envío')
+@section('title', 'Pago y Envío')
 
 @section('content')
     <div class="container">
@@ -92,24 +92,6 @@
                                         <div class="col-12">
                                             <p><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                         </div>
-                                        <div class="col-12">
-                                            <div style="background-color: #EE9722;color:#ffffff">
-                                                <div class="form-group row p-4 align-items-end">
-                                                    <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                                        <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosEnvio.sTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
-                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
-                                                            <label :for="tipo.nombre" style="font-size: 15px;">
-                                                                <b>@{{ tipo.nombre }}</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div v-if="sTipoComprobante === ''" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                        </div>
                                     </div>
                                     <div class="text-center">
                                         <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
@@ -132,27 +114,9 @@
                                         <div class="col-12">
                                             <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
                                         </div>
-                                        <div class="col-12">
-                                            <div style="background-color: #EE9722;color:#ffffff">
-                                                <div class="form-group row p-4 align-items-end">
-                                                    <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                                        <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosRecojo.rTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
-                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
-                                                            <label :for="tipo.nombre">
-                                                                <b>@{{ tipo.nombre }}</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div v-if="sTipoComprobante === ''" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                        </div>
                                     </div>
                                     <div class="text-center">
-                                        <button v-on:click.prevent="mostrarModalPago()" :disabled="!bComprobante" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -175,27 +139,9 @@
                                         <div class="col-12">
                                             <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
                                         </div>
-                                        <div class="col-12">
-                                            <div style="background-color: #EE9722;color:#ffffff">
-                                                <div class="form-group row p-4 align-items-end">
-                                                    <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                                        <div class="radio">
-                                                            <input type="radio" :id="tipo.nombre" name="tipoComprobante" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura === datosDelivery.dTipoDoc" v-on:click="fnComprobante(tipo.nombre)">
-                                                            <p class="d-inline pb-0" v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc" style="font-size: 10px; color: red;"><b>(Necesita @{{tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura}})</b></p>
-                                                            <label :for="tipo.nombre">
-                                                                <b>@{{ tipo.nombre }}</b>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div v-if="sTipoComprobante === ''" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                        </div>
                                     </div>
                                     <div class="text-center">
-                                        <button v-on:click.prevent="mostrarModalPago()" :disabled="!bComprobante" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -237,7 +183,7 @@
                         </div>
                         <div class="col-12">
                             <div class="p-3 bg-white">
-                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
+                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
                                 <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>

@@ -13,8 +13,8 @@ let vueFacturacionEnvio = new Vue({
 
         iCargandoDatosFacturacion: 0,
         lstUbigeo: [],
-
         lstTiposComprobante: [],
+
         lstPreciosEnvioNacional: [],
         lstPreciosDelivery: [],
         lstAgencias: [],
@@ -32,6 +32,7 @@ let vueFacturacionEnvio = new Vue({
             sDistrito: '',
             sDireccion: '',
             sAgencia: '',
+            sTipoComprobante: '',
             sRecoge: {
                 sDocumento: '',
                 sRazonSocial: '',
@@ -50,6 +51,7 @@ let vueFacturacionEnvio = new Vue({
             sApellidos: '',
             sEmail: '',
             sTelefono: '',
+            sTipoComprobante: '',
             sOpcion: 0,
         },
         ratermcond: [],
@@ -66,6 +68,7 @@ let vueFacturacionEnvio = new Vue({
             sProvincia: 'TRUJILLO',
             sDistrito: '',
             sDireccion: '',
+            sTipoComprobante: '',
             sOpcion: 0,
         }, 
         datermcond: [],
@@ -89,6 +92,8 @@ let vueFacturacionEnvio = new Vue({
         sTipoDoc:'',
         iCargandoConsultaApi: 0,
         sMensajeError: '',
+
+        sLocation: 'E',
     },
     computed: {
         lstPreciosDeliveryFiltrado: function () {
@@ -265,6 +270,15 @@ let vueFacturacionEnvio = new Vue({
             }
             return sDetalles.substr(0, sDetalles.length - 1);
         },
+        bComprobanteEnvio: function(){
+            return this.datosEnvio.sTipoComprobante.trim().length > 0;
+        },
+        bComprobanteRecojo: function(){
+            return this.datosRecojo.sTipoComprobante.trim().length > 0;
+        },
+        bComprobanteDelivery: function(){
+            return this.datosDelivery.sTipoComprobante.trim().length > 0;
+        }
     },
     mounted: function () {
         let $this = this;
@@ -336,10 +350,6 @@ let vueFacturacionEnvio = new Vue({
                 }
                 $this.datosDelivery.sOpcion = 0;
 
-                // let cookiedatosDelivery = $cookies.get('datosDelivery');
-                // let datosDelivery = cookiedatosDelivery ? cookiedatosDelivery : this.datosDelivery;
-                // $this.datosDelivery = datosDelivery;
-                // $this.datosDelivery.sOpcion = 0;
                 $this.guardarCookieDatos();
             }
 
@@ -366,7 +376,7 @@ let vueFacturacionEnvio = new Vue({
                 cookiedatosDelivery.sDocumento != '' ? this.iDeliveryEstablecido = 1 : this.iDeliveryEstablecido = 0;
             }
 
-            if ($this.lstCarritoCompras.length === 0) {
+            if ($this.lstCarritoCompras.length === 0 || !this.fVentaValida) {
                 location = '/carrito-compras';
             }
         }).then(()=>{
@@ -376,129 +386,6 @@ let vueFacturacionEnvio = new Vue({
     methods: {
         ajaxSalir: () => ajaxSalir(),
         ajaxSetLocale: locale => ajaxSetLocale(locale),
-        sDeliveryFn: function(){
-            this.sDelivery = 0;
-            this.sNNacional = 1;
-            this.sRTienda = 1;
-
-            this.datosDelivery.sOpcion = 1;
-            this.datosRecojo.sOpcion = 0;
-            this.datosEnvio.sOpcion = 0;
-
-            $cookies.set('datosDelivery', this.datosDelivery, 12);
-            $cookies.set('datosRecojo', this.datosRecojo, 12);
-            $cookies.set('datosEnvio', this.datosEnvio, 12);
-
-            //$('#modalEditarDelivery').modal('show');
-        },
-        sNNacionalFn: function(){
-            this.sNNacional = 0;
-            this.sDelivery = 1;
-            this.sRTienda = 1;
-
-            this.datosDelivery.sOpcion = 0;
-            this.datosRecojo.sOpcion = 0;
-            this.datosEnvio.sOpcion = 1;
-
-            $cookies.set('datosDelivery', this.datosDelivery, 12);
-            $cookies.set('datosRecojo', this.datosRecojo, 12);
-            $cookies.set('datosEnvio', this.datosEnvio, 12);
-
-            //$('#modalEditarDireccionEnvio').modal('show'); 
-        },
-        sRTiendaFn: function(){
-            this.sDelivery = 1;
-            this.sRTienda = 0;
-            this.sNNacional = 1;
-
-            this.datosDelivery.sOpcion = 0;
-            this.datosRecojo.sOpcion = 1;
-            this.datosEnvio.sOpcion = 0;
-
-            $cookies.set('datosDelivery', this.datosDelivery, 12);
-            $cookies.set('datosRecojo', this.datosRecojo, 12);
-            $cookies.set('datosEnvio', this.datosEnvio, 12);
-
-            //$('#modalEditarRecojo').modal('show');
-        },
-        cambiarTipoDoc: function(){
-            switch (this.datosEnvio.sTipoDoc) {
-                case 'DNI':
-                    $('#documento').removeAttr('minlength','11');
-                    $('#documento').removeAttr('maxlength','11');
-                    $('#documento').attr('minlength','8');
-                    $('#documento').attr('maxlength','8');
-                    $('#nombres').attr('required',true);
-                    $('#apellidos').attr('required',true);
-                    this.datosEnvio.sDocumento = '';
-                    break;
-                case 'RUC':
-                    $('#documento').removeAttr('minlength','8');
-                    $('#documento').removeAttr('maxlength','8');
-                    $('#documento').attr('minlength','11');
-                    $('#documento').attr('maxlength','11');
-                    $('#nombres').attr('required',true);
-                    $('#apellidos').attr('required',false);
-                    this.datosEnvio.sDocumento = '';
-                    break;
-                default:
-                    $('#documento').removeAttr('minlength','11');
-                    $('#documento').removeAttr('maxlength','11');
-                    $('#documento').attr('minlength','8');
-                    $('#documento').attr('maxlength','8');
-                    this.datosEnvio.sDocumento = '';
-                    break;
-            }
-        },
-        rcambiarTipoDoc: function(){
-            switch (this.datosRecojo.rTipoDoc) {
-                case 'DNI':
-                    $('#rdocumento').removeAttr('minlength','11');
-                    $('#rdocumento').removeAttr('maxlength','11');
-                    $('#rdocumento').attr('minlength','8');
-                    $('#rdocumento').attr('maxlength','8');
-                    this.datosRecojo.sDocumento = '';
-                    break;
-                case 'RUC':
-                    $('#rdocumento').removeAttr('minlength','8');
-                    $('#rdocumento').removeAttr('maxlength','8');
-                    $('#rdocumento').attr('minlength','11');
-                    $('#rdocumento').attr('maxlength','11');
-                    this.datosRecojo.sDocumento = '';
-                    break;
-                default:
-                    $('#rdocumento').removeAttr('minlength','11');
-                    $('#rdocumento').removeAttr('maxlength','11');
-                    $('#rdocumento').attr('minlength','8');
-                    $('#rdocumento').attr('maxlength','8');
-                    this.datosRecojo.sDocumento = '';
-                    break;
-            }
-        },
-        dcambiarTipoDoc: function(){
-            switch (this.datosDelivery.dTipoDoc) {
-                case 'DNI':
-                    $('#ddocumento').removeAttr('minlength','11');
-                    $('#ddocumento').removeAttr('maxlength','11');
-                    $('#ddocumento').attr('minlength','8');
-                    $('#ddocumento').attr('maxlength','8');
-                    this.datosDelivery.sDocumento = '';
-                    break;
-                case 'DNI':
-                    $('#ddocumento').removeAttr('minlength','8');
-                    $('#ddocumento').removeAttr('maxlength','8');
-                    $('#ddocumento').attr('minlength','11');
-                    $('#ddocumento').attr('maxlength','11');
-                    this.datosDelivery.sDocumento = '';
-                default:
-                    $('#ddocumento').removeAttr('minlength','11');
-                    $('#ddocumento').removeAttr('maxlength','11');
-                    $('#ddocumento').attr('minlength','8');
-                    $('#ddocumento').attr('maxlength','8');
-                    this.datosDelivery.sDocumento = '';
-                    break;
-            }
-        },
         ajaxConsultaApi: function(){
             let formData = new FormData();
             var mensaje = '';
@@ -764,7 +651,6 @@ let vueFacturacionEnvio = new Vue({
                 $this.lstPreciosEnvioNacional = response.data.data.lstPreciosEnvio.filter(direccion => direccion.provincia !== 'TRUJILLO');
                 $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO');
                 $this.lstAgencias = response.data.data.lstAgencias;
-                console.log(response.data.data);
             }).then(() => {
                 let iIndice = this.lstPreciosEnvioNacional.findIndex(ubigeo => ubigeo.id === this.datosEnvio.sUbigeo);
                 let ubigeo = $this.lstPreciosEnvioNacional[iIndice];
@@ -832,7 +718,24 @@ let vueFacturacionEnvio = new Vue({
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $cookies.set('datosDelivery', this.datosDelivery, 12);
         },
-        confirmarFacturacion: function(){
+        confirmarFacturacion: function(tipoCompra){
+            if(tipoCompra == 'E')
+            {
+                this.datosDelivery.sOpcion = 0;
+                this.datosRecojo.sOpcion = 0;
+                this.datosEnvio.sOpcion = 1;
+            }
+            else if(tipoCompra == 'R')
+            {
+                this.datosDelivery.sOpcion = 0;
+                this.datosRecojo.sOpcion = 1;
+                this.datosEnvio.sOpcion = 0;
+            }
+            else{
+                this.datosDelivery.sOpcion = 1;
+                this.datosRecojo.sOpcion = 0;
+                this.datosEnvio.sOpcion = 0;
+            }
             $cookies.set('datosEnvio', this.datosEnvio, 12);
             $cookies.set('datosRecojo', this.datosRecojo, 12);
             $cookies.set('datosDelivery', this.datosDelivery, 12);
@@ -851,6 +754,18 @@ let vueFacturacionEnvio = new Vue({
             {
                 this.iDeliveryConfirmado = 1;
             }
+        },
+        fnComprobanteEnvio: function(value)
+        {
+            this.datosEnvio.sTipoComprobante = value;
+        },
+        fnComprobanteRecojo: function(value)
+        {
+            this.datosRecojo.sTipoComprobante = value;
+        },
+        fnComprobanteRecojo: function(value)
+        {
+            this.datosDelivery.sTipoComprobante = value;
         }
     }
 });

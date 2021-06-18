@@ -9,7 +9,7 @@ let culqi = function () {
         var sEmail = '';
         var sSubTotal = vuePagoEnvio.fSubtotal;
         var sDelivery = vuePagoEnvio.fDelivery;
-        var sTipoComprobante = vuePagoEnvio.sTipoComprobante;
+        var sTipoComprobante = '';
         var sDireccion = '';
         var sAgencia = '';
         var sDepartamento = '';
@@ -39,6 +39,7 @@ let culqi = function () {
             sDepartamento = vuePagoEnvio.datosEnvio.sDepartamento;
             sProvincia = vuePagoEnvio.datosEnvio.sProvincia;
             sDistrito = vuePagoEnvio.datosEnvio.sDistrito;
+            sTipoComprobante = vuePagoEnvio.datosEnvio.sTipoComprobante;
         }
 
         if(vuePagoEnvio.datosRecojo.sOpcion == 1)
@@ -49,6 +50,7 @@ let culqi = function () {
             sCliente = vuePagoEnvio.datosRecojo.sNombres + ' ' + vuePagoEnvio.datosRecojo.sApellidos;
             sTelefono = vuePagoEnvio.datosRecojo.sTelefono;
             sEmail = vuePagoEnvio.datosRecojo.sEmail;
+            sTipoComprobante = vuePagoEnvio.datosRecojo.sTipoComprobante;
         }
 
         if(vuePagoEnvio.datosDelivery.sOpcion == 1)
@@ -63,6 +65,7 @@ let culqi = function () {
             sDepartamento = vuePagoEnvio.datosDelivery.sDepartamento;
             sProvincia = vuePagoEnvio.datosDelivery.sProvincia;
             sDistrito = vuePagoEnvio.datosDelivery.sDistrito;
+            sTipoComprobante = vuePagoEnvio.datosDelivery.sTipoComprobante;
         }
 
         let carrito = [];
@@ -222,17 +225,12 @@ let vuePagoEnvio = new Vue({
         lstCarritoCompras: [],
 
         iCargandoDatosFacturacion: 0,
-        lstUbigeo: [],
-
-        lstTiposComprobante: [],
         lstPreciosEnvioNacional: [],
         lstPreciosDelivery: [],
 
         sNNacional: 1,
         sDelivery: 1,
         sRTienda: 1,
-
-        sTipoComprobante: '',
 
         datosEnvio: {
             sCabecera: 'NN',
@@ -351,9 +349,6 @@ let vuePagoEnvio = new Vue({
                 sDetalles += `${detalle.producto_id};${detalle.cantidad}|`;
             }
             return sDetalles.substr(0, sDetalles.length - 1);
-        },
-        bComprobante: function(){
-            return this.sTipoComprobante.trim().length > 0;
         }
     },
     mounted: function () {
@@ -391,7 +386,6 @@ let vuePagoEnvio = new Vue({
             $this.ajaxListarPreciosEnvio();
             $this.iCargando = 0;
 
-            $this.ajaxListarDatosFacturacion();
         }).then(() => {
             if ($this.lstCarritoCompras.length === 0) {
                 location = '/carrito-compras';
@@ -414,37 +408,6 @@ let vuePagoEnvio = new Vue({
                 $this.lstPreciosEnvioNacional = response.data.data.lstPreciosEnvio.filter(direccion => direccion.provincia !== 'TRUJILLO');
                 $this.lstPreciosDelivery = response.data.data.lstPreciosEnvio.filter(tarifa => tarifa.provincia === 'TRUJILLO')
             });
-        },
-        ajaxListarDatosFacturacion: function () {
-            let $this = this;
-            $this.iCargandoDatosFacturacion = 1;
-            axios.post('/facturacion-envio/ajax/listarDatosFacturacion').then(response => {
-                let respuesta = response.data;
-                if (respuesta.result === result.success) {
-                    let data = respuesta.data;
-                    $this.lstTiposComprobante = data.lstTiposComprobante;
-                    // $this.sTipoComprobante = data.lstTiposComprobante[0].nombre;
-                    $this.lstUbigeo = data.lstUbigeo;
-                    /*if ($this.lstTiposComprobante.length > 0) {
-                        $this.formData.iTipoComprobanteId = $this.lstTiposComprobante[0].id;
-                    }*/
-                    if (data.cliente) {
-                        let cliente = data.cliente;
-                        let persona = cliente.persona;
-                        $this.datosEnvio.sNombres = persona.nombres;
-                        $this.datosEnvio.sApellidos = persona.apellido_1 + ' ' + persona.apellido_2;
-                        $this.datosEnvio.sDireccion = cliente.direccion;
-                        $this.datosEnvio.sCorreo = cliente.correo;
-
-                        if (cliente.ubigeo) {
-                            let ubigeo = cliente.ubigeo;
-                            $this.datosEnvio.sDepartamento = ubigeo.departamento;
-                            $this.datosEnvio.sProvincia = ubigeo.provincia;
-                            $this.datosEnvio.sDistrito = ubigeo.distrito;
-                        }
-                    }
-                }
-            }).then(() => $this.iCargandoDatosFacturacion = 0);
         },
         mostrarModalPago: function () {
             this.sMensajeError = '';
@@ -491,10 +454,5 @@ let vuePagoEnvio = new Vue({
         },
         ajaxEnviarConstanciaTransferencia: function () {
         },
-        fnComprobante: function(value)
-        {
-            this.sTipoComprobante = value;
-        }
-
     }
 });

@@ -146,7 +146,7 @@
                                         <div id="carouselImagenesProducto" class="carousel slide" data-ride="carousel" style="height: 180px">
                                             <div class="carousel-inner">
                                                 <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
-                                                    <div class="justify-content-between">
+                                                    <div class="text-center">
                                                         - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                                                     </div>
                                                 </div>
@@ -154,8 +154,7 @@
                                                     - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
                                                 </span>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
-                                                    <div class="justify-content-between">
-                                                        +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
+                                                    <div class="text-center">
                                                         @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
                                                     </div>
                                                 </div>

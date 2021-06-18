@@ -48,27 +48,27 @@
                         <div class="col-md-12 mb-1">
                             <div style="background-color: #EE9722;color:#ffffff">
                                 <div class="form-group row p-4 align-items-end">
-                                    <div class="col-lg-4 col-12" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                        <div class="radio">
-                                            <input type="radio" name="tipo_compra" id="sNNacional" v-on:click="sNNacionalFn()" checked>
-                                            <label for="sNNacional" title="Envío a nivel nacional">
-                                                <b>Envío a nivel nacional</b>
+                                    <div class="col-lg-4 col-12" > 
+                                        <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                            <label class="m-0" title="Envío a nivel nacional">
+                                                <input type="radio" name="tipo_compra" value="E" v-model="sLocation">
+                                                &nbsp;<b>Envío a nivel nacional</b>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-12">
-                                        <div class="radio">
-                                            <input type="radio" name="tipo_compra" id="sRTienda" v-on:click="sRTiendaFn()">
-                                            <label for="sRTienda" title="Recojo en tienda">
-                                                <b>Recojo en tienda</b>
+                                        <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                            <label class="m-0" title="Recojo en tienda">
+                                                <input type="radio" name="tipo_compra" value="R" v-model="sLocation">
+                                                &nbsp;<b>Recojo en tienda</b>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 col-12">
-                                        <div class="radio">
-                                            <input type="radio" name="tipo_compra" id="sDelivery" v-on:click="sDeliveryFn()">
-                                            <label for="sDelivery" title="Delivery Trujillo">
-                                                <b>Delivery Trujillo</b>
+                                        <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                            <label class="m-0" title="Delivery Trujillo">
+                                                <input type="radio" name="tipo_compra" value="D" v-model="sLocation">
+                                                &nbsp;<b>Delivery Trujillo</b>
                                             </label>
                                         </div>
                                     </div>
@@ -76,14 +76,14 @@
                             </div>
                         </div>
 
-                        <div class="col-12 text-right" v-if="sNNacional === 0">
+                        <div class="col-12 text-right" v-if="sLocation == 'E'">
                             <a href="#" class="btn btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasEnvio">Ver tarifas de env&iacute;o nacional</a>
                         </div>
-                        <div class="col-12 text-right" v-if="sDelivery === 0">
+                        <div class="col-12 text-right" v-if="sLocation == 'D'">
                             <a href="#" class="btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
                         </div>
 
-                        <div class="col-12 mb-3" v-if="sNNacional === 0">
+                        <div class="col-12 mb-3" v-if="sLocation == 'E'">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
                                 <div class="row">
@@ -147,6 +147,24 @@
                                         <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
                                         <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
+                                    <div class="col-12">
+                                        <div style="background-color: #EE9722;color:#ffffff">
+                                            <div class="form-group row p-4 align-items-end">
+                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" >
+                                                     <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
+                                                     <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                                        <label class="m-0">
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosEnvio.sTipoComprobante">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="!bComprobanteEnvio" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
+
+                                    </div>
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
@@ -155,12 +173,12 @@
                                             <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni) && !fValidaMonto" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion('E')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3" v-if="sRTienda === 0">
+                        <div class="col-12 mb-3" v-if="sLocation == 'R'">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de recojo en tienda</h1>
                                 <div class="row">
@@ -205,6 +223,23 @@
                                     <div class="col-12">
                                         <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
                                     </div>
+                                    <div class="col-12">
+                                        <div style="background-color: #EE9722;color:#ffffff">
+                                            <div class="form-group row p-4 align-items-end">
+                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
+                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                                        <label class="m-0">
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosRecojo.sTipoComprobante">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="!bComprobanteRecojo" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
+
+                                    </div>
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
@@ -213,12 +248,12 @@
                                             <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion('R')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3" v-if="sDelivery === 0">
+                        <div class="col-12 mb-3" v-if="sLocation == 'D'">
                             <div class="p-4 bg-white">
                                 <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n delivery Trujillo</h1>
                                 <div class="row">
@@ -264,6 +299,23 @@
                                     <div class="col-12">
                                         <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
                                     </div>
+                                    <div class="col-12">
+                                        <div style="background-color: #EE9722;color:#ffffff">
+                                            <div class="form-group row p-4 align-items-end">
+                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
+                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                                        <label class="m-0">
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosDelivery.sTipoComprobante">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-if="!bComprobanteDelivery" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
+
+                                    </div>
                                 </div>
                                 <div class="text-center">
                                     @if(session()->has('cliente'))
@@ -272,7 +324,7 @@
                                             <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion()">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion('D')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -314,7 +366,7 @@
                         </div>
                         <div class="col-12">
                             <div class="p-3 bg-white">
-                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
+                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
                                 <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
@@ -341,7 +393,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="tipo_documento" id="tipo_documento" class="form-control" :class="{'is-invalid' : datosEnvio.sTipoDoc == ''}" v-on:change="cambiarTipoDoc()" v-model="datosEnvio.sTipoDoc">
+                                    <select name="tipo_documento" id="tipo_documento" class="form-control" :class="{'is-invalid' : datosEnvio.sTipoDoc == ''}" v-model="datosEnvio.sTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                         <option value="RUC">RUC</option>
@@ -355,7 +407,7 @@
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == ''}"  maxlength="8" required>
+                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == ''}"  :maxlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                     <span :class="{'d-none' : datosEnvio.sDocumento != ''}">
@@ -384,7 +436,7 @@
                                 </div>
                                 <div class="form-group"  v-if="datosEnvio.sTipoDoc === 'DNI'">
                                     <label>Apellidos</label>
-                                    <input class="form-control" :class="{'is-invalid' : datosEnvio.sApellidos == ''}" v-model="datosEnvio.sApellidos" autocomplete="off">
+                                    <input class="form-control" :class="{'is-invalid' : datosEnvio.sApellidos == '' && datosEnvio.sTipoDoc == 'DNI'}" v-model="datosEnvio.sApellidos" autocomplete="off">
                                     <span class="invalid-feedback">
                                         <strong class="text-danger">Completar apellidos</strong>
                                     </span>
@@ -512,20 +564,26 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="rtipo_documento" id="rtipo_documento" class="form-control" v-on:change="rcambiarTipoDoc()" v-model="datosRecojo.rTipoDoc">
+                                    <select name="rtipo_documento" id="rtipo_documento" class="form-control" :class="{'is-invalid' : datosRecojo.rTipoDoc == ''}" v-model="datosRecojo.rTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                         <option value="RUC">RUC</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tipo de documento</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="rdocumento" name="rdocumento" v-model="datosRecojo.sDocumento" class="form-control"  maxlength="8" required>
+                                        <input type="text" id="rdocumento" name="rdocumento" v-model="datosRecojo.sDocumento" :class="{'is-invalid' : datosRecojo.sDocumento == ''}" class="form-control"  :maxlength="datosRecojo.rTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApir()"><i class="fa fa-search"></i> </button></span>
                                     </div>
+                                    <span :class="{'d-none' : datosRecojo.sDocumento != ''}">
+                                        <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -546,15 +604,24 @@
                                 </div>
                                 <div class="form-group" v-if="datosRecojo.rTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
-                                    <input type="text" class="form-control" v-model="datosRecojo.sApellidos" autocomplete="off" required>
+                                    <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sApellidos == '' && datosRecojo.rTipoDoc == 'DNI'}" v-model="datosRecojo.sApellidos" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar apellidos</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Correo electr&oacute;nico</label>
-                                    <input type="email" class="form-control" v-model="datosRecojo.sEmail" autocomplete="off" required>
+                                    <input type="email" class="form-control" :class="{'is-invalid' : datosRecojo.sEmail == ''}" v-model="datosRecojo.sEmail" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar correo electr&oacute;nico</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" >
                                     <label>Teléfono</label>
-                                    <input type="text" class="form-control" v-model="datosRecojo.sTelefono" autocomplete="off">
+                                    <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sTelefono == ''}" v-model="datosRecojo.sTelefono" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tel&eacute;fono</strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -582,20 +649,26 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
-                                    <select name="dtipo_documento" id="dtipo_documento" class="form-control" v-on:change="dcambiarTipoDoc()" v-model="datosDelivery.dTipoDoc">
+                                    <select name="dtipo_documento" id="dtipo_documento" :class="{'is-invalid' : datosDelivery.dTipoDoc == ''}" class="form-control" v-model="datosDelivery.dTipoDoc">
                                         <option value="">Seleccionar</option>
                                         <option value="DNI">DNI</option>
                                         <option value="RUC">RUC</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tipo de documento</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="ddocumento" name="ddocumento" v-model="datosDelivery.sDocumento" class="form-control"  maxlength="8" required>
+                                        <input type="text" id="ddocumento" name="ddocumento" v-model="datosDelivery.sDocumento" class="form-control"  :maxlength="datosRecojo.rTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApid()"><i class="fa fa-search"></i> </button></span>
                                     </div>
+                                    <span :class="{'d-none' : datosRDelivery.sDocumento != ''}">
+                                        <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -612,7 +685,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Nombres</label>
-                                    <input class="form-control" v-model="datosDelivery.sNombres" autocomplete="off">
+                                    <input class="form-control" v-model="datosDelivery.sNombres" autocomplete="off" required>
                                 </div>
                                 <div class="form-group" v-if="datosDelivery.dTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
@@ -620,25 +693,25 @@
                                 </div>
                                 <div class="form-group" >
                                     <label>Tel&eacute;fono</label>
-                                    <input class="form-control" v-model="datosDelivery.sTelefono" autocomplete="off">
+                                    <input class="form-control" v-model="datosDelivery.sTelefono" autocomplete="off" required>
                                 </div>
                                 <div class="form-group" >
                                     <label>Direci&oacute;n</label>
-                                    <input class="form-control" v-model="datosDelivery.sDireccion" autocomplete="off">
+                                    <input class="form-control" v-model="datosDelivery.sDireccion" autocomplete="off" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Departamento</label>
-                                    <input class="form-control" v-model="datosDelivery.sDepartamento" readonly autocomplete="off">
+                                    <input class="form-control" v-model="datosDelivery.sDepartamento" readonly autocomplete="off" required>
                                 </div>
                                 <div class="form-group" >
                                     <label>Provincia</label>
-                                    <input class="form-control" v-model="datosDelivery.sProvincia" readonly autocomplete="off">
+                                    <input class="form-control" v-model="datosDelivery.sProvincia" readonly autocomplete="off" required>
                                 </div>
                                 <div class="form-group" >
                                     <label>Distrito</label>
-                                    <select name="ddistrito" id="ddistrito" class="form-control" v-model="datosDelivery.sDistrito">
+                                    <select name="ddistrito" id="ddistrito" class="form-control" v-model="datosDelivery.sDistrito" required>
                                         <option value="">Seleccionar</option>
                                         <option v-for="distrito in lstDistritosD" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
