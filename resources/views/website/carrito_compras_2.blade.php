@@ -131,10 +131,12 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <h1 class="h5 mb-3 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesCarritoCompras['order_summary'] }}</h1>
-                    <div class="row">
+                    <div class="row bg-white">
+                        <div class="col-12 text-center text-uppercase">
+                            <h1 class="h5 mb-1 mt-4 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesCarritoCompras['order_summary'] }}</h1>
+                        </div>
                         <div class="col-12">
-                            <div class="p-4 bg-white">
+                            <div class="p-4">
                                 <p class="mb-0 text-muted">@{{ lstCarritoCompras.length }} detalles</p>
                                 <p class="mb-3 text-muted">@{{ iArticulos }} art&iacute;culos</p>
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
@@ -146,7 +148,7 @@
                                 <div class="mb-0 mt-3 w-100">
                                     <p v-if="!fVentaValida" class="text-ecovalle-compra d-inline">¡No olvides!</p> <p v-if="!fVentaValida" class="text-muted-compra d-inline">Tu compra m&iacute;nima es desde S/. 50.00</p>
                                 </div>
-                                <button class="btn btn-block btn-amarillo mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
+                                <button class="btn btn-block btn-amarillo-compra mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
                                 <a href="/tienda" class="btn btn-block btn-ecovalle-compra mt-3">Seguir comprando</a>
                                 <div class="bg-amarillo text-center p-2 mt-3">
                                     <p>

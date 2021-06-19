@@ -46,7 +46,7 @@
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-12 mb-1">
-                            <div style="background-color: #EE9722;color:#ffffff">
+                            <div class="bg-amarillo-2">
                                 <div class="form-group row p-4 align-items-end">
                                     <div class="col-lg-4 col-12" > 
                                         <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
@@ -90,7 +90,7 @@
                                     <p class="col-12 col-lg-4">
                                         <span class="font-weight-bold">Datos de env&iacute;o</span>
                                     </p>
-                                    <div v-if="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" class="col-8 col-lg-6 d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                                    <div v-if="!bDireccionEnvioValida || !bVerificaRuc || !bVerificaDni" class="col-8 col-lg-6 d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
                                     </div>
                                     <div class="col-8 col-lg-6"></div>
                                     @if(session()->has('cliente'))
@@ -148,14 +148,13 @@
                                         <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
                                     <div class="col-12">
-                                        <div style="background-color: #EE9722;color:#ffffff">
+                                        <div class="bg-ecovalle">
                                             <div class="form-group row p-4 align-items-end">
                                                 <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" >
-                                                     <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                      <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                                         <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosEnvio.sTipoComprobante">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosEnvio.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -173,7 +172,7 @@
                                             <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion('E')">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida || bVerificaRuc != 1 || bVerificaDni != 1 || !bComprobanteEnvio" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion('E')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -224,13 +223,13 @@
                                         <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
                                     </div>
                                     <div class="col-12">
-                                        <div style="background-color: #EE9722;color:#ffffff">
+                                        <div class="bg-ecovalle">
                                             <div class="form-group row p-4 align-items-end">
                                                 <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                     <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                                         <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosRecojo.sTipoComprobante">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosRecojo.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -248,7 +247,7 @@
                                             <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion('R')">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida || !bComprobanteRecojo || bVerificaDniRecojo != 1 || bVerificaRucRecojo != 1" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion('R')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -280,10 +279,10 @@
                                 @endif
                                 <div class="row" v-else>
                                     <div v-if="datosDelivery.dTipoDoc === 'DNI'" class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos + ' ' }}</p>
+                                        <p class="font-weight-bold mb-0 d-inline" :class="{'text-danger' : datosDelivery.sNombres == '' || datosDelivery.sApellidos == ''}">Nombres y Apellidos:</p> <p v-if="datosDelivery.sNombres != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sNombres }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar nombres</p> <p v-if="datosDelivery.sApellidos != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sApellidos + ' ' }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar apellidos</p>
                                     </div>
                                     <div v-else class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosDelivery.sNombres}}</p>
+                                        <p class="font-weight-bold mb-0 d-inline" :class="{'text-danger' : datosDelivery.sNombres == ''}"><b>Raz&oacute;n Social: </b></p><p v-if="datosDelivery.sNombres != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sNombres}}</p><p v-else class="font-weight-bold text mb-0 d-inline"><i class="fa fa-exclamation-circle"></i> Completar nombres</p> <p v-if="datosDelivery.sApellidos != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sApellidos + ' ' }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar apellidos</p>
                                     </div>
                                     <div class="col-12">
                                         <p v-if="datosDelivery.sDistrito != ''" class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
@@ -300,13 +299,13 @@
                                         <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
                                     </div>
                                     <div class="col-12">
-                                        <div style="background-color: #EE9722;color:#ffffff">
+                                        <div class="bg-ecovalle">
                                             <div class="form-group row p-4 align-items-end">
                                                 <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
                                                     <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                                         <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosDelivery.sTipoComprobante">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b>
+                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosDelivery.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc">
+                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -324,7 +323,7 @@
                                             <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
                                         </label>
                                     </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion('D')">Continuar</button>
+                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida || !bComprobanteDelivery || bVerificaDniDelivery != 1 || bVerificaRucDelivery != 1" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion('D')">Continuar</button>
                                     @endif
                                 </div>
                             </div>
@@ -332,14 +331,15 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="row">
+                    <div class="row bg-white">
                         <div class="col-12">
-                            <div class="px-3 pt-3 bg-white">
-                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['order_summary'] }}</h1>
+                            <div class="px-3 pt-3 text-center">
+                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2 text-uppercase">{{ $lstTraduccionesFacturacionEnvio['order_summary'] }}</h1>
+                                <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12" v-for="(detalle, i) in lstCarritoCompras">
-                            <div class="p-3 bg-white">
+                            <div class="p-3">
                                 <div class="row">
                                     <div class="col-3">
                                         <img class="img-fluid mb-3 mb-md-0" v-if="detalle.producto.imagenes.length > 0" :src="detalle.producto.imagenes[0].ruta">
@@ -360,12 +360,13 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="px-3 pt-3 bg-white">
+                            <div class="px-3 pt-3 text-center text-uppercase">
                                 <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['price_summary'] }}</h1>
+                                <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-3 bg-white">
+                            <div class="p-3">
                                 <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
@@ -407,11 +408,19 @@
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="documento" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == ''}"  :maxlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
+                                        <input v-if="datosEnvio.sTipoDoc === 'DNI'" type="text" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == '' || bVerificaDniE != 1}"  maxlength="8" minlength="8" required>
+                                        <input v-else type="text" name="documento" v-model="datosEnvio.sDocumento" class="form-control" :class="{'is-invalid' : datosEnvio.sDocumento == '' || bVerificaRuc != 1}"  maxlength="11" minlength="11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                     <span :class="{'d-none' : datosEnvio.sDocumento != ''}">
                                         <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
+
+                                    <span :class="{'d-none' : bVerificaDniE != 0}">
+                                        <strong class="small text-danger"><b>Completar 8 caracteres</b></strong>
+                                    </span>
+                                    <span :class="{'d-none' : bVerificaRuc != 0}">
+                                        <strong class="small text-danger"><b>Completar 11 caracteres</b></strong>
                                     </span>
                                 </div>
                             </div>
@@ -428,7 +437,8 @@
                         <div class="row">
                             <div class="col-md-12" v-if="iCargandoConsultaApi === 0">
                                 <div class="form-group">
-                                    <label>Nombres / Raz&oacute;n Social</label>
+                                    <label v-if="datosEnvio.sTipoDoc == 'DNI'">Nombres</label>
+                                    <label v-else>Raz&oacute;n social</label>
                                     <input class="form-control" :class="{'is-invalid' : datosEnvio.sNombres == ''}" v-model="datosEnvio.sNombres" autocomplete="off">
                                     <span class="invalid-feedback">
                                         <strong class="text-danger">Completar nombres</strong>
@@ -543,7 +553,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="frmDireccionEnvio" class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida && (!bVerificaRuc || !bVerificaDni)">Guardar</button>
+                    <button type="submit" form="frmDireccionEnvio" class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida || bVerificaRuc != 1 || bVerificaDni != 1">Guardar</button>
                 </div>
             </div>
         </div>
@@ -578,11 +588,19 @@
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="rdocumento" name="rdocumento" v-model="datosRecojo.sDocumento" :class="{'is-invalid' : datosRecojo.sDocumento == ''}" class="form-control"  :maxlength="datosRecojo.rTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
+                                        <input v-if="datosRecojo.rTipoDoc === 'DNI'" type="text" name="documento" v-model="datosRecojo.sDocumento" class="form-control" :class="{'is-invalid' : datosRecojo.sDocumento == '' || bVerificaDniR != 1}"  maxlength="8" minlength="8" required>
+                                        <input v-else type="text" name="documento" v-model="datosRecojo.sDocumento" class="form-control" :class="{'is-invalid' : datosRecojo.sDocumento == '' || bVerificaRucRecojo != 1}"  maxlength="11" minlength="11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApir()"><i class="fa fa-search"></i> </button></span>
                                     </div>
                                     <span :class="{'d-none' : datosRecojo.sDocumento != ''}">
                                         <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
+
+                                    <span :class="{'d-none' : bVerificaDniR != 0}">
+                                        <strong class="small text-danger"><b>Completar 8 caracteres</b></strong>
+                                    </span>
+                                    <span :class="{'d-none' : bVerificaRucRecojo != 0}">
+                                        <strong class="small text-danger"><b>Completar 11 caracteres</b></strong>
                                     </span>
                                 </div>
                             </div>
@@ -599,8 +617,12 @@
                         <div class="row">
                             <div class="col-md-12" v-if="iCargandoConsultaApir === 0">
                                 <div class="form-group">
-                                    <label>Nombres</label>
-                                    <input type="text" class="form-control" v-model="datosRecojo.sNombres" autocomplete="off" required>
+                                    <label v-if="datosRecojo.rTipoDoc == 'DNI'">Nombres</label>
+                                    <label v-else>Raz&oacute;n social</label>
+                                    <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sNombres == ''}" v-model="datosRecojo.sNombres" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar nombres</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" v-if="datosRecojo.rTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
@@ -628,7 +650,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="frmRecojo" class="btn btn-ecovalle" :disabled="!bRecojoValida">Guardar</button>
+                    <button type="submit" form="frmRecojo" class="btn btn-ecovalle" :disabled="!bRecojoValida || bVerificaDniRecojo != 1 || bVerificaRucRecojo != 1">Guardar</button>
                 </div>
             </div>
         </div>
@@ -663,11 +685,19 @@
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
-                                        <input type="text" id="ddocumento" name="ddocumento" v-model="datosDelivery.sDocumento" class="form-control"  :maxlength="datosRecojo.rTipoDoc == 'DNI' ? 8 : 11" :minlength="datosEnvio.sTipoDoc == 'DNI' ? 8 : 11" required>
+                                        <input v-if="datosDelivery.dTipoDoc === 'DNI'" type="text" name="documento" v-model="datosDelivery.sDocumento" class="form-control" :class="{'is-invalid' : datosDelivery.sDocumento == '' || bVerificaDni != 1}"  maxlength="8" minlength="8" required>
+                                        <input v-else type="text" name="documento" v-model="datosDelivery.sDocumento" class="form-control" :class="{'is-invalid' : datosDelivery.sDocumento == '' || bVerificaRucDelivery != 1}"  maxlength="11" minlength="11" required>
                                         <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApid()"><i class="fa fa-search"></i> </button></span>
                                     </div>
-                                    <span :class="{'d-none' : datosRDelivery.sDocumento != ''}">
+                                    <span :class="{'d-none' : datosDelivery.sDocumento != ''}">
                                         <strong class="small text-danger"><b>Completar documento</b></strong>
+                                    </span>
+
+                                    <span :class="{'d-none' : bVerificaDniD != 0}">
+                                        <strong class="small text-danger"><b>Completar 8 caracteres</b></strong>
+                                    </span>
+                                    <span :class="{'d-none' : bVerificaRucDelivery != 0}">
+                                        <strong class="small text-danger"><b>Completar 11 caracteres</b></strong>
                                     </span>
                                 </div>
                             </div>
@@ -684,48 +714,73 @@
                         <div class="row" v-if="iCargandoConsultaApid === 0">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Nombres</label>
-                                    <input class="form-control" v-model="datosDelivery.sNombres" autocomplete="off" required>
+                                    <label v-if="datosDelivery.dTipoDoc == 'DNI'">Nombres</label>
+                                    <label v-else>Raz&oacute;n social</label>
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sNombres == ''}" v-model="datosDelivery.sNombres" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar nombres</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" v-if="datosDelivery.dTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
-                                    <input class="form-control" v-model="datosDelivery.sApellidos" autocomplete="off">
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sApellidos == ''}" v-model="datosDelivery.sApellidos" autocomplete="off">
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar apellidos</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" >
                                     <label>Tel&eacute;fono</label>
-                                    <input class="form-control" v-model="datosDelivery.sTelefono" autocomplete="off" required>
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sTelefono == ''}" v-model="datosDelivery.sTelefono" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar tel&eacute;fono</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" >
                                     <label>Direci&oacute;n</label>
-                                    <input class="form-control" v-model="datosDelivery.sDireccion" autocomplete="off" required>
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sDireccion == ''}" v-model="datosDelivery.sDireccion" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar direcci&oacute;n</strong>
+                                    </span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Departamento</label>
-                                    <input class="form-control" v-model="datosDelivery.sDepartamento" readonly autocomplete="off" required>
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sDepartamento == ''}" v-model="datosDelivery.sDepartamento" readonly autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar departamento</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" >
                                     <label>Provincia</label>
-                                    <input class="form-control" v-model="datosDelivery.sProvincia" readonly autocomplete="off" required>
+                                    <input class="form-control" :class="{'is-invalid' : datosDelivery.sProvincia == ''}" v-model="datosDelivery.sProvincia" readonly autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar provincia</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group" >
                                     <label>Distrito</label>
-                                    <select name="ddistrito" id="ddistrito" class="form-control" v-model="datosDelivery.sDistrito" required>
+                                    <select name="ddistrito" id="ddistrito" :class="{'is-invalid' : datosDelivery.sDistrito == ''}" class="form-control" v-model="datosDelivery.sDistrito" required>
                                         <option value="">Seleccionar</option>
                                         <option v-for="distrito in lstDistritosD" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar distrito</strong>
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label>Correo electr&oacute;nico</label>
-                                    <input type="email" class="form-control" v-model="datosDelivery.sEmail" autocomplete="off" required>
+                                    <input type="email" class="form-control" :class="{'is-invalid' : datosDelivery.sEmail == ''}" v-model="datosDelivery.sEmail" autocomplete="off" required>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Completar correo electr&oacute;nico</strong>
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" form="frmDelivery" class="btn btn-ecovalle" :disabled="!bDeliveryValida">Guardar</button>
+                    <button type="submit" form="frmDelivery" class="btn btn-ecovalle" :disabled="!bDeliveryValida || bVerificaDniDelivery != 1 || bVerificaRucDelivery != 1">Guardar</button>
                 </div>
             </div>
         </div>
@@ -821,5 +876,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/facturacionEnvio.js?n=1"></script>
+    <script src="/js/website/facturacionEnvio.js?cvcn=14"></script>
 @endsection

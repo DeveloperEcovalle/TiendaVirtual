@@ -13,6 +13,7 @@
     --verde-ecovalle-8: #3fa33f;
 
     --amarillo-ecovalle: #FF9D28;/*EE9722*/
+    --amarillo-ecovalle-2: #EE9722;
     --negro: #333333;
 }
 
@@ -356,6 +357,11 @@ html, body {
     background-color: var(--amarillo-ecovalle) !important;
 }
 
+.bg-amarillo-2 {
+    background-color: var(--amarillo-ecovalle-2) !important;
+    color: #fff;
+}
+
 a.img-producto {
     overflow: hidden;
     height: 180px;
@@ -534,7 +540,7 @@ a.img-producto:hover > .img-background-thumbnail {
 .btn-ecovalle-compra:hover{
     background: linear-gradient(to bottom, var(--verde-ecovalle-7) 5%, var(--verde-ecovalle) 100%);
     background-color: var(--verde-ecovalle-7);
-    color: #ffffff;;
+    color: #ffffff;
 }
 
 .btn-ecovalle-2 {
@@ -551,6 +557,21 @@ a.img-producto:hover > .img-background-thumbnail {
 
 .btn-amarillo {
     background: var(--amarillo-ecovalle);
+    color: #ffffff;
+}
+
+.btn-amarillo-compra {
+    background: linear-gradient(to bottom, #eeb243 5%, var(--amarillo-ecovalle)  100%);
+    background-color: #eeb243;
+    border: 1px solid var(--amarillo-ecovalle);
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #b97c0b !important;
+}
+
+.btn-amarillo-compra:hover{
+    background: linear-gradient(to bottom, var(--amarillo-ecovalle) 5%, #eeb243 100%);
+    background-color: var(--verde-amarillo);
     color: #ffffff;
 }
 

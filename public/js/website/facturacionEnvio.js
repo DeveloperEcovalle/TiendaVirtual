@@ -120,7 +120,7 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosEnvio.sRecoge.sTelefono.trim().length > 0
                 && this.datosEnvio.sTipoDoc.trim().length > 0
                 && this.datosEnvio.sAgencia.trim().length > 0
-                && this.datosEnvio.sDocumento.trim().length > 0;
+                && this.datosEnvio.sNombres.trim().length > 0;
         },
         bRecojoValida: function () {
             return this.datosRecojo.sDocumento.trim().length > 0
@@ -134,7 +134,6 @@ let vueFacturacionEnvio = new Vue({
             return this.datosDelivery.sDocumento.trim().length > 0
                 && this.datosDelivery.dTipoDoc.trim().length > 0
                 && this.datosDelivery.sNombres.trim().length > 0
-                && this.datosDelivery.sApellidos.trim().length > 0
                 && this.datosDelivery.sEmail.trim().length > 0
                 && this.datosDelivery.sTelefono.trim().length > 0
                 && this.datosDelivery.sDireccion.trim().length > 0
@@ -143,14 +142,77 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosDelivery.sDistrito.trim().length > 0;
 
         },
-        /*bDestinoEncontrado: function () {
-            return this.lstPreciosEnvioNacional.findIndex(precioEnvio => precioEnvio.departamento === this.formData.sDepartamento) > -1;
-        },*/
+        bVerificaDniE: function () {
+            if(this.datosEnvio.sTipoDoc == 'DNI')
+            {
+                if(this.datosEnvio.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
         bVerificaDni: function() {
-            return this.datosEnvio.sTipoDoc == 'DNI' && this.datosEnvio.sNombres.trim().length > 0 && this.datosEnvio.sApellidos.trim().length > 0;
+            if(this.datosEnvio.sTipoDoc == 'DNI')
+            {
+                if(this.datosEnvio.sApellidos.trim().length > 0 && this.datosEnvio.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
         },
         bVerificaRuc: function(){
-            return this.datosEnvio.sTipoDoc == 'RUC' && this.datosEnvio.sNombres.trim().length > 0
+            if(this.datosEnvio.sTipoDoc == 'RUC')
+            {
+                if(this.datosEnvio.sDocumento.trim().length == 11) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaDniR: function () {
+            if(this.datosRecojo.rTipoDoc == 'DNI')
+            {
+                if(this.datosRecojo.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaDniRecojo: function() {
+            if(this.datosRecojo.rTipoDoc == 'DNI')
+            {
+                if(this.datosRecojo.sApellidos.trim().length > 0 && this.datosRecojo.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaRucRecojo: function(){
+            if(this.datosRecojo.rTipoDoc == 'RUC')
+            {
+                if(this.datosRecojo.sDocumento.trim().length == 11) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaDniD: function () {
+            if(this.datosDelivery.dTipoDoc == 'DNI')
+            {
+                if(this.datosDelivery.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaDniDelivery: function() {
+            if(this.datosDelivery.dTipoDoc == 'DNI')
+            {
+                if(this.datosDelivery.sApellidos.trim().length > 0 && this.datosDelivery.sDocumento.trim().length == 8) return 1;
+                else return 0;
+            }
+            else return 1;
+        },
+        bVerificaRucDelivery: function(){
+            if(this.datosDelivery.dTipoDoc == 'RUC')
+            {
+                if(his.datosDelivery.sDocumento.trim().length == 11) return 1;
+                else return 0;
+            }
+            else return 1;
         },
         fDelivery: function () {
             if(this.sNNacional == 0)

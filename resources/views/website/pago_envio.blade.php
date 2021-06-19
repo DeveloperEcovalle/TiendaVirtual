@@ -94,7 +94,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                        <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
                                 </div>
                             </div>
