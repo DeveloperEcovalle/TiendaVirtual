@@ -876,5 +876,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/facturacionEnvio.js?cvcn=14"></script>
+    <script src="/js/website/facturacionEnvio.js?n=1"></script>
 @endsection

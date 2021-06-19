@@ -209,7 +209,7 @@ let vueFacturacionEnvio = new Vue({
         bVerificaRucDelivery: function(){
             if(this.datosDelivery.dTipoDoc == 'RUC')
             {
-                if(his.datosDelivery.sDocumento.trim().length == 11) return 1;
+                if(this.datosDelivery.sDocumento.trim().length == 11) return 1;
                 else return 0;
             }
             else return 1;
