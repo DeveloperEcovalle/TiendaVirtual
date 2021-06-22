@@ -43,11 +43,11 @@ let vueCarritoCompras = new Vue({
         }
     },
     created: function () {
-            //analisis v4
-            gtag('event', 'CarritoCompras', {
-                'event_category' : 'VistaPagina',
-                'event_label' : 'visita a pagina Carrito de Compras'
-              });
+        //analisis v4
+        gtag('event', 'CarritoCompras', {
+            'event_category' : 'VistaPagina',
+            'event_label' : 'visita a pagina Carrito de Compras'
+            });
         let $this = this;
         ajaxWebsiteLocale().then(response => {
             let respuesta = response.data;

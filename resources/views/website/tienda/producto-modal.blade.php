@@ -37,7 +37,7 @@
                 <p class="font-weight-bold mb-1 text-ecovalle">Total</p>
             </div>
             <div class="col-6 p-1 m-0 text-right">
-                <p class="font-weight-bold mb-1 text-ecovalle">S/. @{{ producto.producto.precio_actual.monto.toFixed(2) }}</p>
+                <p class="font-weight-bold mb-1 text-ecovalle">S/. @{{ fSubtotal.toFixed(2) }}</p>
             </div>
             <div class="col-md-6 p-1 m-0">
                 <button type="button" v-on:click="removeModal" class="btn btn-sm btn-block btn-ecovalle-compra-modal mb-1">Continuar comprando</button>

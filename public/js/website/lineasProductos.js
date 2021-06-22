@@ -180,6 +180,16 @@ let vueLineasProductos = new Vue({
                             data: {
                                 producto: productoLocalizado,
                             },
+                            computed: {
+                                fSubtotal: function () {  
+                                    let fPromocion = this.producto.producto.promocion_vigente === null ? 0.00 :
+                                        (this.producto.cantidad >= this.producto.producto.promocion_vigente.min && this.producto.cantidad <= this.producto.producto.promocion_vigente.max ? (this.producto.producto.promocion_vigente.porcentaje ? ((this.producto.producto.precio_actual.monto * this.producto.producto.promocion_vigente.porcentaje) / 100) : (this.producto.producto.promocion_vigente.monto)) : 0.00);
+                                    let fPrecio = (this.producto.producto.oferta_vigente === null ? this.producto.producto.precio_actual.monto :
+                                        (this.producto.producto.oferta_vigente.porcentaje ? (this.producto.producto.precio_actual.monto * (100 - this.producto.producto.oferta_vigente.porcentaje) / 100) : (this.producto.producto.precio_actual.monto - this.producto.producto.oferta_vigente.monto))) - fPromocion;
+                                    let fSubtotal = this.producto.cantidad * fPrecio;                                 
+                                    return Math.round(fSubtotal  * 10) / 10;
+                                },
+                            },
                             methods: {
                                 removeModal: function(){
                                     modalProducto = document.getElementById('contenedor-producto');	
