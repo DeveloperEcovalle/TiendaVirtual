@@ -36,6 +36,10 @@ let vueSocios = new Vue({
         },
     },
     mounted: function () {
+        gtag('event', 'Socios', {
+            'event_category' : 'VistaPagina',
+            'event_label' : 'visita a pagina Socios'
+          });
         let $this = this;
         ajaxWebsiteLocale()
             .then(response => {
