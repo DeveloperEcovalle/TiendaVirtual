@@ -127,6 +127,7 @@ Route::middleware([Locale::class])->group(function () {
 
                 Route::prefix('/ajax')->group(function () {
                     Route::post('/listarProducto', 'Tienda@ajaxListarProducto');
+                    Route::get('/cargarPanel', 'Tienda@ajaxCargarPanel');
                     Route::post('/listarProductosRelacionados', 'Tienda@ajaxListarProductosRelacionados');
                 });
             });
@@ -236,6 +237,7 @@ Route::middleware([Locale::class])->group(function () {
             Route::get('/', 'Registro@index')->middleware([ClienteAutenticado::class]);
             Route::post('/ajax/registrar', 'Registro@ajaxRegistrar');
             Route::get('/ajax/listarDatos', 'Registro@ajaxListarDatos');
+            Route::post('/anclarSession', 'Registro@anclarSession');
         });
     });
 });
@@ -824,5 +826,5 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $ruta = 'https://www.youtube.com/embed/tgbNymZ7vqY';
+    return session()->get('ruta');
 });

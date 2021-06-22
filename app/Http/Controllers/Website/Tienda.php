@@ -336,4 +336,8 @@ class Tienda extends Website {
 
         return response()->json($respuesta);
     }
+
+    public function ajaxCargarPanel(){
+        return view('website.tienda.producto-modal');
+    }
 }

@@ -87,6 +87,15 @@ class Registro extends Website {
         return view('website.registro', $data);
     }
 
+    public function anclarSession(Request $request)
+    {
+        $ruta = $request->get('ruta');
+        session()->put('ruta', $ruta);
+        $respuesta = new Respuesta;
+        $respuesta->result = Result::SUCCESS;
+        return response()->json($respuesta);
+    }
+
     public function ajaxRegistrar(Request $request) {
         try{
             DB::beginTransaction();
@@ -194,7 +203,9 @@ class Registro extends Website {
             });
             
             DB::commit();
+            $ruta = session()->get('ruta');
             $respuesta->result = Result::SUCCESS;
+            $respuesta->data = $ruta;
             return response()->json($respuesta);
         }catch(Exception $e)
         {

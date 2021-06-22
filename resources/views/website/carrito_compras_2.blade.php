@@ -85,13 +85,13 @@
                                                 <div class="row d-block d-md-flex">
                                                     <div class="col-12 col-md-12 float-right">
                                                         <div class="row" v-if="detalle.producto.promocion_vigente">
-                                                            <div class="text-right" :class="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max ? 'col-6' : 'col-12'">
+                                                            <div class="text-right p-1" :class="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max ? 'col-6' : 'col-12'">
                                                                 <p class="font-weight-bold mb-1 mt-3 mt-md-0">
                                                                     S/ @{{ (detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
                                                                     (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
                                                                     (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))).toFixed(2) }}</p>
                                                             </div>
-                                                            <div class="col-6 text-right" v-if="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max">
+                                                            <div class="col-6 text-right p-1" v-if="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max">
                                                                 <p class="font-weight-bold mb-1 mt-3 mt-md-0 text-danger">
                                                                     - S/ @{{ (Math.round((detalle.cantidad * (detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max ? (detalle.producto.promocion_vigente.porcentaje ? ((detalle.producto.precio_actual.monto * detalle.producto.promocion_vigente.porcentaje) / 100) : (detalle.producto.promocion_vigente.monto)) : 0.00)) * 10) / 10 ).toFixed(2) }}
                                                                 </p>
@@ -109,8 +109,8 @@
                                                     <div class="col-7 col-md-12">
                                                         <div class="input-group mt-1 float-right" style="max-width: 160px">
                                                             <span class="input-group-prepend">
-                                                                <button type="button" class="btn btn-ecovalle" :disabled="detalle.cantidad === 1" v-on:click="ajaxDisminuirCantidadProductoCarrito(detalle.producto, i)">
-                                                                    <i class="fas fa-minus"></i>
+                                                                <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarrito(detalle.producto, i)">
+                                                                    <i class="fas" :class="{ 'fa-minus': detalle.producto.cantidad > 1, 'fa-trash-alt': detalle.producto.cantidad === 1 }"></i>
                                                                 </button>
                                                             </span>
                                                             <input type="text" class="form-control text-center" :value="detalle.cantidad" v-on:keyup="changeCantidad(detalle.producto,i)" :placeholder="detalle.cantidad" :id="'cantidad'+i" onkeypress="return isNumber(event)">
@@ -134,22 +134,45 @@
                     <div class="row bg-white">
                         <div class="col-12 text-center text-uppercase">
                             <h1 class="h5 mb-1 mt-4 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesCarritoCompras['order_summary'] }}</h1>
+                            <div class="hr-compra"></div>
                         </div>
                         <div class="col-12">
-                            <div class="p-4">
+                            <div class="row pr-4 pl-4 mt-2 align-items-end">
+                                <div class="col-md-9 p-1">
+                                    <label style="font-size: 12px;"><b>Aplicar el c&oacute;digo promocional</b></label>
+                                    <input type="text" style="font-size: 12px;" class="form-control d-inline mb-2" placeholder="Un código promocional por pedido">
+                                </div>
+                                <div class="col-md-3 p-1">
+                                    <button type="button" style="font-size: 12px;" class="btn btn-outline-dark btn-block d-inline mb-2">Aplicar</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="pr-4 pl-4">
                                 <p class="mb-0 text-muted">@{{ lstCarritoCompras.length }} detalles</p>
                                 <p class="mb-3 text-muted">@{{ iArticulos }} art&iacute;culos</p>
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
                                 <p class="mb-0 font-weight-bold">Descuento <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
-                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2">TOTAL <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
+                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2 h5">TOTAL <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
                                 <div class="mb-0 mt-3 w-100">
                                     <p v-if="!fVentaValida" class="text-ecovalle-compra d-inline">¡No olvides!</p> <p v-if="!fVentaValida" class="text-muted-compra d-inline">Tu compra m&iacute;nima es desde S/. 50.00</p>
                                 </div>
                                 <button class="btn btn-block btn-amarillo-compra mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
                                 <a href="/tienda" class="btn btn-block btn-ecovalle-compra mt-3">Seguir comprando</a>
+                                <div class="mt-2 py-3 py-lg-0">
+                                    <div class="row">
+                                        <div class="col-md-6 text-right p-1">
+                                            <img src="/img/pago_seguro.svg" class="img-atributo-ecovalle">
+                                        </div>
+                                        <div class="col-md-6 text-left p-1">
+                                            <p class="m-0 font-weight-bold text-muted text-uppercase" style="font-size: 12px">Compra 100%</p>
+                                            <p class="font-weight-bolder text-ecovalle-compra-3 m-0 text-uppercase h4">SEGURO</p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="bg-amarillo text-center p-2 mt-3">
                                     <p>
                                         <b>¿Desea al por mayor?, ¡¡Cont&aacute;ctanos!!</b>

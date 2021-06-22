@@ -85,7 +85,8 @@ let vueRegistro = new Vue({
                     console.log(response);
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
-                        location.reload();
+                        if(respuesta.data != null) location = respuesta.data;
+                        else location.reload();
                     } else {
                         $this.sMensaje = sHtmlErrores(respuesta.data.errors);
                     }

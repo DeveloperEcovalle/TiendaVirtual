@@ -158,20 +158,49 @@ let ajaxWebsiteListarCarritoCompras = function () {
     return axios.post('/ajax/listarCarrito');
 };
 
-let mostrarMensajeProductoAgregado = () => {
-    toastr.clear();
+let mostrarMensajeProductoAgregado = function(producto) {
+    /*toastr.clear();
     toastr.options = {
         'closeButton': false, 'debug': false, 'newestOnTop': false,
         'progressBar': false, 'positionClass': 'toast-top-right', 'preventDuplicates': true, 'onclick': null,
         'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
-        'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
+        'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'slideDown', 'hideMethod': 'fadeOut'
     };
-
-    toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Producto agregado correctamente al carrito de compras.</p>
-    <div class="text-center mt-2">
-    <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
-    <a class="btn btn-sm btn-amarillo" href="/carrito-compras">Ver carrito de compras</a>
-    </div>`);
+    toastr.options.onHidden = function() { return false; }
+    toastr.options.onclick = function() { return false; }
+    toastr.options.onCloseClick = function() { return false; }
+    toastr[result.success](
+    `<div class="m-2">
+    <div class="row justify-content-between">
+    <div class="col-6 col-md-3 p-1 m-0"><img class="img-fluid img-thumbnail" src="${producto.imagenes[0].ruta}"></div>
+    <div class="col-6 col-md-6 p-1 m-0">
+        <p class="font-weight-bold text-muted mb-1">ECOVALLE</p>
+        <p class="font-weight-bold mb-1 text-ecovalle">${producto.nombre_es}</p>
+        <p class="font-weight-bold mb-1 text-ecovalle">S/. ${producto.precio_actual.monto.toFixed(2)}</p>
+    </div>
+    <div class="col-12 col-md-3 p-1 m-0">
+        <div class="justify-content-between">
+            <div class="input-group">
+            <div class="input-group-prepend">
+                <button type="button" class="btn btn-toast">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-toast" disabled>
+                        ${ producto.cantidad }
+                </button>
+                <button type="button" class="btn btn-toast">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="hr-compra-2"></div>
+    <div class="text-center">
+    <button type="button" class="btn btn-sm btn-ecovalle" onclick="toastr.clear()">Continuar comprando</button>
+    <a class="btn btn-sm btn-amarillo-compra" href="/carrito-compras">Procesar compra</a></div>
+    </div>`);*/
 };
 
 let ajaxWebsiteAgregarAlCarrito = function (producto, actualizarLstProductos, lstCarritoCompras, guardarLstCarritoCompras) {
@@ -181,7 +210,7 @@ let ajaxWebsiteAgregarAlCarrito = function (producto, actualizarLstProductos, ls
     return axios.post('/ajax/agregarAlCarrito', formData).then(response => {
         let respuesta = response.data;
         if (respuesta.result === result.success) {
-            mostrarMensajeProductoAgregado();
+            mostrarMensajeProductoAgregado(producto);
 
             producto.cantidad = 1;
             actualizarLstProductos();
@@ -239,6 +268,19 @@ let ajaxSalir = function() {
         location.reload();
     });
 };
+
+function locationRegister() 
+{
+    let sUrl = location.pathname;
+    let formData = new FormData();
+    formData.append('ruta',sUrl);
+    axios.post('/registro/anclarSession', formData).then(response => {
+        let respuesta = response.data;
+        if (respuesta.result === result.success) {
+            location = '/registro';
+        }
+    });
+}
 
 let vuePopup = new Vue({
     el: '#popup',

@@ -239,6 +239,13 @@ strong{
     margin: 10px 0px 10px 0px;
 }
 
+.hr-compra-2 {
+    box-sizing: content-box;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    height: 0;
+    margin: 10px 0px 10px 0px;
+}
+
 .text-androgyne {
     font-family: Androgyne;
 }
@@ -260,6 +267,10 @@ strong{
 }
 .text-ecovalle-compra-2 {
     color: var(--verde-ecovalle-8);
+}
+
+.text-ecovalle-compra-3 {
+    color: var(--verde-ecovalle-7);
 }
 
 .input-buscar input[type=text] {
@@ -543,6 +554,22 @@ a.img-producto:hover > .img-background-thumbnail {
     color: #ffffff;
 }
 
+.btn-ecovalle-compra-modal{
+    background: linear-gradient(to bottom, var(--verde-ecovalle) 5%, var(--verde-ecovalle-7) 100%);
+    background-color: var(--verde-ecovalle);
+    border: 1px solid var(--verde-ecovalle-7);
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #2f6627 !important;
+    border-radius: 0px !important;
+}
+
+.btn-ecovalle-compra-modal:hover{
+    background: linear-gradient(to bottom, var(--verde-ecovalle-7) 5%, var(--verde-ecovalle) 100%);
+    background-color: var(--verde-ecovalle-7);
+    color: #ffffff;
+}
+
 .btn-ecovalle-2 {
     background-color: var(--verde-ecovalle-2);
     border: 1px solid var(--verde-ecovalle-2);
@@ -575,6 +602,22 @@ a.img-producto:hover > .img-background-thumbnail {
     color: #ffffff;
 }
 
+.btn-amarillo-compra-modal {
+    background: linear-gradient(to bottom, #eeb243 5%, var(--amarillo-ecovalle)  100%);
+    background-color: #eeb243;
+    border: 1px solid var(--amarillo-ecovalle);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 0px !important;
+    text-shadow: 0px 1px 0px #b97c0b !important;
+}
+
+.btn-amarillo-compra-modal:hover{
+    background: linear-gradient(to bottom, var(--amarillo-ecovalle) 5%, #eeb243 100%);
+    background-color: var(--verde-amarillo);
+    color: #ffffff;
+}
+
 .btn-outline-blanco {
     border-color: #ffffff;
     border-width: 2px;
@@ -595,6 +638,22 @@ a.img-producto:hover > .img-background-thumbnail {
 .btn-hover-amarillo:hover {
     color: var(--amarillo-ecovalle);
     background: #ffffff;
+}
+
+.btn-toast {
+    text-decoration: none;
+    outline: none !important;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0px !important;
+    font-size: 12px;
+}
+
+.input-toast {
+    text-decoration: none;
+    outline: none !important;
+    font-size: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
 .rounded-md {
@@ -1238,3 +1297,31 @@ button.btn-round:hover{
     width: 100%;
     height: 100%;
   }
+
+  /*--------------------------*/
+  .modal-producto {
+    bottom: auto; 
+    top:30px; 
+    right:30px; 
+    left:auto;
+    -webkit-box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
+    box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
+    background-color: white;
+    z-index: 99;
+    width: 30%;
+}
+
+@media screen and (max-width: 1500px){
+    .modal-producto {
+        width: 40%;
+        max-width: 40%;
+    }    
+}
+
+@media screen and (max-width: 500px){    
+    .modal-producto {
+        width: 90%;
+        max-width: 90%;
+    }
+}

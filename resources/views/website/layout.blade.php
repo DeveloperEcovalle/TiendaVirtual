@@ -36,7 +36,7 @@
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="/css/popup/magnific-popup.css" rel="stylesheet">
     <link href="/css/ecovalle/ecovalle-font.css" rel="stylesheet">
-    <link href="/css/website.css?n=1" rel="stylesheet">
+    <link href="/css/website.css?cvcn=14" rel="stylesheet">
     <link rel="stylesheet" href="/css/plugins/mklb/mklb.css" />
     @yield('izipay')
 </head>
@@ -361,8 +361,8 @@
                                             </div>
                                             <div class="col-12 text-center">
                                                 <p class="small mt-1 mb-2">&iquest;No tiene una cuenta?</p>
-                                                <a href="/registro" class="btn btn-block btn-outline-ecovalle">Reg&iacute;strese
-                                                    aqu&iacute;</a>
+                                                <button class="btn btn-block btn-outline-ecovalle" onclick="locationRegister()">Reg&iacute;strese
+                                                    aqu&iacute;</button>
                                             </div>
                                         </div>
                                     </div>
@@ -391,7 +391,6 @@
     <!--https://www.ecovalle.pe/img/logo_ecovalle.png-->
 
     <div id="popup"></div>
-    
 
     
 
@@ -402,6 +401,8 @@
         </a>
     </div>
     @endif
+
+    <div id="producto-modal"></div>
 
     <!-- Mainly scripts -->
     <script src="/js/jquery-3.1.1.min.js"></script>

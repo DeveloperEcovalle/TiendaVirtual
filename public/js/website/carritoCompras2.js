@@ -95,6 +95,10 @@ let vueCarritoCompras = new Vue({
                         detalle.cantidad = detalle.cantidad - 1;
                         detalle.producto.cantidad = detalle.cantidad;
 
+                        if (detalle.cantidad === 0) {
+                            $this.lstCarritoCompras.splice(i, 1);
+                        }
+
                         $this.guardarLstCarritoCompras($this.lstCarritoCompras);
                     }
                 });

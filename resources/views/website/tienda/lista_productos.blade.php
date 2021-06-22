@@ -217,17 +217,17 @@
                                             </div>
                                             <div v-else>
                                                 <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
-                                                <span class="input-group-prepend">
-                                                    <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto, i)">
-                                                        <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
-                                                    </button>
-                                                </span>
-                                                    <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i" onkeypress="return isNumber(event)">
-                                                <span class="input-group-append">
-                                                    <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
-                                                </span>
+                                                    <span class="input-group-prepend">
+                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto, i)">
+                                                            <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
+                                                        </button>
+                                                    </span>
+                                                        <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i" onkeypress="return isNumber(event)">
+                                                    <span class="input-group-append">
+                                                        <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </span>
                                                 </div>
                                                 <button class="btn btn-sm btn-block btn-ecovalle py-2" v-on:click="ajaxAgregarAlCarrito(producto)" :disabled="iAgregandoAlCarrito === 1 && iProductoId === producto.id" v-else>
                                                     <span v-if="iAgregandoAlCarrito === 1 && iProductoId === producto.id"><i class="fas fa-circle-notch fa-spin"></i></span>
