@@ -828,8 +828,10 @@ Route::namespace('Intranet')->group(function () {
 
 Route::get('ruta', function () {
     $compra = Compra::find(1);
+
+    //return view('website.email.pedido_detalle',compact("compra"));
     Mail::send('website.email.pedido_detalle',compact("compra"), function ($mail) {
-        $mail->subject('PEDIDO CONFIRMADO');
+        $mail->subject('PEDIDO DETALLE');
         $mail->to('ccubas@unitru.edu.pe');
         $mail->from('website@ecovalle.pe','ECOVALLE');
     });
