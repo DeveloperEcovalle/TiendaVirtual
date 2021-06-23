@@ -393,7 +393,7 @@
                 <p class="text-footer">No se pierda las &uacute;ltimas promociones</p>
             </div>
             <div class="colum2">
-                <a href="#" class="btn-footer">Registrese ahora</a>
+                <a href="www.ecovalle.pe/registro" class="btn-footer">Registrese ahora</a>
             </div>
         </div>
     </footer>
