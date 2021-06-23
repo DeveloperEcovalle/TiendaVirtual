@@ -99,7 +99,7 @@
 
         .control-footer {
             border: 1px solid #02793C;
-            height: 10px;
+            height: 10px !important;
         }
 
         /*--------------------*/
