@@ -827,7 +827,7 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $compra = Compra::find(1);
+    $compra = Compra::find(2);
 
     //return view('website.email.pedido_detalle',compact("compra"));
     Mail::send('website.email.pedido_detalle',compact("compra"), function ($mail) {
