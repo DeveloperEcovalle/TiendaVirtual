@@ -6,6 +6,7 @@ use App\Http\Middleware\UsuarioAutenticado;
 use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
+use App\Persona;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 
@@ -827,12 +828,10 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $compra = Compra::find(2);
-
-    //return view('website.email.pedido_detalle',compact("compra"));
-    Mail::send('website.email.pedido_detalle',compact("compra"), function ($mail) {
-        $mail->subject('PEDIDO DETALLE');
-        $mail->to('ccubas@unitru.edu.pe');
+    $persona = Persona::find(1);
+    Mail::send('website.email.register',compact("persona"), function ($mail) use ($persona) {
+        $mail->subject('BIENVENID@ A ECOVALLE');
+        $mail->to($persona->correo);
         $mail->from('website@ecovalle.pe','ECOVALLE');
     });
 
