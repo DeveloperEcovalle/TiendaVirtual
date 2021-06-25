@@ -162,12 +162,6 @@ class PagoEnvio extends Website
         }*/
         $cargo = '';
 
-        Mail::send('website.email.confirm_pedido',compact("cliente"), function ($mail) use ($email) {
-            $mail->subject('PEDIDO CONFIRMADO');
-            $mail->to($email);
-            $mail->from('website@ecovalle.pe','ECOVALLE');
-        });
-
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
@@ -296,8 +290,15 @@ class PagoEnvio extends Website
                 $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
                 $mail->from('website@ecovalle.pe','ECOVALLE');
             });
-            
+
             $empresa = Empresa::first();
+
+            Mail::send('website.email.confirm_pedido',compact("venta","empresa"), function ($mail) use ($venta) {
+                $mail->subject('PEDIDO CONFIRMADO');
+                $mail->to($venta->email);
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
+            
             if($empresa->correo_pedidos)
             {
                 Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {

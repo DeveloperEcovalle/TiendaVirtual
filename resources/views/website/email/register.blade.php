@@ -20,7 +20,7 @@
 
         header img{
             padding-top: 1vw;
-            width: 10%;
+            width: 15%;
             height: 10%;
             padding-bottom: 1vw;
         }
@@ -139,12 +139,92 @@
             border-radius: 0.5vw;
             font-weight: bolder;
         }
+
+        .contenido-2 {
+            height: 5vw;
+            padding-top: 1%;
+            padding-bottom: 1%;
+        }
+
+        .card-image {
+            float: left;
+            width: 6%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            align-content: center;
+            margin-right: 1%;
+            margin-left: 16%;
+        }
+
+        .card-image div {
+            height: 80%;
+            display: flex;
+            align-content: center;
+            align-items: start;
+        }
+
+        .card-text-com {
+            float: left;
+            width: 35%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            align-content: center;
+        }
+
+        .card-text-com div {
+            height: 50%;
+            display: flex;
+            align-content: center;
+            align-items: start;
+        }
+
+        .card-btn {
+            float: left;
+            width: 25%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            margin-right: 16%;
+            align-content: center;
+        }
+
+        .card-btn div {
+            height: 50%;
+            display: flex;
+            align-content: center;
+            align-items: start;
+        }
+        
+        .img-fluid {
+            width: 100%;
+            height: 70%;
+        }
+
+        .img-fluid-1 {
+            width: 100%;
+            height: 100%;
+        }
+
+        .link {
+            outline: none;
+            color: black;
+            font-size: 2vw; /*2vw*/
+            font-weight: bolder;
+            margin: 0vw;
+            padding: 0vw;
+        }
+
+        .container-2 {
+            text-align: center;
+        }
     </style>
 
 </head>
 <body>
     <header>
-        <img src="https://www.ecovalle.pe/img/logo_ecovalle.png" alt="">
+        <img src="https://www.ecovalle.pe/img/KJK56VJVdjsdjs2nvYYvkj.png" alt="Ecovalle">
         <div class="line-header">
             <div class="line-header-1"></div>
             <div class="line-header-2"></div>
@@ -157,20 +237,20 @@
             <p class="title">!Bienvenid@ a Ecovalle!</p>
         </div>
         <div class="card-saludo">
-            <p class="text">Hola Fulanita:</p>
+            <p class="text">Hola {{$persona->nombres}}:</p>
             <p class="text">Gracias por formar parte de esta gran familia Ecovalle, aqui obtendr&aacute;s informaci&oacute;n de nuevos productos y promociones exclusivas.</p>
             <p class="text">¡Empecemos!</p>
         </div>
         <div class="contenido">
             <div class="card-imgs">
                 <div class="img-1">
-                    <img class="img-fluid" src="https://ecovalle.pe/storage/empresa/jn7uB7YOFTmgDnRsFya7Zrv4Fw3w4b8NH9h7tbgb.svg" alt="ImgBanner">
+                    <img class="img-fluid" src="https://ecovalle.pe/storage/empresa/dVdC3GsjwI98xiIAvnDlisLULepz2TzfRH1kE2jB.png" alt="ImgBanner">
                 </div>
                 <div class="img-2">
-                    <img class="img-fluid" style="margin-top: 40%;" src="https://ecovalle.pe/storage/empresa/AWDdpi0kNlUTomcQ8w7CopiosqjlIl93wYe5N9Ph.svg" alt="ImgBanner">
+                    <img class="img-fluid" style="margin-top: 40%;" src="https://ecovalle.pe/storage/empresa/dVdC3GsjwI98xiIAvnDlisLULepz2TzfRH1kE2jB.png" alt="ImgBanner">
                 </div>
                 <div class="img-3">
-                    <img class="img-fluid" style="margin-top: 20%;" src="https://ecovalle.pe/storage/empresa/Z54MZxw09BS7JmntZ8tS4zjVHoi5wpyulHaCvguK.svg" alt="ImgBanner">
+                    <img class="img-fluid" style="margin-top: 20%;" src="https://ecovalle.pe/storage/empresa/dVdC3GsjwI98xiIAvnDlisLULepz2TzfRH1kE2jB.png" alt="ImgBanner">
                 </div>
             </div>
             <div class="card-mensaje">
@@ -180,6 +260,27 @@
                 <a href="https://ecovalle.pe/se-ecovalle/socios" class="btn-socio">Si, quiero ser socio</a>
             </div>
         </div>
+        <div class="contenido-2">
+            <div class="card-image">
+                <div>
+                    <img class="img-fluid-1" src="https://ecovalle.pe/img/5a4525f5546ddca7e1fcbc86.png" alt="Contactanos">
+                </div>
+            </div>
+            <div class="card-text-com">
+                <div>
+                    <p class="title" style="margin: 0vw;">¿A&uacute;n necesitas ayuda?</p>
+                </div>
+            </div>
+            <div class="card-btn">
+                <div>
+                    <a href="https://ecovalle.pe/contactanos" class="link"> Cont&aacute;ctanos</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-2">
+        <p class="text" style="padding-left: 2%; padding-right: 2%;">Para seguir recibiendo mensajes de correo electr&oacute;nico de nuestra parte, debe agregar comunicacion@ecovalle.pe a tu lista de direcciones.</p>
     </div>
 </body>
 </html>

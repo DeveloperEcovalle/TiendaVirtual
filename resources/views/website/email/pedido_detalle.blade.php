@@ -7,7 +7,7 @@
     <title>PEDIDO DETALLE</title>
     <style>
         body{
-            padding: 5px;
+            background-color: #f5f9f4;
             font-family: "Gill Sans Extrabold", Helvetica, sans-serif;
         }
 
@@ -19,7 +19,7 @@
         }
 
         header img{
-            width: 10%;
+            width: 15%;
             height: 10%;
         }
 
@@ -29,111 +29,34 @@
             height: calc(0.4em + 0.4vw) !important;
         }
 
-        .line-header-1{
+        .line-header-1 {
             float: left;
             background-color: #0b965c;
             width: 80%;
             height: 100%;
         }
 
-        .line-header-2{
+        .line-header-2 {
             float: left;
             background-color: #3fa33f;
             width: 15%;
             height: 100%;
         }
 
-        .line-header-3{
+        .line-header-3 {
             float: left;
             background-color: #FF9D28;
             width: 5%;
             height: 100%;
         }
 
-        footer {
-            background-color: #02793C;
-            align-items: center;
-            height: 10%;
-            margin-top: 2%;
-        }
-
-        .footer-container{
-            background-color: #02793C;
-            display: flex;
-            padding: 1%;
-            height: calc(0.4em + 0.4vw) !important;
-            align-items: center;
-        }
-
-        .colum1{
-            align-items: center;
-            float: left;
-            width: 50%;
-        }
-        
-        .colum2{
-            align-items: center;
-            float: left;
-            width: 50%;
-            text-align: right;
-        }
-
-        .text-footer {
-            font-weight: bolder;
-            color: #fff;
-            font-size: calc(0.4em + 0.4vw) !important;
-            margin: 0%;
-        }
-
-        .btn-footer {
-            text-decoration: none;
-            outline: none;
-            background-color: #FF9D28;
-            color: #fff;
-            padding: calc(0.3em + 0.3vw) !important;
-            font-size: calc(0.4em + 0.4vw) !important;
-            border-radius: calc(0.3em + 0.3vw) !important;
-            font-weight: bold;
-            margin: 0%;
-        }
-
-        .control-footer {
-            border: 1px solid #02793C;
-            height: 10px !important;
-        }
-
-        /*--------------------*/
-        footer .line-footer{
-            width: 100%;
-            height: calc(0.4em + 0.4vw) !important;
-        }
-
-        .line-footer-1{
-            float: left;
-            background-color: #0b965c;
-            width: 80%;
-            height: 100%;
-        }
-
-        .line-footer-2{
-            float: left;
-            background-color: #3fa33f;
-            width: 15%;
-            height: 100%;
-        }
-
-        .line-footer-3{
-            float: left;
-            background-color: #FF9D28;
-            width: 5%;
-            height: 100%;
-        }
-        /*--------------------*/
-
-        .container{
-            border-right: 0.5px solid rgba(0, 0, 0, 0.2) !important;
-            border-left: 0.5px solid rgba(0, 0, 0, 0.2) !important;
-            padding: 5px !important;
+        .container {
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+            padding-left: 5%;
+            padding-right: 5%;
+            height: auto;
+            background-color: #fff;
         }
 
         .card-title {
@@ -143,12 +66,12 @@
         }
 
         .title {
-            font-size: calc(0.6em + 0.6vw) !important;
+            font-size: 2vw;
             font-weight: bolder;
         }
 
         .title-2 {
-            font-size: calc(0.6em + 0.6vw) !important;
+            font-size: 2vw !important;
             font-weight: bolder;
             margin-bottom: 1px;
         }
@@ -160,7 +83,7 @@
         }
 
         .text {
-            font-size: calc(0.4em + 0.4vw) !important;
+            font-size: 1.5vw !important;
             font-weight: normal;
         }
 
@@ -176,7 +99,7 @@
         }
         
         .image-producto {
-            width: calc(3em + 3vw) !important;
+            width: 50%;
         }
         .image-fluid {
             width: 100%;
@@ -198,7 +121,7 @@
         }
 
         .title-producto {
-            font-size: calc(0.4em + 0.4vw) !important;
+            font-size: 1.5vw;
             font-weight: bold;
             margin: 2px;
         }
@@ -219,13 +142,13 @@
         }
 
         .resum-total {
-            font-size: calc(0.4em + 0.4vw) !important;
+            font-size: 1.5vw;
             font-weight: normal;
             margin: 2px;
         }
 
         .total {
-            font-size: calc(0.5em + 0.5vw) !important;
+            font-size: 2vw;
             font-weight: bolder;
             margin: 2px;
             color: #02793C;
@@ -239,30 +162,14 @@
 
         }
 
-        .subcontainer {
-            display: flex;
-        }
-
-        .subcontainer-1{
-            float: left;
-            width: 50%;
-            margin-right: 1%;
-        }
-
-        .subcontainer-2{
-            float: left;
-            width: 50%;
-            margin-left: 1%;
-        }
-
         .title-envio {
-            font-size: calc(0.4em + 0.4vw) !important;
+            font-size: 1.5vw;
             font-weight: normal;
             margin-bottom: 0%;
         }
 
         .text-envio {
-            font-size: calc(0.4em + 0.4vw) !important;
+            font-size: 1.5vw !important;
             font-weight: normal;
             margin-top: 1px;
             margin-bottom: 1px;
@@ -277,9 +184,8 @@
             width: 100%;
         }
 
-        .div-btn{
-            width: 100%;
-            text-align: center;
+        .subcontainer {
+            height: auto;
         }
 
         .btn-orden {
@@ -287,17 +193,104 @@
             outline: none;
             background-color: #FF9D28;
             color: #fff;
-            padding: calc(0.3em + 0.3vw) !important;
-            font-size: calc(0.4em + 0.4vw) !important;
-            border-radius: calc(0.3em + 0.3vw) !important;
+            padding: 1vw !important;
+            font-size: 1.5vw !important;
+            border-radius: 0.5vw !important;
             width: 90%;
             font-weight: bold;
+        }
+
+        .tbl-informacion {
+            width: 100%;
+        }
+
+        .tbl-informacion tr td {
+            width: 50%;
+        }
+
+        .card-footer{
+            background-color: #02793C;
+            height: auto;
+            padding: 2%;
+        }
+
+        .tbl-footer {
+            width: 100%;
+        }
+
+        .tbl-footer tr td {
+            width: 50%;
+        }
+
+        .text-footer{
+            margin: 0vw;
+            font-size: 1.5vw;
+            font-weight: bolder;
+            color: #fff;
+        }
+
+        .btn-footer {
+            text-decoration: none;
+            outline: none;
+            background-color: #FF9D28;
+            color: #fff;
+            padding: 0.5vw;
+            font-size: 1.5vw;
+            border-radius: 0.2vw;
+            font-weight: bolder;
+            text-align: center;
+            width: 100%;
+        }
+
+        .card-contactanos{
+            background-color: #fff;
+            height: auto;
+            padding: 2%;
+        }
+
+        .tbl-contacto {
+            width: 100%;
+        }
+
+        .image {
+            width: 40%;
+            height: 40%;
+        }
+
+        .img-fluid {
+            width: 60%;
+            height: 100%;
+        }
+
+        .title-1 {
+            font-size: 1.5vw; /*2vw*/
+            font-weight: bolder;
+        }
+
+        .link {
+            outline: none;
+            text-decoration: none;
+            color: black;
+            font-size: 1.5vw; /*2vw*/
+            font-weight: bolder;
+        }
+
+        .container-2 {
+            padding-top: 0vh;
+            padding-bottom: 2vh;
+            padding-left: 10%;
+            padding-right: 10%;
+            height: auto;
+        }
+
+        .tbl-final {
+            width: 100%;
         }
     </style>
 </head>
 <body>
     <header>
-        <img src="https://www.ecovalle.pe/img/logo_ecovalle.png" alt="">
+        <img src="https://www.ecovalle.pe/img/KJK56VJVdjsdjs2nvYYvkj.png" alt="">
         <div class="line-header">
             <div class="line-header-1"></div>
             <div class="line-header-2"></div>
@@ -392,61 +385,91 @@
             </tr>
         </table>
         <div class="subcontainer">
-            <div class="subcontainer-1">
-                <p class="title-2">Informaci&oacute;n de env&iacute;o</p>
-                <div class="hr-divider"></div>
-                <div class="informacion-envio">
-                    <p class="title-envio">Enviado por:</p>
-                    <p class="text-envio text-uppercase">{{ $compra->agencia }}</p>
-                    <div class="br"></div>
-                    <p class="title-envio">Enviado a:</p>
-                    <p class="text-envio">{{ $compra->cliente }}</p>
-                    <p class="text-envio">{{  $compra->direccion }}, {{  $compra->ubigeo->distrito }}, {{  $compra->ubigeo->provincia }}, {{  $compra->ubigeo->departamento }}</p>
-                    <p class="text-envio">Cel. {{ $compra->telefono }}</p>
-                </div>
-            </div>
-            <div class="subcontainer-2">
-                <p class="title-2">Informaci&oacute;n de pago</p>
-                <div class="hr-divider"></div>
-                <div class="informacion-pago">
-                    <p class="title-envio">Pagado con:</p>
-                    <p class="text-envio">Transferencia / Dep&oacute;sito</p>
-                    <div class="br"></div>
-                    <p class="title-envio">Direcci&oacute;n de facturaci&oacute;n:</p>
-                    <p class="text-envio">{{ $compra->cliente }}</p>
-                    <p class="text-envio">{{  $compra->direccion }}, {{  $compra->ubigeo->distrito }}, {{  $compra->ubigeo->provincia }}, {{  $compra->ubigeo->departamento }}</p>
-                    <p class="text-envio">Cel. {{ $compra->telefono }}</p>
-                    <div class="br"></div>
-                    <div class="div-btn">
-                        <a href="#" class="btn-orden">Ver orden de compra</a>
-                    </div>
-                </div>
-            </div>
+            <table class="tbl-informacion">
+                <tr>
+                    <td style="padding-right: 2%;">
+                        <p class="title-2">Informaci&oacute;n de env&iacute;o</p>
+                        <div class="hr-divider"></div>
+                    </td>
+                    <td style="padding-left: 2%;">
+                        <p class="title-2">Informaci&oacute;n de pago</p>
+                        <div class="hr-divider"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-right: 2%;">
+                        <p class="title-envio">Compra: </p>
+                        <p class="text-envio text-uppercase">{{ $compra->tipo_compra }}</p>
+                        <div class="br"></div>
+                        <p class="title-envio">Enviado por:</p>
+                        <p class="text-envio text-uppercase">{{ $compra->agencia }}</p>
+                        <div class="br"></div>
+                        <p class="title-envio">Enviado a:</p>
+                        <p class="text-envio">{{ $compra->cliente }}</p>
+                        <p class="text-envio">{{  $compra->direccion }}, {{  $compra->ubigeo->distrito }}, {{  $compra->ubigeo->provincia }}, {{  $compra->ubigeo->departamento }}</p>
+                        <p class="text-envio">Per&uacute; (PE)</p>
+                        <p class="text-envio">Cel. {{ $compra->telefono }}</p>
+                    </td>
+                    <td style="padding-left: 2%;">
+                        <p class="title-envio">Pagado con:</p>
+                        <p class="text-envio">Transferencia / Dep&oacute;sito</p>
+                        <div class="br"></div>
+                        <p class="title-envio">Direcci&oacute;n de facturaci&oacute;n:</p>
+                        <p class="text-envio">{{ $compra->cliente }}</p>
+                        <p class="text-envio">{{  $compra->direccion }}, {{  $compra->ubigeo->distrito }}, {{  $compra->ubigeo->provincia }}, {{  $compra->ubigeo->departamento }}</p>
+                        <p class="text-envio">Per&uacute; (PE)</p>
+                        <p class="text-envio">Cel. {{ $compra->telefono }}</p><br>
+                        <div style="text-align: center;">
+                            <a href="https://ecovalle.pe/mi-cuenta?menu=3" class="btn-orden">Ver orden de compra</a>
+                        </div><br>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="hr-divider"></div>
+        <div class="card-footer">
+            <table class="tbl-footer">
+                <tr>
+                    <td>
+                        <p class="text-footer">No se pierda las &uacute;ltimas promociones</p>
+                    </td>
+                    <td align="right">
+                        <a href="https://www.ecovalle.pe/registro" class="btn-footer">Registrese ahora</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card-contactanos">
+            <table class="tbl-contacto" cellspacing="0">
+                <tr>
+                    <td style="width: 20vw" align="right">
+                        <div class="image">
+                            <img class="img-fluid" src="https://ecovalle.pe/img/5a4525f5546ddca7e1fcbc86.png" alt="Contactanos">
+                        </div>
+                    </td>
+                    <td style="width: 30vw" align="left">
+                        <p class="title-1">¿A&uacute;n necesitas ayuda?</p>
+                    </td>
+                    <td style="width: 20vw" align="left">
+                        <div style="display: flex; align-items: center;">
+                            <a href="https://ecovalle.pe/contactanos" class="link"> Cont&aacute;ctanos</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
-    <footer>
-        <div class="line-footer">            
-            <div class="line-footer-3"></div>
-            <div class="line-footer-2"></div>
-            <div class="line-footer-1"></div>
-        </div>
-        <div class="control-footer"></div>
-        <div class="footer-container">
-            <div class="colum1">
-                <p class="text-footer">No se pierda las &uacute;ltimas promociones</p>
-            </div>
-            <div class="colum2">
-                <a href="https://www.ecovalle.pe/registro" class="btn-footer">Registrese ahora</a>
-            </div>
-        </div>
-        <div class="control-footer"></div>
-        <div class="line-footer">
-            <div class="line-footer-1"></div>
-            <div class="line-footer-2"></div>
-            <div class="line-footer-3"></div>
-        </div>
-    </footer>
+    <div class="container-2">
+        <table class="tbl-final">
+            <tr>
+                <td align="center">
+                    <p class="text">Para seguir recibiendo mensajes de correo electr&oacute;nico de nuestra parte, debe agregar comunicacion@ecovalle.pe a tu lista de direcciones.</p>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <div>
         <hr style="display: block; height: 1px; border: 0; border-top: 1px solid #666; margin: 20px 0; padding: 0;">

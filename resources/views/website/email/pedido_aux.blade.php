@@ -200,42 +200,27 @@
         <div class="card-title">
             <p class="title">Su orden se encuentra en camino</p>
         </div>
-        <p class="title" style="margin-bottom: 1vw;">Compra {{ $venta->codigo }}</p>
+        <p class="title" style="margin-bottom: 1vw;">Compra #12345678</p>
         <div class="hr-divider"></div>
         <div class="card">
             <table class="tbl-detalle">
                 <tr>
                     <td style="padding-right: 5%;">
-                        <p class="text" style="margin-bottom: 1%;">Compra: </p>
-                        <p class="text" style="margin-top: 0%; text-transform: uppercase !important;">{{ $venta->tipo_compra }}</p>
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
                         <p class="text" style="margin-bottom: 1%;">Enviado a trav&eacute;s de:</p>
                         <p class="text" style="margin-top: 0%; text-transform: uppercase !important;">entrafesa s.a.c</p>
-                        @endif
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
                         <p class="text" style="margin-bottom: 1%;">Enviado a:</p>
-                        @else
-                        <p class="text" style="margin-bottom: 1%;">Detalle:</p>
-                        @endif
-                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">{{ $venta->cliente }}</p>
-                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">{{  $venta->direccion }}@if(!empty($venta->ubigeo)){{', '.$venta->ubigeo->distrito.', '. $venta->ubigeo->provincia.', '.$venta->ubigeo->departamento}}@endif</p>
+                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Fulanita Perez Perez</p>
+                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Av. En algún lugar del mundo #123, Santiago de Surco, Lima, Lima 12345</p>
                         <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Per&uacute; (PE)</p>
-                        <p class="text" style="margin-top: 0%;">{{ $venta->telefono }}</p>
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
-                        <p class="text">Tiempo de llegada 2 dias</p>
-                        @endif
-                        
+                        <p class="text" style="margin-top: 0%;">999 999 9999</p>
+                        <p class="text">Tiempo de llegada a la agencia 2 dias</p>
                     </td>
                     <td style="padding-left: 5%;">
                         <p class="text" style="margin-bottom: 1%;">Punto de entrega:</p>
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
-                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">{{  $venta->direccion }}@if(!empty($venta->ubigeo)){{', '.$venta->ubigeo->distrito.', '. $venta->ubigeo->provincia.', '.$venta->ubigeo->departamento}}@endif</p>
-                        @else
-                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">{{  $empresa->direccion }}</p>
-                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;display: none;">Frente al estadio nacional</p>
-                        @endif
+                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Jr. Alexandert Von Humbolt 109-La Victoria</p>
+                        <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Frente al estadio nacional</p>
                         <p class="text" style="margin-bottom: 1%;">Importe total de compra</p>
-                        <p class="total" style="margin-top: 0%; margin-bottom: 1%;">S/. {{ number_format($venta->subtotal + $venta->delivery,2) }}</p>
+                        <p class="total" style="margin-top: 0%; margin-bottom: 1%;">S/. 43.00</p>
                         <div class="nota">
                             <p class="text">
                                 Nota: Estimado cliente, el recojo de la encomienda esta sujeto a cobro por parte de la <b>EMPRESA DE TRANSPORTE,</b> los montos varian seg&uacute;n la empresa y/o regi&oacute;n. EcoValle <b>NO</b> se hace cargo por cobros adicionales por parte de transportista.
