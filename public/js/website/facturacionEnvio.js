@@ -93,6 +93,8 @@ let vueFacturacionEnvio = new Vue({
         iCargandoConsultaApi: 0,
         sMensajeError: '',
 
+        iCargandoConsultaApiRecoge: 0,
+
         sLocation: 'E',
     },
     computed: {
@@ -693,6 +695,62 @@ let vueFacturacionEnvio = new Vue({
                         this.iCargandoConsultaApid = 0;
                     })
                     .then(() => this.iCargandoConsultaApid = 0);
+            }
+            else{
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error(mensaje);
+            }
+        },
+        ajaxConsultaApiRecoge: function(){
+            let formData = new FormData();
+            var mensaje = '';
+            var verifica = true;
+
+            if(this.datosEnvio.sRecoge.sDocumento == '')
+            {
+                verifica = false;
+                mensaje = 'Ingrese documento';
+            }
+
+            if(this.datosEnvio.sRecoge.sDocumento.length < 8)
+            {
+                verifica = false;
+                mensaje = 'Faltan digitos al número de dni';
+            }
+
+            if(verifica)
+            {
+                this.iCargandoConsultaApiRecoge = 1;
+                formData.append('tipo_documento','DNI');
+                formData.append('documento',this.datosEnvio.sRecoge.sDocumento);
+                axios.post('/facturacion-envio/ajax/consultaApi', formData)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            this.datosEnvio.sRecoge.sRazonSocial = respuesta.data.nombres + ' ' + respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
+                        }
+                        else{
+                            toastr.clear();
+                            toastr.options = {
+                                iconClasses: {
+                                    error: 'bg-danger',
+                                    info: 'bg-info',
+                                    success: 'bg-success',
+                                    warning: 'bg-warning',
+                                },
+                            };
+                            toastr.warning('No se encontraron resultados');
+                        }
+                    })
+                    .then(() => this.iCargandoConsultaApiRecoge = 0);
             }
             else{
                 toastr.clear();

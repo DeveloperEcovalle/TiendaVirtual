@@ -520,19 +520,13 @@
                             <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
                                 <label><b>Datos de quien recoge el pedido</b></label>
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label>Nombres y Apellidos</label>
-                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sRazonSocial == ''}" v-model="datosEnvio.sRecoge.sRazonSocial" autocomplete="off">
-                                            <span class="invalid-feedback">
-                                                <strong class="text-danger">Campo obligatorio</strong>
-                                            </span>
-                                        </div>
-                                    </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-group">
                                             <label>Documento (DNI)</label>
-                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sDocumento == ''}" v-model="datosEnvio.sRecoge.sDocumento" autocomplete="off">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sDocumento == ''}" v-model="datosEnvio.sRecoge.sDocumento" autocomplete="off">
+                                                <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApiRecoge()"><i class="fa fa-search"></i> </button></span>
+                                            </div>
                                             <span class="invalid-feedback">
                                                 <strong class="text-danger">Campo obligatorio</strong>
                                             </span>
@@ -542,6 +536,26 @@
                                         <div class="form-group">
                                             <label>Tel&eacute;fono</label>
                                             <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sTelefono == ''}" v-model="datosEnvio.sRecoge.sTelefono" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" v-if="iCargandoConsultaApiRecoge === 1">
+                                        <section class="pt-5 pb-5" v-cloak>
+                                            <div class="container-xl">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <img src="/img/spinner.svg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-12" v-else>
+                                        <div class="form-group">
+                                            <label>Nombres y Apellidos</label>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosEnvio.sRecoge.sRazonSocial == ''}" v-model="datosEnvio.sRecoge.sRazonSocial" autocomplete="off">
                                             <span class="invalid-feedback">
                                                 <strong class="text-danger">Campo obligatorio</strong>
                                             </span>

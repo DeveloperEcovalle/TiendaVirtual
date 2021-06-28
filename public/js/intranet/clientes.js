@@ -18,7 +18,7 @@ $(document).ready(function () {
                         cliente.persona.nombres.toLowerCase().includes(this.sBuscar.toLowerCase())
                         || (cliente.persona.apellido_1 === null ? cliente.id === -1 : cliente.persona.apellido_1.toLowerCase().includes(this.sBuscar.toLowerCase()))
                         || (cliente.persona.apellido_2 === null ? cliente.id === -1 : cliente.persona.apellido_2.toLowerCase().includes(this.sBuscar.toLowerCase()))
-                        || cliente.persona.documentos.findIndex(documento => documento.numero.includes(this.sBuscar)) > -1
+                        || cliente.persona.documento.toLowerCase().includes(this.sBuscar.toLowerCase())
                     );
                 }
             },

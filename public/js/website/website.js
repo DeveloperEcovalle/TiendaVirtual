@@ -299,6 +299,7 @@ let vuePopup = new Vue({
         {
             axios.get('/ajax/publicidad/').then(response => {
                 let respuesta = response.data;
+                console.log(respuesta);
                 if (respuesta.result === result.success) {
                     let publicidad = respuesta.data.publicidad;
                     if(publicidad)

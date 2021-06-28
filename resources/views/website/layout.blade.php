@@ -56,14 +56,14 @@ ga('send', 'pageview');
         'https://connect.facebook.net/en_US/fbevents.js');
         fbq('init', '160356612792497'); 
         fbq('track', 'PageView');
-        </script>
-        <noscript>
+    </script>
+    <noscript>
         <img height="1" width="1" 
         src="https://www.facebook.com/tr?id=160356612792497&ev=PageView
         &noscript=1"/>
     </noscript>
 </head>
-<body>
+<body onbeforeunload="ConfirmarCierre()" onunload="ManejadorCierre()">
     <div id="content">
         <header class="bg-ecovalle-2">
             <div class="container-xl px-0" style="background: url('/img/bg_header.svg'); background-position: top right; background-repeat: no-repeat; background-size: 75%">
@@ -162,7 +162,7 @@ ga('send', 'pageview');
                                         </div>-->
                                     </li>
                                     <li class="nav-item {{ $iPagina === 5 ? 'active' : '' }} mt-1 mr-md-1">
-                                        <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/blog">Salud</a>
+                                        <a class="nav-link text-uppercase px-2 mr-lg-1 rounded border" href="/blog">Blog</a>
                                     </li>
                                     <li class="nav-item {{ $iPagina === 6 ? 'active' : '' }} mt-1 mr-md-1">
                                         <a class="nav-link text-uppercase px-2 rounded border" href="/contactanos">{{ $lstLocales['contact_us'] }}</a>
@@ -175,7 +175,7 @@ ga('send', 'pageview');
             </div>
         </header>
 
-        <div class="bg-light pt-0 px-0">
+        <div class="pt-0 px-0">
             @section('content')
             <section class="bg-amarillo" v-if="iCargando === 0" v-cloak>
                 <div class="container-xl">
@@ -273,7 +273,7 @@ ga('send', 'pageview');
                                         <li><a href="/tienda">{{ $lstLocales['Store'] }}</a></li>
                                         <li><a href="/servicios">{{ $lstLocales['Services'] }}</a></li>
                                         <li><a href="/se-ecovalle/socios">{{ $lstLocales['partners'] }}</a></li>
-                                        <li><a href="/blog">Salud</a></li>
+                                        <li><a href="/blog">Blog</a></li>
                                         <li class="d-none"><a href="/se-ecovalle/recursos-humanos">{{ $lstLocales['human_resources'] }}</a></li>
                                         <li><a href="/guia-compras">{{ $lstLocales['Shopping guide'] }}</a></li>
                                         <li><a href="/politica-privacidad">{{ $lstLocales['Policy and Privacy'] }}</a></li>
@@ -489,7 +489,16 @@ ga('send', 'pageview');
                     });
             });
         });
+ 
+        document.addEventListener('mousemove', logKey);
 
+        function logKey(e) {
+            //e.clientY
+            /*console.log(`
+            Screen X/Y: ${e.screenX}, ${e.screenY}
+            Client X/Y: ${e.clientX}, ${e.clientY}`);*/
+        }
+        
         /*function window_mouseout( obj, evt, fn ) {
             if ( obj.addEventListener ) {
 
@@ -499,25 +508,25 @@ ga('send', 'pageview');
 
                 obj.attachEvent( 'on' + evt, fn );
             }
-        }*/
+        }
 
-        /*window_mouseout( document, 'mouseout', event => {
+        window_mouseout( document, 'mouseout', event => {
 
             event = event ? event : window.event;
 
-            var from         = event.relatedTarget || event.toElement;
+            var from = event.relatedTarget || event.toElement;
 
             // Si quieres que solo salga una vez el mensaje borra lo comentado
             // y así se guarda en localStorage
 
             // let leftWindow   = localStorage.getItem( 'leftWindow' ) || false;
 
-            if ((!from || from.nodeName === 'HTML') ) {
+            if (!from || from.nodeName === 'HTML') {
 
                 // Haz lo que quieras aquí
                 //alert( '¿Quieres abandonar mi página?' );
-                localStorage.removeItem('websitevisita');
                 // localStorage.setItem( 'leftWindow', true );
+                //return localStorage.removeItem('websitevisita');
             }
         });*/
 

@@ -6,12 +6,16 @@ let vueRegistro = new Vue({
         sTipoDocumento: 'DNI', //1
         sMensaje: '',
         sPassword: '',
+        sDocumento: '',
+        sNombres: '',
+        sApellidos: '',
         sCPassword: '',
         lstUbigeo: [],
         sDepartamento: '',
         sProvincia: '',
         sDistrito: '',
-        iRegistrando: 0
+        iRegistrando: 0,
+        iConsultandoApi: 0,
     },
     computed: {
         lstDepartamentos: function () {
@@ -103,6 +107,101 @@ let vueRegistro = new Vue({
                     let respuesta = response.data;
                     this.lstUbigeo = respuesta.data.lstUbigeo;
                 })
+        },
+        ajaxConsultaApi: function(){
+            let formData = new FormData();
+            var mensaje = '';
+            var verifica = true;
+            if(this.sTipoDocumento== '')
+            {
+                verifica = false;
+                mensaje = 'Seleccionar tipo de documento';
+            }
+
+            if(this.sDocumento == '')
+            {
+                verifica = false;
+                mensaje = 'Ingrese documento';
+            }
+
+            if(this.sTipoDocumento == 'DNI' && this.sDocumento.length != 8)
+            {
+                verifica = false;
+                mensaje = 'DNI NO VÁLIDO';
+            }
+
+            if(this.sTipoDocumento == 'RUC' && this.sDocumento.length != 11)
+            {
+                verifica = false;
+                mensaje = 'RUC NO VÁLIDO';
+            }
+
+            if(verifica)
+            {
+                this.iConsultandoApi = 1;
+                formData.append('tipo_documento',this.sTipoDocumento);
+                formData.append('documento',this.sDocumento);
+                axios.post('/facturacion-envio/ajax/consultaApi', formData)
+                    .then(response => {
+                        let respuesta = response.data;
+                        if (respuesta.result === result.success) {
+                            if(this.sTipoDocumento == 'DNI')
+                            {
+                                this.sNombres = respuesta.data.nombres;
+                                this.sApellidos = respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
+                            }
+
+                            if(this.sTipoDocumento == 'RUC')
+                            {
+                                this.sNombres = respuesta.data.razonSocial;
+                                /*this.sDepartamento = respuesta.data.departamento;
+                                this.sProvincia = respuesta.data.provincia;
+                                this.sDistrito = respuesta.data.distrito;
+                                this.sDireccion = respuesta.data.direccion;*/
+                            }
+
+                            if(this.sTipoDocumento == '')
+                            {
+                                toastr.clear();
+                                toastr.options = {
+                                    iconClasses: {
+                                        error: 'bg-danger',
+                                        info: 'bg-info',
+                                        success: 'bg-success',
+                                        warning: 'bg-warning',
+                                    },
+                                };
+                                toastr.warning('Seleccione tipo de documento');
+                            }
+                        }
+                        else{
+                            toastr.clear();
+                            toastr.options = {
+                                iconClasses: {
+                                    error: 'bg-danger',
+                                    info: 'bg-info',
+                                    success: 'bg-success',
+                                    warning: 'bg-warning',
+                                },
+                            };
+                            toastr.warning('No se encontraron resultados');
+                        }
+                        this.iConsultandoApi = 0;
+                    })
+                    .then(() => this.iConsultandoApi = 0);
+            }
+            else{
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error(mensaje);
+            }
         },
         guardarLstCarritoCompras: function () {
             $cookies.set('lstCarritoCompras', this.lstCarritoCompras, 12);

@@ -8,6 +8,7 @@ use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
 use App\Persona;
+use App\Venta;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 
@@ -829,14 +830,23 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
+    $persona = Persona::find(1);
+    //return view('website.email.register',compact("persona"));
+    $persona = Persona::find(1);
     $venta = Compra::find(1);
     $empresa = Empresa::first();
-    return view('website.email.confirm_pedido', compact('venta','empresa'));
-    Mail::send('website.email.pedido_detalle',compact("compra"), function ($mail) {
-        $mail->subject('PEDIDO RESUMEN');
+    Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($venta) {
         $mail->to('ccubas@unitru.edu.pe');
+        $mail->subject('PEDIDO COD: '.$venta->codigo);
         $mail->from('website@ecovalle.pe','ECOVALLE');
     });
+    //return view('website.email.pedido',compact("venta"));
+    //return view('website.email.confirm_pedido',compact("venta","empresa"));
+    // Mail::send('website.email.register',compact("persona"), function ($mail) {
+    //     $mail->subject('BIENVENID@ A ECOVALLE');
+    //     $mail->to('ccubas@unitru.edu.pe');
+    //     $mail->from('website@ecovalle.pe','ECOVALLE');
+    // });
 
     return 'ok';
 });

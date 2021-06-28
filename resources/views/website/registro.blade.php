@@ -50,7 +50,12 @@
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-8">
-                                    <input class="form-control" name="documento" :maxlength="sTipoDocumento == 'DNI' ? 8 : 11" required placeholder="{{ $lstTraduccionesRegistro['ID Number'] }}" autocomplete="off">
+                                    <div class="input-group">
+                                        <input class="form-control" name="documento" v-model="sDocumento" :maxlength="sTipoDocumento == 'DNI' ? 8 : 11" required placeholder="{{ $lstTraduccionesRegistro['ID Number'] }}" autocomplete="off">
+                                        <span v-if="iConsultandoApi === 0" class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApi()"><i class="fa fa-search"></i> </button></span>
+                                        <span v-else  class="input-group-append"><button class="btn btn-ecovalle-2" disabled><i class="fas fa-circle-notch fa-spin"></i> </button></span>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -58,13 +63,13 @@
                     <div class="col-11 col-md-5">
                         <div class="form-group">
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Name'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" required="required" name="nombres" placeholder="{{ $lstTraduccionesRegistro['Name'] }}" autocomplete="off">
+                            <input type="text" class="form-control" required="required" v-model="sNombres" name="nombres" placeholder="{{ $lstTraduccionesRegistro['Name'] }}" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-11 col-md-5">
                         <div class="form-group" v-if="sTipoDocumento == 'DNI'">
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Last Name'] }} <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" :required="sTipoDocumento == 1" placeholder="{{ $lstTraduccionesRegistro['Last Name'] }}" name="apellidos" autocomplete="off">
+                            <input type="text" class="form-control" v-model="sApellidos" :required="sTipoDocumento == 1" placeholder="{{ $lstTraduccionesRegistro['Last Name'] }}" name="apellidos" autocomplete="off">
                         </div>
                     </div>
                     <div class="col-11 col-md-5">

@@ -15,12 +15,12 @@
 
     <section class="pt-md-3 pb-5">
         <div class="container-xl">
-            <div class="row mb-5" v-if="iCargandoProducto === 1">
+            <div class="row pt-5 mb-5" v-if="iCargandoProducto === 1">
                 <div class="col-12 text-center">
                     <img src="/img/spinner.svg">
                 </div>
             </div>
-            <div class="row mb-5" v-else v-cloak>
+            <div class="row pt-5 mb-5 bg-light" v-else v-cloak>
                 <div class="col-12 col-md-1">
                     <div class="row mx-0 mb-2">
                         <div class="col-2 col-md-12 px-1" v-for="(imagen, i) in producto.imagenes">
