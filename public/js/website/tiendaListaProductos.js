@@ -303,12 +303,16 @@ let vueTiendaListaProductos = new Vue({
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
                         producto.cantidad = producto.cantidad - 1;
-                        $this.actualizarCantidadesProductos();
-                        $this.actualizarLstProductos();
+                        
+
                         let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
                         let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
                         detalle.cantidad = detalle.cantidad - 1;
                         detalle.producto.cantidad = detalle.cantidad;
+
+                        $this.actualizarCantidadesProductos();
+                        $this.actualizarLstProductos();
+
                         if (detalle.cantidad === 0) {
                             $this.lstCarritoCompras.splice(iIndiceDetalleCarrito, 1);
                         }

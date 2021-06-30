@@ -147,12 +147,13 @@ let vueProductosFiltrados = new Vue({
                         detalle.cantidad = detalle.cantidad - 1;
                         detalle.producto.cantidad = detalle.cantidad;
 
+                        $this.actualizarCantidadesProductos();
+                        $this.actualizarLstProductos();
+
                         if (detalle.cantidad === 0) {
                             $this.lstCarritoCompras.splice(iIndiceDetalleCarrito, 1);
                         }
-
-                        $this.actualizarCantidadesProductos();
-                        $this.actualizarLstProductos();
+                        
                         $this.guardarLstCarritoCompras();
                     }
                 });
