@@ -290,7 +290,7 @@ ga('send', 'pageview');
                                         <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
-                                        <li><a class="d-inline" href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a> <i class="fa fa-book-open fa-2x"></i></li>
+                                        <li><a class="d-inline" href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a> <i class="fa fa-book-open"></i></li>
                                     </ul>
 
                                     <div style="width: 80%; height: auto;" class="d-none">
