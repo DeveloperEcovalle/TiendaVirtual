@@ -218,13 +218,13 @@
                                             <div v-else>
                                                 <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
                                                     <span class="input-group-prepend">
-                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto, i)">
+                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto)">
                                                             <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                                         </button>
                                                     </span>
                                                         <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i" onkeypress="return isNumber(event)">
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto, i)">
+                                                        <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto)">
                                                             <i class="fas fa-plus"></i>
                                                         </button>
                                                     </span>
@@ -348,13 +348,13 @@
                                                 <div v-else>
                                                     <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
                                                     <span class="input-group-prepend">
-                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarrito(producto)">
+                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto)">
                                                             <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
                                                         </button>
                                                     </span>
                                                     <input type="text" class="form-control text-center" :value="producto.cantidad">
                                                     <span class="input-group-append">
-                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarrito(producto)">
+                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto)">
                                                             <i class="fas fa-plus"></i>
                                                         </button>
                                                     </span>

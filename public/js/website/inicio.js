@@ -107,6 +107,47 @@ let vueInicio = new Vue({
                 .then(() => {
                     $this.iAgregandoAlCarrito = 0;
                     $this.iProductoId = 0;
+                }).then(() => {
+
+                    $('#producto-modal').load('/tienda/producto/ajax/cargarPanel', function () {
+                        let vuePanel = new Vue({
+                            el: '#producto-modal',
+                            data: {
+                                lstCarrito: vueInicio.lstCarritoCompras,
+                            },
+                            computed: {
+                                fSubtotal: function () {                                 
+                                    let fSubtotal = 0;
+                                    for (let detalle of this.lstCarrito) {
+                                        let producto = detalle.producto;
+                                        let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                                            (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                                        let fPrecio = (producto.oferta_vigente === null ? producto.precio_actual.monto :
+                                            (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
+                                        fSubtotal += detalle.cantidad * fPrecio;
+                                    }
+                                    return Math.round(fSubtotal * 10) / 10;
+                                },
+                            },
+                            methods: {
+                                removeModal: function(){
+                                    modalProducto = document.getElementById('contenedor-producto');	
+                                    if (!modalProducto){
+                                        alert("El elemento selecionado no existe");
+                                    } else {
+                                        padre = modalProducto.parentNode;
+                                        padre.removeChild(modalProducto);
+                                    }
+                                },
+                                ajaxDisminuirCantidadProductoCarritoModal: function (producto) {
+                                    vueInicio.ajaxDisminuirCantidadProductoCarrito(producto);
+                                },
+                                ajaxAumentarCantidadProductoCarritoModal: function (producto) {
+                                    vueInicio.ajaxAumentarCantidadProductoCarritoModal(producto);
+                                },
+                            }
+                        });
+                    });
                 });
         },
         ajaxDisminuirCantidadProductoCarrito: function (producto) {

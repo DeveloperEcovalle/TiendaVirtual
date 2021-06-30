@@ -755,6 +755,26 @@ a.img-producto:hover > .img-background-thumbnail {
     font-size: 12px;
 }
 
+.table-promociones {
+    width: 100%;
+}
+
+.table-promociones th {
+    padding-top: 1% !important;
+    padding-bottom: 1% !important;
+    text-align: center;
+}
+
+.table-promociones td {
+    padding-top: 1% !important;
+    padding-bottom: 1% !important;
+    text-align: center;
+}
+
+.table-promociones tbody tr {
+    border-top: 0.001vw solid #6c757d;
+}
+
 /***********************************************/
 
 
@@ -1301,27 +1321,93 @@ button.btn-round:hover{
   /*--------------------------*/
   .modal-producto {
     bottom: auto; 
-    top:30px; 
-    right:30px; 
-    left:auto;
-    -webkit-box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
-    -moz-box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
-    box-shadow: -1px 3px 20px 3px rgba(0,0,0,0.75);
+    top: 30px; 
+    right: 30px; 
+    left: auto;
+    -webkit-box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59); 
+    box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59);
     background-color: white;
     z-index: 99;
     width: 30%;
+    height: 50%;
 }
 
+.img-fluid-producto{
+    width: 80%;
+}
+
+.text-modal-producto {
+    font-size: calc(0.4em + 0.4vw);
+}
+
+.carrito-productos {
+    max-height: 95% !important;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.carrito-productos::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.carrito-productos::-webkit-scrollbar:vertical {
+    width: 8px;
+}
+
+.carrito-productos::-webkit-scrollbar-button:increment,.carrito-productos::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.carrito-productos::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.carrito-productos::-webkit-scrollbar-thumb {
+    background-color: var(--verde-ecovalle-3);
+    border-radius: 20px;
+    border: 1px solid #f1f2f3;
+}
+
+.carrito-productos::-webkit-scrollbar-track {
+    border-radius: 10px;  
+}
+
+.carrito-total {
+    display: flex;
+    display: -moz-flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -webkit-align-items: center;
+    -moz-align-items: center;
+    -moz-justify-content: center;
+    transition: .3s;
+    height: auto;
+    padding-bottom: 2px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    transform: translateY(70px);
+    padding-left: 15%;
+    -webkit-box-shadow: -1px 9px 14px 8px rgba(0,0,0,0.59); 
+    box-shadow: -1px 9px 14px 8px rgba(0,0,0,0.59);
+}
 @media screen and (max-width: 1500px){
     .modal-producto {
-        width: 40%;
-        max-width: 40%;
-    }    
+        width: 55%;
+        max-width: 55%;
+        height: 50%;
+    }  
 }
 
 @media screen and (max-width: 500px){    
     .modal-producto {
         width: 90%;
         max-width: 90%;
+        height: 50%;
     }
 }
+
+/********CONTENEDOR PRODUCTO*************/

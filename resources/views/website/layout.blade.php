@@ -290,10 +290,10 @@ ga('send', 'pageview');
                                         <li><a href="/olvide-mi-contrasena">{{ $lstLocales['forgot_my_password'] }}</a></li>
                                         <li><a href="/carrito-compras">{{ $lstLocales['Shopping cart'] }}</a></li>
                                         <!--<li><a href="/mi-cuenta/lista-deseos">{{ $lstLocales['My wish list'] }}</a></li>-->
-                                        <li><a href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a></li>
+                                        <li><a class="d-inline" href="/libro-reclamaciones">{{ $lstLocales['complaints_book'] }}</a> <i class="fa fa-book-open fa-2x"></i></li>
                                     </ul>
 
-                                    <div style="width: 80%; height: auto;">
+                                    <div style="width: 80%; height: auto;" class="d-none">
                                         <a href="/libro-reclamaciones"><img class="img-fluid" src="/img/libro.jpg" alt=""></a>
                                     </div>
                                 </div>
@@ -442,7 +442,7 @@ ga('send', 'pageview');
     <script src="/js/plugins/vue/vue.js"></script>
     <script src="/js/popup/jquery.magnific-popup.js"></script>
     <script src="/js/popup/jquery.magnific-popup.min.js"></script>
-    <script src="/js/website/website.js?n=1"></script>
+    <script src="/js/website/website.js?cvcn=14"></script>
 
     <script>
         $(document).ready(function() {

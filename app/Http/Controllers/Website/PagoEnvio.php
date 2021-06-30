@@ -293,11 +293,11 @@ class PagoEnvio extends Website
 
             $empresa = Empresa::first();
 
-            Mail::send('website.email.confirm_pedido',compact("venta","empresa"), function ($mail) use ($venta) {
+            /*Mail::send('website.email.confirm_pedido',compact("venta","empresa"), function ($mail) use ($venta) {
                 $mail->subject('PEDIDO CONFIRMADO');
                 $mail->to($venta->email);
                 $mail->from('website@ecovalle.pe','ECOVALLE');
-            });
+            });*/
             
             if($empresa->correo_pedidos)
             {

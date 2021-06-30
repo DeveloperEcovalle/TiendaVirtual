@@ -207,7 +207,9 @@ let vueTiendaListaProductos = new Vue({
             let $this = this;
             $this.iCargando = 1;
             return axios.post('/tienda/ajax/listarPagina')
-                .then(response => $this.pagina = response.data.data.pagina)
+                .then(response => {
+                    $this.pagina = response.data.data.pagina;
+                })
                 .then(() => $this.iCargando = 0);
         },
         ajaxListarCategorias: function () {
@@ -252,23 +254,24 @@ let vueTiendaListaProductos = new Vue({
                     $this.iProductoId = 0;
             }).then(() => {
 
-                let iIndice = $this.lstCarritoCompras.findIndex((item) => item.producto_id === parseInt(producto.id));
-                let productoLocalizado = Object.assign({}, $this.lstCarritoCompras[iIndice]);
-
                 $('#producto-modal').load('/tienda/producto/ajax/cargarPanel', function () {
                     let vuePanel = new Vue({
                         el: '#producto-modal',
                         data: {
-                            producto: productoLocalizado,
+                            lstCarrito: vueTiendaListaProductos.lstCarritoCompras,
                         },
                         computed: {
-                            fSubtotal: function () {  
-                                let fPromocion = this.producto.producto.promocion_vigente === null ? 0.00 :
-                                    (this.producto.cantidad >= this.producto.producto.promocion_vigente.min && this.producto.cantidad <= this.producto.producto.promocion_vigente.max ? (this.producto.producto.promocion_vigente.porcentaje ? ((this.producto.producto.precio_actual.monto * this.producto.producto.promocion_vigente.porcentaje) / 100) : (this.producto.producto.promocion_vigente.monto)) : 0.00);
-                                let fPrecio = (this.producto.producto.oferta_vigente === null ? this.producto.producto.precio_actual.monto :
-                                    (this.producto.producto.oferta_vigente.porcentaje ? (this.producto.producto.precio_actual.monto * (100 - this.producto.producto.oferta_vigente.porcentaje) / 100) : (this.producto.producto.precio_actual.monto - this.producto.producto.oferta_vigente.monto))) - fPromocion;
-                                let fSubtotal = this.producto.cantidad * fPrecio;                                 
-                                return Math.round(fSubtotal  * 10) / 10;
+                            fSubtotal: function () {                                 
+                                let fSubtotal = 0;
+                                for (let detalle of this.lstCarrito) {
+                                    let producto = detalle.producto;
+                                    let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                                        (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                                    let fPrecio = (producto.oferta_vigente === null ? producto.precio_actual.monto :
+                                        (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto))) - fPromocion;
+                                    fSubtotal += detalle.cantidad * fPrecio;
+                                }
+                                return Math.round(fSubtotal * 10) / 10;
                             },
                         },
                         methods: {
@@ -281,128 +284,18 @@ let vueTiendaListaProductos = new Vue({
                                     padre.removeChild(modalProducto);
                                 }
                             },
-                            ajaxDisminuirCantidadProductoCarrito: function (producto) {
-                                let iProductoId = producto.id;
-                                let $this = this;
-                                ajaxWebsiteDisminuirCantidadProductoCarrito(iProductoId)
-                                    .then(response => {
-                                        let respuesta = response.data;
-                                        if (respuesta.result === result.success) {
-                                            producto.cantidad = producto.cantidad - 1;
-                                            $this.producto.cantidad = $this.producto.cantidad - 1;
-                                            // this.cantidad = this.cantidad - 1;
-                                            vueTiendaListaProductos.actualizarLstProductos();
-                    
-                                            let iIndiceDetalleCarrito = vueTiendaListaProductos.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
-                                            let detalle = vueTiendaListaProductos.lstCarritoCompras[iIndiceDetalleCarrito];
-                                            detalle.cantidad = detalle.cantidad - 1;
-                                            detalle.producto.cantidad = detalle.cantidad;
-                    
-                                            if (detalle.cantidad === 0) {
-                                                modalProducto = document.getElementById('contenedor-producto');	
-                                                if (!modalProducto){
-                                                    alert("El elemento selecionado no existe");
-                                                } else {
-                                                    padre = modalProducto.parentNode;
-                                                    padre.removeChild(modalProducto);
-                                                }
-                                                vueTiendaListaProductos.lstCarritoCompras.splice(iIndiceDetalleCarrito, 1);
-                                            }
-                    
-                                            vueTiendaListaProductos.guardarLstCarritoCompras();
-                                        }
-                                    });
+                            ajaxDisminuirCantidadProductoCarritoModal: function (producto) {
+                                vueTiendaListaProductos.ajaxDisminuirCantidadProductoCarritoA(producto);
                             },
-                            ajaxAumentarCantidadProductoCarrito: function (producto) {
-                                let iProductoId = producto.id;
-                                let $this = this;
-                                if(producto.cantidad + 1  === producto.stock_actual)
-                                {
-                                    toastr.clear();
-                                    toastr.options = {
-                                        iconClasses: {
-                                            error: 'bg-danger',
-                                            info: 'bg-info',
-                                            success: 'bg-success',
-                                            warning: 'bg-warning',
-                                        },
-                                    };
-                                    toastr.info(producto.stock_actual +' en stock.');
-                    
-                                    var cantidad = producto.stock_actual;
-                                    ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cantidad)
-                                        .then(response => {
-                                            let respuesta = response.data;
-                                            if (respuesta.result === result.success) {
-                                                producto.cantidad = cantidad;
-                                                $this.producto.cantidad = cantidad;
-                                                // this.cantidad = this.cantidad + 1;
-                                                vueTiendaListaProductos.actualizarLstProductos();
-                    
-                                                let iIndiceDetalleCarrito = vueTiendaListaProductos.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
-                                                let detalle = vueTiendaListaProductos.lstCarritoCompras[iIndiceDetalleCarrito];
-                                                detalle.cantidad = cantidad;
-                                                detalle.producto.cantidad = cantidad;
-                    
-                                                vueTiendaListaProductos.guardarLstCarritoCompras();
-                                            }
-                                        });
-                                }
-                                else if(producto.cantidad + 1 < producto.stock_actual)
-                                {
-                                    if(producto.cantidad + 1 == 12)
-                                    {
-                                        toastr.clear();
-                                        toastr.options = {
-                                            'closeButton': false, 'debug': false, 'newestOnTop': false,
-                                            'progressBar': false, 'positionClass': 'toast-top-right', 'preventDuplicates': true, 'onclick': null,
-                                            'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
-                                            'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
-                                        };
-                                    
-                                        toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Si decea al por mayor se le puede brindar a un mejor precio. ¡¡Contáctanos!!</p>
-                                        <div class="text-center mt-2">
-                                        <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
-                                        <a class="btn btn-sm btn-amarillo" href="/contactanos">Contactar</a>
-                                        </div>`);
-                                    }
-                                    ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
-                                    .then(response => {
-                                        let respuesta = response.data;
-                                        if (respuesta.result === result.success) {
-                                            producto.cantidad = producto.cantidad + 1;
-                                            $this.producto.cantidad = $this.producto.cantidad + 1;
-                                            // this.cantidad = this.cantidad + 1;
-                                            vueTiendaListaProductos.actualizarLstProductos();
-                    
-                                            let iIndiceDetalleCarrito = vueTiendaListaProductos.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
-                                            let detalle = vueTiendaListaProductos.lstCarritoCompras[iIndiceDetalleCarrito];
-                                            detalle.cantidad = detalle.cantidad + 1;
-                                            detalle.producto.cantidad = detalle.cantidad;
-                    
-                                            vueTiendaListaProductos.guardarLstCarritoCompras();                    
-                                        }
-                                    });
-                    
-                                }else{
-                                    toastr.clear();
-                                    toastr.options = {
-                                        iconClasses: {
-                                            error: 'bg-danger',
-                                            info: 'bg-info',
-                                            success: 'bg-success',
-                                            warning: 'bg-warning',
-                                        },
-                                    };
-                                    toastr.error(producto.stock_actual + ' en stock.');
-                                }
+                            ajaxAumentarCantidadProductoCarritoModal: function (producto) {
+                                vueTiendaListaProductos.ajaxAumentarCantidadProductoCarritoA(producto);
                             },
                         }
                     });
                 });
             });
         },
-        ajaxDisminuirCantidadProductoCarrito: function (producto) {
+        ajaxDisminuirCantidadProductoCarritoA: function (producto) {
             let iProductoId = producto.id;
             let $this = this;
             ajaxWebsiteDisminuirCantidadProductoCarrito(iProductoId)
@@ -410,62 +303,7 @@ let vueTiendaListaProductos = new Vue({
                     let respuesta = response.data;
                     if (respuesta.result === result.success) {
                         producto.cantidad = producto.cantidad - 1;
-                        $this.actualizarLstProductos();
-
-                        let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
-                        let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
-                        detalle.cantidad = detalle.cantidad - 1;
-                        detalle.producto.cantidad = detalle.cantidad;
-
-                        if (detalle.cantidad === 0) {
-                            $this.lstCarritoCompras.splice(iIndiceDetalleCarrito, 1);
-                        }
-
-                        $this.guardarLstCarritoCompras();
-                    }
-                });
-            modalProducto = document.getElementById('contenedor-producto');	
-            if (!modalProducto){
-                //
-            } else {
-                padre = modalProducto.parentNode;
-                padre.removeChild(modalProducto);
-            }
-        },
-        ajaxAumentarCantidadProductoCarrito: function (producto) {
-            let iProductoId = producto.id;
-            let $this = this;
-            ajaxWebsiteAumentarCantidadProductoCarrito(iProductoId)
-                .then(response => {
-                    let respuesta = response.data;
-                    if (respuesta.result === result.success) {
-                        producto.cantidad = producto.cantidad + 1;
-                        $this.actualizarLstProductos();
-
-                        let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
-                        let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
-                        detalle.cantidad = detalle.cantidad + 1;
-                        detalle.producto.cantidad = detalle.cantidad;
-
-                        $this.guardarLstCarritoCompras();
-                    }
-                });
-            modalProducto = document.getElementById('contenedor-producto');	
-            if (!modalProducto){
-                //
-            } else {
-                padre = modalProducto.parentNode;
-                padre.removeChild(modalProducto);
-            }
-        },
-        ajaxDisminuirCantidadProductoCarritoA: function (producto, i) {
-            let iProductoId = producto.id;
-            let $this = this;
-            ajaxWebsiteDisminuirCantidadProductoCarrito(iProductoId)
-                .then(response => {
-                    let respuesta = response.data;
-                    if (respuesta.result === result.success) {
-                        producto.cantidad = producto.cantidad - 1;
+                        $this.actualizarCantidadesProductos();
                         $this.actualizarLstProductos();
                         let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
                         let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
@@ -478,15 +316,8 @@ let vueTiendaListaProductos = new Vue({
                         $this.guardarLstCarritoCompras($this.lstCarritoCompras);
                     }
                 });
-            modalProducto = document.getElementById('contenedor-producto');	
-            if (!modalProducto){
-                //
-            } else {
-                padre = modalProducto.parentNode;
-                padre.removeChild(modalProducto);
-            }
         },
-        ajaxAumentarCantidadProductoCarritoA: function (producto, i) {
+        ajaxAumentarCantidadProductoCarritoA: function (producto) {
             let $this = this;
             let iProductoId = producto.id;
             let iIndiceDetalleCarrito = $this.lstCarritoCompras.findIndex(detalle => detalle.producto_id === iProductoId);
@@ -509,6 +340,8 @@ let vueTiendaListaProductos = new Vue({
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
                             producto.cantidad = cantidad;
+
+                            $this.actualizarCantidadesProductos();
                             $this.actualizarLstProductos();
 
                             let detalle = $this.lstCarritoCompras[iIndiceDetalleCarrito];
@@ -545,6 +378,8 @@ let vueTiendaListaProductos = new Vue({
                             producto.cantidad = producto.cantidad + 1; 
                             detalle.cantidad = detalle.cantidad + 1;
                             detalle.producto.cantidad = detalle.cantidad;
+
+                            $this.actualizarCantidadesProductos();
                             $this.actualizarLstProductos();
 
                             $this.guardarLstCarritoCompras();
@@ -562,13 +397,6 @@ let vueTiendaListaProductos = new Vue({
                     },
                 };
                 toastr.error($this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual + ' en stock.');
-            }
-            modalProducto = document.getElementById('contenedor-producto');	
-            if (!modalProducto){
-                //
-            } else {
-                padre = modalProducto.parentNode;
-                padre.removeChild(modalProducto);
             }
         },
         changeCantidad: function(producto,i){
@@ -645,13 +473,6 @@ let vueTiendaListaProductos = new Vue({
                     toastr.error($this.lstCarritoCompras[iIndiceDetalleCarrito].producto.stock_actual +' en stock.');
                     $('#cantidad'+i.toString()).val(cant_aux);
                 }                    
-            }
-            modalProducto = document.getElementById('contenedor-producto');	
-            if (!modalProducto){
-                //
-            } else {
-                padre = modalProducto.parentNode;
-                padre.removeChild(modalProducto);
             }
         },
         actualizarLstProductos: function () {

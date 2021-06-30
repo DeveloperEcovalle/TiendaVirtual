@@ -20,7 +20,7 @@
                     <img src="/img/spinner.svg">
                 </div>
             </div>
-            <div class="row pt-5 mb-5 bg-light" v-else v-cloak>
+            <div class="row pt-5 mb-5" v-else v-cloak>
                 <div class="col-12 col-md-1">
                     <div class="row mx-0 mb-2">
                         <div class="col-2 col-md-12 px-1" v-for="(imagen, i) in producto.imagenes">
@@ -37,7 +37,7 @@
                             - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
                         </div>
                     </div>
-                    <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
+                    <div class="div-promocion position-absolute d-none" v-if="producto.promocion_vigente">
                         <div class="text-center">
                             @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
                         </div>
@@ -49,14 +49,6 @@
                           v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 30">
                         @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
                     </span>
-                    <!--<div class="modal-container" id="modal-container">
-                        <div class="contenido">
-                            <a href="#" onclick="fnExplota()" class="controlaButton">
-                                <img class="img-fluid" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" :src="sRutaImagenSeleccionada">
-                            </a>
-                            <button type="button" class="btn-round position-absolute px-2 py-1 d-none" onclick="fnReduce()"><i class="fa fa-close"></i></button>
-                        </div>
-                    </div>-->
                     <div id="img-container" class="text-center">
                         <img class="img-fluid mklbItem" id="product-image" v-bind:class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }" v-bind:src="sRutaImagenSeleccionada">
                     </div>
@@ -73,10 +65,13 @@
                         <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
                     </div>
 
-                    <h2 class="h3 text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
+                    <h2 class="h3 text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente">
                         S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
                     </h2>
                     <h2 class="h3 text-amarillo-ecovalle font-weight-bold" v-else>
+                        S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                    </h2>
+                    <h2 class="h3 text-muted font-weight-bold d-inline"  v-if="producto.oferta_vigente" style="text-decoration:line-through;">
                         S/ @{{ producto.precio_actual.monto.toFixed(2) }}
                     </h2>
                     <p v-html="producto.beneficios_es" v-if="locale === 'es'"></p>
@@ -126,6 +121,37 @@
                             </span>
                         </p>
                     </div>
+                    <hr>
+                    <div class="row mb-2" v-if="producto.promocion_vigente">
+                        <div class="col-12">
+                            <div class="container">
+                                <div class="table-container">
+                                    <table class="table-promociones" style="width: 100%">
+                                        <thead>
+                                            <tr>
+                                                <th style="border-right: 0.001vw solid #6c757d;">Promoci&oacute;n</th>
+                                                <th style="border-right: 0.001vw solid #6c757d;">Unidades</th>
+                                                <th>Descuento</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-if="producto.promocion_vigente">
+                                                <td style="border-right: 0.001vw solid #6c757d;">
+                                                    Descuento
+                                                </td>
+                                                <td style="border-right: 0.001vw solid #6c757d;">
+                                                    @{{ producto.promocion_vigente.min }} - @{{ producto.promocion_vigente.max }}
+                                                </td>
+                                                <td>
+                                                    @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -140,7 +166,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="tab-content" id="myTabContent">
+                    <div class="tab-content bg-light p-2" id="myTabContent">
                         <div class="tab-pane fade show p-3 active" id="descripcion" role="tabpanel" aria-labelledby="home-tab"
                              v-html="locale === 'en' ? producto.descripcion_en : producto.descripcion_es">
                         </div>
