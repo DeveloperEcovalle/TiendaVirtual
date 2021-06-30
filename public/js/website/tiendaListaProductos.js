@@ -32,6 +32,8 @@ let vueTiendaListaProductos = new Vue({
         iTotalProductos: 0,
         iItemsPorPagina: 6,
         iPaginaSeleccionada: iPaginaSeleccionada,
+
+        lstBanners: [],
     },
     computed: {
         iTotalPaginas: function () {
@@ -209,6 +211,7 @@ let vueTiendaListaProductos = new Vue({
             return axios.post('/tienda/ajax/listarPagina')
                 .then(response => {
                     $this.pagina = response.data.data.pagina;
+                    $this.lstBanners = response.data.data.lstBanners;
                 })
                 .then(() => $this.iCargando = 0);
         },

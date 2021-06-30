@@ -8,7 +8,7 @@
                 <tr>
                     <th class="text-center">C&oacute;digo</th>
                     <th class="text-center">Tipo Compra</th>
-                    <th class="text-center">Comprobante</th>
+                    <th class="text-center">Estado</th>
                     <th class="text-center">Total</th>
                     <th class="text-center"></th>
                 </tr>
@@ -17,7 +17,7 @@
                 <tr v-for="order of lstOrdersFiltrado" v-bind:class="{selected: iIdSeleccionado === order.id}" v-on:click="panelShow(order.id)" style="cursor: pointer;" v-cloak>
                     <th class="text-center w-10">@{{ order.codigo }}</th>
                     <td class="text-center">@{{ order.tipo_compra }}</td>
-                    <td class="text-center">@{{ order.tipo_comprobante }}</td>
+                    <td class="text-center">@{{ order.estado }}</td>
                     <td class="text-center">S/. @{{ (order.subtotal + order.delivery).toFixed(2) }}</td>
                     <td class="text-center"><a :href="'/mi-cuenta/ajax/download/'+order.codigo" class="btn btn-sm btn-outline-info btn-block"><i class="fa fa-download"></i></a></td>
                 </tr>

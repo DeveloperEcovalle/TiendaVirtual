@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Website;
 use App\Blog;
 use App\DetalleCarrito;
 use App\Empresa;
+use App\Banner;
 use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\Pagina;
@@ -76,9 +77,11 @@ class Tienda extends Website {
     public function ajaxListarPagina() {
         $pagina = Pagina::find(5);
 
+        $lstBanners = Banner::where('activo', 1)->where('medio', 0)->orderBy('orden')->get();
+
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['pagina' => $pagina];
+        $respuesta->data = ['pagina' => $pagina, 'lstBanners' => $lstBanners];
 
         return response()->json($respuesta);
     }

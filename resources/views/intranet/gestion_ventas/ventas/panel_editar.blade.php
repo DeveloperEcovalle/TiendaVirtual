@@ -122,9 +122,17 @@
         <div class="form-group row">
             <label class="col-md-3 py-md-2 font-weight-bold">Estado <span class="text-danger">*</span></label>
             <div class="col-md-9">
-                <select name="estado" id="estado" class="form-control" v-model="estado" :class="{ 'bg-danger': estado == 'POR ATENDER', 'bg-ecovalle': estado == 'ATENDIDO' }" v-on:change="ajaxEditarEstado">
+                <select name="estado" id="estado" class="form-control" v-model="estado" :class="{ 'bg-danger': venta.estado == 'POR ATENDER', 'bg-ecovalle': venta.estado == 'ENVIADO' || venta.estado == 'FACTURADO', 'bg-warning': venta.estado == 'RECHAZADO' || venta.estado == 'PEDIDO FALLIDO' }" v-on:change="ajaxEditarEstado">
                     <option value="POR ATENDER">POR ATENDER</option>
-                    <option value="ATENDIDO">ATENDIDO</option>
+                    <option value="FACTURADO">FACTURADO</option>
+                    <option value="DESPACHADO A TIENDA">DESPACHADO A TIENDA</option>
+                    <option value="ENVIADO">ENVIADO</option>
+                    <option value="ANULADO">ANULADO</option>
+                    <option value="RECHAZADO">RECHAZADO</option>
+                    <option value="REPROGRAMADO">REPROGRAMADO</option>
+                    <option value="DEVOLUCIÓN">DEVOLUCIÓN</option>
+                    <option value="PEDIDO FALLIDO">PEDIDO FALLIDO</option>
+                    <option value="REEMBOLSADO">REEMBOLSADO</option>
                 </select>
             </div>
         </div>

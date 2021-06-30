@@ -3,12 +3,37 @@
 @section('title', 'Tienda')
 
 @section('content')
-    <section v-if="iCargando === 0">
+    <section class="d-none" v-if="iCargando === 0">
         <a :href="pagina.enlace_imagen_portada" v-if="pagina.enlace_imagen_portada">
             <img :src="pagina.ruta_imagen_portada" class="w-100">
         </a>
         <img :src="pagina.ruta_imagen_portada" class="w-100" v-else>
     </section>
+
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" v-if="iCargando === 0" v-cloak>
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" v-for="(banner, i) in lstBanners" :data-slide-to="i" :class="{ active: i === 0 }"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div v-for="(banner, i) in lstBanners" :class="{ active: i === 0 }" class="carousel-item">
+                <a :href="banner.enlace" target="_blank" v-if="banner.enlace">
+                    <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100">
+                </a>
+                <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100" v-else>
+                <div class="carousel-caption d-none d-md-block" v-if="banner.descripcion">
+                    <h5>@{{ banner.descripcion }}</h5>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 
     <section class="bg-ecovalle-6">
         <div class="container-xl">

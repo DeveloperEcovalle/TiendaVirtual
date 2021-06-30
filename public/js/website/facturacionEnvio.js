@@ -217,7 +217,7 @@ let vueFacturacionEnvio = new Vue({
             else return 1;
         },
         fDelivery: function () {
-            if(this.sNNacional == 0)
+            if(this.sLocation == 'E')
             {
                 for (let precioEnvio of this.lstPreciosEnvioNacional) {
                     if (this.datosEnvio.sDepartamento !== ''
@@ -230,7 +230,7 @@ let vueFacturacionEnvio = new Vue({
                 return 0;
             }
 
-            if(this.sDelivery == 0)
+            if(this.sLocation == 'D')
             {
                 for (let precioDelivery of this.lstPreciosDelivery) {
                     if (this.datosDelivery.sDepartamento !== ''
