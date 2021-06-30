@@ -116,6 +116,7 @@
                     <div v-html="locale === 'es' ? lineaSeleccionada.contenido_espanol : lineaSeleccionada.contenido_ingles"></div>
                 </div>
             </div>
+            
             <div class="row justify-content-center pt-5 pt-md-0 pb-5" v-if="iLineaProductoId == 0">
                 <div class="col-12">
                     <div id="carouselLineas" class="carousel slide pb-5" data-ride="carousel" v-cloak>
