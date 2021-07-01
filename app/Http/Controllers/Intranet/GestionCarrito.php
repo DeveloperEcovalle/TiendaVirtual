@@ -127,7 +127,7 @@ class GestionCarrito extends Intranet
         $data = $request->all();
 
         $rules = [
-            'id' => 'required|unique:ubigeo,id',
+            'id' => 'required|numeric|unique:ubigeo,id',
             'departamento' => 'required',
             'provincia' => 'required',
             'distrito' => 'required',
@@ -135,6 +135,7 @@ class GestionCarrito extends Intranet
         ];
         
         $message = [
+            'id.numeric' => 'El campo id debe ser numérico',
             'id.required' => 'El campo id es obligatorio',
             'id.unique' => 'El campo id debe ser único',
             'departamento.required' => 'El campo departamento es obligatorio.',
