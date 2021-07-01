@@ -126,7 +126,7 @@ class Ventas extends Intranet {
         $estado = Estado::find($request->estado_id);
         $empresa = Empresa::first();
 
-        Mail::send('website.email.confirm_pedido',compact('venta','empresa','estado'), function ($mail) use ($venta) {
+        Mail::send('website.email.confirm_pedido',compact('venta','empresa','estado','agencia'), function ($mail) use ($venta) {
             $mail->subject('ESTADO DE PEDIDO ECOVALLE');
             $mail->to($venta->email);
            $mail->from('website@ecovalle.pe','ECOVALLE');

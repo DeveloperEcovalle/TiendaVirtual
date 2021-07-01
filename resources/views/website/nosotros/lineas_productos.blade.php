@@ -102,16 +102,10 @@
                             </div>
                         </div>
                     </form>
-                    <div class="py-5 py-lg-0">
-                        <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
-                            <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
-                        </a>
-                        <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
-                    </div>
                 </div>
                 <div class="col-lg-9" v-if="iLineaProductoId == 0">
                     <a :href="'/nosotros/lineas-productos?linea=' + lstLineasProductosConImagen[0].id">
-                        <div class="shadow-lg img-background-thumbnail h-100" :style="'background-image: url(' + lstLineasProductosConImagen[0].ruta_imagen + ')'" style="background-size: cover;">
+                        <div class="shadow-lg img-background-thumbnail h-100" :style="'background-image: url(' + lstLineasProductosConImagen[0].ruta_imagen + ')'">
                             <div class="my-5 py-5 d-md-none">
                                 <h1>&nbsp;</h1>
                             </div>
@@ -120,6 +114,16 @@
                 </div>
                 <div class="col-lg-9 pb-5" v-if="lineaSeleccionada !== null && iLineaProductoId != 0">
                     <div v-html="locale === 'es' ? lineaSeleccionada.contenido_espanol : lineaSeleccionada.contenido_ingles"></div>
+                </div>
+            </div>
+            <div class="row  pb-5">
+                <div class="col-lg-3">
+                    <div class="py-5 py-lg-0">
+                        <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
+                            <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                        </a>
+                        <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                    </div>
                 </div>
             </div>
             
