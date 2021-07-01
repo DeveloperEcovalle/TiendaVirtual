@@ -208,9 +208,10 @@
                     <td style="padding-right: 5%;">
                         <p class="text" style="margin-bottom: 1%;">Compra: </p>
                         <p class="text" style="margin-top: 0%; text-transform: uppercase !important;">{{ $venta->tipo_compra }}</p>
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
+                        @if($venta->tipo_compra != 'RECOJO EN TIENDA' && !empty($agencia))
                         <p class="text" style="margin-bottom: 1%;">Enviado a trav&eacute;s de:</p>
-                        <p class="text" style="margin-top: 0%; text-transform: uppercase !important;">entrafesa s.a.c</p>
+                        <p class="text" style="margin-top: 0%; text-transform: uppercase !important; margin-bottom: 1%;">{{ $agencia->nombre }}</p>
+                        <p class="text" style="margin-top: 0%; text-transform: uppercase !important;">{{ $agencia->descripcion }}</p>
                         @endif
                         @if($venta->tipo_compra != 'RECOJO EN TIENDA')
                         <p class="text" style="margin-bottom: 1%;">Enviado a:</p>

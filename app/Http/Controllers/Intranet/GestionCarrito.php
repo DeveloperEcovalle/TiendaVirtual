@@ -127,7 +127,6 @@ class GestionCarrito extends Intranet
         $data = $request->all();
 
         $rules = [
-            'id' => 'required|numeric|unique:ubigeo,id',
             'departamento' => 'required',
             'provincia' => 'required',
             'distrito' => 'required',
@@ -135,9 +134,6 @@ class GestionCarrito extends Intranet
         ];
         
         $message = [
-            'id.numeric' => 'El campo id debe ser numérico',
-            'id.required' => 'El campo id es obligatorio',
-            'id.unique' => 'El campo id debe ser único',
             'departamento.required' => 'El campo departamento es obligatorio.',
             'provincia.required' => 'El campo provincia es obligatorio.',
             'distrito.required' => 'El campo distrito es obligatorio.',
@@ -155,8 +151,10 @@ class GestionCarrito extends Intranet
             return response()->json($respuesta);
         }
 
+        $id = count(Ubigeo::all()) + 999;
+
         $ubigeo = new Ubigeo();
-        $ubigeo->id = $request->get('id');
+        $ubigeo->id = $id;
         $ubigeo->departamento = strtoupper($request->get('departamento'));
         $ubigeo->provincia = strtoupper( $request->get('provincia'));
         $ubigeo->distrito = strtoupper($request->get('distrito'));

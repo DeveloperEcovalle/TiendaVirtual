@@ -42,6 +42,7 @@
                     </button>
                 </div>
             </div>
+            
             <div class="row">
                 <div class="col-md-8">
                     <div class="row">
@@ -144,7 +145,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }}</p>
+                                        <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }} ( @{{ bAgencia }} )</p>
                                         <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
                                     <div class="col-12">

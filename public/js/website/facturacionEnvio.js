@@ -7,10 +7,6 @@ let vueFacturacionEnvio = new Vue({
         sBuscar:'',
         sBuscard:'',
 
-        sNNacional: 0,
-        sDelivery: 1,
-        sRTienda: 1,
-
         iCargandoDatosFacturacion: 0,
         lstUbigeo: [],
         lstTiposComprobante: [],
@@ -342,6 +338,19 @@ let vueFacturacionEnvio = new Vue({
         },
         bComprobanteDelivery: function(){
             return this.datosDelivery.sTipoComprobante.trim().length > 0;
+        },
+        bAgencia: function() {
+            let $this = this;
+            if($this.lstAgencias.length > 0)
+            {
+                if($this.datosEnvio.sAgencia != '')
+                {
+                    let iIndice = $this.lstAgencias.findIndex(agencia => agencia.nombre == $this.datosEnvio.sAgencia);
+                    let agencia = $this.lstAgencias[iIndice];
+                    return agencia.descripcion;
+                }
+            }
+            return '';
         }
     },
     mounted: function () {
@@ -423,7 +432,6 @@ let vueFacturacionEnvio = new Vue({
             $this.lstCarritoCompras = lstCarritoCompras;
 
             $this.ajaxListarPreciosEnvio();
-            $this.iCargando = 0;
             $this.ajaxListarDatosFacturacion();
             //$('#modalEditarDireccionEnvio').modal('show'); 
         }).then(() => {
@@ -443,8 +451,9 @@ let vueFacturacionEnvio = new Vue({
             if ($this.lstCarritoCompras.length === 0 || !this.fVentaValida) {
                 location = '/carrito-compras';
             }
-        }).then(()=>{
+        }).then(() => {
             this.verificaDatos();
+            $this.iCargando = 0;
         }));
     },
     methods: {
@@ -887,5 +896,5 @@ let vueFacturacionEnvio = new Vue({
         {
             this.datosDelivery.sTipoComprobante = value;
         }
-    }
+    },
 });

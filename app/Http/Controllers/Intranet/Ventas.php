@@ -14,6 +14,7 @@ use App\Estado;
 use Illuminate\Support\Facades\DB;
 use App\Empresa;
 use Illuminate\Support\Facades\Mail;
+use App\Agencia;
 
 class Ventas extends Intranet {
 
@@ -125,6 +126,12 @@ class Ventas extends Intranet {
 
         $estado = Estado::find($request->estado_id);
         $empresa = Empresa::first();
+
+        $agencia = null;
+        if($venta->agencia)
+        {
+            $agencia = Agencia::where('nombre',$venta->agencia)->first();
+        }
 
         Mail::send('website.email.confirm_pedido',compact('venta','empresa','estado','agencia'), function ($mail) use ($venta) {
             $mail->subject('ESTADO DE PEDIDO ECOVALLE');

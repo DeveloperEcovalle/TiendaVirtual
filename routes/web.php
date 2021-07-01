@@ -1,5 +1,6 @@
 <?php
 
+use App\Agencia;
 use App\Compra;
 use App\Empresa;
 use Illuminate\Support\Facades\Route;
@@ -841,23 +842,8 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $persona = Persona::find(1);
-    //return view('website.email.register',compact("persona"));
-    $persona = Persona::find(1);
     $venta = Compra::find(1);
-    $empresa = Empresa::first();
-    Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($venta) {
-        $mail->to('ccubas@unitru.edu.pe');
-        $mail->subject('PEDIDO COD: '.$venta->codigo);
-        $mail->from('website@ecovalle.pe','ECOVALLE');
-    });
-    //return view('website.email.pedido',compact("venta"));
-    //return view('website.email.confirm_pedido',compact("venta","empresa"));
-    // Mail::send('website.email.register',compact("persona"), function ($mail) {
-    //     $mail->subject('BIENVENID@ A ECOVALLE');
-    //     $mail->to('ccubas@unitru.edu.pe');
-    //     $mail->from('website@ecovalle.pe','ECOVALLE');
-    // });
+    $agencia = Agencia::where('nombre',$venta->agencia)->first();
 
-    return 'ok';
+    return $agencia;
 });

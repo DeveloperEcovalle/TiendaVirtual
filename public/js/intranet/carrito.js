@@ -214,7 +214,30 @@ listarMenus(function (lstModulos, lstMenus) {
                     let vueNuevo = new Vue({
                         el: '#panel',
                         data: {
+                            lstUbigeo: vueCarrito.lstUbigeo,
+                            departamento: '',
                             iInsertando: 0,
+                        },
+                        computed: {
+                            lstDepartamentos: function () {
+                                let lst = [];
+                                for (let ubigeo of this.lstUbigeo) {
+                                    if (lst.findIndex((departamento) => departamento === ubigeo.departamento) === -1) {
+                                        lst.push(ubigeo.departamento);
+                                    }
+                                }
+                                return lst;
+                            },
+                            lstProvincias: function () {
+                                let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.departamento);
+                                let lst = [];
+                                for (let ubigeo of lstUbigeoFiltrado) {
+                                    if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1) {
+                                        lst.push(ubigeo.provincia);
+                                    }
+                                }
+                                return lst;
+                            },
                         },
                         methods: {
                             ajaxInsertar: function () {

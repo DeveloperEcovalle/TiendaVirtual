@@ -82,7 +82,7 @@ class Agencia extends Intranet
         ]);
 
         $agencia = new AppAgencia();
-        $agencia->nombre = $request->get('nombre');
+        $agencia->nombre = strtoupper($request->get('nombre'));
         $agencia->descripcion = $request->get('descripcion');
         $agencia->estado = $request->get('estado');
         $agencia->save();
@@ -114,7 +114,7 @@ class Agencia extends Intranet
         ]);
 
         $agencia = AppAgencia::find($id);
-        $agencia->nombre = $request->get('nombre');
+        $agencia->nombre = strtoupper($request->get('nombre'));
         $agencia->descripcion = $request->get('descripcion');
         $agencia->estado = $request->get('estado');
         $agencia->update();

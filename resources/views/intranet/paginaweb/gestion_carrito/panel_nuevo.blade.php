@@ -4,16 +4,18 @@
 <div class="d-flex p-4 bg-white border-top" id="layoutRight">
     <form role="form" v-on:submit.prevent="ajaxInsertar" class="w-100" id="frmNuevo">
         <div class="form-group">
-            <label class="font-weight-bold">Id <span class="text-danger">Ejemplo(11111)*</span></label>
-            <input type="text" class="form-control" name="id" required="required" autocomplete="off">
-        </div>
-        <div class="form-group">
             <label class="font-weight-bold">Departamento <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="departamento" required="required" autocomplete="off">
+            <select class="form-control" name="departamento" v-model="departamento" required>
+                <option value="">Seleccionar departamento</option>
+                <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="font-weight-bold">Provincia <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" name="provincia" required="required" autocomplete="off">
+            <select class="form-control" name="provincia" required>
+                <option>Seleccionar provincia</option>
+                <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="font-weight-bold">Distrito <span class="text-danger">*</span></label>
