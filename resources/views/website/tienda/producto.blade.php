@@ -66,7 +66,7 @@
                     </div>
 
                     <h2 class="h3 text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente">
-                        S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                        S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
                     </h2>
                     <h2 class="h3 text-amarillo-ecovalle font-weight-bold" v-else>
                         S/ @{{ producto.precio_actual.monto.toFixed(2) }}

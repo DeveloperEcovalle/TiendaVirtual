@@ -87,9 +87,9 @@
                                                         <div class="row" v-if="detalle.producto.promocion_vigente">
                                                             <div class="text-right p-1" :class="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max ? 'col-6' : 'col-12'">
                                                                 <p class="font-weight-bold mb-1 mt-3 mt-md-0">
-                                                                    S/ @{{ (detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
-                                                                    (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
-                                                                    (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))).toFixed(2) }}</p>
+                                                                    S/ @{{  (Math.round((detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
+                                                                        (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
+                                                                        (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))) * 10)/10).toFixed(2) }}</p>
                                                             </div>
                                                             <div class="col-6 text-right p-1" v-if="detalle.cantidad >= detalle.producto.promocion_vigente.min && detalle.cantidad <= detalle.producto.promocion_vigente.max">
                                                                 <p class="font-weight-bold mb-1 mt-3 mt-md-0 text-danger">
@@ -100,9 +100,9 @@
                                                         <div class="row" v-else>
                                                             <div class="col-12">
                                                                 <p class="text-right font-weight-bold mb-1 mt-3 mt-md-0">
-                                                                    S/ @{{ (detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
-                                                                    (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
-                                                                    (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))).toFixed(2) }}</p>
+                                                                    S/ @{{ (Math.round((detalle.cantidad * (detalle.producto.oferta_vigente === null ? detalle.producto.precio_actual.monto :
+                                                                        (detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) :
+                                                                        (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)))) * 10)/10).toFixed(2) }}</p>
                                                             </div>
                                                         </div>
                                                     </div>

@@ -1,22 +1,21 @@
 <html>
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FHPDW986R"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-1FHPDW986R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-1FHPDW986R');
-</script>
-<!-- Google Analytics -->
-<link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
-<script>
-window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-ga('create', 'UA-199871946-1', 'auto');
-ga('send', 'pageview');
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
+    gtag('config', 'G-1FHPDW986R');
+    </script>
+    <!-- Google Analytics -->
+    <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
+    <script>
+    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-199871946-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -63,7 +62,7 @@ ga('send', 'pageview');
         &noscript=1"/>
     </noscript>
 </head>
-<body onbeforeunload="ConfirmarCierre()" onunload="ManejadorCierre()">
+<body>
     <div id="content">
         <header class="bg-ecovalle-2">
             <div class="container-xl px-0" style="background: url('/img/bg_header.svg'); background-position: top right; background-repeat: no-repeat; background-size: 75%">
@@ -489,16 +488,6 @@ ga('send', 'pageview');
                     });
             });
         });
- 
-        document.addEventListener('mousemove', logKey);
-
-        function logKey(e) {
-            //e.clientY
-            /*console.log(`
-            Screen X/Y: ${e.screenX}, ${e.screenY}
-            Client X/Y: ${e.clientX}, ${e.clientY}`);*/
-        }
-        
         /*function window_mouseout( obj, evt, fn ) {
             if ( obj.addEventListener ) {
 
@@ -526,7 +515,13 @@ ga('send', 'pageview');
                 // Haz lo que quieras aquí
                 //alert( '¿Quieres abandonar mi página?' );
                 // localStorage.setItem( 'leftWindow', true );
-                //return localStorage.removeItem('websitevisita');
+                var inFormOrLink;
+                $('a').on('click', function() { inFormOrLink = true; });
+                $('form').on('submit', function() { inFormOrLink = true; });
+
+                if(inFormOrLink) {
+                    localStorage.removeItem('websitevisita');
+                }
             }
         });*/
 
