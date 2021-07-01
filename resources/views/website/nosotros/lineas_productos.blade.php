@@ -102,6 +102,12 @@
                             </div>
                         </div>
                     </form>
+                    <div class="py-5 py-lg-0">
+                        <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
+                            <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                        </a>
+                        <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                    </div>
                 </div>
                 <div class="col-lg-9" v-if="iLineaProductoId == 0">
                     <a :href="'/nosotros/lineas-productos?linea=' + lstLineasProductosConImagen[0].id">

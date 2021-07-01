@@ -324,6 +324,7 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/insertar', 'LineasProductos@ajaxInsertar');
                             Route::post('/actualizar', 'LineasProductos@ajaxActualizar');
                             Route::post('/eliminar', 'LineasProductos@ajaxEliminar');
+                            Route::post('/eliminarImagen', 'LineasProductos@ajaxEliminarImagen');
                         });
                     });
 
@@ -540,6 +541,7 @@ Route::namespace('Intranet')->group(function () {
                         Route::prefix('/ajax')->group(function () {
                             Route::post('/listar', 'WebLineasProductos@ajaxListar');
                             Route::post('/actualizarImagenPortada', 'WebLineasProductos@ajaxActualizarImagenPortada');
+                            Route::post('/actualizarBaner', 'WebLineasProductos@ajaxActualizarBaner');
                             Route::post('/actualizarContenidoEspanol', 'WebLineasProductos@ajaxActualizarContenidoEspanol');
                             Route::post('/actualizarContenidoIngles', 'WebLineasProductos@ajaxActualizarContenidoIngles');
                         });
@@ -640,6 +642,9 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/insertar', 'Blogs@ajaxInsertar');
                             Route::post('/actualizar', 'Blogs@ajaxActualizar');
                             Route::post('/eliminar', 'Blogs@ajaxEliminar');
+
+                            Route::post('/actualizarImagenPortada', 'Blogs@ajaxActualizarImagenPortada');
+                            Route::post('/actualizarBaner', 'Blogs@ajaxActualizarBaner');
                         });
                     });
 

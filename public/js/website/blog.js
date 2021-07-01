@@ -19,7 +19,9 @@ let vueBlogLista = new Vue({
         iTotalPublicaciones: 0,
         iItemsPorPagina: 6,
         iPaginaSeleccionada: iPaginaSeleccionada,
-        lstCarritoCompras: []
+        lstCarritoCompras: [],
+
+        pagina: {},
     },
     computed: {
         iTotalPaginas: function () {
@@ -59,7 +61,8 @@ let vueBlogLista = new Vue({
             return lstPaginas;
         },
         sBanner: function () {
-            let sBannerDefault = '/img/blog.jpg';
+            let $this = this;
+            let sBannerDefault = $this.pagina.ruta_imagen_portada;
             if (this.iCategoriaSeleccionada == 0 || this.lstCategorias.length === 0) {
                 return sBannerDefault;
             }
@@ -145,6 +148,7 @@ let vueBlogLista = new Vue({
                         let data = respuesta.data;
                         $this.lstCategorias = data.lstCategorias;
                         $this.lstUltimasPublicaciones = data.lstUltimasPublicaciones;
+                        $this.pagina = data.pagina;
                     }
                 })
                 .then(() => $this.iCargandoCategorias = 0);

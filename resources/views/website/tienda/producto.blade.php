@@ -166,7 +166,7 @@
                             </a>
                         </li>
                     </ul>
-                    <div class="tab-content bg-light p-2" id="myTabContent">
+                    <div class="tab-content p-2" id="myTabContent" style="background-color: #f5f9f4;">
                         <div class="tab-pane fade show p-3 active" id="descripcion" role="tabpanel" aria-labelledby="home-tab"
                              v-html="locale === 'en' ? producto.descripcion_en : producto.descripcion_es">
                         </div>

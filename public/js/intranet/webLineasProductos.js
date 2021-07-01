@@ -8,10 +8,14 @@ $(document).ready(function () {
                 iError: 0,
 
                 pagina: {
-                    ruta_imagen_portada: ''
+                    ruta_imagen_portada: '',
+                    ruta_baner_publicitario: ''
                 },
                 nuevaImagenPortada: null,
                 iActualizandoImagenPortada: 0,
+
+                nuevoBaner: null,
+                iActualizandoBaner: 0,
 
                 iActualizandoContenidoEspanol: 0,
                 iActualizandoContenidoIngles: 0,
@@ -28,6 +32,19 @@ $(document).ready(function () {
                         return null;
                     }
                     return URL.createObjectURL(this.nuevaImagenPortada);
+                },
+
+                sNombreNuevoBaner: function () {
+                    if (this.nuevoBaner === null) {
+                        return 'Buscar archivo';
+                    }
+                    return this.nuevoBaner.name.split('\\').pop();
+                },
+                sContenidoNuevoBaner: function () {
+                    if (this.nuevoBaner === null) {
+                        return null;
+                    }
+                    return URL.createObjectURL(this.nuevoBaner);
                 }
             },
             mounted: function () {
@@ -66,6 +83,10 @@ $(document).ready(function () {
                 cambiarImagen: function (event) {
                     let input = event.target;
                     this.nuevaImagenPortada = input.files[0];
+                },
+                cambiarBaner: function (event) {
+                    let input = event.target;
+                    this.nuevoBaner = input.files[0];
                 },
                 ajaxListar: function (onSuccess) {
                     let $this = this;
@@ -116,6 +137,39 @@ $(document).ready(function () {
                         },
                         complete: function () {
                             $this.iActualizandoImagenPortada = 0;
+                        }
+                    });
+                },
+                ajaxActualizarBaner: function () {
+                    let $this = this;
+                    $this.iActualizandoBaner = 1;
+
+                    let frmEditarBaner = document.getElementById('frmEditarBaner');
+                    let formData = new FormData(frmEditarBaner);
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/intranet/app/pagina-web/lineas-productos/ajax/actualizarBaner',
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function (respuesta) {
+                            if (respuesta.result === result.success) {
+                                $this.pagina.ruta_baner_publicitario = respuesta.data.sNuevaRutaBaner;
+
+                                frmEditarBaner.reset();
+                                $this.nuevoBaner= null;
+                            }
+
+                            toastr[respuesta.result](respuesta.mensaje);
+                        },
+                        error: function (respuesta) {
+                            let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                            toastr[result.error](sHtmlMensaje);
+                        },
+                        complete: function () {
+                            $this.iActualizandoBaner = 0;
                         }
                     });
                 },

@@ -191,4 +191,24 @@ class LineasProductos extends Intranet {
 
         return response()->json($respuesta);
     }
+
+    public function ajaxEliminarImagen(Request $request)
+    {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+
+        $linea = LineaProducto::find($request->get('id'));
+
+        $linea->ruta_imagen = null;
+        $linea->update();
+        
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Imágen eliminada correctamente.';
+
+        return response()->json($respuesta);
+    }
 }

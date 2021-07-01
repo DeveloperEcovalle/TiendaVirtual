@@ -23,7 +23,10 @@
                         </li>
                     </ol>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
+                    <button class="btn btn-info float-right mt-2" data-toggle="modal" data-target="#modalActualizar"><i class="fas fa-edit"></i> Actualizar</button>
+                </div>
+                <div class="col-2">
                     <button class="btn btn-primary float-right mt-2" v-on:click="panelNuevo"><i class="fas fa-plus"></i> Nuevo</button>
                 </div>
             </div>
@@ -108,6 +111,96 @@
                 Volver a cargar la p&aacute;gina deber&iacute;a solucionar el problema.<br>
                 Si el error persiste, comun&iacute;quese con el administrador del sistema.
             </h3>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalActualizar" tabindex="-1" role="dialog" aria-labelledby="modalActualizarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modalActualizarLabel">Blog</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="p-4" id="layoutLeft">
+                        <div class="row justify-content-center">
+                            <div class="col-12">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h5>Imagen de portada</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + sContenidoNuevaImagen + ')' }" v-if="nuevaImagenPortada"></div>
+                                        <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + pagina.ruta_imagen_portada + ')' }" v-else></div>
+                                        <form role="form" class="mt-4" id="frmEditarImagenPortada" v-on:submit.prevent="ajaxActualizarImagenPortada" v-cloak>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-md-3">Cambiar imagen de portada:</label>
+                                                <div class="col-md-9">
+                                                    <div class="custom-file">
+                                                        <input id="aImagen" type="file" class="custom-file-input" name="imagen_de_portada" v-on:change="cambiarImagen">
+                                                        <label for="aImagen" class="custom-file-label">@{{ sNombreNuevaImagen }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-md-3">Enlace imagen de portada:</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" name="enlace_de_imagen_de_portada" autocomplete="off" v-model="pagina.enlace_imagen_portada">
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-right mb-0">
+                                                <button type="submit" class="btn btn-primary" v-bind:disabled="iActualizandoImagenPortada === 1">
+                                                    <span v-if="iActualizandoImagenPortada === 0">Guardar</span>
+                                                    <span v-else><i class="fas fa-circle-notch fa-spin"></i> Por favor, espere...</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="ibox ">
+                                    <div class="ibox-title">
+                                        <h5>Baner publicitario</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + sContenidoNuevoBaner + ')' }" v-if="nuevoBaner"></div>
+                                        <div class="masthead" v-bind:style="{ backgroundImage: 'url(' + pagina.ruta_baner_publicitario + ')' }" v-else></div>
+                                        <form role="form" class="mt-4" id="frmEditarBaner" v-on:submit.prevent="ajaxActualizarBaner" v-cloak>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-md-3">Cambiar baner:</label>
+                                                <div class="col-md-9">
+                                                    <div class="custom-file">
+                                                        <input id="aImagenB" type="file" class="custom-file-input" name="baner_publicitario" v-on:change="cambiarBaner">
+                                                        <label for="aImagenB" class="custom-file-label">@{{ sNombreNuevoBaner }}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-form-label col-md-3">Enlace baner: </label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" name="enlace_de_baner" autocomplete="off" v-model="pagina.enlace_baner_publicitario">
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-right mb-0">
+                                                <button type="submit" class="btn btn-primary" v-bind:disabled="iActualizandoBaner === 1">
+                                                    <span v-if="iActualizandoBaner === 0">Guardar</span>
+                                                    <span v-else><i class="fas fa-circle-notch fa-spin"></i> Por favor, espere...</span>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

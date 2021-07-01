@@ -175,7 +175,8 @@ listarMenus(function (lstModulos, lstMenus) {
                             imagen: null,
                             linea: linea,
                             iActualizando: 0,
-                            iEliminando: 0
+                            iEliminandoImagen: 0,
+                            iEliminando: 0,
                         },
                         computed: {
                             sNombreImagen: function () {
@@ -253,6 +254,58 @@ listarMenus(function (lstModulos, lstMenus) {
                                     },
                                     complete: function () {
                                         $this.iActualizando = 0;
+                                    }
+                                });
+                            },
+                            ajaxEliminarImagen: function() {
+
+                                let $this = this;
+                                let formData = new FormData();
+                                formData.append('id', iId);
+
+                                $this.iEliminandoImagen = 1;
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/gestion-productos/lineas/ajax/eliminarImagen',
+                                    data: formData,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (respuesta) {
+                                        if (respuesta.result === result.success) {
+                                            $this.imagen = null;
+                                            $this.linea.ruta_imagen = null;
+                                            vueLineas.ajaxListar();
+                                        }
+                                        console.log(respuesta);
+
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+
+                                        toastr[respuesta.result](respuesta.mensaje);
+                                    },
+                                    error: function (respuesta) {
+                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+                                        toastr[result.error](sHtmlMensaje);
+                                    },
+                                    complete: function () {
+                                        $this.iEliminandoImagen = 0;
                                     }
                                 });
                             },

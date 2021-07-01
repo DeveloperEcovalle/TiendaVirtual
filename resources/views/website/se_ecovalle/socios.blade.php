@@ -79,6 +79,16 @@
     </div>
     <section class="py-4" v-if="iCargando === 0">
         <div class="container-xl" v-html="locale === 'es' ? pagina.contenido_espanol : pagina.contenido_ingles"></div>
+    </section>
+    <div class="container-xl pb-4">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="mapa" style="width:100%;height:500px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="py-4" v-if="iCargando === 0">
         <div class="container-xl">
             <div class="py-5">
                 <h2 class="h3 font-weight-bold titulo-subrayado text-center mb-4">Beneficios</h2>
@@ -96,14 +106,6 @@
             </div>
         </div>
     </section>
-    <div class="container-xl pb-4">
-        <div class="row">
-            <div class="col-lg-12">
-                <div id="mapa" style="width:100%;height:500px;">
-                </div>
-            </div>
-        </div>
-    </div>
     <section class="pt-5 pb-4 bg-ecovalle-6">
         <div class="row justify-content-center">
             <div class="col-10 col-md-6 col-lg-5">

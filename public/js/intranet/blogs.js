@@ -42,6 +42,16 @@ listarMenus(function (lstModulos, lstMenus) {
             lstBlogs: [],
             iIdSeleccionado: 0,
             iError: 0,
+
+            pagina: {
+                ruta_imagen_portada: '',
+                ruta_baner_publicitario: ''
+            },
+            nuevaImagenPortada: null,
+            iActualizandoImagenPortada: 0,
+
+            nuevoBaner: null,
+            iActualizandoBaner: 0,
         },
         computed: {
             lstDias: function () {
@@ -67,6 +77,32 @@ listarMenus(function (lstModulos, lstMenus) {
                         return new Date(this.iAnio, parseInt(this.iMes) + 1, 0, 23, 59, 59, 999).getTime();
                     }
                 }
+            },
+            //--------------------------------------------------
+            sNombreNuevaImagen: function () {
+                if (this.nuevaImagenPortada === null) {
+                    return 'Buscar archivo';
+                }
+                return this.nuevaImagenPortada.name.split('\\').pop();
+            },
+            sContenidoNuevaImagen: function () {
+                if (this.nuevaImagenPortada === null) {
+                    return null;
+                }
+                return URL.createObjectURL(this.nuevaImagenPortada);
+            },
+
+            sNombreNuevoBaner: function () {
+                if (this.nuevoBaner === null) {
+                    return 'Buscar archivo';
+                }
+                return this.nuevoBaner.name.split('\\').pop();
+            },
+            sContenidoNuevoBaner: function () {
+                if (this.nuevoBaner === null) {
+                    return null;
+                }
+                return URL.createObjectURL(this.nuevoBaner);
             }
         },
         mounted: function () {
@@ -77,6 +113,100 @@ listarMenus(function (lstModulos, lstMenus) {
             });
         },
         methods: {
+            cambiarImagen: function (event) {
+                let input = event.target;
+                this.nuevaImagenPortada = input.files[0];
+            },
+            cambiarBaner: function (event) {
+                let input = event.target;
+                this.nuevoBaner = input.files[0];
+            },
+            ajaxActualizarImagenPortada: function () {
+                let $this = this;
+                $this.iActualizandoImagenPortada = 1;
+
+                let frmEditarImagenPortada = document.getElementById('frmEditarImagenPortada');
+                let formData = new FormData(frmEditarImagenPortada);
+
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+
+                $.ajax({
+                    type: 'post',
+                    url: '/intranet/app/pagina-web/blog/ajax/actualizarImagenPortada',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (respuesta) {
+                        if (respuesta.result === result.success) {
+                            $this.pagina.ruta_imagen_portada = respuesta.data.sNuevaRutaImagen;
+
+                            frmEditarImagenPortada.reset();
+                            $this.nuevaImagenPortada = null;
+                        }
+
+                        toastr[respuesta.result](respuesta.mensaje);
+                    },
+                    error: function (respuesta) {
+                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                        toastr[result.error](sHtmlMensaje);
+                    },
+                    complete: function () {
+                        $this.iActualizandoImagenPortada = 0;
+                    }
+                });
+            },
+            ajaxActualizarBaner: function () {
+                let $this = this;
+                $this.iActualizandoBaner = 1;
+
+                let frmEditarBaner = document.getElementById('frmEditarBaner');
+                let formData = new FormData(frmEditarBaner);
+
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+
+                $.ajax({
+                    type: 'post',
+                    url: '/intranet/app/pagina-web/blog/ajax/actualizarBaner',
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (respuesta) {
+                        if (respuesta.result === result.success) {
+                            $this.pagina.ruta_baner_publicitario = respuesta.data.sNuevaRutaBaner;
+
+                            frmEditarBaner.reset();
+                            $this.nuevoBaner= null;
+                        }
+
+                        toastr[respuesta.result](respuesta.mensaje);
+                    },
+                    error: function (respuesta) {
+                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                        toastr[result.error](sHtmlMensaje);
+                    },
+                    complete: function () {
+                        $this.iActualizandoBaner = 0;
+                    }
+                });
+            },
             ajaxListarAnios: function (onSuccess) {
                 let $this = this;
 
@@ -115,6 +245,7 @@ listarMenus(function (lstModulos, lstMenus) {
                         if (respuesta.result === result.success) {
                             let data = respuesta.data;
                             $this.lstBlogs = data.lstBlogs;
+                            $this.pagina = data.pagina;
 
                             if (onSuccess) {
                                 onSuccess();

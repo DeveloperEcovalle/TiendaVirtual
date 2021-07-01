@@ -8,7 +8,7 @@ use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\TelefonoEmpresa;
 use Illuminate\Http\Request;
-
+use App\Pagina;
 class Blog extends Website {
 
     protected $lstTraduccionesBlog;
@@ -52,6 +52,7 @@ class Blog extends Website {
     }
 
     public function ajaxListarCategorias(Request $request) {
+        $pagina = Pagina::find(13);
         $lstCategorias = CategoriaBlog::all();
         $lstUltimasPublicaciones = \App\Blog::orderBy('id', 'desc')->with('categoria')->limit(3)->get();
 
@@ -60,6 +61,7 @@ class Blog extends Website {
         $respuesta->data = [
             'lstCategorias' => $lstCategorias,
             'lstUltimasPublicaciones' => $lstUltimasPublicaciones,
+            'pagina' => $pagina,
         ];
         return response()->json($respuesta);
     }

@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use App\Pagina;
 class Blogs extends Intranet {
+
+    private $iPaginaId = 13;
 
     public function init() {
         parent::init();
@@ -102,11 +105,13 @@ class Blogs extends Intranet {
 
             $lstBlogs = Blog::with(['categoria', 'usuario', 'usuario.persona'])->whereBetween('fecha_reg', [$sFechaDesde, $sFechaHasta])
                 ->orderBy('fecha_reg', 'desc')->get();
+
+            $pagina = Pagina::find($this->iPaginaId);
         }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['lstBlogs' => $lstBlogs];
+        $respuesta->data = ['lstBlogs' => $lstBlogs, 'pagina' => $pagina];
 
         return response()->json($respuesta);
     }
@@ -451,6 +456,90 @@ class Blogs extends Intranet {
 
         $respuesta->result = Result::SUCCESS;
         $respuesta->mensaje = 'Publicaci&oacute;n eliminada correctamente.';
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxActualizarImagenPortada(Request $request) {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+        if ($permiso === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            return response()->json($respuesta);
+        }
+
+        $request->validate([
+            'imagen_de_portada' => 'nullable|image|mimes:jpeg,png',
+            'enlace_de_imagen_de_portada' => 'nullable',
+        ]);
+
+        $pagina = Pagina::find($this->iPaginaId);
+        $imagen = $request->file('imagen_de_portada');
+
+        if ($imagen) {
+            $sRutaImagenActual = str_replace('/storage', 'public', $pagina->ruta_imagen_portada);
+            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            Storage::disk('public')->delete($sNombreImagenActual);
+
+            $ruta_imagen_portada = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
+            $nueva_ruta_imagen_portada = str_replace('public/', '/storage/', $ruta_imagen_portada);
+        } else {
+            $nueva_ruta_imagen_portada = $pagina->ruta_imagen_portada;
+        }
+
+        $pagina->ruta_imagen_portada = $nueva_ruta_imagen_portada;
+        $pagina->enlace_imagen_portada = $request->get('enlace_de_imagen_de_portada');
+        $pagina->save();
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Imagen de portada guardada correctamente.';
+        $respuesta->data = ['sNuevaRutaImagen' => $nueva_ruta_imagen_portada];
+
+        return response()->json($respuesta);
+    }
+
+    public function ajaxActualizarBaner(Request $request) {
+        $this->init();
+
+        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoActualizar)->first();
+
+        $respuesta = new Respuesta;
+        if ($permiso === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+            return response()->json($respuesta);
+        }
+
+        $request->validate([
+            'baner_publicitario' => 'nullable|image|mimes:jpeg,png',
+            'enlace_de_baner' => 'nullable',
+        ]);
+
+        $pagina = Pagina::find($this->iPaginaId);
+        $imagen = $request->file('baner_publicitario');
+
+        if ($imagen) {
+            $sRutaImagenActual = str_replace('/storage', 'public', $pagina->ruta_baner_publicitario);
+            $sNombreImagenActual = str_replace('public/', '', $sRutaImagenActual);
+            Storage::disk('public')->delete($sNombreImagenActual);
+
+            $ruta_baner_publicitario = $imagen ? $imagen->store('public/empresa') : $sRutaImagenActual;
+            $nueva_ruta_baner_publicitario = str_replace('public/', '/storage/', $ruta_baner_publicitario);
+        } else {
+            $nueva_ruta_baner_publicitario = $pagina->ruta_baner_publicitario;
+        }
+
+        $pagina->ruta_baner_publicitario = $nueva_ruta_baner_publicitario;
+        $pagina->enlace_baner_publicitario = $request->get('enlace_de_baner');
+        $pagina->update();
+
+        $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Imagen baner guardada correctamente.';
+        $respuesta->data = ['sNuevaRutaBaner' => $nueva_ruta_baner_publicitario];
 
         return response()->json($respuesta);
     }

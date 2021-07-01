@@ -20,6 +20,12 @@
         <div class="form-group">
             <label class="font-weight-bold">Cambiar Imagen <span class="text-danger">*</span></label>
             <div class="row">
+                <div class="col-12" v-if="linea.ruta_imagen">
+                    <button type="button" class="btn btn-sm btn-danger float-right" v-on:click="ajaxEliminarImagen()">
+                        <span v-if="iEliminandoImagen == 0"><i class="fa fa-remove"></i></span>
+                        <span v-else><i class="fas fa-circle-notch fa-spin"></i></span>
+                    </button>
+                </div>
                 <div class="col-md-4 col-6">
                     <img v-if="imagen" v-bind:src="sContenidoImagen" class="img-fluid">
                     <img v-else v-bind:src="linea.ruta_imagen" class="img-fluid">
