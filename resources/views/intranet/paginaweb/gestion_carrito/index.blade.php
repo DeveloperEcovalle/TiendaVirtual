@@ -50,7 +50,7 @@
                                 <td>@{{ ubigeo.tarifa ? 'S/. '+ubigeo.tarifa.toFixed(2) : 'S/. 0.00' }}</td>
                                 <td>@{{ ubigeo.estado }}</td>
                             </tr>
-                            <tr v-if="lstUbigeo.length === 0" v-cloak>
+                            <tr v-if="lstUbigeoFiltrados.length === 0" v-cloak>
                                 <td colspan="5" class="text-center">No hay datos para mostrar</td>
                             </tr>
                         </tbody>

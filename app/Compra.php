@@ -14,6 +14,10 @@ class Compra extends Model
         return $this->belongsTo(Ubigeo::class, 'ubigeo_id');
     }
 
+    public function estado() {
+        return $this->belongsTo(Estado::class, 'estado_id');
+    }
+
     public function detalles() {
         return $this->hasMany(DetalleCompra::class, 'compra_id');
     }

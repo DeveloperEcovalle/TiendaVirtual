@@ -111,7 +111,7 @@
                 </div>
                 <div class="col-lg-9" v-if="iLineaProductoId == 0">
                     <a :href="'/nosotros/lineas-productos?linea=' + lstLineasProductosConImagen[0].id">
-                        <div class="shadow-lg img-background-thumbnail h-100" :style="'background-image: url(' + lstLineasProductosConImagen[0].ruta_imagen + ')'">
+                        <div class="shadow-lg img-background-thumbnail h-100" :style="'background-image: url(' + lstLineasProductosConImagen[0].ruta_imagen + ')'" style="background-size: cover;">
                             <div class="my-5 py-5 d-md-none">
                                 <h1>&nbsp;</h1>
                             </div>

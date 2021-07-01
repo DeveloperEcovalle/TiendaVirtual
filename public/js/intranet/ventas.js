@@ -25,6 +25,8 @@ listarMenus(function (lstModulos, lstMenus) {
             iMes: iMes,
             iAnio: iAnio,
 
+            lstEstados: [],
+
             lstVentas: [],
             iIdSeleccionado: 0,
             iError: 0,
@@ -101,7 +103,7 @@ listarMenus(function (lstModulos, lstMenus) {
                             let data = respuesta.data;
                             console.log(data);
                             $this.lstVentas = data.lstVentas;
-
+                            $this.lstEstados = data.lstEstados;
                             if (onSuccess) {
                                 onSuccess();
                             }
@@ -144,13 +146,16 @@ listarMenus(function (lstModulos, lstMenus) {
 
                 let lstVenta = $this.lstVentas.filter(venta => venta.id === parseInt(iId));
                 let venta = lstVenta[0];
+                console.log(venta);
+                console.log(vueVentas.lstEstados);
 
                 $('#panel').load('/intranet/app/gestion-ventas/ventas/ajax/panelEditar', function () {
                     let vueEditar = new Vue({
                         el: '#panel',
                         data: {
                             venta: venta,
-                            estado: venta.estado,
+                            lstEstados: vueVentas.lstEstados,
+                            estado: venta.estado.id,
                         },
                         methods: {
                             ajaxEditarEstado: function(){
@@ -161,11 +166,22 @@ listarMenus(function (lstModulos, lstMenus) {
                                 $.ajax({
                                     type: 'post',
                                     url: '/intranet/app/gestion-ventas/ventas/ajax/editarEstado',
-                                    data: {estado: $this.estado, id: $this.venta.id},
+                                    data: {estado_id: $this.estado, id: $this.venta.id},
                                     success: function (respuesta) {
                                         if (respuesta.result === result.success) {
                                             vueVentas.ajaxListar();
                                         }
+
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+                                        toastr[respuesta.result](respuesta.mensaje);
                                     },
                                     error: function (respuesta) {
                                         toastr.error('Ocurrió un error, vuelva a intentar.');

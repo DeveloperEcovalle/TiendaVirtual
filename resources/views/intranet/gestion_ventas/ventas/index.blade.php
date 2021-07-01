@@ -87,7 +87,7 @@
                             <td class="text-center">@{{ venta.documento }}</td>
                             <td class="text-center">@{{ venta.cliente }}</td>
                             <td class="text-right">S/. @{{ (venta.subtotal + venta.delivery).toFixed(2) }}</td>
-                            <td class="text-center" :class="{ 'bg-danger': venta.estado == 'POR ATENDER', 'bg-ecovalle': venta.estado == 'ENVIADO' || venta.estado == 'FACTURADO', 'bg-warning': venta.estado == 'RECHAZADO' || venta.estado == 'PEDIDO FALLIDO' }">@{{ venta.estado }}</td>
+                            <td class="text-center" :class="{ 'bg-danger': venta.estado.estado == 'POR ATENDER', 'bg-ecovalle': venta.estado.estado == 'ENVIADO' || venta.estado.estado == 'FACTURADO', 'bg-warning': venta.estado.estado == 'RECHAZADO' || venta.estado.estado == 'PEDIDO FALLIDO' }">@{{ venta.estado.estado }}</td>
                         </tr>
                         <tr v-if="lstVentas.length === 0" v-cloak>
                             <td colspan="9" class="text-center">No hay datos para mostrar</td>

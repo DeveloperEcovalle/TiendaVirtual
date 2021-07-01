@@ -10,7 +10,10 @@ use App\SunatFacturaBoleta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Compra;
+use App\Estado;
 use Illuminate\Support\Facades\DB;
+use App\Empresa;
+use Illuminate\Support\Facades\Mail;
 
 class Ventas extends Intranet {
 
@@ -98,14 +101,16 @@ class Ventas extends Intranet {
             $sFechaHasta = Carbon::createFromTimestamp(intval($lFechaHasta) / 1000)->format('Y-m-d');
 
             $lstVentas = Compra::whereBetween('fecha_reg', [$sFechaDesde, $sFechaHasta])
-                ->with(['detalles','detalles.producto','detalles.producto.precio_actual', 'ubigeo'])
+                ->with(['detalles','detalles.producto','detalles.producto.precio_actual', 'ubigeo', 'estado'])
                 ->orderBy('id', 'desc')
                 ->get();
+             
+            $lstEstados = Estado::all();
         }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
-        $respuesta->data = ['lstVentas' => $lstVentas];
+        $respuesta->data = ['lstVentas' => $lstVentas, 'lstEstados' => $lstEstados];
 
         return response()->json($respuesta);
     }
@@ -115,10 +120,20 @@ class Ventas extends Intranet {
         $respuesta = new Respuesta;
 
         $venta = Compra::find($request->id);
-        $venta->estado = $request->estado;
+        $venta->estado_id = $request->estado_id;
         $venta->update();
 
+        $estado = Estado::find($request->estado_id);
+        $empresa = Empresa::first();
+
+        Mail::send('website.email.confirm_pedido',compact('venta','empresa','estado'), function ($mail) use ($venta) {
+            $mail->subject('ESTADO DE PEDIDO ECOVALLE');
+            $mail->to($venta->email);
+           $mail->from('website@ecovalle.pe','ECOVALLE');
+        });
+
         $respuesta->result = Result::SUCCESS;
+        $respuesta->mensaje = 'Estado cambiado exitosamente.';
         return response()->json($respuesta);
     }
 

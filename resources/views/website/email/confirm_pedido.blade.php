@@ -198,7 +198,7 @@
     </header>
     <div class="container">
         <div class="card-title">
-            <p class="title">Su orden se encuentra en camino</p>
+            <p class="title">{{ $estado->titulo }}</p>
         </div>
         <p class="title" style="margin-bottom: 1vw;">Compra {{ $venta->codigo }}</p>
         <div class="hr-divider"></div>
@@ -221,8 +221,8 @@
                         <p class="text" style="margin-top: 0%; margin-bottom: 1%;">{{  $venta->direccion }}@if(!empty($venta->ubigeo)){{', '.$venta->ubigeo->distrito.', '. $venta->ubigeo->provincia.', '.$venta->ubigeo->departamento}}@endif</p>
                         <p class="text" style="margin-top: 0%; margin-bottom: 1%;">Per&uacute; (PE)</p>
                         <p class="text" style="margin-top: 0%;">{{ $venta->telefono }}</p>
-                        @if($venta->tipo_compra != 'RECOJO EN TIENDA')
-                        <p class="text">Tiempo de llegada 2 dias</p>
+                        @if($estado->descripcion)
+                            <p class="text">{{  $estado->descripcion }}</p>
                         @endif
                         
                     </td>
@@ -236,11 +236,13 @@
                         @endif
                         <p class="text" style="margin-bottom: 1%;">Importe total de compra</p>
                         <p class="total" style="margin-top: 0%; margin-bottom: 1%;">S/. {{ number_format($venta->subtotal + $venta->delivery,2) }}</p>
+                        @if($estado->nota)
                         <div class="nota">
                             <p class="text">
-                                Nota: Estimado cliente, el recojo de la encomienda esta sujeto a cobro por parte de la <b>EMPRESA DE TRANSPORTE,</b> los montos varian seg&uacute;n la empresa y/o regi&oacute;n. EcoValle <b>NO</b> se hace cargo por cobros adicionales por parte de transportista.
+                                Nota: {{  $estado->nota }}
                             </p>
                         </div>
+                        @endif
                     </td>
                 </tr>
             </table>

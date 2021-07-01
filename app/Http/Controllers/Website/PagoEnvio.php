@@ -223,6 +223,7 @@ class PagoEnvio extends Website
             $venta->ubigeo_id = $ubigeo_id;
             $venta->cliente_id = $cliente_id;
             $venta->agencia = $agencia;
+            $venta->estado_id = 1;
             $venta->fecha_reg = $fecha_reg;
             $venta->save();
 
