@@ -147,6 +147,53 @@ listarMenus(function (lstModulos, lstMenus) {
                                     }
                                 });
                             },
+                            ajaxEliminar: function (iId) {
+                                let $this = this;
+                                $this.iEliminando = 1;
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/pagina-web/carrito-compras/ajax/eliminar',
+                                    data: {id: iId},
+                                    success: function (respuesta) {
+                                        $this.iEliminando = 0;
+
+                                        if (respuesta.result === result.success) {
+                                            vueCarrito.ajaxListar(function () {
+                                                vueCarrito.panelListar(function () {
+                                                    vueCarrito.iIdSeleccionado = 0;
+                                                    window.history.replaceState(null, 'CARRITO', '/intranet/app/pagina-web/carrito-compras');
+                                                });
+                                            });
+                                        }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+                                        toastr[respuesta.result](respuesta.mensaje);
+                                    },
+                                    error: function (respuesta) {
+                                        $this.iEliminando = 0;
+
+                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+                                        toastr[result.error](sHtmlMensaje);
+                                    }
+                                });
+                            },
                             ajaxCancelar: function () {
                                 vueCarrito.panelListar(function () {
                                     vueCarrito.iIdSeleccionado = 0;
@@ -158,6 +205,77 @@ listarMenus(function (lstModulos, lstMenus) {
 
                     $this.iIdSeleccionado = ubigeo.id;
                     window.history.replaceState(null, 'CARRITO', `/intranet/app/pagina-web/carrito-compras/${ubigeo.id}/editar`);
+                });
+            },
+            panelNuevo: function () {
+
+                let $this = this;
+                $('#panel').load('/intranet/app/pagina-web/carrito-compras/ajax/panelNuevo', function () {
+                    let vueNuevo = new Vue({
+                        el: '#panel',
+                        data: {
+                            iInsertando: 0,
+                        },
+                        methods: {
+                            ajaxInsertar: function () {
+                                let $this = this;
+
+                                $this.iInsertando = 1;
+
+                                let frmNuevo = document.getElementById('frmNuevo');
+                                let formData = new FormData(frmNuevo);
+
+                                $.ajax({
+                                    type: 'post',
+                                    url: '/intranet/app/pagina-web/carrito-compras/ajax/insertar',
+                                    data: formData,
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (respuesta) {
+                                        $this.iInsertando = 0;
+
+                                        if (respuesta.result === result.success) {
+                                            vueCarrito.ajaxListar();
+                                        }
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+                                        toastr[respuesta.result](respuesta.mensaje);
+                                    },
+                                    error: function (respuesta) {
+                                        $this.iInsertando = 0;
+                                        toastr.clear();
+                                        toastr.options = {
+                                            iconClasses: {
+                                                error: 'bg-danger',
+                                                info: 'bg-info',
+                                                success: 'bg-success',
+                                                warning: 'bg-warning',
+                                            },
+                                        };
+
+                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                        toastr[result.error](sHtmlMensaje);
+                                    }
+                                });
+                            },
+                            ajaxCancelar: function () {
+                                vueCarrito.panelListar(function () {
+                                    vueCarrito.iIdSeleccionado = 0;
+                                    window.history.replaceState(null, 'CARRITO', '/intranet/app/pagina-web/carrito-compras');
+                                });
+                            }
+                        }
+                    });
+                    $this.iIdSeleccionado = 0;
+                    window.history.replaceState(null, 'CARRITO', '/intranet/app/pagina-web/carrito-compras/nuevo');
                 });
             }
         }

@@ -701,6 +701,7 @@ Route::namespace('Intranet')->group(function () {
 
                     Route::prefix('/carrito-compras')->group(function () {
                         Route::get('/','GestionCarrito@index');
+                        Route::get('/nuevo', 'GestionCarrito@index');
                         Route::get('/{iIdInterno?}/editar', 'GestionCarrito@index');
 
                         Route::prefix('/ajax')->group(function () {
@@ -709,6 +710,11 @@ Route::namespace('Intranet')->group(function () {
                             
                             Route::get('/panelEditar', 'GestionCarrito@ajaxPanelEditar');
                             Route::post('/actualizar', 'GestionCarrito@ajaxActualizar');
+
+                            Route::post('/eliminar', 'GestionCarrito@ajaxEliminar');
+
+                            Route::get('/panelNuevo', 'GestionCarrito@ajaxPanelNuevo');
+                            Route::post('/insertar', 'GestionCarrito@ajaxInsertar');
                         });
                     });
                 });

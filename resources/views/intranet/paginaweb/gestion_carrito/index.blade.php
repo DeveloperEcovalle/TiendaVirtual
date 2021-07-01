@@ -23,6 +23,9 @@
                         </li>
                     </ol>
                 </div>
+                <div class="col-4">
+                    <button class="btn btn-primary float-right mt-2" v-on:click="panelNuevo"><i class="fas fa-plus"></i> Nuevo</button>
+                </div>
             </div>
             <div class="p-4" id="layoutLeft" v-cloak>
                 <div class="form-group">

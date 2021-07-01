@@ -1,5 +1,11 @@
 <div class="d-flex border-bottom white-bg">
     <div class="col-8 p-3 font-bold">Editar Ubigeo</div>
+    <div class="col-4 px-3 py-2">
+        <button class="btn btn-danger btn-sm mt-1 float-right" v-on:click="ajaxEliminar(ubigeo.id)" v-bind:disabled="iEliminando === 1" v-cloak>
+            <i class="fas fa-trash-alt" v-if="iEliminando === 0"></i>
+            <i class="fas fa-circle-notch fa-spin" v-else></i>
+        </button>
+    </div>
 </div>
 <div class="d-flex p-4 bg-white border-top" id="layoutRight">
     <form role="form" v-on:submit.prevent="ajaxActualizar" class="w-100" id="frmEditar">
