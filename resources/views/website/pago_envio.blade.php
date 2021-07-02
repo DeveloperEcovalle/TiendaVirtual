@@ -211,5 +211,5 @@
 
 @section('js')
     <script src="https://checkout.culqi.com/js/v3"></script>
-    <script src="/js/website/pagoEnvio.js?n=1"></script>
+    <script src="/js/website/pagoEnvio.js?cvcn=14"></script>
 @endsection
