@@ -284,15 +284,27 @@ class PreciosOfertas extends Intranet {
 
         $fecha_inicio = $request->get('fecha_de_inicio');
         $lstOfertasExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_inicio])->get();
+        $lstPromocionesExistentes = Promocion::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_inicio])->get();
         if ($lstOfertasExistentes->count()) {
             $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con otra oferta ya registrada.';
             return response()->json($respuesta);
         }
 
+        if ($lstPromocionesExistentes->count()) {
+            $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con una promocion ya registrada.';
+            return response()->json($respuesta);
+        }
+
         $fecha_vencimiento = $request->get('fecha_de_vencimiento');
         $lstOfertasExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_vencimiento])->get();
+        $lstPromocionesExistentes = Promocion::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_vencimiento])->get();
         if ($lstOfertasExistentes->count()) {
             $respuesta->mensaje = 'Las fecha de vencimiento ingresada coincide con otra oferta ya registrada.';
+            return response()->json($respuesta);
+        }
+
+        if ($lstPromocionesExistentes->count()) {
+            $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con una promocion ya registrada.';
             return response()->json($respuesta);
         }
 
@@ -422,15 +434,27 @@ class PreciosOfertas extends Intranet {
     
             $fecha_inicio = $request->get('fecha_de_inicio');
             $lstPromocionesExistentes = Promocion::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_inicio])->get();
+            $lstOfertasExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_inicio])->get();
             if ($lstPromocionesExistentes->count()) {
                 $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con otra promocion ya registrada.';
+                return response()->json($respuesta);
+            }
+
+            if ($lstOfertasExistentes->count()) {
+                $respuesta->mensaje = 'Las fecha de inicio ingresada coincide con otra oferta ya registrada.';
                 return response()->json($respuesta);
             }
     
             $fecha_vencimiento = $request->get('fecha_de_vencimiento');
             $lstPromocionesExistentes = Promocion::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_vencimiento])->get();
+            $lstOfertasExistentes = Oferta::where('producto_id', $id)->where('eliminado', 0)->whereRaw('? between fecha_inicio and fecha_vencimiento', [$fecha_vencimiento])->get();
             if ($lstPromocionesExistentes->count()) {
                 $respuesta->mensaje = 'Las fecha de vencimiento ingresada coincide con otra promocion ya registrada.';
+                return response()->json($respuesta);
+            }
+
+            if ($lstOfertasExistentes->count()) {
+                $respuesta->mensaje = 'Las fecha de vencimiento ingresada coincide con otra oferta ya registrada.';
                 return response()->json($respuesta);
             }
     

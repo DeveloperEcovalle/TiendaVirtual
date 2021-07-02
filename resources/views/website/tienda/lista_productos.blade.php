@@ -172,19 +172,19 @@
                                             <div class="carousel-inner">
                                                 <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
                                                     <div class="text-center">
-                                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-success badge-oferta position-absolute px-2 py-1 d-none" v-if="producto.oferta_vigente">
-                                                    - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
+                                                    @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
                                                 </span>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                                     <div class="text-center">
-                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
-                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.__-@{{ producto.promocion_vigente.max }}
+                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.__-@{{ producto.promocion_vigente.max }}
                                                 </span>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
                                                       v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 90">
@@ -227,7 +227,7 @@
                                                 <div class="text-right">
                                                     <p class="font-bold m-0 h4">
                                                         <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
-                                                            S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                                                            S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
                                                         </span>
                                                         <span class="text-amarillo-ecovalle font-weight-bold" v-else>
                                                             S/ @{{ producto.precio_actual.monto.toFixed(2) }}
@@ -317,13 +317,13 @@
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
                                                     <div class="justify-content-between">
-                                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                                     <div class="justify-content-between">
                                                         +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
-                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
@@ -357,7 +357,7 @@
                                                     <div class="text-right">
                                                         <p class="font-bold m-0 h4">
                                                             <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
-                                                                S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                                                                S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
                                                             </span>
                                                             <span class="text-amarillo-ecovalle font-weight-bold" v-else>
                                                                 S/ @{{ producto.precio_actual.monto.toFixed(2) }}

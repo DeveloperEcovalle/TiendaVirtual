@@ -309,8 +309,23 @@ class PagoEnvio extends Website
                     $mail->from('website@ecovalle.pe','ECOVALLE');
                 });
             }
+
+            if($empresa->correo_pedidos_1)
+            {
+                Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                    $mail->to($empresa->correo_pedidos);
+                    $mail->subject('PEDIDO COD: '.$venta->codigo);
+                    $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                    $mail->from('website@ecovalle.pe','ECOVALLE');
+                });
+            }
             
             if($empresa->telefono_pedidos)
+            {
+                $result = enviapedido($venta, $empresa->telefono_pedidos);
+            }
+
+            if($empresa->telefono_pedidos_1)
             {
                 $result = enviapedido($venta, $empresa->telefono_pedidos);
             }

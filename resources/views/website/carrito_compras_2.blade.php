@@ -79,7 +79,34 @@
                                             </div>
                                             <div class="col-12 col-md-6 text-center text-md-left">
                                                 <p class="font-weight-bold mb-1 mb-md-3">@{{ locale === 'es' ? detalle.producto.nombre_es : detalle.producto.nombre_en }}</p>
-                                                <a href="#" :title="locale === 'es' ? 'Eliminar' : 'Delete'" class="small d-block mb-4 mb-md-0 text-danger" v-on:click.prevent="ajaxEliminarDelCarrito(detalle.producto, i)">@{{ locale === 'es' ? 'Eliminar' : 'Delete'}}</a>
+                                                <a href="#" :title="locale === 'es' ? 'Eliminar' : 'Delete'" class="small d-block mb-2 mb-md-2 text-danger" v-on:click.prevent="ajaxEliminarDelCarrito(detalle.producto, i)">@{{ locale === 'es' ? 'Eliminar' : 'Delete'}}</a>
+                                                <h4 class="small text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="detalle.producto.oferta_vigente && detalle.producto.promocion_vigente == null">
+                                                    S/ @{{ (Math.round((detalle.producto.oferta_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.oferta_vigente.porcentaje) / 100) : (detalle.producto.precio_actual.monto - detalle.producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                </h4>
+                                                <h4 class="small text-amarillo-ecovalle font-weight-bold d-inline" v-if="detalle.producto.oferta_vigente == null && detalle.producto.promocion_vigente == null">
+                                                    S/ @{{ detalle.producto.precio_actual.monto.toFixed(2) }}
+                                                </h4>
+                                                <h4 class="small text-muted font-weight-bold d-inline" v-if="detalle.producto.oferta_vigente && detalle.producto.promocion_vigente == null" style="text-decoration:line-through;">
+                                                    S/ @{{ detalle.producto.precio_actual.monto.toFixed(2) }}
+                                                </h4>
+                                                <h4 class="small text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="detalle.producto.oferta_vigente == null && detalle.producto.promocion_vigente ">
+                                                    <p class="d-inline" v-if="detalle.producto.cantidad >= detalle.producto.promocion_vigente.min && detalle.producto.cantidad <= detalle.producto.promocion_vigente.max">
+                                                     S/ @{{ (Math.round((detalle.producto.promocion_vigente.porcentaje ? (detalle.producto.precio_actual.monto * (100 - detalle.producto.promocion_vigente.porcentaje) / 100) : (detalle.producto.precio_actual.monto - detalle.producto.promocion_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                    </p>
+                                                 </h4>
+                                                <h4 class="small text-muted font-weight-bold d-inline"  v-if="detalle.producto.oferta_vigente == null && detalle.producto.promocion_vigente" style="text-decoration:line-through;">
+                                                    <p class="d-inline" v-if="detalle.producto.cantidad >= detalle.producto.promocion_vigente.min && detalle.producto.cantidad <= detalle.producto.promocion_vigente.max">
+                                                        S/ @{{ detalle.producto.precio_actual.monto.toFixed(2) }}
+                                                    </p>
+                                                </h4>
+
+                                                <h4 class="small text-amarillo-ecovalle font-weight-bold"  v-if="detalle.producto.oferta_vigente == null && detalle.producto.promocion_vigente">
+                                                    <p class="d-inline" v-if="detalle.producto.cantidad >= detalle.producto.promocion_vigente.min && detalle.producto.cantidad <= detalle.producto.promocion_vigente.max">
+                                                    </p>
+                                                    <p class="d-inline" v-else>
+                                                        S/ @{{ detalle.producto.precio_actual.monto.toFixed(2) }}
+                                                    </p>
+                                                </h4>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="row d-block d-md-flex">
@@ -153,7 +180,7 @@
                                 <p class="mb-3 text-muted">@{{ iArticulos }} art&iacute;culos</p>
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
-                                <p class="mb-0 font-weight-bold">Descuento <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
+                                <p class="mb-0 font-weight-bold">Ahorraste <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2 h5">TOTAL <span class="float-right">S/ @{{ fSubtotal.toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>

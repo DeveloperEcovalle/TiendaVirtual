@@ -63,14 +63,16 @@ class Recepcion extends Intranet
                 return response()->json($respuesta);
             }
     
-            $request->validate([
+            /*$request->validate([
                 'correo_pedidos' => 'required',
                 'telefono_pedidos' => 'required'
-            ]);
+            ]);*/
     
             $empresa = Empresa::first();
             $empresa->correo_pedidos = $request->get('correo_pedidos');
             $empresa->telefono_pedidos = $request->get('telefono_pedidos');
+            $empresa->correo_pedidos_1 = $request->get('correo_pedidos_1');
+            $empresa->telefono_pedidos_1 = $request->get('telefono_pedidos_1');
             $empresa->update();
     
             $respuesta->result = Result::SUCCESS;

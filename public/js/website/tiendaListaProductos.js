@@ -276,6 +276,22 @@ let vueTiendaListaProductos = new Vue({
                                 }
                                 return Math.round(fSubtotal * 10) / 10;
                             },
+                            fDescuento: function () {
+                                let fDescuento = 0;
+                                for (let detalle of vueTiendaListaProductos.lstCarritoCompras) {
+                                    let producto = detalle.producto;
+                                    let fOferta = producto.oferta_vigente === null ? 0.00 : producto.oferta_vigente.porcentaje ? ((producto.precio_actual.monto * producto.oferta_vigente.porcentaje) / 100) : producto.oferta_vigente.monto ;
+                    
+                                    let fPromocion = producto.promocion_vigente === null ? 0.00 :
+                                        (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
+                    
+                                    let promocion = detalle.cantidad * fPromocion;
+                                    let oferta = detalle.cantidad * fOferta;
+                                    let total = promocion + oferta;
+                                    fDescuento += total;
+                                }
+                                return Math.round(fDescuento * 10) / 10;
+                            },
                         },
                         methods: {
                             removeModal: function(){

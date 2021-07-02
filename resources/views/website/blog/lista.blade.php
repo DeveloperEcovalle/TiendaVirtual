@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12 py-5">
+                        <div class="col-12 py-3 mb-0">
                             <div class="row mx-0 border rounded shadow">
                                 <div class="col-12 bg-amarillo text-white text-uppercase py-2">
                                     {{ $lstTraduccionesBlog['last_posts'] }}

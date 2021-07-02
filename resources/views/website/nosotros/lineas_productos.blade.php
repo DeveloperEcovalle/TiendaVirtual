@@ -62,9 +62,9 @@
             <div class="row pb-5">
                 <div class="col-lg-3">
                     <form v-on:submit.prevent>
-                        <div class="row">
+                        <div class="row p-0">
                             <div class="col-12">
-                                <div class="row mx-0 shadow mb-5">
+                                <div class="row mx-0 shadow mb-2">
                                     <div class="col-12 bg-amarillo text-white text-uppercase rounded-top py-2">
                                         {{ $lstLocales['Product lines'] }}
                                     </div>
@@ -169,12 +169,12 @@
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
                                                     <div class="text-center">
-                                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                                     <div class="text-center">
-                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
@@ -207,7 +207,7 @@
                                                     <div class="text-right">
                                                         <p class="font-bold m-0 h4">
                                                             <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
-                                                                S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                                                                S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
                                                             </span>
                                                             <span class="text-amarillo-ecovalle font-weight-bold" v-else>
                                                                 S/ @{{ producto.precio_actual.monto.toFixed(2) }}

@@ -31,15 +31,27 @@
                             <div class="ibox-content">
                                 <form role="form" id="frmEditar" v-on:submit.prevent="ajaxActualizar">
                                     <div class="form-group row">
-                                        <label class="col-form-label col-md-4">Correo electr&oacute;nico</label>
+                                        <label class="col-form-label col-md-4">Correo electr&oacute;nico - 1</label>
                                         <div class="col-md-8">
                                             <input type="email" class="form-control" name="correo_pedidos" v-model="empresa.correo_pedidos" placeholder="Email" required="required" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-form-label col-md-4">Tel&eacute;fono</label>
+                                        <label class="col-form-label col-md-4">Tel&eacute;fono - 1</label>
                                         <div class="col-md-8">
                                             <input type="text" class="form-control" name="telefono_pedidos" v-model="empresa.telefono_pedidos" placeholder="N&uacute;mero de celular" required="required" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-4">Correo electr&oacute;nico - 2</label>
+                                        <div class="col-md-8">
+                                            <input type="email" class="form-control" name="correo_pedidos_1" v-model="empresa.correo_pedidos_1" placeholder="Email" autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-md-4">Tel&eacute;fono - 2</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" name="telefono_pedidos_1" v-model="empresa.telefono_pedidos_1" placeholder="N&uacute;mero de celular" autocomplete="off">
                                         </div>
                                     </div>
                                     <div class="form-group mb-0 text-right">

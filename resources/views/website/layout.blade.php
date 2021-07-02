@@ -361,10 +361,13 @@
                                         <h5 class="text-center mt-4 mb-3">Iniciar sesi&oacute;n</h5>
                                         <form role="form" id="frmIniciarSesion">
                                             <div class="form-group">
-                                                <input class="form-control" type="email" name="email" placeholder="{{ $lstLocales['Email'] }}" required="required" autocomplete="off">
+                                                <input class="form-control input-inicio" type="email" name="email" placeholder="{{ $lstLocales['Email'] }}" required="required" autocomplete="off">
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control" type="password" name="contrasena" placeholder="{{ $lstLocales['Password'] }}" required="required" autocomplete="off">
+                                                <div class="input-group">
+                                                    <input class="form-control input-inicio" type="password" style="border-right: 0px !important;" name="contrasena" placeholder="{{ $lstLocales['Password'] }}" id="password" required="required" autocomplete="off">
+                                                    <span class="input-group-append"><button class="btn btn-password" value="0" onclick="clickactionPassword(this)" type="button"><i id="pass" class="fa fa-eye"></i> </button></span>
+                                                </div>
                                             </div>
                                             <div class="alert text-center p-2 d-none" id="sMensaje">
                                                 
@@ -424,7 +427,7 @@
     </div>
     @endif
 
-    <div id="producto-modal"></div>
+    <div id="producto-modal" class="producto-modal"></div>
 
     <!-- Mainly scripts -->
     <script src="/js/jquery-3.1.1.min.js"></script>
@@ -487,7 +490,44 @@
                         $('#sMensaje').html('Ocurrió un error inesperado. Intentar una vez más debería solucionar el problema; de no ser así, comuníquese con el administrador del sistema.');
                     });
             });
+
+            // function password(b)
+            // {
+            //     let inputValue = b.value;
+            //     alert(inputValue);
+            // }
+
+            /*posicionarFooter();
+
+            $('.modal-producto').scroll(function() {    
+                posicionarFooter();
+            });
+            
+            function posicionarFooter() {
+                var altura_del_footer = $('.total-carrito').outerHeight(true);
+            
+                if ($('.modal-producto').scrollTop() >= altura_del_footer){
+                    $('.total-carrito').addClass('fixed-bottom');
+                } else {
+                    $('.modal-producto').removeClass('fixed-bottom');
+                }
+            }*/
         });
+
+        function clickactionPassword(b)
+        {
+            var tipo = document.getElementById("password");
+            if(tipo.type == "password"){
+                $('#pass').removeClass('fa fa-eye');
+                $('#pass').addClass('fa fa-eye-slash');
+                tipo.type = "text";
+            }else{
+                $('#pass').removeClass('fa fa-eye-slash');
+                $('#pass').addClass('fa fa-eye');
+                tipo.type = "password";
+            }
+        }
+
         /*function window_mouseout( obj, evt, fn ) {
             if ( obj.addEventListener ) {
 

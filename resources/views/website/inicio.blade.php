@@ -82,13 +82,13 @@
                                     <div class="card-header p-0 bg-transparent" style="height: 180px">
                                         <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
                                             <div class="justify-content-between">
-                                                - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                                             </div>
                                         </div>
                                         <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                             <div class="justify-content-between">
                                                 +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
-                                                @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                                             </div>
                                         </div>
                                         <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
@@ -122,7 +122,7 @@
                                             <div class="text-right">
                                                 <p class="font-bold m-0 h4">
                                                     <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
-                                                        S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                                                        S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
                                                     </span>
                                                     <span class="text-amarillo-ecovalle font-weight-bold" v-else>
                                                         S/ @{{ producto.precio_actual.monto.toFixed(2) }}

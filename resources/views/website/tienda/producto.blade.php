@@ -34,12 +34,12 @@
                 <div class="col-md-4">
                     <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
                         <div class="text-center">
-                            - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                            @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                         </div>
                     </div>
                     <div class="div-promocion position-absolute d-none" v-if="producto.promocion_vigente">
                         <div class="text-center">
-                            @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                            @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                         </div>
                     </div>
                     <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
@@ -122,7 +122,7 @@
                         </p>
                     </div>
                     <hr>
-                    <div class="row mb-2" v-if="producto.promocion_vigente">
+                    <div class="row mb-2" v-if="producto.promocion_vigente || producto.oferta_vigente">
                         <div class="col-12">
                             <div class="container">
                                 <div class="table-container">
@@ -144,6 +144,17 @@
                                                 </td>
                                                 <td>
                                                     @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }}
+                                                </td>
+                                            </tr>
+                                            <tr v-if="producto.oferta_vigente">
+                                                <td style="border-right: 0.001vw solid #6c757d;">
+                                                    Oferta
+                                                </td>
+                                                <td style="border-right: 0.001vw solid #6c757d;">
+                                                   1 - n
+                                                </td>
+                                                <td>
+                                                    @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -197,12 +208,12 @@
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
                                                     <div class="text-center">
-                                                        - @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} DSCTO.
+                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                                     <div class="text-center">
-                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} DSCTO.
+                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
