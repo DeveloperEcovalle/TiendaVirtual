@@ -19,7 +19,7 @@
             </div>
         </section>
     </div>
-    <div class="col-12 m-1 p-0 carrito-productos">
+    <div class="col-12 m-0 p-1 carrito-productos">
         <div class="row minicart-shopping-list">
             <div class="col-12">
                 <div class="row" v-for="producto in lstCarrito">
