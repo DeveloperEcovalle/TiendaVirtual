@@ -159,6 +159,18 @@ let vueMiCuentaLista = new Vue({
                             })
                             .then(() => $this.iActualizando = 0);
                         },
+                        clickactionPassword: function(id,id2) {
+                            var tipo = document.getElementById(id);
+                            if(tipo.type == "password"){
+                                $('#'+id2).removeClass('fa fa-eye');
+                                $('#'+id2).addClass('fa fa-eye-slash');
+                                tipo.type = "text";
+                            }else{
+                                $('#'+id2).removeClass('fa fa-eye-slash');
+                                $('#'+id2).addClass('fa fa-eye');
+                                tipo.type = "password";
+                            }
+                        }
                     }
                 });
                 setTimeout(() => {

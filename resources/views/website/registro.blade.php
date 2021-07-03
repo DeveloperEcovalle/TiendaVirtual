@@ -24,7 +24,10 @@
                     <div class="col-11 col-md-5">
                         <div class="form-group" v-cloak>
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Password'] }} <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" :class="sPassword != sCPassword ? 'is-invalid' : ''" v-model="sPassword" name="password"  required="required" placeholder="{{ $lstTraduccionesRegistro['Password'] }}" autocomplete="off" minlength="6">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password1" :class="sPassword != sCPassword ? 'is-invalid' : ''" v-model="sPassword" name="password"  required="required" placeholder="{{ $lstTraduccionesRegistro['Password'] }}" autocomplete="off" minlength="6">
+                                <span class="input-group-append"><button class="btn btn-password" value="0" v-on:click="clickactionPassword('password1','pass1')" type="button"><i id="pass1" class="fa fa-eye"></i> </button></span>
+                            </div>
                             <span v-if="sPassword != sCPassword">
                                 <strong style="color: red;font-size: 12px;">Contraseñas diferentes</strong>
                             </span>
@@ -33,7 +36,10 @@
                     <div class="col-11 col-md-5">
                         <div class="form-group" v-cloak>
                             <label class="font-weight-bold">{{ $lstTraduccionesRegistro['Confirm password'] }} <span class="text-danger">*</span></label>
-                            <input type="password" class="form-control" :class="sPassword != sCPassword ? 'is-invalid' : ''" required="required" name="cpassword" v-model="sCPassword" placeholder="{{ $lstTraduccionesRegistro['Confirm password'] }}" autocomplete="off">
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="password2" :class="sPassword != sCPassword ? 'is-invalid' : ''" required="required" name="cpassword" v-model="sCPassword" placeholder="{{ $lstTraduccionesRegistro['Confirm password'] }}" autocomplete="off">
+                                <span class="input-group-append"><button class="btn btn-password" value="0" v-on:click="clickactionPassword('password2','pass2')" type="button"><i id="pass2" class="fa fa-eye"></i> </button></span>
+                            </div>
                             <span v-if="sPassword != sCPassword">
                                 <strong style="color: red;font-size: 12px;">Contraseñas diferentes</strong>
                             </span>
@@ -159,5 +165,5 @@
 @endsection
 
 @section('js')
-    <script src="/js/website/registro.js?cvcn=14"></script>
+    <script src="/js/website/registro.js?n=1"></script>
 @endsection

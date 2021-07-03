@@ -1319,20 +1319,53 @@ button.btn-round:hover{
   }
 
   /*--------------------------*/
-  .modal-producto {
-    position: fixed;
+
+header {
+    width: 100%;
+    height:160px; 
+    z-index: 100;
+}
+
+.container-page{
+    padding-top: 160px;
+}
+
+@media screen and (max-width: 500px){    
+    .container-page {
+        padding-top: 140px;
+    }
+
+    header {
+        height:130px; 
+    }
+}
+
+@media screen and (max-width: 900px){
+    .container-page {
+        padding-top: 130px !important;
+    } 
+
+    header {
+        width: 100%;
+        height: 130px !important; 
+        z-index: 100;
+    }
+}
+
+
+.modal-producto {
+    position: absolute;
     bottom: auto; 
-    top: 30px; 
+    top: -30px; 
     right: 30px; 
     left: auto;
     -webkit-box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59); 
     box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59);
     background-color: white;
-    z-index: 99;
+    z-index: 999;
     width: 25%;
-    max-height: 60%;
-    overflow-y: auto;
-    overflow-x: hidden;
+    /* max-height: 60%; */
+    max-height: calc(100vh - 160px);
 }
 
 .img-fluid-producto{
@@ -1349,46 +1382,51 @@ button.btn-round:hover{
 }
 
 .carrito-productos {
-    height: auto;
+    position: relative;
     width: 100%;
 }
 
-.modal-producto::-webkit-scrollbar {
+.minicart-shopping-list {
+    max-height: calc(100vh - 315px);
+    overflow-y: auto;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.minicart-shopping-list::-webkit-scrollbar {
     -webkit-appearance: none;
 }
 
-.modal-producto::-webkit-scrollbar:vertical {
+.minicart-shopping-list::-webkit-scrollbar:vertical {
     width: 8px;
 }
 
-.modal-producto::-webkit-scrollbar-button:increment,.modal-producto::-webkit-scrollbar-button {
+.minicart-shopping-list::-webkit-scrollbar-button:increment,.minicart-shopping-list::-webkit-scrollbar-button {
     display: none;
 } 
 
-.modal-producto::-webkit-scrollbar:horizontal {
+.minicart-shopping-list::-webkit-scrollbar:horizontal {
     height: 10px;
 }
 
-.modal-producto::-webkit-scrollbar-thumb {
+.minicart-shopping-list::-webkit-scrollbar-thumb {
     background-color: var(--verde-ecovalle-3);
     border-radius: 20px;
     border: 1px solid #f1f2f3;
 }
 
-.modal-producto::-webkit-scrollbar-track {
+.minicart-shopping-list::-webkit-scrollbar-track {
     border-radius: 10px;  
 }
 
-.modal-producto > .carrito-total {
+.carrito-total {
     position: relative;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: #fff;
     text-align: center;
-    z-index: 99;
-    margin-top: 1%;
+    z-index: 100;
     height: auto;
+}
+
     /*display: flex;
     display: -moz-flex;
     justify-content: center;
@@ -1410,24 +1448,42 @@ button.btn-round:hover{
     padding-left: 15%;
     -webkit-box-shadow: -1px 9px 14px 8px rgba(0,0,0,0.59); 
     box-shadow: -1px 9px 14px 8px rgba(0,0,0,0.59);*/
-}
 @media screen and (max-width: 1500px){
     .modal-producto {
-        width: 50%;
         max-width: 50%;
-        max-height: 60%;
+        width: 90%;
+        position: absolute;
+        bottom: auto; 
+        top: -30px; 
+        right: 30px; 
+        left: auto;
+        -webkit-box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59); 
+        box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59);
+        background-color: white;
+        z-index: 999;
+        /* max-height: 60%; */
+        max-height: calc(100vh - 150px);
     }  
 }
 
 @media screen and (max-width: 500px){    
     .modal-producto {
-        width: 90%;
         max-width: 90%;
-        max-height: 50%;
+        position: absolute;
+        bottom: auto; 
+        top: -30px; 
+        right: 30px; 
+        left: auto;
+        -webkit-box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59); 
+        box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59);
+        background-color: white;
+        z-index: 999;
+        /* max-height: 60%; */
+        max-height: calc(100vh - 150px);
     }
 }
 
-/********CONTENEDOR PRODUCTO*************/
+/********INICIO SESION*************/
 .btn-password{
     border-top: 1px solid #ced4da;
     border-bottom: 1px solid #ced4da; 

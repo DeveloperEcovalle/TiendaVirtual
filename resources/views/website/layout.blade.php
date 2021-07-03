@@ -41,7 +41,7 @@
     <link href="/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     <link href="/css/popup/magnific-popup.css" rel="stylesheet">
     <link href="/css/ecovalle/ecovalle-font.css" rel="stylesheet">
-    <link href="/css/website.css?cvcn=14" rel="stylesheet">
+    <link href="/css/website.css?n=1" rel="stylesheet">
     <link rel="stylesheet" href="/css/plugins/mklb/mklb.css" />
     @yield('izipay')
     <script>
@@ -64,10 +64,10 @@
 </head>
 <body>
     <div id="content">
-        <header class="bg-ecovalle-2">
+        <header class="bg-ecovalle-2 position-fixed">
             <div class="container-xl px-0" style="background: url('/img/bg_header.svg'); background-position: top right; background-repeat: no-repeat; background-size: 75%">
                 <div class="row p-2">
-                    <div class="col-12 col-md-3 d-md-none d-lg-block col-lg-3">
+                    <div class="col-12 col-md-3 d-none d-lg-block col-lg-3">
                         <a href="/index">
                             <img src="/img/logo_ecovalle_fondo_blanco.svg" class="img-fluid" alt="Logo Ecovalle">
                         </a>
@@ -131,7 +131,7 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
 
-                            <div class="collapse navbar-collapse mt-lg-3" id="navbarEnlacesPrincipales">
+                            <div class="collapse bg-ecovalle-2 p-1 navbar-collapse mt-lg-3" id="navbarEnlacesPrincipales">
                                 <ul class="nav nav-fill flex-column flex-fill flex-md-row mt-2">
                                     <li class="nav-item {{ $iPagina === 1 ? 'active' : '' }} dropdown mt-1 mr-md-1">
                                         <a class="nav-link text-uppercase px-2 px-xl-3 mr-lg-1 rounded border dropdown-toggle" href="/nosotros" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -172,9 +172,10 @@
                     </div>
                 </div>
             </div>
+            <div id="producto-modal" class="producto-modal position-relative"></div>
         </header>
 
-        <div class="pt-0 px-0">
+        <div class="px-0 container-page">
             @section('content')
             <section class="bg-amarillo" v-if="iCargando === 0" v-cloak>
                 <div class="container-xl">
@@ -426,8 +427,6 @@
         </a>
     </div>
     @endif
-
-    <div id="producto-modal" class="producto-modal"></div>
 
     <!-- Mainly scripts -->
     <script src="/js/jquery-3.1.1.min.js"></script>

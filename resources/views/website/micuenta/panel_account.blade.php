@@ -37,19 +37,28 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Contraseña actual (d&eacute;jalo en blanco para no cambiarla)</label>
-                                <input type="password" name="password_actual" id="password_actual" class="form-control" placeholder="Contraseña actual">
+                                <div class="input-group">
+                                    <input type="password" name="password_actual" id="password_actual" class="form-control" placeholder="Contraseña actual" autocomplete="off">
+                                    <span class="input-group-append"><button class="btn btn-password bg-white" value="0" v-on:click="clickactionPassword('password_actual','pass_actual')" type="button"><i id="pass_actual" class="fa fa-eye"></i> </button></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Nueva contraseña (d&eacute;jalo en blanco para no cambiarla)</label>
-                                <input type="password" name="password_nueva" id="password_nueva" class="form-control" minlength="6" placeholder="Contraseña nueva">
+                                <div class="input-group">
+                                    <input type="password" name="password_nueva" id="password_nueva" class="form-control" minlength="6" placeholder="Contraseña nueva" autocomplete="off">
+                                    <span class="input-group-append"><button class="btn btn-password bg-white" value="0" v-on:click="clickactionPassword('password_nueva','pass_nueva')" type="button"><i id="pass_nueva" class="fa fa-eye"></i> </button></span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label>Confirmar nueva contraseña (&eacute; en blanco para no cambiarla)</label>
-                                <input type="password" name="password_confirm" id="password_confirm" class="form-control" minlength="6" placeholder="Confirmar contraseña">
+                                <div class="input-group">
+                                    <input type="password" name="password_confirm" id="password_confirm" class="form-control" minlength="6" placeholder="Confirmar contraseña" autocomplete="off">
+                                    <span class="input-group-append"><button class="btn btn-password bg-white" value="0" v-on:click="clickactionPassword('password_confirm','pass_confirm')" type="button"><i id="pass_confirm" class="fa fa-eye"></i> </button></span>
+                                </div>
                             </div>
                         </div>
                     </div>
