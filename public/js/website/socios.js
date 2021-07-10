@@ -235,6 +235,7 @@ let vueSocios = new Vue({
                 }
            });
            this.abrirmarcador(marker);
+           this.vermarcador();
         }
         ,
         abrirmarcador: function(valor){
