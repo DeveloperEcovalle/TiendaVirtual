@@ -139,15 +139,15 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        /*$SECRET_KEY = "sk_test_DDIXikjr5xQLViGo"; //sk_test_yE35C4w9LPOqh1qp
-        $culqi = new Culqi(array('api_key' => $SECRET_KEY));*/
+        $SECRET_KEY = "sk_live_c6a62e7d9661faea"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp
+        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
         $token = $request->get('token');
         $amount = $request->get('amount');
         $email = $request->get('email');
         $cliente = $request->get('cliente');
 
-        /*$cargo = $culqi->Charges->create(
+        $cargo = $culqi->Charges->create(
             array(
                 'amount' => $amount, 
                 'currency_code' => 'PEN', 
@@ -159,8 +159,9 @@ class PagoEnvio extends Website
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
             return response()->json($respuesta);
-        }*/
-        $cargo = '';
+        }
+
+        //$cargo = '';
 
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
