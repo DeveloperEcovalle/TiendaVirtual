@@ -1,7 +1,7 @@
 <div id="contenedor-producto" class="row modal-producto">
     <div class="col-12" v-if="lstCarrito.length === 0" v-cloak>
         <section class="pt-3 pb-3">
-            <div class="container-xl py-3 my-3">
+            <div class="container-xl py-1 my-3">
                 <div class="row justify-content-center">
                     <div class="col-4 col-sm-2 col-md-5">
                         <h1 class="text-center h4 text-ecovalle-2">
@@ -13,7 +13,7 @@
                         </h1>
                     </div>
                     <div class="col-12">
-                        <h2 class="h5 text-center">Su carrito de compras est&aacute; vac&iacute;o</h2>
+                        <h2 class="h6 text-center text-ecovalle-2">Su carrito de compras est&aacute; vac&iacute;o</h2>
                     </div>
                 </div>
             </div>
