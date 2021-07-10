@@ -1428,10 +1428,10 @@ header {
 }
 
 
-@media screen and (max-width: 1500px){
+@media screen and (max-width: 900px){
     .modal-producto {
-        max-width: 50%;
-        width: 90%;
+        max-width: 30%;
+        width: 25%;
         position: absolute;
         bottom: auto; 
         top: -30px; 
@@ -1446,9 +1446,28 @@ header {
     }  
 }
 
+@media screen and (max-width: 800px){    
+    .modal-producto {
+        max-width: 45%;
+        width: 40%;
+        position: absolute;
+        bottom: auto; 
+        top: -30px; 
+        right: 30px; 
+        left: auto;
+        -webkit-box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59); 
+        box-shadow: -1px -3px 14px 8px rgba(0,0,0,0.59);
+        background-color: white;
+        z-index: 999;
+        /* max-height: 60%; */
+        max-height: calc(100vh - 150px);
+    }
+}
+
 @media screen and (max-width: 500px){    
     .modal-producto {
         max-width: 90%;
+        width: 90%;
         position: absolute;
         bottom: auto; 
         top: -30px; 
