@@ -338,6 +338,11 @@ class PagoEnvio extends Website
             $cliente = Cliente::find(session('cliente')->id);
             session()->put('cliente', $cliente);
 
+            foreach($cliente->detalles_carrito as $detalle)
+            {
+                $detalle->delete();
+            }
+
             //-----ACTUALIZAR SESSION CLIENTE
 
             DB::commit();

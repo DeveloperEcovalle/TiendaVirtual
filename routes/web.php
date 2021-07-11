@@ -1,6 +1,7 @@
 <?php
 
 use App\Agencia;
+use App\Cliente;
 use App\Compra;
 use App\Empresa;
 use Illuminate\Support\Facades\Route;
@@ -842,8 +843,12 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $venta = Compra::find(1);
-    $agencia = Agencia::where('nombre',$venta->agencia)->first();
+    $cliente = Cliente::find(session()->get('cliente')->id);
 
-    return $agencia;
+    foreach($cliente->detalles_carrito as $detalle)
+    {
+        $detalle->delete();
+    }
+
+    return $cliente->detalles_carrito;
 });
