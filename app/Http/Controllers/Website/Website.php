@@ -330,6 +330,7 @@ class Website extends Controller {
     public function findproducto(Request $request) {
         $session = $request->session();
         $cliente = $session->get('cliente');
+        
         /*$session = $request->session();
         if ($session->has('cliente')) {
             $cliente = $session->get('cliente');
