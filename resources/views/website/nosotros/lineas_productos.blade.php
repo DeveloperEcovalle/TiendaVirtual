@@ -116,7 +116,7 @@
                         </div>
                     </a>
                 </div>
-                <div class="col-lg-9 pb-5" v-if="lineaSeleccionada !== null && iLineaProductoId != 0">
+                <div class="col-lg-9 pb-5" v-if="lineaSeleccionada !== null && iLineaProductoId != 0  && iCargandoLineasProductos == 0">
                     <div v-html="locale === 'es' ? lineaSeleccionada.contenido_espanol : lineaSeleccionada.contenido_ingles"></div>
                 </div>
             </div>
