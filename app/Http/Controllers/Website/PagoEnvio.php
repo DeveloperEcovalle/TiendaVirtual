@@ -73,7 +73,7 @@ class PagoEnvio extends Website
                 'empty_cart' => 'Tu carrito de compras está vacío',
                 'update_cart' => 'Actualizar carrito de compras',
                 'order_summary' => 'Resumen del pedido',
-                'price_summary' => 'Resumen de precio',
+                'price_summary' => 'Resumen de pago',
 
                 'product' => 'Producto',
                 'price' => 'Precio',

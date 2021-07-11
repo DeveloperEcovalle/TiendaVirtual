@@ -151,8 +151,9 @@
                 <div class="col-md-4">
                     <div class="row">
                         <div class="col-12">
-                            <div class="px-3 pt-3 bg-white">
-                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesPagoEnvio['order_summary'] }}</h1>
+                            <div class="px-3 pt-3 text-center">
+                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2 text-uppercase">{{ $lstTraduccionesPagoEnvio['order_summary'] }}</h1>
+                                <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12" v-for="(detalle, i) in lstCarritoCompras">
@@ -177,16 +178,20 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="px-3 pt-3 bg-white">
+                            <div class="px-3 pt-3 text-center text-uppercase">
                                 <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesPagoEnvio['price_summary'] }}</h1>
+                                <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-3 bg-white">
-                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
-                                <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
-                                <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
-                                <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
+                            <div class="p-3">
+                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold">Ahorraste <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2 h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>
                         </div>
                     </div>

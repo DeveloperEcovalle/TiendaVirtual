@@ -368,10 +368,13 @@
                         </div>
                         <div class="col-12">
                             <div class="p-3">
-                                <p class="mb-0 text-muted">Subtotal <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
-                                <p class="mb-0 text-muted">Has ahorrado <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
-                                <p class="mb-3 text-muted">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
-                                <p class="mb-0 font-weight-bold h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
+                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold">Ahorraste <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold">Cargos de env&iacute;o <span class="float-right">S/ @{{ fDelivery.toFixed(2) }}</span></p>
+                                <div class="hr-compra"></div>
+                                <p class="mb-0 font-weight-bold text-ecovalle-compra-2 h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>
                         </div>
                     </div>

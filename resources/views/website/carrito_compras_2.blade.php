@@ -191,10 +191,10 @@
                                 <a href="/tienda" class="btn btn-block btn-ecovalle-compra mt-3">Seguir comprando</a>
                                 <div class="mt-2 py-3 py-lg-0">
                                     <div class="row">
-                                        <div class="col-md-6 text-right p-1">
+                                        <div class="col-6 text-right p-1">
                                             <img src="/img/pago_seguro.svg" class="img-atributo-ecovalle">
                                         </div>
-                                        <div class="col-md-6 text-left p-1">
+                                        <div class="col-6 text-left p-1">
                                             <p class="m-0 font-weight-bold text-muted text-uppercase" style="font-size: 12px">Compra 100%</p>
                                             <p class="font-weight-bolder text-ecovalle-compra-3 m-0 text-uppercase h4">SEGURO</p>
                                         </div>
