@@ -65,15 +65,34 @@
                         <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
                     </div>
 
-                    <h2 class="h3 text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente">
+                    <h4 class="h3 text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente && producto.promocion_vigente == null">
                         S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
-                    </h2>
-                    <h2 class="h3 text-amarillo-ecovalle font-weight-bold" v-else>
+                    </h4>
+                    <h4 class="h3 text-amarillo-ecovalle font-weight-bold d-inline" v-if="producto.oferta_vigente == null && producto.promocion_vigente == null">
                         S/ @{{ producto.precio_actual.monto.toFixed(2) }}
-                    </h2>
-                    <h2 class="h3 text-muted font-weight-bold d-inline"  v-if="producto.oferta_vigente" style="text-decoration:line-through;">
+                    </h4>
+                    <h4 class="h3 text-muted font-weight-bold d-inline" v-if="producto.oferta_vigente && producto.promocion_vigente == null" style="text-decoration:line-through;">
                         S/ @{{ producto.precio_actual.monto.toFixed(2) }}
-                    </h2>
+                    </h4>
+                    <h4 class="h3 text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente == null && producto.promocion_vigente ">
+                        <p class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                         S/ @{{ (Math.round((producto.promocion_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.promocion_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.promocion_vigente.monto)) * 10) / 10).toFixed(2) }}
+                        </p>
+                     </h4>
+                    <h4 class="h3 text-muted font-weight-bold d-inline"  v-if="producto.oferta_vigente == null && producto.promocion_vigente" style="text-decoration:line-through;">
+                        <p class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                            S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                        </p>
+                    </h4>
+    
+                    <h4 class="h3 text-amarillo-ecovalle font-weight-bold"  v-if="producto.oferta_vigente == null && producto.promocion_vigente">
+                        <p class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                        </p>
+                        <p class="d-inline" v-else>
+                            S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                        </p>
+                    </h4>
+
                     <p v-html="producto.beneficios_es" v-if="locale === 'es'"></p>
                     <p v-html="producto.beneficios_en" v-else></p>
                     <p class="h6 text-ecovalle font-weight-bold">@{{ producto.stock_actual }} disponibles</p>
@@ -246,12 +265,39 @@
                                                 <div class="pb-2">
                                                     <div class="text-right">
                                                         <p class="font-bold m-0 h4">
-                                                            <span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
+                                                            <span class="text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente && producto.promocion_vigente == null">
+                                                                S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                            </span>
+                                                            <span class="text-amarillo-ecovalle font-weight-bold d-inline" v-if="producto.oferta_vigente == null && producto.promocion_vigente == null">
+                                                                S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                            </span>
+                                                            <span class="text-muted font-weight-bold d-inline" v-if="producto.oferta_vigente && producto.promocion_vigente == null" style="text-decoration:line-through;">
+                                                                S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                            </span>
+                                                            <span class="text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente == null && producto.promocion_vigente ">
+                                                                <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                                 S/ @{{ (Math.round((producto.promocion_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.promocion_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.promocion_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                                </span>
+                                                            </span>
+                                                            <span class="text-muted font-weight-bold d-inline"  v-if="producto.oferta_vigente == null && producto.promocion_vigente" style="text-decoration:line-through;">
+                                                                <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                                    S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                                </span>
+                                                            </span>
+                                            
+                                                            <span class="text-amarillo-ecovalle font-weight-bold"  v-if="producto.oferta_vigente == null && producto.promocion_vigente">
+                                                                <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                                </span>
+                                                                <span class="d-inline" v-else>
+                                                                    S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                                </span>
+                                                            </span>
+                                                            <!--<span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
                                                                 S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
                                                             </span>
                                                             <span class="text-amarillo-ecovalle font-weight-bold" v-else>
                                                                 S/ @{{ producto.precio_actual.monto.toFixed(2) }}
-                                                            </span>
+                                                            </span>-->
                                                         </p>
                                                     </div>
                                                 </div>

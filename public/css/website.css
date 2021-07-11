@@ -255,6 +255,12 @@ strong{
     height: 250px;
 }
 
+.img-fluid-linea {
+    max-width: 100%;
+    width: 100% !important;
+    height: auto;
+  }
+
 .text-muted-compra {
     color: #333 !important;
     font-size: 13px;
