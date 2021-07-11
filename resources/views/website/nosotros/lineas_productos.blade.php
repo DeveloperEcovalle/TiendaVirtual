@@ -109,7 +109,7 @@
                         <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
                     </div>
                 </div>
-                <div class="col-lg-9" v-if="iLineaProductoId == 0">
+                <div class="col-lg-9" v-if="iLineaProductoId == 0 && iCargandoLineasProductos == 0">
                     <a :href="'/nosotros/lineas-productos?linea=' + lstLineasProductosConImagen[0].id">
                         <div class="shadow-lg img-background-thumbnail" style="height: 100% !important;">
                             <img class="img-fluid" style="height: 100% !important;" :src="lstLineasProductosConImagen[0].ruta_imagen" alt="BannerLinea">
