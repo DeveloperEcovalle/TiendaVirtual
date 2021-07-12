@@ -28,9 +28,9 @@
         </div>
     </section>
 
-    <section class="pt-4 pb-5" v-if="lstCarritoCompras.length > 0 && iCargando === 0 && iPagado === 0" v-cloak>
+    <section class="pt-4 pb-2" v-if="lstCarritoCompras.length > 0 && iCargando === 0 && iPagado === 0" v-cloak>
         <div class="container-xl">
-            <div class="row pb-5">
+            <div class="row">
                 <div class="col-lg-4">
                     <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3">
                         1. {{ $lstLocales['Shopping cart'] }}
@@ -96,6 +96,9 @@
                                     <div class="text-center">
                                         <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
                                     </div>
+                                    <div class="mt-2 alert alert-danger text-center p-2" v-if="sMensajeError != ''">
+                                        @{{ sMensajeError }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 mb-3" v-if="sRTienda === 0">
@@ -117,6 +120,9 @@
                                     </div>
                                     <div class="text-center">
                                         <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                    </div>
+                                    <div class="mt-2 alert alert-danger text-center p-2" v-if="sMensajeError != ''">
+                                        @{{ sMensajeError }}
                                     </div>
                                 </div>
                             </div>
@@ -142,6 +148,9 @@
                                     </div>
                                     <div class="text-center">
                                         <button v-on:click.prevent="mostrarModalPago()" class="btn btn-amarillo-compra">Pagar S/ @{{ fTotal.toFixed(2) }} <span>PEN</span></button>
+                                    </div>
+                                    <div class="mt-2 alert alert-danger text-center p-2" v-if="sMensajeError != ''">
+                                        @{{ sMensajeError }}
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +208,7 @@
             </div>
         </div>
     </section>
-    <section class="pt-4 pb-5" v-if="iPagado === 1"> 
+    <section class="pt-4 pb-2" v-if="iPagado === 1"> 
         <div class="container-xl">
             <div class="row">
                 <div class="col-12 p-5 bg-white text-justify">

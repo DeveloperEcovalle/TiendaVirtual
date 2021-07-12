@@ -164,7 +164,7 @@
                                             </tr>
                                             <tr class="border_top">
                                                 <td align="left">
-                                                    <strong>Descuento:</strong>
+                                                    <strong>Ahorraste:</strong>
                                                 </td>
                                                 <td width="50" align="left">
                                                     <span>S/. {{ number_format($venta->descuento,2) }}</span>

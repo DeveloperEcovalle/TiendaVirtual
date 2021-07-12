@@ -80,15 +80,14 @@
                             <div class="col-11 col-md-3" v-for="(producto, i) in lstProductos">
                                 <div class="card my-2 shadow-lg">
                                     <div class="card-header p-0 bg-transparent" style="height: 180px">
-                                        <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
-                                            <div class="justify-content-between">
-                                                @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
+                                        <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
+                                            <div class="text-center">
+                                               <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.</p>
                                             </div>
                                         </div>
                                         <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
-                                            <div class="justify-content-between">
-                                                +@{{ producto.promocion_vigente.min }} hasta -@{{ producto.promocion_vigente.max }}
-                                                @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
+                                            <div class="text-center">
+                                                <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.</p>
                                             </div>
                                         </div>
                                         <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"

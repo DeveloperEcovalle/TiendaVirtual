@@ -102,17 +102,17 @@
                             </div>
                         </div>
                     </form>
-                    <div class="py-5 py-lg-0">
+                    <div class="py-2 py-lg-0">
                         <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
                             <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
                         </a>
-                        <img  v-else class="img-fluid" :src="pagina.ruta_baner_publicitario">
+                        <img  v-else class="img-fluid":src="pagina.ruta_baner_publicitario">
                     </div>
                 </div>
-                <div class="col-lg-9" v-if="iLineaProductoId == 0 && iCargandoLineasProductos == 0">
+                <div class="col-lg-9" v-if="iLineaProductoId == 0 && iCargandoLineasProductos == 0"><!--style="height: 100% !important; background-size: contain;" :style="{ 'background': 'url(' + lstLineasProductosConImagen[0].ruta_imagen + ') no-repeat' }"-->
                     <a :href="'/nosotros/lineas-productos?linea=' + lstLineasProductosConImagen[0].id">
-                        <div class="shadow-lg img-background-thumbnail" style="height: 100% !important;">
-                            <img class="img-fluid" style="height: 100% !important;" :src="lstLineasProductosConImagen[0].ruta_imagen" alt="BannerLinea">
+                        <div class="shadow-lg" style="height: 100% !important; background-repeat: no-repeat; background-size: cover;" :style="{ 'background-image': 'url(' + lstLineasProductosConImagen[0].ruta_imagen + ')' }">
+                            <!--<img class="img-fluid" style="height: 100% !important;" :src="lstLineasProductosConImagen[0].ruta_imagen" alt="BannerLinea">-->
                         </div>
                     </a>
                 </div>
@@ -167,14 +167,14 @@
                                     <div class="col-11 col-md-3" v-for="(producto, i) in lstProductos">
                                         <div class="card my-2 shadow-lg">
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
-                                                <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
+                                                <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
                                                     <div class="text-center">
-                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
+                                                       <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.</p>
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                                     <div class="text-center">
-                                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
+                                                        <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.</p>
                                                     </div>
                                                 </div>
                                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"

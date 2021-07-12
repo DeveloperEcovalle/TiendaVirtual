@@ -345,7 +345,7 @@
             <tr>
                 <td style="width: 50%;"></td>
                 <td class="contenido" style="width: 30%;" align="left">
-                    <p class="resum-total">Descuento</p>
+                    <p class="resum-total">Ahorraste</p>
                 </td>
                 <td class="contenido" style="width: 20%;" align="right">
                     <p class="resum-total">S/. {{ number_format($venta->descuento,2) }}</p>

@@ -25,7 +25,7 @@
 
     <section class="pt-4 pb-5" v-if="lstCarritoCompras.length > 0 && iCargando === 0" v-cloak>
         <div class="container-xl">
-            <div class="row pb-5">
+            <div class="row">
                 <div class="col-lg-4">
                     <a href="/carrito-compras" class="btn btn-block btn-ecovalle-2 font-weight-bold mb-3">
                         1. {{ $lstLocales['Shopping cart'] }}

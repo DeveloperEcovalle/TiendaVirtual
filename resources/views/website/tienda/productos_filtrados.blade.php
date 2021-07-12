@@ -33,12 +33,12 @@
                             <div class="carousel-inner">
                                 <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
                                     <div class="text-center">
-                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
+                                       <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.</p>
                                     </div>
                                 </div>
                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
                                     <div class="text-center">
-                                        @{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.
+                                        <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.</p>
                                     </div>
                                 </div>
                                 <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"

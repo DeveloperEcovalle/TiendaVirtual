@@ -176,7 +176,7 @@ let culqi = function () {
                         },
                     };
                     toastr.error(respuesta.mensaje);
-                    console.log(respuesta.mensaje);
+                    vuePagoEnvio.sMensajeError = respuesta.mensaje;
                 }
             })
             .catch(error => {
@@ -193,6 +193,7 @@ let culqi = function () {
                     },
                 };
                 toastr.error(message.merchant_message);
+                vuePagoEnvio.sMensajeError = message.merchant_message;
                 vuePagoEnvio.iPagando = 0;
             });
     } else {
@@ -206,6 +207,7 @@ let culqi = function () {
             },
         };
         toastr.error(Culqi.error.user_message);
+        vuePagoEnvio.sMensajeError = Culqi.error.user_message;
     }
 };
 
@@ -279,6 +281,7 @@ let vuePagoEnvio = new Vue({
             sDireccion: '',
             sOpcion: 0,
         },
+
         iPagando: 0,
         iPagado: 0,
         sMensajeError: '',
