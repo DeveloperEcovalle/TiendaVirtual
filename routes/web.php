@@ -10,6 +10,7 @@ use App\Http\Middleware\ClienteAutenticado;
 use App\Http\Middleware\AutenticarUsuario;
 use App\Http\Middleware\Locale;
 use App\Persona;
+use App\Producto;
 use App\Venta;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -843,12 +844,10 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $cliente = Cliente::find(session()->get('cliente')->id);
-
-    foreach($cliente->detalles_carrito as $detalle)
-    {
-        $detalle->delete();
-    }
-
-    return $cliente->detalles_carrito;
+    $producto = Producto::orderByDesc('id')
+    ->whereHas('precio_actual')
+    ->with('precio_actual')
+    ->take(2)
+    ->get();
+    return $producto;
 });

@@ -143,7 +143,7 @@ class Tienda extends Website {
         } else {
             $fechaHace3Meses = now()->subMonth(3);
 
-            $lstProductos = Producto::where('fecha_reg', '>=', $fechaHace3Meses->toDateTimeString())
+            $lstProductos = Producto::whereHas('precio_actual')->where('fecha_reg', '>=', $fechaHace3Meses->toDateTimeString())
                 ->with(['precio_actual', 'oferta_vigente', 'promocion_vigente', 'imagenes'])->orderBy('fecha_reg', 'asc')->limit(20)->get();
 
             $iTotalProductos = $lstProductos->count();

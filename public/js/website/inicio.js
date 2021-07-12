@@ -159,7 +159,7 @@ let vueInicio = new Vue({
                                     vueInicio.ajaxDisminuirCantidadProductoCarrito(producto);
                                 },
                                 ajaxAumentarCantidadProductoCarritoModal: function (producto) {
-                                    vueInicio.ajaxAumentarCantidadProductoCarritoModal(producto);
+                                    vueInicio.ajaxAumentarCantidadProductoCarrito(producto);
                                 },
                             }
                         });
