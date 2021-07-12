@@ -163,25 +163,34 @@ class Tienda extends Website {
 
     public function ajaxBuscarProducto(Request $request) {
         $sBuscar = $request->get('texto');
+        $lstProductos = [];
 
         $lstBuscar = explode(' ', $sBuscar, 3);
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
-        $lstProductos = Producto::whereHas('precio_actual')
+        $lstProductos_aux = Producto::whereHas('precio_actual')
             ->where('nombre_es', 'like', $sBusqueda0);
 
         if (count($lstBuscar) > 1) {
             foreach ($lstBuscar as $i => $sBuscando) {
                 if (strlen(trim($sBuscando)) > 2 && $i > 0) {
                     $sBusqueda = '%' . $sBuscando . '%';
-                    $lstProductos = $lstProductos->orWhere('nombre_es', 'like', $sBusqueda);
+                    $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
         }
 
-        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
+        $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
             ->limit(8)
             ->get();
+
+        foreach($lstProductos_aux as $item)
+        {
+            if(!empty($item->precio_actual))
+            {
+                array_push($lstProductos,$item);
+            }
+        }        
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -192,11 +201,12 @@ class Tienda extends Website {
 
     public function ajaxBuscarProductoAllDatos(Request $request) {
         $sBuscar = $request->get('texto');
+        $lstProductos = [];
 
         $lstBuscar = explode(' ', $sBuscar, 3);
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
-        $lstProductos = Producto::whereHas('precio_actual')
+        $lstProductos_aux = Producto::whereHas('precio_actual')
             ->where('nombre_es', 'like', $sBusqueda0)
             ->orWhere('beneficios_es', 'like', $sBusqueda0)
             ->orWhere('descripcion_es', 'like', $sBusqueda0);
@@ -205,12 +215,12 @@ class Tienda extends Website {
             foreach ($lstBuscar as $i => $sBuscando) {
                 if (strlen(trim($sBuscando)) > 2 && $i > 0) {
                     $sBusqueda = '%' . $sBuscando . '%';
-                    $lstProductos = $lstProductos->orWhere('nombre_es', 'like', $sBusqueda);
+                    $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
         }
 
-        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
+        $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
             ->limit(8)
             ->get();
 
@@ -218,11 +228,27 @@ class Tienda extends Website {
 
         $arr = array();
 
+        foreach($lstProductos_aux as $item)
+        {
+            if(!empty($item->precio_actual))
+            {
+                array_push($lstProductos,$item);
+            }
+        }
+
         foreach($lstProductos as $producto)
         {
             $producto['cabecera'] = 'producto';
             array_push($arr, $producto);
-        }    
+        }
+        
+        foreach($lstProductos_aux as $item)
+        {
+            if(!empty($item->precio_actual))
+            {
+                array_push($lstProductos,$item);
+            }
+        }
         
         if(count($lstBlogs) > 0)
         {
@@ -243,11 +269,12 @@ class Tienda extends Website {
 
     public function ajaxObtenerProductos(Request $request){
         $sBuscar = $request->get('keyword');
+        $lstProductos = [];
 
         $lstBuscar = explode(' ', $sBuscar, 3);
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
-        $lstProductos = Producto::whereHas('precio_actual')
+        $lstProductos_aux = Producto::whereHas('precio_actual')
             ->where('nombre_es', 'like', $sBusqueda0)
             ->orWhere('beneficios_es', 'like', $sBusqueda0)
             ->orWhere('descripcion_es', 'like', $sBusqueda0);
@@ -256,13 +283,20 @@ class Tienda extends Website {
             foreach ($lstBuscar as $i => $sBuscando) {
                 if (strlen(trim($sBuscando)) > 2 && $i > 0) {
                     $sBusqueda = '%' . $sBuscando . '%';
-                    $lstProductos = $lstProductos->orWhere('nombre_es', 'like', $sBusqueda);
+                    $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
         }
 
-        $lstProductos = $lstProductos->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
+        $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
         $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();
+        foreach($lstProductos_aux as $item)
+        {
+            if(!empty($item->precio_actual))
+            {
+                array_push($lstProductos,$item);
+            }
+        }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
