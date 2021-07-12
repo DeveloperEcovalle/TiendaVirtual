@@ -426,6 +426,10 @@ a.img-producto:hover > .img-background-thumbnail {
     color: var(--verde-ecovalle-4);
 }
 
+.text-ecovalle-5 {
+    color: var(--verde-ecovalle-5);
+}
+
 .text-amarillo-ecovalle {
     color: var(--amarillo-ecovalle) !important;
 }
@@ -652,7 +656,15 @@ a.img-producto:hover > .img-background-thumbnail {
     background-color: transparent;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 0px !important;
-    font-size: 12px;
+}
+
+.btn-toast:focus {
+    box-shadow: none !important;
+    text-decoration: none;
+    outline: none !important;
+    background-color: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0px !important;
 }
 
 .input-toast {

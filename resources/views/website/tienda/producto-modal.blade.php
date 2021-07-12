@@ -61,17 +61,44 @@
                         </h4>
                     </div>
                     <div class="col-12 col-sm-12 col-md-12 col-lg-4 p-1 m-0 text-center">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <button type="button" class="btn btn-toast text-modal-producto" v-on:click="ajaxDisminuirCantidadProductoCarritoModal(producto.producto)">
-                                    <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
-                                </button>
-                                <button type="button" class="btn btn-toast text-modal-producto" disabled>
-                                    @{{ producto.cantidad }}
-                                </button>
-                                <button type="button" v-on:click="ajaxAumentarCantidadProductoCarritoModal(producto.producto)" class="btn btn-toast text-modal-producto">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <button type="button" class="btn btn-toast text-modal-producto" v-on:click="ajaxDisminuirCantidadProductoCarritoModal(producto.producto)">
+                                            <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-toast text-modal-producto" disabled>
+                                            @{{ producto.cantidad }}
+                                        </button>
+                                        <button type="button" v-on:click="ajaxAumentarCantidadProductoCarritoModal(producto.producto)" class="btn btn-toast text-modal-producto">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="row" v-if="producto.producto.promocion_vigente">
+                                <div class="text-center p-0" :class="producto.cantidad >= producto.producto.promocion_vigente.min && producto.cantidad <= producto.producto.promocion_vigente.max ? 'col-6' : 'col-12'">
+                                    <p class="small text-modal-producto text-ecovalle-5 font-weight-bold p-0 m-0">
+                                        S/ @{{  (Math.round((producto.cantidad * (producto.producto.oferta_vigente === null ? producto.producto.precio_actual.monto :
+                                            (producto.producto.oferta_vigente.porcentaje ? (producto.producto.precio_actual.monto * (100 - producto.producto.oferta_vigente.porcentaje) / 100) :
+                                            (producto.producto.precio_actual.monto - producto.producto.oferta_vigente.monto)))) * 10)/10).toFixed(2) }}</p>
+                                </div>
+                                <div class="col-6 text-center p-0" v-if="producto.cantidad >= producto.producto.promocion_vigente.min && producto.cantidad <= producto.producto.promocion_vigente.max">
+                                    <p class="small text-modal-producto text-danger font-weight-bold p-0 m-0">
+                                        - S/ @{{ (Math.round((producto.cantidad * (producto.cantidad >= producto.producto.promocion_vigente.min && producto.cantidad <= producto.producto.promocion_vigente.max ? (producto.producto.promocion_vigente.porcentaje ? ((producto.producto.precio_actual.monto * producto.producto.promocion_vigente.porcentaje) / 100) : (producto.producto.promocion_vigente.monto)) : 0.00)) * 10) / 10 ).toFixed(2) }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row" v-else>
+                                <div class="col-12 text-center p-0">
+                                    <p class="small text-modal-producto text-ecovalle-5 font-weight-bold p-0 m-0">
+                                        S/ @{{ (Math.round((producto.cantidad * (producto.producto.oferta_vigente === null ? producto.producto.precio_actual.monto :
+                                            (producto.producto.oferta_vigente.porcentaje ? (producto.producto.precio_actual.monto * (100 - producto.producto.oferta_vigente.porcentaje) / 100) :
+                                            (producto.producto.precio_actual.monto - producto.producto.oferta_vigente.monto)))) * 10)/10).toFixed(2) }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>

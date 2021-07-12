@@ -30,7 +30,7 @@ let vueLineasProductos = new Vue({
             return this.lstLineasProductos.filter(linea => linea.ruta_imagen !== null && linea.ruta_imagen.length > 0);
         },
         lstCarouselLineasProductosConImagen: function () {
-            let lstLineasSubarray = this.lstLineasProductosConImagen.slice(0, this.lstLineasProductosConImagen.length);
+            let lstLineasSubarray = this.lstLineasProductosConImagen.slice(1, this.lstLineasProductosConImagen.length);
             return chunk(lstLineasSubarray, 3);
         },
         lineaSeleccionada: function () {
