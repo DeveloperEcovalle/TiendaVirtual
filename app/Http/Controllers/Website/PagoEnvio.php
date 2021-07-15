@@ -314,7 +314,7 @@ class PagoEnvio extends Website
             if($empresa->correo_pedidos_1)
             {
                 Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
-                    $mail->to($empresa->correo_pedidos);
+                    $mail->to($empresa->correo_pedidos_1);
                     $mail->subject('PEDIDO COD: '.$venta->codigo);
                     $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
                     $mail->from('website@ecovalle.pe','ECOVALLE');
@@ -328,7 +328,7 @@ class PagoEnvio extends Website
 
             if($empresa->telefono_pedidos_1)
             {
-                $result = enviapedido($venta, $empresa->telefono_pedidos);
+                $result = enviapedido($venta, $empresa->telefono_pedidos_1);
             }
 
             //-----ENVÍO DE CORREO PEDIDO-----
