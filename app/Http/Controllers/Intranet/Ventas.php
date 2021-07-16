@@ -105,6 +105,11 @@ class Ventas extends Intranet {
                 ->with(['detalles','detalles.producto','detalles.producto.precio_actual', 'ubigeo', 'estado'])
                 ->orderBy('id', 'desc')
                 ->get();
+
+            foreach($lstVentas as $venta)
+            {
+                $venta['emision'] = date_format($venta->created_at, 'Y-m-d H:i');
+            }
              
             $lstEstados = Estado::all();
         }

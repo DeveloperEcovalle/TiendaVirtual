@@ -89,10 +89,10 @@ listarMenus(function (lstModulos, lstMenus) {
             ajaxListar: function (onSuccess) {
                 let $this = this;
 
-                $cookies.set('sPeriodoVentas', $this.sPeriodo, 8);
-                $cookies.set('iDiaVentas', $this.iDia, 8);
-                $cookies.set('iMesVentas', $this.iMes, 8);
-                $cookies.set('iAnioVentas', $this.iAnio, 8);
+                $cookies.set('sPeriodoVentas', $this.sPeriodo, 1);
+                $cookies.set('iDiaVentas', $this.iDia, 1);
+                $cookies.set('iMesVentas', $this.iMes, 1);
+                $cookies.set('iAnioVentas', $this.iAnio, 1);
 
                 $.ajax({
                     type: 'post',
@@ -104,6 +104,7 @@ listarMenus(function (lstModulos, lstMenus) {
                             console.log(data);
                             $this.lstVentas = data.lstVentas;
                             $this.lstEstados = data.lstEstados;
+                            $this.panelListar();
                             if (onSuccess) {
                                 onSuccess();
                             }
@@ -129,7 +130,17 @@ listarMenus(function (lstModulos, lstMenus) {
                     }
                     case 'editar': {
                         let iId = lstUrl.pop();
-                        $this.panelEditar(iId);
+                        let lstVenta = $this.lstVentas.filter(venta => venta.id === parseInt(iId));
+                        let venta = lstVenta[0];
+                        if(venta)
+                        {
+                            $this.panelEditar(iId);
+                        }
+                        else
+                        {
+                            $this.panelListar();
+                            window.history.replaceState(null, 'VENTAS', `/intranet/app/gestion-ventas/ventas`);
+                        }
                         break;
                     }
                 }
@@ -146,9 +157,6 @@ listarMenus(function (lstModulos, lstMenus) {
 
                 let lstVenta = $this.lstVentas.filter(venta => venta.id === parseInt(iId));
                 let venta = lstVenta[0];
-                console.log(venta);
-                console.log(vueVentas.lstEstados);
-
                 $('#panel').load('/intranet/app/gestion-ventas/ventas/ajax/panelEditar', function () {
                     let vueEditar = new Vue({
                         el: '#panel',

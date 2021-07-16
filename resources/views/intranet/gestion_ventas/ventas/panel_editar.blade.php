@@ -14,7 +14,7 @@
     <div class="form-group m-0 row">
         <label class="font-weight-bold col-5">Emisi&oacute;n</label>
         <div class="col-7">
-            <p>@{{ venta.fecha_reg }}</p>
+            <p>@{{ venta.emision }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
@@ -105,6 +105,12 @@
         <label class="font-weight-bold col-6">Operaciones Exoneradas</label>
         <div class="col-6">
             <p class="text-right">S/ @{{ venta.descuento.toFixed(2) }}</p>
+        </div>
+    </div>
+    <div class="form-group m-0 row">
+        <label class="font-weight-bold col-6">Delivery</label>
+        <div class="col-6">
+            <p class="text-right">S/ @{{ venta.delivery.toFixed(2) }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
