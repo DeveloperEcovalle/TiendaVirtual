@@ -6,62 +6,62 @@
 </div>
 <div class="p-4 bg-white border-top" id="layoutRight">
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Tipo</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Tipo</label>
+        <div class="col-8">
             <p>@{{ venta.tipo_compra }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Emisi&oacute;n</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Emisi&oacute;n</label>
+        <div class="col-8">
             <p>@{{ venta.emision }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Cliente</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Cliente</label>
+        <div class="col-8">
             <p>@{{ venta.cliente }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Dcto. cliente</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Dcto. cliente</label>
+        <div class="col-8">
             <p>@{{ venta.documento }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Telf / Cel</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Telf / Cel</label>
+        <div class="col-8">
             <p>@{{ venta.telefono }}</p>
         </div>
     </div>
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-5">Correo</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Correo</label>
+        <div class="col-8">
             <p>@{{ venta.email }}</p>
         </div>
     </div>
     <div class="form-group m-0 row" v-if="venta.tipo_compra === 'ENVÍO NIVEL NACIONAL' || venta.tipo_compra === 'DELIVERY TRUJILLO'">
-        <label class="font-weight-bold col-5">Direcci&oacute;n</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Direcci&oacute;n</label>
+        <div class="col-8">
             <p>@{{ venta.direccion + ' - ' + venta.ubigeo.departamento + ' / ' + venta.ubigeo.provincia + ' / ' + venta.ubigeo.distrito }}</p>
         </div>
     </div>
     <div class="form-group m-0 row" v-if="venta.tipo_compra === 'ENVÍO NIVEL NACIONAL'">
-        <label class="font-weight-bold col-5">¿Qui&eacute;n recoge?</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">¿Qui&eacute;n recoge?</label>
+        <div class="col-8">
             <p>@{{ venta.recoge }}</p>
         </div>
     </div>
     <div class="form-group m-0 row" v-if="venta.tipo_compra === 'ENVÍO NIVEL NACIONAL'">
-        <label class="font-weight-bold col-5">Dcto. ¿Qui&eacute;n recoge?</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Dcto. ¿Qui&eacute;n recoge?</label>
+        <div class="col-8">
             <p>@{{ venta.recoge_documento }}</p>
         </div>
     </div>
     <div class="form-group m-0 row" v-if="venta.tipo_compra === 'ENVÍO NIVEL NACIONAL'">
-        <label class="font-weight-bold col-5">Tlf. ¿Qui&eacute;n recoge?</label>
-        <div class="col-7">
+        <label class="font-weight-bold col-4">Tlf. ¿Qui&eacute;n recoge?</label>
+        <div class="col-8">
             <p>@{{ venta.recoge_telefono }}</p>
         </div>
     </div>

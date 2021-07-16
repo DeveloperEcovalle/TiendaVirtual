@@ -97,7 +97,7 @@
                                                     <br>
                                                     <strong>Dirección: </strong>&nbsp; {{  $venta->direccion . ' - ' . $venta->ubigeo->departamento . ' / ' . $venta->ubigeo->provincia . ' / ' . $venta->ubigeo->distrito }}
                                                     <br>
-                                                    <strong>Teléfono: </strong>&nbsp; {{  $venta->telefono }}
+                                                    <strong>Telf/Cel: </strong>&nbsp; {{  $venta->telefono }}
                                                     <br>
                                                     <strong>Fecha Emisión: </strong>&nbsp; {{ date_format($venta->created_at, 'Y/m/d H:i')}}
                                                     <br>
