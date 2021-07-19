@@ -95,8 +95,10 @@
                                                     <br>
                                                     <strong>{{ $venta->tipo_documento == 'RUC' ? 'R.U.C:' : 'DNI:' }}</strong>&nbsp; {{  $venta->documento }}
                                                     <br>
+                                                    @if($venta->direccion)
                                                     <strong>Dirección: </strong>&nbsp; {{  $venta->direccion  }} {{ $venta->ubigeo ? ' - ' . $venta->ubigeo->departamento . ' / ' . $venta->ubigeo->provincia . ' / ' . $venta->ubigeo->distrito : ''}}
                                                     <br>
+                                                    @endif
                                                     <strong>Telf/Cel: </strong>&nbsp; {{  $venta->telefono }}
                                                     <br>
                                                     <strong>Fecha Emisión: </strong>&nbsp; {{ date_format($venta->created_at, 'Y/m/d H:i')}}
