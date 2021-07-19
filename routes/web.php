@@ -846,7 +846,7 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
-    $empresa = Empresa::find(1);
+    /*$empresa = Empresa::find(1);
     $venta = Compra::find(23);
     $estado = Estado::find(1);
     $agencia = Agencia::find(1);
@@ -863,42 +863,42 @@ Route::get('ruta', function () {
     PDF::loadView('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])
         ->save(public_path().'/storage/pedidos/' . $venta->codigo.'.pdf');
 
-        if($empresa->correo_pedidos)
-        {
-            Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
-                $mail->to($empresa->correo_pedidos);
-                $mail->subject('PEDIDO COD: '.$venta->codigo);
-                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
-                $mail->from('website@ecovalle.pe','ECOVALLE');
-            });
-        }
+    if($empresa->correo_pedidos)
+    {
+        Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+            $mail->to($empresa->correo_pedidos);
+            $mail->subject('PEDIDO COD: '.$venta->codigo);
+            $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+            $mail->from('website@ecovalle.pe','ECOVALLE');
+        });
+    }
 
-        if($empresa->correo_pedidos_1)
-        {
-            Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
-                $mail->to($empresa->correo_pedidos_1);
-                $mail->subject('PEDIDO COD: '.$venta->codigo);
-                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
-                $mail->from('website@ecovalle.pe','ECOVALLE');
-            });
+    if($empresa->correo_pedidos_1)
+    {
+        Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+            $mail->to($empresa->correo_pedidos_1);
+            $mail->subject('PEDIDO COD: '.$venta->codigo);
+            $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+            $mail->from('website@ecovalle.pe','ECOVALLE');
+        });
 
-            Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
-                $mail->to('ccubas@unitru.edu.pe');
-                $mail->subject('PEDIDO COD: '.$venta->codigo);
-                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
-                $mail->from('website@ecovalle.pe','ECOVALLE');
-            });
-        }
-        
-        if($empresa->telefono_pedidos)
-        {
-            $result = enviapedido($venta, $empresa->telefono_pedidos);
-        }
+        Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+            $mail->to('ccubas@unitru.edu.pe');
+            $mail->subject('PEDIDO COD: '.$venta->codigo);
+            $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+            $mail->from('website@ecovalle.pe','ECOVALLE');
+        });
+    }
+    
+    if($empresa->telefono_pedidos)
+    {
+        $result = enviapedido($venta, $empresa->telefono_pedidos);
+    }
 
-        if($empresa->telefono_pedidos_1)
-        {
-            $result = enviapedido($venta, $empresa->telefono_pedidos_1);
-        }
+    if($empresa->telefono_pedidos_1)
+    {
+        $result = enviapedido($venta, $empresa->telefono_pedidos_1);
+    }*/
 
     return 'ok';
 });

@@ -279,6 +279,7 @@ class MiCuenta extends Website
         $lstOrders = session('cliente')->compras;
         foreach($lstOrders as $compra)
         {
+            $compra->estado;
             foreach($compra->detalles as $detalle)
             {
                 $detalle->producto;
