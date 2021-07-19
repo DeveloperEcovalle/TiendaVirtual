@@ -95,7 +95,7 @@
                                                     <br>
                                                     <strong>{{ $venta->tipo_documento == 'RUC' ? 'R.U.C:' : 'DNI:' }}</strong>&nbsp; {{  $venta->documento }}
                                                     <br>
-                                                    <strong>Dirección: </strong>&nbsp; {{  $venta->direccion . ' - ' . $venta->ubigeo->departamento . ' / ' . $venta->ubigeo->provincia . ' / ' . $venta->ubigeo->distrito }}
+                                                    <strong>Dirección: </strong>&nbsp; {{  $venta->direccion  }} {{ $venta->ubigeo ? ' - ' . $venta->ubigeo->departamento . ' / ' . $venta->ubigeo->provincia . ' / ' . $venta->ubigeo->distrito : ''}}
                                                     <br>
                                                     <strong>Telf/Cel: </strong>&nbsp; {{  $venta->telefono }}
                                                     <br>
