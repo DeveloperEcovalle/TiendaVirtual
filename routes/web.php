@@ -899,6 +899,5 @@ Route::get('ruta', function () {
     {
         $result = enviapedido($venta, $empresa->telefono_pedidos_1);
     }*/
-
     return 'ok';
 });
