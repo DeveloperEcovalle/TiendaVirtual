@@ -61,7 +61,7 @@
             <label class="col-md-3 py-md-2">Distrito</label>
             <div class="col-md-9">
                 <select class="form-control" name="distrito" v-model="sDistritoSeleccionado" v-cloak>
-                    <option v-for="distrito in lstDistritos" :value="distrito.id">@{{ distrito.distrito }}</option>
+                    <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                 </select>
             </div>
         </div>
