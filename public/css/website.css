@@ -25,6 +25,27 @@
     font-weight: 400;
 }
 
+/*********************************************/
+.panel-tipo-envio {
+    border-radius: 10px;
+    height: 100%;
+    font-size: 12px;
+}
+
+.btn-collapse {
+    outline: none !important;
+    box-shadow: none !important;
+    color: var(--amarillo-ecovalle-2);
+}
+
+.btn-collapse:hover {
+    outline: none !important;
+    box-shadow: none !important;
+    color: var(--amarillo-ecovalle-2);
+    opacity: 0.8;
+}
+/*********************************************/
+
 @media (min-width: 768px) {
     .card-title {
         overflow: hidden;
@@ -230,6 +251,15 @@ strong{
     height: 1px;
     margin: 20px 0;
 }
+
+.hr-line {
+    border-top: 3px solid rgb(73, 73, 73);
+    color: #ffffff;
+    background-color: #ffffff;
+    height: 1px;
+    margin: 0px;
+    padding: 0px;
+}
 /*--------------------------*/
 
 .hr-compra {
@@ -352,7 +382,7 @@ html, body {
 }
 
 .bg-ecovalle-2 {
-    background-color: var(--verde-ecovalle-2) !important;
+    background-color: var(--verde-ecovalle-2);
     color: #ffffff;
 }
 
@@ -386,6 +416,10 @@ a.img-producto {
 
 .img-atributo-ecovalle {
     height: 64px;
+}
+
+.img-facturacion-ecovalle {
+    height: 80px;
 }
 
 .img-background-thumbnail {
@@ -550,24 +584,19 @@ a.img-producto:hover > .img-background-thumbnail {
 }
 
 .btn-ecovalle-compra{
-    background: linear-gradient(to bottom, var(--verde-ecovalle) 5%, var(--verde-ecovalle-7) 100%);
-    background-color: var(--verde-ecovalle);
-    border: 1px solid var(--verde-ecovalle-7);
+    background-color: var(--verde-ecovalle-7);
     color: #ffffff;
     text-decoration: none;
     text-shadow: 0px 1px 0px #2f6627 !important;
 }
 
 .btn-ecovalle-compra:hover{
-    background: linear-gradient(to bottom, var(--verde-ecovalle-7) 5%, var(--verde-ecovalle) 100%);
-    background-color: var(--verde-ecovalle-7);
+    opacity: 0.8;
     color: #ffffff;
 }
 
 .btn-ecovalle-compra-modal{
-    background: linear-gradient(to bottom, var(--verde-ecovalle) 5%, var(--verde-ecovalle-7) 100%);
-    background-color: var(--verde-ecovalle);
-    border: 1px solid var(--verde-ecovalle-7);
+    background-color: var(--verde-ecovalle-7);
     color: #ffffff;
     text-decoration: none;
     text-shadow: 0px 1px 0px #2f6627 !important;
@@ -575,8 +604,6 @@ a.img-producto:hover > .img-background-thumbnail {
 }
 
 .btn-ecovalle-compra-modal:hover{
-    background: linear-gradient(to bottom, var(--verde-ecovalle-7) 5%, var(--verde-ecovalle) 100%);
-    background-color: var(--verde-ecovalle-7);
     color: #ffffff;
 }
 
@@ -598,33 +625,25 @@ a.img-producto:hover > .img-background-thumbnail {
 }
 
 .btn-amarillo-compra {
-    background: linear-gradient(to bottom, #eeb243 5%, var(--amarillo-ecovalle)  100%);
-    background-color: #eeb243;
-    border: 1px solid var(--amarillo-ecovalle);
+    background-color: var(--amarillo-ecovalle);
     color: #ffffff;
     text-decoration: none;
     text-shadow: 0px 1px 0px #b97c0b !important;
 }
 
 .btn-amarillo-compra:hover{
-    background: linear-gradient(to bottom, var(--amarillo-ecovalle) 5%, #eeb243 100%);
-    background-color: var(--verde-amarillo);
+    opacity: 0.8;
     color: #ffffff;
 }
 
 .btn-amarillo-compra-modal {
-    background: linear-gradient(to bottom, #eeb243 5%, var(--amarillo-ecovalle)  100%);
-    background-color: #eeb243;
-    border: 1px solid var(--amarillo-ecovalle);
+    background-color: var(--amarillo-ecovalle);
     color: #ffffff;
     text-decoration: none;
     border-radius: 0px !important;
-    text-shadow: 0px 1px 0px #b97c0b !important;
 }
 
-.btn-amarillo-compra-modal:hover{
-    background: linear-gradient(to bottom, var(--amarillo-ecovalle) 5%, #eeb243 100%);
-    background-color: var(--verde-amarillo);
+.btn-amarillo-compra-modal:hover {
     color: #ffffff;
 }
 
@@ -848,6 +867,8 @@ footer a:hover {
     display: none;
 }
 
+/*------------------------*/
+
 .starrr {
     display: inline-block;
 }
@@ -863,6 +884,19 @@ footer a:hover {
 .starrr a.readonly {
     cursor: default;
 }
+
+.starrr i {
+    font-size: 15px;
+    padding: 0 1px;
+    color: #ffc300;
+    text-decoration: none;
+}
+
+.starrr i.readonly {
+    cursor: default;
+}
+
+/*------------------------*/
 
 .fade-enter-active, .fade-leave-active {
     transition: opacity .5s;
@@ -1084,7 +1118,7 @@ button.btn-round:hover{
     justify-content: center;
     top: 0;
     left: 0;
-    z-index: 80;
+    z-index: 100;
 }
 
 .modal-pago.active::after{
@@ -1094,58 +1128,34 @@ button.btn-round:hover{
     height: 100vh;
     top: 0;
     left: 0;
-    background-color: rgba(0, 0, 0, 0.80);
-    z-index: 80;
+    background-color: rgba(255, 254, 254, 0.562);
+    z-index: 100;
 }
 
 @media (min-width: 360px) {
     .modal-pago.active img {
-        z-index: 99;
+        z-index: 999;
         width: 50%;
-        height: 25%;
+        height: 40%;
         max-width: 480px;
-    }
-
-    .modal-pago.active b{
-        z-index: 99;
-        top: 55%;
-        color:#EE9722;
-        font-size: 15px;
-        position:absolute;
     }
 }
 
 @media (min-width: 760px) {
     .modal-pago.active img {
-        z-index: 99;
+        z-index: 999;
         width: 20%;
-        height: 42%;
+        height: 45%;
         max-width: 1080px;
-    }
-
-    .modal-pago.active b{
-        z-index: 99;
-        top: 58%;
-        color:#EE9722;
-        font-size: 10px;
-        position:absolute;
     }
 }
 
 @media (min-width: 1080px) {
     .modal-pago.active img {
-        z-index: 99;
+        z-index: 999;
         width: 20%;
-        height: 38%;
+        height: 50%;
         max-width: 1920px;
-    }
-
-    .modal-pago.active b{
-        z-index: 99;
-        top: 58%;
-        color:#EE9722;
-        font-size: 20px;
-        position:absolute;
     }
 }
 
@@ -1340,17 +1350,17 @@ button.btn-round:hover{
 
 header {
     width: 100%;
-    height:160px; 
+    height:140px; 
     z-index: 100;
 }
 
 .container-page{
-    padding-top: 160px;
+    padding-top: 140px;
 }
 
 @media screen and (max-width: 500px){    
     .container-page {
-        padding-top: 140px;
+        padding-top: 130px;
     }
 
     header {
@@ -1498,6 +1508,73 @@ header {
         /* max-height: 60%; */
         max-height: calc(100vh - 150px);
     }
+
+    .rating-principal {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rating-text {
+        padding-left: 0% !important;
+    }
+}
+
+/********PROGRESBAR*************/
+
+.progress {
+    height: 12px !important;
+}
+.progress .progress-bar {
+    background-color: #ffc300 !important;
+    border-radius: 50px !important;
+}
+
+.star {
+    color: #ffc300;
+}
+
+.iniciar-sesion-resena {
+    color: var(--verde-ecovalle);
+    text-decoration: underline;
+}
+
+.iniciar-sesion-resena:hover {
+    opacity: 0.8;
+    color: var(--verde-ecovalle);
+    text-decoration: underline;
+}
+
+.container-resenas {
+    height: auto;
+    max-height: 55vw;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.container-resenas::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
+.container-resenas::-webkit-scrollbar:vertical {
+    width: 10px;
+}
+
+.container-resenas::-webkit-scrollbar-button:increment,.container-resenas::-webkit-scrollbar-button {
+    display: none;
+} 
+
+.container-resenas::-webkit-scrollbar:horizontal {
+    height: 10px;
+}
+
+.container-resenas::-webkit-scrollbar-thumb {
+    background-color: var(--verde-ecovalle-3);
+    border-radius: 20px;
+    border: 1px solid var(--amarillo-ecovalle);
+}
+
+.container-resenas::-webkit-scrollbar-track {
+    border-radius: 10px;  
 }
 
 /********INICIO SESION*************/
@@ -1519,4 +1596,13 @@ header {
     outline: none !important;
     box-shadow: none !important;
     border-color: #ced4da !important;
+}
+
+.image-center{
+    display: flex;
+    align-items: center;
+}
+
+.h-35 {
+    height: 35vw !important;
 }

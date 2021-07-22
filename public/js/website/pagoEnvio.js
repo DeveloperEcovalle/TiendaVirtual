@@ -286,7 +286,11 @@ let vuePagoEnvio = new Vue({
         iPagado: 0,
         sMensajeError: '',
 
-        respuestaPago: null
+        respuestaPago: null,
+
+        sCollapse_1: 0,
+        sCollapse_2: 0,
+        sCollapse_3: 0,
     },
     computed: {
         fDelivery: function () {
@@ -462,6 +466,43 @@ let vuePagoEnvio = new Vue({
                 });
         },
         ajaxEnviarConstanciaTransferencia: function () {
+        },
+        fCollapse: function(key){
+            if(key == 'collapse_1')
+            {
+                if(this.sCollapse_1 === 1)
+                {
+                    this.sCollapse_1 = 0;
+                }
+                else
+                {
+                    this.sCollapse_1 = 1;
+                }
+            }
+
+            if(key == 'collapse_2')
+            {
+                if(this.sCollapse_2 === 1)
+                {
+                    this.sCollapse_2 = 0;
+                }
+                else
+                {
+                    this.sCollapse_2 = 1;
+                }
+            }
+
+            if(key == 'collapse_3')
+            {
+                if(this.sCollapse_3=== 1)
+                {
+                    this.sCollapse_3= 0;
+                }
+                else
+                {
+                    this.sCollapse_3= 1;
+                }
+            }
         },
     }
 });

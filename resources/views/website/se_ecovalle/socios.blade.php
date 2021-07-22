@@ -7,11 +7,11 @@
     <div class="container-xl py-5 text-center" v-if="iCargando === 1">
         <img class="my-5" src="/img/spinner.svg">
     </div>
-    <section v-if="iCargando === 0">
+    <section v-if="iCargando === 0" class="h-35">
         <a :href="pagina.enlace_imagen_portada" v-if="pagina.enlace_imagen_portada">
-            <img :src="pagina.ruta_imagen_portada" class="w-100">
+            <img :src="pagina.ruta_imagen_portada" class="w-100 h-100">
         </a>
-        <img :src="pagina.ruta_imagen_portada" class="w-100" v-else>
+        <img :src="pagina.ruta_imagen_portada" class="w-100 h-100" v-else>
     </section>
     <div class="container-xl" v-if="iCargando === 0" v-cloak>
         <nav aria-label="breadcrumb">
@@ -139,6 +139,15 @@
                         <div class="col-md-12" v-if="respuesta">
                             <p class="p-2 rounded text-white text-center" :class="'bg-' + respuesta.result">
                                 @{{ respuesta . mensaje }}</p>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group mt-2">
+                                <div v-icheck>
+                                    <label class="m-0">
+                                        <input type="checkbox" name="accept_term_cond" required>&nbsp;@{{ locale === 'es' ? 'Aceptar' : 'Accept' }} <a href="/terminos-condiciones">{!! $lstTraduccionesSocios['accept_term_cond'] !!}</a>
+                                    </label>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12 text-center">
                             <button class="btn btn-amarillo mt-3 text-uppercase" :disabled="iEnviandoMensaje === 1">

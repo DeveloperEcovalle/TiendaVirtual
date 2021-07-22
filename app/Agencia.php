@@ -9,4 +9,9 @@ class Agencia extends Model
     protected $table = 'agencias';
     protected $primaryKey = 'id';
     public $timestamps = false;
+
+    public function ubigeos()
+    {
+        return $this->belongsToMany('App\Ubigeo');
+    }
 }

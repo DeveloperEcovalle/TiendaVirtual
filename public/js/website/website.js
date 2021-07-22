@@ -35,7 +35,7 @@ const $cookies = {
 
 const lstUrlParams = new URLSearchParams(location.search);
 
-const culqiEcovalle = {publicKeyTest: 'pk_live_ec56f61cad585833'}; //pk_test_3a41617e29df7509 - pk_test_4a577548e16f8563
+const culqiEcovalle = {publicKeyTest: 'pk_test_3a41617e29df7509'}; //pk_test_3a41617e29df7509 - pk_test_4a577548e16f8563
 
 $.ajaxSetup({
     headers: {
@@ -74,11 +74,18 @@ Vue.directive('star-rating', {
 
         let readOnly = options.readOnly ? options.readOnly : false;
         let rating = options.rating ? options.rating : 0;
+        let productoId = options.productoId ? options.productoId : 0;
 
         $(el).starrr({
             max: 5,
             readOnly: readOnly,
             rating: rating,
+            productoId: productoId,
+            change: function(e,valor){
+                e.preventDefault();
+                //alert(productoId + '-' + valor);
+                vueTiendaProducto.resena.stars = valor;
+            },
         });
     }
 });
@@ -420,18 +427,18 @@ function autocompletar()
                             //elementoLista.innerHTML = `<strong>${item.nombre_es}</strong>`;
                             if(item.stock_actual > 0)
                             {
-                                stock_guia = `<button class="btn btn-primary btn-sm">EN STOCK</button>`;
+                                stock_guia = `<span class="badge p-1 badge-info btn-sm text-modal-producto">EN STOCK</span>`;
                             }else{
-                                stock_guia = `<button class="btn btn-danger btn-sm">AGOTADO</button>`;
+                                stock_guia = `<span class="badge p-1 badge-danger text-modal-producto">AGOTADO</span>`;
                             }
                             let sNombre = item.nombre_es;
                             let sRutaImagen = item.imagenes.length > 0 ? item.imagenes[0].ruta : '';
                             elementoLista.innerHTML = `<div class="row justify-content-between">
-                                                            <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
-                                                            <div class="col-9" class="div-contenedor">
-                                                                <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
+                                                            <div class="col-10" class="div-contenedor">
+                                                                <a href="/tienda/producto/${item.id}" class="font-weight-bold text-dark px-0 text-modal-producto">${sNombre}</a>
                                                                 <div class="row justify-content-between">
-                                                                    <div class="col-6"><p class="m-0 h4 text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
+                                                                    <div class="col-6"><p class="m-0 text-modal-producto text-amarillo-ecovalle font-weight-bold">S/ ${item.precio_actual.monto.toFixed(2)}</p></div>
                                                                     <div class="col-6">`+stock_guia+`</div>
                                                                 </div>
                                                             </div>
@@ -449,12 +456,12 @@ function autocompletar()
                             let sNombre = item.titulo;
                             let sRutaImagen = item.ruta_imagen_principal;
                             elementoLista.innerHTML = `<div class="row justify-content-between">
-                                                            <div class="col-3"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
-                                                            <div class="col-9" class="div-contenedor">
-                                                                <a href="/blog?v=publicacion&publicacion=${item.enlace}&c=${item.id}" class="font-weight-bold text-dark px-0">${sNombre}</a>
+                                                            <div class="col-2"><img class="img-fluid img-thumbnail" src="${sRutaImagen}"></div>
+                                                            <div class="col-10" class="div-contenedor">
+                                                                <a href="/blog?v=publicacion&publicacion=${item.enlace}&c=${item.id}" class="font-weight-bold text-modal-producto text-dark px-0">${sNombre}</a>
                                                                 <div class="row justify-content-between">
                                                                     <div class="col-12 module text-limit">
-                                                                        <p class="small" style="color: #333;">${ item.resumen }</p>
+                                                                        <p class="text-modal-producto" style="color: #333;">${ item.resumen }</p>
                                                                     </div>
                                                                 </div>
                                                             </div>

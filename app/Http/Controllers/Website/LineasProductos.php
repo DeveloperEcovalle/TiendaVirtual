@@ -60,6 +60,12 @@ class LineasProductos extends Website {
             $producto_linea->where('linea_id', $GLOBALS['iLineaProductoId']);
         })->with('precio_actual', 'oferta_vigente', 'promocion_vigente', 'imagenes')->limit(8)->get();
 
+        foreach($lstProductosRelacionados as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
+
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;

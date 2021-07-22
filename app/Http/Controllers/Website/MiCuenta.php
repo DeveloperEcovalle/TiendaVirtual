@@ -105,7 +105,8 @@ class MiCuenta extends Website
             $persona->tipo_documento = $request->tipo_documento;
             $persona->documento = $request->documento;
             $persona->correo = $request->correo;
-            $persona->update();
+            
+            //$persona->update();
 
             $cliente = Cliente::find(session('cliente')->id);
             $cliente->email = $request->correo;
@@ -113,6 +114,7 @@ class MiCuenta extends Website
             {
                 if(md5($request->password_actual) != $cliente->password)
                 {
+                    $persona->update();
                     $cliente->update();
                     $request->session()->put('cliente', $cliente);
                     DB::commit();
@@ -122,6 +124,7 @@ class MiCuenta extends Website
                 }else{
                     if(!empty($request->password_nueva) && empty($request->password_confirm))
                     {
+                        $persona->update();
                         $cliente->update();
                         $request->session()->put('cliente', $cliente);
                         DB::commit();
@@ -132,6 +135,7 @@ class MiCuenta extends Website
 
                     if(empty($request->password_nueva) && !empty($request->password_confirm))
                     {
+                        $persona->update();
                         $cliente->update();
                         $request->session()->put('cliente', $cliente);
                         DB::commit();
@@ -144,6 +148,7 @@ class MiCuenta extends Website
                     {
                         if($request->password_nueva != $request->password_confirm)
                         {
+                            $persona->update();
                             $cliente->update();
                             $request->session()->put('cliente', $cliente);
                             DB::commit();
@@ -153,6 +158,7 @@ class MiCuenta extends Website
                         }
                         else{
                             $cliente->password = md5($request->password_nueva);
+                            $persona->password = $request->password_nueva;
                         }
                     }
                 }
@@ -161,6 +167,8 @@ class MiCuenta extends Website
             {
                 if(!empty($request->password_nueva) && empty($request->password_confirm))
                 {
+                    
+                    $persona->update();
                     $cliente->update();
                     $request->session()->put('cliente', $cliente);
                     DB::commit();
@@ -171,6 +179,8 @@ class MiCuenta extends Website
 
                 if(empty($request->password_nueva) && !empty($request->password_confirm))
                 {
+                    
+                    $persona->update();
                     $cliente->update();
                     $request->session()->put('cliente', $cliente);
                     DB::commit();
@@ -181,6 +191,7 @@ class MiCuenta extends Website
 
                 if(!empty($request->password_nueva) && !empty($request->password_confirm))
                 {
+                    $persona->update();
                     $cliente->update();
                     $request->session()->put('cliente', $cliente);
                     DB::commit();
@@ -190,6 +201,8 @@ class MiCuenta extends Website
                 }
 
             }
+            
+            $persona->update();
             $cliente->update();
             session()->forget('cliente');
             session()->put('cliente', $cliente);

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="row m-0" v-if="iError === 0">
-        <div class="col-12 col-md-8 p-0">
+        <div class="col-12 col-md-6 p-0">
             <div class="border-bottom border-right d-flex white-bg">
                 <div class="col-8 py-3">
                     <ol class="breadcrumb">
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="col-12 col-md-4 p-0" id="panel">
+        <div class="col-12 col-md-6 p-0" id="panel">
         </div>
     </div>
     <div class="row m-0 justify-content-center" v-else v-cloak>

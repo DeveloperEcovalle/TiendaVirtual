@@ -1,6 +1,7 @@
 <?php
 
 use App\Agencia;
+use App\CategoriaProducto;
 use App\Cliente;
 use App\Compra;
 use App\Empresa;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Estado;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +49,7 @@ Route::middleware([Locale::class])->group(function () {
             Route::post('/aumentarCantidadProductoCarritoCantidad', 'Website@ajaxAumentarCantidadProductoCarritoCantidad');
             Route::post('/findproducto', 'Website@findproducto');
             Route::get('/publicidad', 'Website@ajaxPublicidad');
+            Route::post('/calificarProducto', 'Website@ajaxCalificarProducto');
         });
 
         Route::prefix('/nosotros')->group(function () {
@@ -818,6 +821,9 @@ Route::namespace('Intranet')->group(function () {
                             Route::post('/listar', 'Agencia@ajaxListar');
                             Route::post('/insertar', 'Agencia@ajaxInsertar');
                             Route::post('/actualizar', 'Agencia@ajaxActualizar');
+                            Route::get('/editar/listarUbigeo/{id}', 'Agencia@ajaxListarUbigeo');
+                            Route::post('/insertarDestino', 'Agencia@ajaxInsertarDestino');
+                            Route::post('/actualizar/autocompletarUbigeo', 'Agencia@ajaxEditarAutocompletarUbigeo');
                             Route::post('/actualizarContrasena', 'Agencia@ajaxActualizarContrasena');
                             Route::post('/eliminar', 'Agencia@ajaxEliminar');
                         });
@@ -899,5 +905,17 @@ Route::get('ruta', function () {
     {
         $result = enviapedido($venta, $empresa->telefono_pedidos_1);
     }*/
-    return 'ok';
+
+    $lstCategorias = DB::table('categorias_producto')
+            ->join('productos_categorias', 'categorias_producto.id', '=', 'productos_categorias.categoria_id')
+            ->join('productos', 'productos_categorias.producto_id', '=', 'productos.id')
+            ->where('categorias_producto.id',13)
+            ->select('categorias_producto.nombre_es','categorias_producto.id','productos.nombre_es','productos.id as idProducto', 'productos_categorias.id as sss')
+            ->orderBy('categorias_producto.nombre_es', 'asc')
+            ->get();
+    return $lstCategorias;
+
+    $categoria = CategoriaProducto::find(13);
+
+    return $categoria->productos;
 });

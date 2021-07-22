@@ -187,8 +187,8 @@
                                 <div class="mb-0 mt-3 w-100">
                                     <p v-if="!fVentaValida" class="text-ecovalle-compra d-inline">¡No olvides!</p> <p v-if="!fVentaValida" class="text-muted-compra d-inline">Tu compra m&iacute;nima es desde S/. 50.00</p>
                                 </div>
-                                <button class="btn btn-block btn-amarillo-compra mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
-                                <a href="/tienda" class="btn btn-block btn-ecovalle-compra mt-3">Seguir comprando</a>
+                                <button class="btn btn-block btn-ecovalle-compra mt-3" :disabled="!fVentaValida" v-on:click="ajaxLocalizarFacturacion">Procesar compra</button>
+                                <a href="/tienda" class="btn btn-block btn-amarillo-compra mt-3">Seguir comprando</a>
                                 <div class="mt-2 py-3 py-lg-0">
                                     <div class="row">
                                         <div class="col-6 text-right p-1">

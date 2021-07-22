@@ -3,8 +3,8 @@
 @section('title', 'Contáctanos')
 
 @section('content')
-    <section>
-        <img src="{{ $empresa->ruta_imagen_contactanos }}" class="w-100">
+    <section class="h-35">
+        <img src="{{ $empresa->ruta_imagen_contactanos }}" class="w-100 h-100">
     </section>
 
     <div class="container">
@@ -116,6 +116,15 @@
                                 <div class="form-group">
                                     <label class="text-ecovalle-2">{{ $lstLocalesContactanos['include_image'] }}</label>
                                     <input type="file" class="form-control px-1 py-1" name="imagen">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group mt-2">
+                                    <div v-icheck>
+                                        <label class="m-0">
+                                            <input type="checkbox" name="accept_term_cond" required>&nbsp;@{{ locale === 'es' ? 'Aceptar' : 'Accept' }} <a href="/terminos-condiciones">{!! $lstLocalesContactanos['accept_term_cond'] !!}</a>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-md-12" v-if="respuesta">

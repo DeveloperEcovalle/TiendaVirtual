@@ -246,7 +246,7 @@ listarMenus(function (lstModulos, lstMenus) {
                             let data = respuesta.data;
                             $this.lstBlogs = data.lstBlogs;
                             $this.pagina = data.pagina;
-
+                            $this.panelListar();
                             if (onSuccess) {
                                 onSuccess();
                             }

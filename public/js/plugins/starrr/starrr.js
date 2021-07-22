@@ -7,6 +7,7 @@ var slice = [].slice;
             rating: void 0,
             max: 5,
             readOnly: false,
+            productoId: '',
             emptyClass: 'far fa-star',
             fullClass: 'fas fa-star',
             change: function (e, value) {
@@ -42,7 +43,13 @@ var slice = [].slice;
         }
 
         Starrr.prototype.getStars = function () {
-            return this.$el.find('a');
+            if(this.options.readOnly)
+            {
+                return this.$el.find('i');
+            }
+            else{
+                return this.$el.find('a');
+            }
         };
 
         Starrr.prototype.createStars = function () {
@@ -50,7 +57,12 @@ var slice = [].slice;
             results = [];
             for (j = 1, ref = this.options.max; 1 <= ref ? j <= ref : j >= ref; 1 <= ref ? j++ : j--) {
                 let sclass = this.options.readOnly ? ' class="readonly"' : "";
-                results.push(this.$el.append("<a href='#'" + sclass + ">"));
+                if(this.options.readOnly)
+                {
+                    results.push(this.$el.append("<i></i>"));
+                }else{
+                    results.push(this.$el.append("<a href='#'" + sclass + ">"));
+                }
             }
             return results;
         };

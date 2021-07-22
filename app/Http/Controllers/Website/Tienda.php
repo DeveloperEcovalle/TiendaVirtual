@@ -39,6 +39,7 @@ class Tienda extends Website {
                 'more_expensive_first' => 'Price (highest to lowest)',
                 'description' => 'Description',
                 'how_to_use' => 'How to use',
+                'stories' => 'Stories',
             ],
             'es' => [
                 'showing' => 'Mostrando',
@@ -55,6 +56,7 @@ class Tienda extends Website {
                 'more_expensive_first' => 'Precio (de mayor a menor)',
                 'description' => 'Descripción',
                 'how_to_use' => 'Modo de uso',
+                'stories' => 'Reseñas',
             ]
         ];
     }
@@ -95,6 +97,7 @@ class Tienda extends Website {
             ->join('productos', 'productos_categorias.producto_id', '=', 'productos.id')
             ->join('precios', 'productos.id', '=', 'precios.producto_id')
             ->whereNotNull('precios.id')
+            ->where('precios.eliminado',0)
             ->select($orderBy,'categorias_producto.id', DB::raw('count(productos.id) as cantidad_productos'))
             ->groupBy('categorias_producto.id',$orderBy)
             ->orderBy($orderBy, 'asc')
@@ -149,6 +152,12 @@ class Tienda extends Website {
             $iTotalProductos = $lstProductos->count();
         }
 
+        foreach($lstProductos as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
+
         $data = [
             'iTotalProductos' => $iTotalProductos,
             'lstProductos' => $lstProductos
@@ -183,6 +192,12 @@ class Tienda extends Website {
         $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
             ->limit(8)
             ->get();
+
+        foreach($lstProductos_aux as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
 
         foreach($lstProductos_aux as $item)
         {
@@ -227,6 +242,12 @@ class Tienda extends Website {
         $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();
 
         $arr = array();
+
+        foreach($lstProductos_aux as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
 
         foreach($lstProductos_aux as $item)
         {
@@ -290,6 +311,13 @@ class Tienda extends Website {
 
         $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
         $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();
+
+        foreach($lstProductos_aux as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
+
         foreach($lstProductos_aux as $item)
         {
             if(!empty($item->precio_actual))
@@ -343,7 +371,15 @@ class Tienda extends Website {
     public function ajaxListarProducto(Request $request) {
         $iProductoId = $request->get('iProductoId');
 
-        $producto = Producto::with(['precio_actual', 'oferta_vigente', 'categorias', 'documentos', 'imagenes', 'promocion_vigente'])->find($iProductoId);
+        $producto = Producto::with(['precio_actual', 'oferta_vigente', 'categorias', 'documentos', 'imagenes', 'promocion_vigente','calificaciones', 'calificaciones.cliente.persona', 'calificacion_5', 'calificacion_4', 'calificacion_3', 'calificacion_2', 'calificacion_1'])->find($iProductoId);
+
+        $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+        $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+
+        foreach($producto->calificaciones as $item)
+        {
+            $item['emision'] = date_format($item->created_at, 'Y/m/d H:i');
+        }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
@@ -366,6 +402,12 @@ class Tienda extends Website {
         $lstProductosRelacionados = Producto::whereHas('productos_categorias', function (Builder $producto_categoria) {
             $producto_categoria->whereIn('categoria_id', $GLOBALS['lstCategorias']);
         })->where('id', '<>', $iProductoId)->whereHas('precio_actual')->with(['imagenes', 'precio_actual', 'oferta_vigente', 'promocion_vigente'])->get();
+
+        foreach($lstProductosRelacionados as $producto)
+        {
+            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
+            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
+        }
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;

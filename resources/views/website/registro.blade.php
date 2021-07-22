@@ -3,7 +3,7 @@
 @section('title', 'Registro')
 
 @section('content')
-    <section class="py-5">
+    <section class="py-2">
         <div class="container-xl">
             <form role="form" id="frmRegistro" v-on:submit.prevent="ajaxRegistrar()">
                 <div class="row pt-5 pb-3 justify-content-center justify-content-md-between">
@@ -142,7 +142,17 @@
                     </div>
 
                     <div class="col-11 col-md-12">
-                        <div class="form-group mt-5" v-cloak>
+                        <div class="form-group mt-5">
+                            <div v-icheck>
+                                <label class="m-0">
+                                    <input type="checkbox" name="accept_term_cond" required>&nbsp;@{{ locale === 'es' ? 'Aceptar' : 'Accept' }} <a href="/terminos-condiciones">{!! $lstTraduccionesRegistro['accept_term_cond'] !!}</a>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-11 col-md-12">
+                        <div class="form-group" v-cloak>
                             <div v-icheck>
                                 <label class="m-0">
                                     <input type="checkbox" name="acepto_terminos_y_condiciones_y_politica_de_privacidad" required>&nbsp;{!! $lstTraduccionesRegistro['accept'] !!}

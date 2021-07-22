@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Website;
 
+use App\Calificacion;
 use App\DetalleCarrito;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Respuesta;
@@ -10,6 +11,7 @@ use App\Mail\NotificacionContactoContigo;
 use App\Persona;
 use App\Producto;
 use App\Publicidad;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -382,5 +384,77 @@ class Website extends Controller {
         $respuesta->data = array('publicidad' => $publicidad);
 
         return response()->json($respuesta);
+    }
+
+    public function ajaxCalificarProducto(Request $request)
+    {
+        try{
+            $session = $request->session();
+            if ($session->has('cliente')) {
+                $cliente = $session->get('cliente');
+                $producto_id = $request->get('productoId');
+                $stars = $request->get('stars');
+                $title = $request->get('title');
+                $comment = $request->get('comment');
+
+                /*$calificacion = Calificacion::where('cliente_id', $cliente->id)->where('producto_id', $producto_id)->first();
+
+                if(!empty($calificacion))
+                {
+                    $calificacion->title = $title;
+                    $calificacion->comment = $comment;
+                    $calificacion->stars = $stars;
+                    $calificacion->update();
+                }
+                else
+                {
+                    $nueva_calificacion = new Calificacion();
+                    $nueva_calificacion->title = $title;
+                    $nueva_calificacion->comment = $comment;
+                    $nueva_calificacion->stars = $stars;
+                    $nueva_calificacion->cliente_id = $cliente->id;
+                    $nueva_calificacion->producto_id = $producto_id;
+                    $nueva_calificacion->save();
+                }*/
+
+                $nueva_calificacion = new Calificacion();
+                $nueva_calificacion->title = $title;
+                $nueva_calificacion->comment = $comment;
+                $nueva_calificacion->stars = $stars;
+                $nueva_calificacion->cliente_id = $cliente->id;
+                $nueva_calificacion->producto_id = $producto_id;
+                $nueva_calificacion->save();
+
+                $producto = Producto::with(['precio_actual', 'oferta_vigente', 'categorias', 'documentos', 'imagenes', 'promocion_vigente','calificaciones', 'calificaciones.cliente.persona', 'calificacion_5', 'calificacion_4', 'calificacion_3', 'calificacion_2', 'calificacion_1'])->find($producto_id);
+
+                $producto->cantidad_calificaciones = $producto->cantidad_calificaciones();
+                $producto->sumatoria_calificaciones = $producto->sumatoria_calificaciones();
+                $producto->update();
+
+                foreach($producto->calificaciones as $item)
+                {
+                    $item['emision'] = date_format($item->created_at, 'Y/m/d H:i');
+                }
+
+                $respuesta = new Respuesta;
+                $respuesta->result = Result::SUCCESS;
+                $respuesta->data = ['producto' => $producto];
+                $respuesta->mensaje = 'Su reseña se ha publicado';
+            }
+            else
+            {
+                $respuesta = new Respuesta;
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'Ocurrió un error';
+            }
+
+            return response()->json($respuesta);
+        }
+        catch(Exception $e)
+        {
+            $respuesta = new Respuesta;
+            $respuesta->result = Result::ERROR;
+            $respuesta->mensaje = $e->getMessage();
+        }
     }
 }

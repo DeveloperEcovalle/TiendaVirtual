@@ -43,32 +43,39 @@
                 </div>
             </div>
             
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-12 mb-1">
-                            <div class="bg-amarillo-2">
-                                <div class="form-group row p-4 align-items-end">
-                                    <div class="col-lg-4 col-12" > 
+                            <div class="row justify-content-between">
+                                <div class="col-lg-4 pr-md-4 mb-1 col-12"> 
+                                    <div class="pt-4 pl-4 pr-4 pb-2 bg-amarillo-2 text-center panel-tipo-envio">
+                                        <img src="/img/carrito-01.png" class="img-facturacion-ecovalle"><br>
                                         <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                             <label class="m-0" title="Envío a nivel nacional">
-                                                <input type="radio" name="tipo_compra" value="E" v-model="sLocation">
-                                                &nbsp;<b>Envío a nivel nacional</b>
+                                                <input type="radio" id="tipo_compra_E" name="tipo_compra" value="E" v-model="sLocation">
+                                                &nbsp;<b>Envío a nivel nacional</b>&nbsp;<p class="small">(Punto de partida Trujillo)</p>
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-12">
+                                </div>
+                                <div class="col-lg-4 pr-md-3 pl-md-3  mb-1 col-12">
+                                    <div class="pt-4 pl-4 pr-4 pb-2 bg-amarillo-2 text-center panel-tipo-envio">
+                                        <img src="/img/carrito-02.png" class="img-atributo-ecovalle mb-2"><br>
                                         <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                             <label class="m-0" title="Recojo en tienda">
-                                                <input type="radio" name="tipo_compra" value="R" v-model="sLocation">
-                                                &nbsp;<b>Recojo en tienda</b>
+                                                <input type="radio" name="tipo_compra" id="tipo_compra_R" value="R" v-model="sLocation">
+                                                &nbsp;<b>Recojo en tienda Trujillo</b>
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4 col-12">
+                                </div>
+                                <div class="col-lg-4 pl-md-4 mb-1 col-12">
+                                    <div class="pt-4 pl-4 pr-4 pb-2 bg-amarillo-2 text-center panel-tipo-envio">
+                                        <img src="/img/carrito-03.png" class="img-facturacion-ecovalle mb-2"><br>
                                         <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
                                             <label class="m-0" title="Delivery Trujillo">
-                                                <input type="radio" name="tipo_compra" value="D" v-model="sLocation">
+                                                <input type="radio" name="tipo_compra" id="tipo_compra_D" value="D" v-model="sLocation">
                                                 &nbsp;<b>Delivery Trujillo</b>
                                             </label>
                                         </div>
@@ -76,271 +83,349 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-12 text-right" v-if="sLocation == 'E'">
-                            <a href="#" class="btn btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasEnvio">Ver tarifas de env&iacute;o nacional</a>
-                        </div>
-                        <div class="col-12 text-right" v-if="sLocation == 'D'">
-                            <a href="#" class="btn btn-sm btn-info float-right mb-2" data-toggle="modal" data-target="#modalTarifasDelivery"><b>Ver tarifas delivery Trujillo</b></a>
-                        </div>
-
-                        <div class="col-12 mb-3" v-if="sLocation == 'E'">
-                            <div class="p-4 bg-white">
-                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de la direcci&oacute;n</h1>
-                                <div class="row">
-                                    <p class="col-12 col-lg-4">
-                                        <span class="font-weight-bold">Datos de env&iacute;o</span>
-                                    </p>
-                                    <div v-if="!bDireccionEnvioValida || !bVerificaRuc || !bVerificaDni" class="col-8 col-lg-6 d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
+                        @if(session()->has('cliente'))
+                        <div class="col-12 mb-3 mt-4" v-if="sLocation == 'E'">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold">SELECCIONAR MÉTODO DE ENVÍO</p>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="row pl-3 pr-3">
+                                        <div class="col-12 border-left border-right border-top p-0">
+                                            <div class="row pt-1 pl-2 pr-2">
+                                                <div class="col-10">
+                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                                        <label class="m-0 text-ecovalle font-weight-bold" title="Recojo en agencia">
+                                                            <input type="radio" name="tipo_recojo" value="RA" v-model="sTipoEnvio" v-on:change="fAgencia('')">
+                                                            Recojo en agencia - Pago contra entrega
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <button class="btn btn-collapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" v-on:click="fCollapse('collapse_1')"><i class="fa" :class="sCollapse_1 === 0 ? 'fa-chevron-down' : 'fa-chevron-up'"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="collapse border-top m-0 p-4 bg-ecovalle-6" id="collapseExample">
+                                                <p>EcoValle, asume los gastos de envío hasta la agencia de transporte, en adelante el cliente es responsable de cancelar el monto de envío que cobra la agencia seleccionada.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 border-left border-right p-0 border-top border-bottom" v-if="!bOlva">
+                                            <div class="row pt-1 pl-2 pr-2">
+                                                <div class="col-10">
+                                                    <button class="d-inline" class="btn" disabled style="border-radius: 50%; width: 22px; height: 22px; border: 0.5px solid rgb(156, 156, 156);"></button>
+                                                    <label class="d-inline m-0 text-ecovalle font-weight-bold" title="Envío por Olva Currier a domicilio">
+                                                        Envío por @{{ lstAgencias.length > 0 ? lstAgencias[0].nombre : 'NO EXISTE OLVA CURIER' }} a domicilio - Pago según localidad
+                                                    </label>
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <button class="btn btn-collapse" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample" v-on:click="fCollapse('collapse_2')"><i class="fa" :class="sCollapse_2 === 0 ? 'fa-chevron-down' : 'fa-chevron-up'"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="collapse p-4 m-0 w-100 border-top bg-ecovalle-6" id="collapseExample1">
+                                                <p>EcoValle, asume los gastos de envío hasta la agencia de transporte, en adelante el cliente es responsable de cancelar el monto de envío que cobra la agencia seleccionada.</p>
+                                                <p class="text-danger"><i class="fa fa-exclamation-circle"></i> Olva Currier no esta disponible para este destino.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 border-left border-right p-0 border-top border-bottom" v-if="bOlva">
+                                            <div class="row pt-1 pl-2 pr-2">
+                                                <div class="col-10">
+                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
+                                                        <label class="m-0 text-ecovalle font-weight-bold" title="Envío por Olva Currier a domicilio">
+                                                            <input type="radio" name="tipo_recojo" value="EOC" v-model="sTipoEnvio" v-on:change="fAgencia(lstAgencias[0].nombre)">
+                                                            Envío por @{{ lstAgencias.length > 0 ? lstAgencias[0].nombre : 'NO EXISTE OLVA CURIER' }} a domicilio - Pago según localidad
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2 text-right">
+                                                    <button class="btn btn-collapse" type="button" data-toggle="collapse" data-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample" v-on:click="fCollapse('collapse_2')"><i class="fa" :class="sCollapse_2 === 0 ? 'fa-chevron-down' : 'fa-chevron-up'"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="collapse p-4 m-0 w-100 border-top bg-ecovalle-6" id="collapseExample1">
+                                                <p>EcoValle, asume los gastos de envío hasta la agencia de transporte, en adelante el cliente es responsable de cancelar el monto de envío que cobra la agencia seleccionada.</p>
+                                            </div>
+                                        </div>
+                                    </div>                              
+                                </div>
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">DATOS DE FACTURACIÓN Y ENVÍO</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres y Apellidos</label>
+                                                <p class="mt-1" v-if="datosEnvio.sNombres != '' && datosEnvio.sApellidos">@{{ datosEnvio.sNombres + ' ' + datosEnvio.sApellidos + ' ' }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Correo</label>
+                                                <p class="mt-1" v-if="datosEnvio.sEmail != ''">@{{ datosEnvio.sEmail }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar email</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Dirección</label>
+                                                <p class="mt-1" v-if=" datosEnvio.sDireccion != '' &&  datosEnvio.sDistrito != '' &&  datosEnvio.sProvincia != '' &&  datosEnvio.sDepartamento != ''">@{{ datosEnvio.sDireccion + ' - ' + datosEnvio.sDistrito + ' / ' + datosEnvio.sProvincia + ' / ' + datosEnvio.sDepartamento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar dirección</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Emitir</label>
+                                                <p class="mt-1" v-if="bComprobanteEncontrado">@{{ bComprobanteEncontrado }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Seleccionar tipo de comprobante</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0 text-uppercase">@{{ datosEnvio.sTipoDoc }}</label>
+                                                <p class="mt-1" v-if="datosEnvio.sDocumento != ''">@{{ datosEnvio.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosEnvio.sTelefono != ''">@{{ datosEnvio.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Agencia</label>
+                                                <p class="mt-1" v-if="datosEnvio.sAgencia != ''">@{{ datosEnvio.sAgencia }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Seleccionar agencia</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-8 col-lg-6"></div>
-                                    @if(session()->has('cliente'))
-                                    <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDireccionEnvio">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @else
-                                    <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @endif
                                 </div>
-                                @if(session()->has('cliente'))
-                                <div v-if="iDireccionEnvioEstablecida === 0">
-                                    <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">QUIÉN RECOGE</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres</label>
+                                                <p class="mt-1" v-if ="datosEnvio.sRecoge.sRazonSocial != ''">@{{ datosEnvio.sRecoge.sRazonSocial }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres y apellidos</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosEnvio.sRecoge.sTelefono != ''">@{{ datosEnvio.sRecoge.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">DNI</label>
+                                                <p class="mt-1"v-if="datosEnvio.sRecoge.sDocumento != ''">@{{ datosEnvio.sRecoge.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <button type="button" class="btn btn-amarillo-compra btn-sm d-inline" data-toggle="modal" data-target="#modalEditarDatosEnvio">EDITAR</button>
+                                            <button type="button" class="btn btn-ecovalle-compra btn-sm d-inline" data-toggle="modal" data-target="#modalTarifasEnvio">VER TARIFAS</button>
+                                        </div>
+                                    </div>
                                 </div>
-                                @else
-                                <div v-if="iDireccionEnvioEstablecida === 0">
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3 mt-4" v-if="sLocation == 'R'">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">PUNTO DE RECOJO EN TIENDA</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Tienda</label>
+                                                <p class="mt-1" >Ecovalle Market Saludable</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Direcci&oacute;n</label>
+                                                <p class="mt-1" >Av. Prolongaci&oacute;n C&eacute;sar Vallejo Mz. I. Lt. 2 Urb. Galeno 1, Trujillo Ref.: a 1/2 cuadra del Real Plaza</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Tel&eacute;fono</label>
+                                                <p class="mt-1" >960 062 164</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Horario de atenci&oacute;n</label>
+                                                <p class="mt-1" >Lunes a Domingo de 10:00 am a 9:00 pm</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">DATOS DE FACTURACI&Oacute;N</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres y Apellidos</label>
+                                                <p class="mt-1" v-if="datosRecojo.sNombres != '' && datosRecojo.sApellidos">@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Correo</label>
+                                                <p class="mt-1" v-if="datosRecojo.sEmail != ''">@{{ datosRecojo.sEmail }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar email</p>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosRecojo.sTelefono != ''">@{{ datosRecojo.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Emitir</label>
+                                                <p class="mt-1" v-if="bComprobanteEncontrado">@{{ bComprobanteEncontrado }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Seleccionar tipo de comprobante</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0 text-uppercase">@{{ datosRecojo.rTipoDoc }}</label>
+                                                <p class="mt-1" v-if="datosRecojo.sDocumento != ''">@{{ datosRecojo.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">QUIÉN RECOGE</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres</label>
+                                                <p class="mt-1" v-if ="datosRecojo.sRecoge.sRazonSocial != ''">@{{ datosRecojo.sRecoge.sRazonSocial }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres y apellidos</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosRecojo.sRecoge.sTelefono != ''">@{{ datosRecojo.sRecoge.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">DNI</label>
+                                                <p class="mt-1"v-if="datosRecojo.sRecoge.sDocumento != ''">@{{ datosRecojo.sRecoge.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <button type="button" class="btn btn-amarillo-compra btn-sm d-inline" data-toggle="modal" data-target="#modalEditarRecojo">EDITAR</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3 mt-4" v-if="sLocation == 'D'">
+                            <div class="row">
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">DATOS DE FACTURACI&Oacute;N</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres y Apellidos</label>
+                                                <p class="mt-1" v-if="datosDelivery.sNombres != '' && datosDelivery.sApellidos">@{{ datosDelivery.sNombres + ' ' + datosDelivery.sApellidos + ' ' }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Correo</label>
+                                                <p class="mt-1" v-if="datosDelivery.sEmail != ''">@{{ datosDelivery.sEmail }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar email</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Dirección</label>
+                                                <p class="mt-1" v-if="datosDelivery.sDireccion != ''">@{{ datosDelivery.sDireccion }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar direcci&oacute;n</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Emitir</label>
+                                                <p class="mt-1" v-if="bComprobanteEncontrado">@{{ bComprobanteEncontrado }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Seleccionar tipo de comprobante</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0 text-uppercase">@{{ datosDelivery.dTipoDoc }}</label>
+                                                <p class="mt-1" v-if="datosDelivery.sDocumento != ''">@{{ datosDelivery.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosDelivery.sTelefono != ''">@{{ datosDelivery.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <p class="h5 text-ecovalle-2 font-weight-bold mb-1">QUIÉN RECIBE</p>
+                                    <div class="hr-line"></div>
+                                    <div class="row mt-3">
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Nombres</label>
+                                                <p class="mt-1" v-if ="datosDelivery.sRecoge.sRazonSocial != ''">@{{ datosDelivery.sRecoge.sRazonSocial }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar nombres y apellidos</p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">Teléfono</label>
+                                                <p class="mt-1" v-if="datosDelivery.sRecoge.sTelefono != ''">@{{ datosDelivery.sRecoge.sTelefono }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar teléfono</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <div class="form-group">
+                                                <label class="text-ecovalle font-weight-bold mb-0">DNI</label>
+                                                <p class="mt-1"v-if="datosDelivery.sRecoge.sDocumento != ''">@{{ datosDelivery.sRecoge.sDocumento }}</p>
+                                                <p class="text-danger mt-1" v-else><i class="fa fa-exclamation-circle"></i> Completar documento</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 text-center">
+                                            <button type="button" class="btn btn-amarillo-compra btn-sm d-inline" data-toggle="modal" data-target="#modalEditarDelivery">EDITAR</button>
+                                            <button type="button" class="btn btn-ecovalle-compra btn-sm d-inline" data-toggle="modal" data-target="#modalTarifasDelivery">VER TARIFAS</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3 mt-2">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div v-icheck class="m-2">
+                                        <label class="m-0">
+                                            <input type="checkbox" value="1" name="termCond[]" v-model="termCond">&nbsp;He leído y acepto los <a href="/terminos-condiciones" target="_blank">t&eacute;rminos y condiciones.</a>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                        <div class="col-12 mb-3 mt-4">
+                            <div class="row">
+                                <div class="col-12 col-md-8">
                                     <p>Direcci&oacute;n de env&iacute;o no establecida. Click en 'Registrarse'.</p>
                                 </div>
-                                @endif
-                                <div class="row" v-else>
-                                    <div v-if="datosEnvio.sTipoDoc === 'DNI'" class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosEnvio.sNombres + ' ' + datosEnvio.sApellidos + ' ' }}</p>
-                                    </div>
-                                    <div v-else class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosEnvio.sNombres}}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <p class="mb-0"><b>Direcci&oacute;n: </b>@{{ datosEnvio.sDireccion + ' - ' + datosEnvio.sDistrito + ' / ' + datosEnvio.sProvincia + ' / ' + datosEnvio.sDepartamento }}</p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0" v-if="datosEnvio.sTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosEnvio.sDocumento }}</p>
-                                        <p class="mb-0" v-if="datosEnvio.sTipoDoc == 'RUC'"><b>RUC: </b>@{{ datosEnvio.sDocumento }}</p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sTelefono }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <p class="mb-0"><b>Email: </b>@{{ datosEnvio.sEmail }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <div style="border: solid 1px #EE9722;border-radius:5px;padding: 4px;">
-                                            <div class="row">
-                                                <div class="col-12 col-lg-8">
-                                                    <p class="mb-0"><b>¿Quién recoge?: </b>@{{ datosEnvio.sRecoge.sRazonSocial }}</p>
-                                                </div>
-                                                <div class="col-12 col-lg-4">
-                                                    <p class="mb-0"><b>DNI: </b>@{{ datosEnvio.sRecoge.sDocumento }}</p>
-                                                </div>
-                                                <div class="col-12">
-                                                    <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosEnvio.sRecoge.sTelefono }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-12">
-                                        <p v-if="datosEnvio.sAgencia != ''"><b>Agencia: </b>@{{ datosEnvio.sAgencia }} ( @{{ bAgencia }} )</p>
-                                        <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="bg-ecovalle">
-                                            <div class="form-group row p-4 align-items-end">
-                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" >
-                                                     <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
-                                                        <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosEnvio.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosEnvio.sTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="!bComprobanteEnvio" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    @if(session()->has('cliente'))
-                                    <div v-icheck class="m-2">
-                                        <label class="m-0">
-                                            <input type="checkbox" value="1" name="eatermcond[]" v-model="eatermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDireccionEnvioValida || bVerificaRuc != 1 || bVerificaDni != 1 || !bComprobanteEnvio" v-if="eatermcond.length > 0" v-on:click="confirmarFacturacion('E')">Continuar</button>
-                                    @endif
+                                <div class="col-12 col-md-4">
+                                    <a class="btn btn-block btn-ecovalle-compra" href="/registro">Registrarse</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 mb-3" v-if="sLocation == 'R'">
-                            <div class="p-4 bg-white">
-                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n de recojo en tienda</h1>
-                                <div class="row">
-                                    <p class="col-12 col-lg-4 m-0">
-                                        <span class="font-weight-bold">Datos de recojo</span>
-                                    </p>
-                                    <div v-if="!bRecojoValida" class="col-8 col-lg-6 items-center d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
-                                    </div>
-                                    <div class="col-8 col-lg-6"></div>
-                                    @if(session()->has('cliente'))
-                                    <a class="col-4 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarRecojo">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @else
-                                    <a class="col-4 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @endif
-                                    <p class="col-12 text-justify">
-                                        <span class="font-weight-bold text-ecovalle-2 h5">Direcci&oacute;n de recojo en Av. Prolongación Vallejo Urb. Galeno 1 Mz. I Lote 2, Trujillo - Trujillo (Ref. a media cuadra del Real Plaza)</span>
-                                    </p>
-                                </div>
-                                @if(session()->has('cliente'))
-                                <div v-if="iRecojoEstablecido === 0">
-                                    <p>Datos de recojo no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
-                                </div>
-                                @else
-                                <div v-if="iRecojoEstablecido === 0">
-                                    <p>Datos de recojo no establecidos. Click en 'Registrarse'.</p>
-                                </div>
-                                @endif
-                                <div class="row" v-else>
-                                    <div v-if="datosRecojo.rTipoDoc === 'DNI'" class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Nombres y Apellidos: </b>@{{ datosRecojo.sNombres + ' ' + datosRecojo.sApellidos + ' ' }}</p>
-                                    </div>
-                                    <div v-else class="col-12">
-                                        <p class="font-weight-bold mb-0"><b>Raz&oacute;n Social: </b>@{{ datosRecojo.sNombres}}</p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0"><b>Tel&eacute;fono: </b>@{{ datosRecojo.sTelefono }}</p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0" v-if="datosRecojo.rTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosRecojo.sDocumento }}</p>
-                                        <p class="mb-0" v-else><b>RUC: </b>@{{ datosRecojo.sDocumento }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><b>Email: </b>@{{ datosRecojo.sEmail }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="bg-ecovalle">
-                                            <div class="form-group row p-4 align-items-end">
-                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
-                                                        <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosRecojo.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosRecojo.rTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="!bComprobanteRecojo" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    @if(session()->has('cliente'))
-                                    <div v-icheck class="m-2">
-                                        <label class="m-0">
-                                            <input type="checkbox" value="1" name="ratermcond[]" v-model="ratermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bRecojoValida || !bComprobanteRecojo || bVerificaDniRecojo != 1 || bVerificaRucRecojo != 1" v-if="ratermcond.length > 0" v-on:click="confirmarFacturacion('R')">Continuar</button>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 mb-3" v-if="sLocation == 'D'">
-                            <div class="p-4 bg-white">
-                                <h1 class="h5 font-weight-bold text-ecovalle-2">Informaci&oacute;n delivery Trujillo</h1>
-                                <div class="row">
-                                    <p class="col-12 col-lg-4">
-                                        <span class="font-weight-bold">Datos de delivery</span>
-                                    </p>
-                                    <div v-if="!bDeliveryValida" class="col-6 col-lg-6 items-center d-none" style="background:url('/img/fle_r.gif') no-repeat right; background-size: contain;">
-                                    </div>
-                                    <div class="col-8 col-lg-6"></div>
-                                    @if(session()->has('cliente'))
-                                    <a class="col-6 col-lg-2 btn btn-primary float-right" href="#" data-toggle="modal" data-target="#modalEditarDelivery">Editar</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @else
-                                    <a class="col-6 col-lg-2 btn btn-ecovalle-2 float-right" href="/registro">Registrarse</a> <!--v-if="iDireccionEnvioConfirmada === 0"-->
-                                    @endif
-                                </div>
-                                @if(session()->has('cliente'))
-                                <div v-if="iDeliveryEstablecido === 0">
-                                    <p>Datos de delivery no establecidos. Click en 'Editar' para actualizar esta informaci&oacute;n.</p>
-                                </div>
-                                @else
-                                <div v-if="iDeliveryEstablecido === 0">
-                                    <p>Datos de delivery no establecidos. Click en 'Registrarse'.</p>
-                                </div>
-                                @endif
-                                <div class="row" v-else>
-                                    <div v-if="datosDelivery.dTipoDoc === 'DNI'" class="col-12">
-                                        <p class="font-weight-bold mb-0 d-inline" :class="{'text-danger' : datosDelivery.sNombres == '' || datosDelivery.sApellidos == ''}">Nombres y Apellidos:</p> <p v-if="datosDelivery.sNombres != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sNombres }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar nombres</p> <p v-if="datosDelivery.sApellidos != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sApellidos + ' ' }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar apellidos</p>
-                                    </div>
-                                    <div v-else class="col-12">
-                                        <p class="font-weight-bold mb-0 d-inline" :class="{'text-danger' : datosDelivery.sNombres == ''}"><b>Raz&oacute;n Social: </b></p><p v-if="datosDelivery.sNombres != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sNombres}}</p><p v-else class="font-weight-bold text mb-0 d-inline"><i class="fa fa-exclamation-circle"></i> Completar nombres</p> <p v-if="datosDelivery.sApellidos != ''" class="font-weight-bold mb-0 d-inline">@{{ datosDelivery.sApellidos + ' ' }}</p><p v-else class="font-weight-bold mb-0 d-inline text-danger"><i class="fa fa-exclamation-circle"></i> Completar apellidos</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <p v-if="datosDelivery.sDistrito != ''" class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / @{{ datosDelivery.sDistrito }}</p>
-                                        <p v-else class="mb-0"><b>Direcci&oacute;n:</b> @{{ datosDelivery.sDireccion }} - @{{ datosDelivery.sDepartamento }} / @{{ datosDelivery.sProvincia }} / <b class="text-danger"><i class="fa fa-exclamation-circle"></i> Seleccionar distrito</b></p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0"><b>Tel&eacute;fono:</b> @{{ datosDelivery.sTelefono }}</p>
-                                    </div>
-                                    <div class="col-12 col-lg-4">
-                                        <p class="mb-0" v-if="datosDelivery.dTipoDoc == 'DNI'"><b>DNI: </b>@{{ datosDelivery.sDocumento }}</p>
-                                        <p class="mb-0" v-else><b>RUC: </b>@{{ datosDelivery.sDocumento }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <p><b>Email:</b> @{{ datosDelivery.sEmail }}</p>
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="bg-ecovalle">
-                                            <div class="form-group row p-4 align-items-end">
-                                                <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" > <!--style="background:url('/img/delivery_aux.png') no-repeat right; background-size: contain;"-->
-                                                    <div class="d-inline-block i-checks" v-icheck="{ type: 'radio' }">
-                                                        <label class="m-0">
-                                                            <input type="radio" name="sTipoComprobante" :value="tipo.tipo_comprobante_sunat.descripcion" v-model="datosDelivery.sTipoComprobante" :disabled="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc">
-                                                            &nbsp;<b>@{{ tipo.tipo_comprobante_sunat.descripcion }}</b> <p v-if="tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura != datosDelivery.dTipoDoc" class="text-danger d-inline" style="font-size: 10;"><b>(Necesita @{{ tipo.tipo_comprobante_sunat.tipos_documento[0].abreviatura }})</b></p>
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div v-if="!bComprobanteDelivery" class="col-12" style="background:url('/img/flecha-ultra.gif') no-repeat center; background-size: contain; height: 80px;">
-
-                                    </div>
-                                </div>
-                                <div class="text-center">
-                                    @if(session()->has('cliente'))
-                                    <div v-icheck class="m-2">
-                                        <label class="m-0">
-                                            <input type="checkbox" value="1" name="datermcond[]" v-model="datermcond">&nbsp;Aceptar <a href="/terminos-condiciones">t&eacute;rminos y condiciones.</a>
-                                        </label>
-                                    </div>
-                                    <button class="btn btn-ecovalle" :disabled="!bDeliveryValida || !bComprobanteDelivery || bVerificaDniDelivery != 1 || bVerificaRucDelivery != 1" v-if="datermcond.length > 0" v-on:click="confirmarFacturacion('D')">Continuar</button>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="row bg-white">
                         <div class="col-12">
-                            <div class="px-3 pt-3 text-center">
-                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2 text-uppercase">{{ $lstTraduccionesFacturacionEnvio['order_summary'] }}</h1>
+                            <div class="px-2 text-center">
+                                <h1 class="h6 mb-0 mt-2 mt-md-0 font-weight-bold text-ecovalle-2 text-uppercase">{{ $lstTraduccionesFacturacionEnvio['order_summary'] }}</h1>
                                 <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12" v-for="(detalle, i) in lstCarritoCompras">
-                            <div class="p-3">
+                            <div class="p-2">
                                 <div class="row">
                                     <div class="col-3">
                                         <img class="img-fluid mb-3 mb-md-0" v-if="detalle.producto.imagenes.length > 0" :src="detalle.producto.imagenes[0].ruta">
@@ -361,13 +446,13 @@
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="px-3 pt-3 text-center text-uppercase">
-                                <h1 class="h6 mb-0 mt-4 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['price_summary'] }}</h1>
+                            <div class="px-2 pt-2 text-center text-uppercase">
+                                <h1 class="h6 mb-0 mt-2 mt-md-0 font-weight-bold text-ecovalle-2">{{ $lstTraduccionesFacturacionEnvio['price_summary'] }}</h1>
                                 <div class="hr-compra"></div>
                             </div>
                         </div>
                         <div class="col-12">
-                            <div class="p-3">
+                            <div class="p-2">
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2">Sub total <span class="float-right">S/ @{{ (fSubtotal + fDescuento).toFixed(2) }}</span></p>
                                 <div class="hr-compra"></div>
                                 <p class="mb-0 font-weight-bold">Ahorraste <span class="float-right">S/ @{{ fDescuento.toFixed(2) }}</span></p>
@@ -377,13 +462,30 @@
                                 <p class="mb-0 font-weight-bold text-ecovalle-compra-2 h5">Total <span class="float-right">S/ @{{ fTotal.toFixed(2) }}</span></p>
                             </div>
                         </div>
+                        @if(session()->has('cliente'))
+                        <div class="col-12" v-if="sLocation == 'E'">
+                            <div class="p-2">
+                                <button class="btn btn-block btn-ecovalle-compra" :disabled="!bDireccionEnvioValida || bVerificaRuc != 1 || bVerificaDni != 1" v-if="termCond.length > 0" v-on:click="confirmarFacturacion('E')">Continuar</button>
+                            </div>
+                        </div>
+                        <div class="col-12" v-if="sLocation == 'R'">
+                            <div class="p-2">
+                                <button class="btn btn-block btn-ecovalle-compra" :disabled="!bRecojoValida || !bComprobanteRecojo || bVerificaDniRecojo != 1 || bVerificaRucRecojo != 1" v-if="termCond.length > 0" v-on:click="confirmarFacturacion('R')">Continuar</button>
+                            </div>
+                        </div>
+                        <div class="col-12" v-if="sLocation == 'D'">
+                            <div class="p-2">
+                                <button class="btn btn-block btn-ecovalle-compra" :disabled="!bDeliveryValida || !bComprobanteDelivery || bVerificaDniDelivery != 1 || bVerificaRucDelivery != 1" v-if="termCond.length > 0" v-on:click="confirmarFacturacion('D')">Continuar</button>
+                            </div>
+                        </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <div class="modal fade" id="modalEditarDireccionEnvio" tabindex="-1">
+    <div class="modal fade" id="modalEditarDatosEnvio" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-amarillo">
@@ -455,14 +557,31 @@
                                         <strong class="text-danger">Completar apellidos</strong>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Agencia</label>
                                     <select  class="form-control" :class="{'is-invalid' : datosEnvio.sAgencia == ''}" v-model="datosEnvio.sAgencia">
                                         <option value="">Seleccionar</option>
-                                        <option v-for="agencia in lstAgencias" :value="agencia.nombre">@{{agencia.nombre}}</option>
+                                        <option v-for="agencia in bAgencias" :value="agencia.nombre">@{{ agencia.nombre }}</option>
                                     </select>
                                     <span class="invalid-feedback">
                                         <strong class="text-danger">Seleccionar agencia</strong>
+                                    </span>
+                                    <span v-if="!bDestinoEncontrado" style="font-size: 12px;">
+                                        <strong class="text-danger">Completar destino de envío</strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante</label>
+                                    <select  class="form-control" :class="{'is-invalid' : datosEnvio.sTipoComprobante == ''}" v-model="datosEnvio.sTipoComprobante" id="deTipoDoc" v-on:change="fControlTipoDoc('E')">
+                                        <option value="">Seleccionar</option>
+                                        <option v-for="(tipo, i) in lstTiposComprobante" :value="tipo.id">@{{ tipo.tipo_comprobante_sunat.descripcion }}</option>
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar tipo comprobante</strong>
                                     </span>
                                 </div>
                             </div>
@@ -493,7 +612,7 @@
                                 <div class="form-group">
                                     <label>Departamento</label>
                                     <select class="form-control" :class="{'is-invalid' : datosEnvio.sDepartamento == ''}" v-model="datosEnvio.sDepartamento">
-                                        <option value="" selected>Seleccionar</option>
+                                        <option value="">Seleccionar</option>
                                         <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
                                     </select>
                                     <span class="invalid-feedback">
@@ -503,7 +622,7 @@
                                 <div class="form-group">
                                     <label>Provincia</label>
                                     <select class="form-control" :class="{'is-invalid' : datosEnvio.sProvincia == ''}" v-model="datosEnvio.sProvincia">
-                                        <option value="" selected>Seleccionar</option>
+                                        <option value="">Seleccionar</option>
                                         <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
                                     </select>
                                     <span class="invalid-feedback">
@@ -513,7 +632,7 @@
                                 <div class="form-group">
                                     <label>Distrito</label>
                                     <select class="form-control" :class="{'is-invalid' : datosEnvio.sDistrito == ''}" v-model="datosEnvio.sDistrito">
-                                        <option value="" selected>Seleccionar</option>
+                                        <option value="">Seleccionar</option>
                                         <option v-for="distrito in lstDistritos" :value="distrito.distrito">@{{ distrito.distrito }}</option>
                                     </select>
                                     <span class="invalid-feedback">
@@ -632,8 +751,8 @@
                                 </div>
                             </div>
                         </section>
-                        <div class="row">
-                            <div class="col-md-12" v-if="iCargandoConsultaApir === 0">
+                        <div class="row" v-if="iCargandoConsultaApir === 0">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label v-if="datosRecojo.rTipoDoc == 'DNI'">Nombres</label>
                                     <label v-else>Raz&oacute;n social</label>
@@ -642,6 +761,8 @@
                                         <strong class="text-danger">Completar nombres</strong>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <div class="form-group" v-if="datosRecojo.rTipoDoc == 'DNI'">
                                     <label>Apellidos</label>
                                     <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sApellidos == '' && datosRecojo.rTipoDoc == 'DNI'}" v-model="datosRecojo.sApellidos" autocomplete="off">
@@ -649,6 +770,8 @@
                                         <strong class="text-danger">Completar apellidos</strong>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Correo electr&oacute;nico</label>
                                     <input type="email" class="form-control" :class="{'is-invalid' : datosRecojo.sEmail == ''}" v-model="datosRecojo.sEmail" autocomplete="off" required>
@@ -656,12 +779,72 @@
                                         <strong class="text-danger">Completar correo electr&oacute;nico</strong>
                                     </span>
                                 </div>
+                            </div>
+                            <div class="col-12 col-md-6">
                                 <div class="form-group" >
                                     <label>Teléfono</label>
                                     <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sTelefono == ''}" v-model="datosRecojo.sTelefono" autocomplete="off">
                                     <span class="invalid-feedback">
                                         <strong class="text-danger">Completar tel&eacute;fono</strong>
                                     </span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante</label>
+                                    <select  class="form-control" :class="{'is-invalid' : datosRecojo.sTipoComprobante == ''}" v-model="datosRecojo.sTipoComprobante" id="deTipoDoc" v-on:change="fControlTipoDoc('R')">
+                                        <option value="">Seleccionar</option>
+                                        <option v-for="(tipo, i) in lstTiposComprobante" :value="tipo.id">@{{ tipo.tipo_comprobante_sunat.descripcion }}</option>
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar tipo comprobante</strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
+                                <label><b>Datos de quien recoge el pedido</b></label>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Documento (DNI)</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sRecoge.sDocumento == ''}" v-model="datosRecojo.sRecoge.sDocumento" autocomplete="off">
+                                                <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApiRecoge()"><i class="fa fa-search"></i> </button></span>
+                                            </div>
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Tel&eacute;fono</label>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sRecoge.sTelefono == ''}" v-model="datosRecojo.sRecoge.sTelefono" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" v-if="iCargandoConsultaApiRecoge === 1">
+                                        <section class="pt-5 pb-5" v-cloak>
+                                            <div class="container-xl">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <img src="/img/spinner.svg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-12" v-else>
+                                        <div class="form-group">
+                                            <label>Nombres y Apellidos</label>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosRecojo.sRecoge.sRazonSocial == ''}" v-model="datosRecojo.sRecoge.sRazonSocial" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -686,7 +869,7 @@
                 <div class="modal-body p-4">
                     <form id="frmDelivery" v-on:submit.prevent="confirmarDelivery">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Tipo documento</label>
                                     <select name="dtipo_documento" id="dtipo_documento" :class="{'is-invalid' : datosDelivery.dTipoDoc == ''}" class="form-control" v-model="datosDelivery.dTipoDoc">
@@ -699,7 +882,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label>Documento</label>
                                     <div class="input-group">
@@ -716,6 +899,18 @@
                                     </span>
                                     <span :class="{'d-none' : bVerificaRucDelivery != 0}">
                                         <strong class="small text-danger"><b>Completar 11 caracteres</b></strong>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label>Tipo Comprobante</label>
+                                    <select  class="form-control" :class="{'is-invalid' : datosDelivery.sTipoComprobante == ''}" v-model="datosDelivery.sTipoComprobante" id="deTipoDoc" v-on:change="fControlTipoDoc('D')">
+                                        <option value="">Seleccionar</option>
+                                        <option v-for="(tipo, i) in lstTiposComprobante" :value="tipo.id">@{{ tipo.tipo_comprobante_sunat.descripcion }}</option>
+                                    </select>
+                                    <span class="invalid-feedback">
+                                        <strong class="text-danger">Seleccionar tipo comprobante</strong>
                                     </span>
                                 </div>
                             </div>
@@ -794,6 +989,52 @@
                                     </span>
                                 </div>
                             </div>
+                            <div class="col-12" style="border: solid 1px #EE9722;border-radius:5px;">
+                                <label><b>Datos de quien recibe el pedido</b></label>
+                                <div class="row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Documento (DNI)</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" :class="{'is-invalid' : datosDelivery.sRecoge.sDocumento == ''}" v-model="datosDelivery.sRecoge.sDocumento" autocomplete="off">
+                                                <span class="input-group-append"><button class="btn btn-ecovalle-2" v-on:click.prevent="ajaxConsultaApiRecoge()"><i class="fa fa-search"></i> </button></span>
+                                            </div>
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label>Tel&eacute;fono</label>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosDelivery.sRecoge.sTelefono == ''}" v-model="datosDelivery.sRecoge.sTelefono" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12" v-if="iCargandoConsultaApiRecoge === 1">
+                                        <section class="pt-5 pb-5" v-cloak>
+                                            <div class="container-xl">
+                                                <div class="row">
+                                                    <div class="col-12 text-center">
+                                                        <img src="/img/spinner.svg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-12" v-else>
+                                        <div class="form-group">
+                                            <label>Nombres y Apellidos</label>
+                                            <input type="text" class="form-control" :class="{'is-invalid' : datosDelivery.sRecoge.sRazonSocial == ''}" v-model="datosDelivery.sRecoge.sRazonSocial" autocomplete="off">
+                                            <span class="invalid-feedback">
+                                                <strong class="text-danger">Campo obligatorio</strong>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -814,27 +1055,27 @@
                     </button>
                 </div>
                 <div class="modal-body p-4" v-cloak>
-                    <div class="form-group">
+                    <div class="form-group d-none">
                         <input type="text" v-model="sBuscar" class="form-control" placeholder="Buscar por departamento, provincia ó distrito">
                     </div>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tblBlogs">
                             <thead>
                                 <tr>
-                                    <th class="bg-ecovalle-2">Departamento</th>
-                                    <th class="bg-ecovalle-2">Provincia</th>
-                                    <th class="bg-ecovalle-2">Distrito</th>
+                                    <th class="bg-ecovalle-2">Agencia</th>
+                                    <th class="bg-ecovalle-2">Descripcion</th>
+                                    <th class="bg-ecovalle-2">Direcci&oacute;n</th>
                                     <th class="bg-ecovalle-2">Tarifa</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white">
-                                <tr v-for="ubigeo  of lstPreciosEnvioNacionalFiltrado" v-cloak>
-                                    <td>@{{ ubigeo.departamento }}</td>
-                                    <td>@{{ ubigeo.provincia }}</td>
-                                    <td>@{{ ubigeo.distrito }}</td>
-                                    <td>S/. @{{ ubigeo.tarifa.toFixed(2) }}</td>
+                                <tr v-for="agencia  of bAgencias" v-cloak>
+                                    <td>@{{ agencia.nombre }}</td>
+                                    <td>@{{ agencia.descripcion }}</td>
+                                    <td>@{{ agencia.pivot.direccion }}</td>
+                                    <td>S/. @{{ agencia.pivot.tarifa.toFixed(2) }}</td>
                                 </tr>
-                                <tr v-if="lstPreciosEnvioNacional.length === 0" v-cloak>
+                                <tr v-if="bAgencias.length === 0" v-cloak>
                                     <td colspan="4" class="text-center">No hay datos para mostrar</td>
                                 </tr>
                             </tbody>

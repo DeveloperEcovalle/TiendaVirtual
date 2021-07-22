@@ -9,6 +9,16 @@ let vueTiendaProducto = new Vue({
         locale: 'es',
         iCargandoProducto: 1,
 
+        visibility: 0,
+        iEnviandoResena: 0,
+        sMensajeResena: '',
+        sMensajeErrorStars: '',
+        resena: {
+            title: '',
+            comment: '',
+            stars: 0,
+        },
+
         lstCarritoCompras: [],
         producto: {
             precio_actual: {
@@ -395,6 +405,67 @@ let vueTiendaProducto = new Vue({
                 }                    
             }
         },
+        bVisibility: function()
+        {
+            if(this.visibility === 1)
+            {
+                this.visibility = 0;
+            }
+            else
+            {
+                this.visibility = 1;
+            }
+        },
+        ajaxEnviarResena: function()
+        {
+            let $this = this;
+            let formData = new FormData();
+            formData.append('title', $this.resena.title);
+            formData.append('comment', $this.resena.comment);
+            formData.append('stars', $this.resena.stars);
+            formData.append('productoId', $this.producto.id);
+
+
+            let verificar = true;
+            if($this.resena.stars === 0)
+            {
+                verificar = false;
+                $this.sMensajeErrorStars = '¡¡Calificar!!'
+            }
+            
+            if(verificar)
+            {
+                $this.iEnviandoResena = 1;
+                //$this.iCargandoProducto = 1;
+                axios.post('/ajax/calificarProducto', formData)
+                .then(response => {
+                    let respuesta = response.data;
+                    if (respuesta.result === result.success) {
+                        $this.visibility = 0;
+                        $this.resena.title = '';
+                        $this.resena.comment = '';
+                        $this.resena.stars = 0;
+                        
+                        $this.producto = respuesta.data.producto;
+                    }
+                    toastr.clear();
+                    toastr.options = {
+                        iconClasses: {
+                            error: 'bg-danger',
+                            info: 'bg-info',
+                            success: 'bg-success',
+                            warning: 'bg-warning',
+                        },
+                    };
+                    toastr[respuesta.result](respuesta.mensaje);
+                    $this.sMensajeResena = respuesta.mensaje;
+                })
+                .then(() => {
+                    $this.iEnviandoResena = 0;
+                    //$this.iCargandoProducto = 0;
+                });
+            }
+        }
     },
     updated: function () {
         this.$nextTick(function () {
@@ -402,7 +473,7 @@ let vueTiendaProducto = new Vue({
             new ImageZoom(document.getElementById("img-container"), options);   
             $(".carousel").carousel({
                 interval: 3000
-            });         
+            });  
         });
     },
 });
