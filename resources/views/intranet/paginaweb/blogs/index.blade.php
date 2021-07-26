@@ -10,7 +10,7 @@
     <div class="row m-0" v-if="iError === 0">
         <div class="col-12 col-md-8 p-0">
             <div class="border-bottom border-right d-flex white-bg">
-                <div class="col-7 py-3">
+                <div class="col-8 py-3">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item d-none d-md-block">
                             <a href="#" v-on:click.prevent>Ecovalle</a>
@@ -23,7 +23,7 @@
                         </li>
                     </ol>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                     <button class="btn btn-info float-right mt-2" data-toggle="modal" data-target="#modalActualizar"><i class="fas fa-edit"></i> Actualizar</button>
                 </div>
                 <div class="col-2">

@@ -3,8 +3,8 @@
 @section('title', 'Blog')
 
 @section('content')
-    <section class="h-35">
-        <img :src="sBanner" class="w-100 h-100">
+    <section>
+        <img :src="sBanner" class="w-100">
     </section>
 
     <div class="container">
@@ -16,7 +16,7 @@
         </nav>
     </div>
 
-    <section class="py-2">
+    <section class="py-5">
         <div class="container-xl">
             <div class="row">
                 <div class="col-md-4">

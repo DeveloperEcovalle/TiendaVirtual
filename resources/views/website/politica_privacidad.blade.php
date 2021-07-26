@@ -7,11 +7,11 @@
         <img class="my-5" src="/img/spinner.svg">
     </div>
 
-    <section v-if="iCargandoPP === 0 && pagina.ruta_imagen_portada" class="h-35">
+    <section v-if="iCargandoPP === 0 && pagina.ruta_imagen_portada">
         <a :href="pagina.enlace_imagen_portada" v-if="pagina.enlace_imagen_portada">
-            <img :src="pagina.ruta_imagen_portada" class="w-100 h-100">
+            <img :src="pagina.ruta_imagen_portada" class="w-100">
         </a>
-        <img :src="pagina.ruta_imagen_portada" class="w-100 h-100" v-else>
+        <img :src="pagina.ruta_imagen_portada" class="w-100" v-else>
     </section>
 
     <div class="container-xl" v-if="iCargandoPP === 0" v-cloak>

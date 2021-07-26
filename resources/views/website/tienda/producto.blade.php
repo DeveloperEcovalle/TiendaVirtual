@@ -20,7 +20,7 @@
                     <img src="/img/spinner.svg">
                 </div>
             </div>
-            <div class="row pt-2 mb-5" v-else v-cloak id="productoInfo">
+            <div class="row pt-5 mb-5" v-else v-cloak>
                 <div class="col-12 col-md-1">
                     <div class="row mx-0 mb-2">
                         <div class="col-2 col-md-12 px-1" v-for="(imagen, i) in producto.imagenes">
@@ -55,11 +55,10 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-md-7" id="calificaciones">
+                <div class="col-md-7">
                     <h1 class="h2 text-ecovalle-2">@{{ locale === 'en' ? producto.nombre_en : producto.nombre_es }}</h1>
                     <div class="pb-3">
-                        <p v-if="iEnviandoResena === 1"><i class="fas fa-circle-notch fa-spin"></i></p>
-                        <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : Math.round(producto.sumatoria_calificaciones / producto.cantidad_calificaciones), productoId: producto.id }" v-else></div> <!-- v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }" -->
+                        <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }"></div>
                         <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
                     </div>
 
@@ -170,14 +169,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12 mt-4 border-top"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12 pt-2"> <!-- border-right -->
+                <div class="col-md-12">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
                             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#descripcion" role="tab" aria-controls="home" aria-selected="true">
@@ -189,175 +181,19 @@
                                 {{ $lstLocalesTiendaListaProductos['how_to_use'] }}
                             </a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#stories" role="tab" aria-controls="profile" aria-selected="false">
-                                {{ $lstLocalesTiendaListaProductos['stories'] }}
-                            </a>
-                        </li>
                     </ul>
-                    <div class="tab-content" id="myTabContent" style="background-color: #f5f9f4;">
-                        <div class="tab-pane fade show p-2 active" id="descripcion" role="tabpanel" aria-labelledby="home-tab"
+                    <div class="tab-content p-2" id="myTabContent" style="background-color: #f5f9f4;">
+                        <div class="tab-pane fade show p-3 active" id="descripcion" role="tabpanel" aria-labelledby="home-tab"
                              v-html="locale === 'en' ? producto.descripcion_en : producto.descripcion_es">
                         </div>
-                        <div class="tab-pane fade p-2" id="modo-uso" role="tabpanel" aria-labelledby="profile-tab"
+                        <div class="tab-pane fade p-3" id="modo-uso" role="tabpanel" aria-labelledby="profile-tab"
                              v-html="locale === 'en' ? producto.modo_uso_en : producto.modo_uso_es">
-                        </div>
-                        <div class="tab-pane fade p-4" id="stories" role="tabpanel" aria-labelledby="profile-tab">
-                            <div class="row pl-2 pr-2 align-items-center">
-                                <div class="col-12">
-                                    <p class="h5 text-ecovalle font-weight-bold" id="calificaciones">Calificación general</p>
-                                </div>
-                                <div class="col-12 col-md-2 rating-principal">
-                                    <div style="width: 100px; text-align:center;">
-                                        <p class="h1"> @{{ producto.cantidad_calificaciones === 0 ? 0 : Math.round((producto.sumatoria_calificaciones / producto.cantidad_calificaciones)) }} </p>
-                                        <p v-if="iEnviandoResena === 1"><i class="fas fa-circle-notch fa-spin"></i></p>
-                                        <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : Math.round(producto.sumatoria_calificaciones / producto.cantidad_calificaciones), productoId: producto.id }" v-else></div>
-                                        <p class="text-muted m-0 small pt-2">@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' reseña' : ' reseñas') }} </p>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-8">
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <p class="float-left mb-0 mr-2">5 <i class="fas fa-star star"></i></p>
-                                            <div class="mt-1 mb-1">
-                                                <div class="progress">
-                                                    <div class="progress-bar" :style="{ 'width' : (producto.calificacion_5.length / producto.cantidad_calificaciones) * 100 + '%' }" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <p class="mb-1">@{{ producto.calificacion_5.length }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <p class="float-left mb-0 mr-2">4 <i class="fas fa-star star"></i></p>
-                                            <div class="mt-1 mb-1">
-                                                <div class="progress">
-                                                    <div class="progress-bar" :style="{ 'width' : (producto.calificacion_4.length / producto.cantidad_calificaciones) * 100 + '%' }" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <p class="mb-1">@{{ producto.calificacion_4.length }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <p class="float-left mb-0 mr-2">3 <i class="fas fa-star star"></i></p>
-                                            <div class="mt-1 mb-1">
-                                                <div class="progress">
-                                                    <div class="progress-bar" :style="{ 'width' : (producto.calificacion_3.length / producto.cantidad_calificaciones) * 100 + '%' }" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <p class="mb-1">@{{ producto.calificacion_3.length }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <p class="float-left mb-0 mr-2">2 <i class="fas fa-star star"></i></p>
-                                            <div class="mt-1 mb-1">
-                                                <div class="progress">
-                                                    <div class="progress-bar" :style="{ 'width' : (producto.calificacion_2.length / producto.cantidad_calificaciones) * 100 + '%' }" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <p class="mb-1">@{{ producto.calificacion_2.length }}</p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-11">
-                                            <p class="float-left mb-0 mr-2">1 <i class="fas fa-star star"></i></p>
-                                            <div class="mt-1 mb-1">
-                                                <div class="progress">
-                                                    <div class="progress-bar" :style="{ 'width' : (producto.calificacion_1.length / producto.cantidad_calificaciones) * 100 + '%' }" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-1">
-                                            <p class="mb-1">@{{ producto.calificacion_1.length }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12 pt-2" v-if="producto.cantidad_calificaciones === 0">
-                                    <p>Este producto aún no tiene reseñas. ¡Sé primero en compartirnos tu opinión!</p>
-                                </div>
-                                @if(session()->has('cliente'))
-                                <div class="col-12 col-md-4 mt-2">
-                                    <button class="btn btn-amarillo-compra" v-on:click="bVisibility()">Escribe una reseña</button>
-                                </div>
-                                <div class="col-12 mt-2">
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="sMensajeResena != ''">
-                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                        @{{ sMensajeResena }}
-                                    </div>
-                                </div>
-                                @else
-                                <div class="col-12 mt-2">
-                                    <a class="iniciar-sesion-resena" href="#" data-toggle="modal" data-target="#modalInicioSesion">Iniciar sesión para escribir una reseña</a>
-                                </div>
-                                @endif
-
-                                <div class="col-12 mt-4" v-if="visibility === 1">
-                                    <form v-on:submit.prevent="ajaxEnviarResena()" id="form-resena">
-                                        <div class="row">
-                                            <div class="col-12 col-md-2">
-                                                <div class="form-group">
-                                                    <label class="h5 text-ecovalle font-weight-bold">Puntuación</label><br>
-                                                    <div class="starrr" v-star-rating="{ readOnly: false,rating: resena.stars, productoId: producto.id }"></div>
-                                                    <div class="alert alert-danger alert-dismissible fade show" role="alert" v-if="sMensajeErrorStars != ''">
-                                                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                                                        @{{ sMensajeErrorStars }}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 col-md-10">
-                                                <div class="form-group">
-                                                    <label class="h5 text-ecovalle font-weight-bold" for="">Titulo</label>
-                                                    <input type="text" class="form-control" name="title" v-model="resena.title" placeholder="Escribe un título a tu reseña" autocomplete="off" required>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <label class="h5 text-ecovalle font-weight-bold" for="">Reseña</label>
-                                                    <textarea name="comment" class="form-control" v-model="resena.comment" placeholder="Cuéntanos que te pareció este producto" rows="3" required></textarea>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-ecovalle-compra">
-                                                    <span v-if="iEnviandoResena === 0">Enviar reseña</span>
-                                                    <span v-else><i class="fas fa-circle-notch fa-spin"></i> Enviando ...</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <div class="col-12" v-if="producto.cantidad_calificaciones > 0" v-cloak>
-                                    <hr>
-                                    <div class="container-resenas">
-                                        <div class="row mt-4" v-for="resena in producto.calificaciones">
-                                            <div class="col-12">
-                                                <div class="starrr" v-star-rating="{ readOnly: true, rating: resena.stars }"></div>
-                                            </div>
-                                            <div class="col-12">
-                                                <p class="mt-3 h6 text-ecovalle font-weight-bold">@{{ resena.title }}</p>
-                                                <p class="mt-3">@{{ resena.comment }}</p>
-                                                <p class="mt-3 small"><em>@{{ resena.cliente.persona.nombres + ' ' + resena.cliente.persona.apellido_1 }} &nbsp; (@{{ resena.emision }})</em></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
             <hr>
-            <div class="row mt-5" v-cloak id="carruselProductos">
+            <div class="row mt-5" v-cloak>
                 <div class="col-12" v-if="lstProductosRelacionados.length > 0">
                     <h2 class="h4 font-weight-bold text-center titulo-subrayado mb-4">{{ $lstLocalesTiendaListaProductos['Related Products'] }}</h2>
                 </div>
@@ -409,7 +245,7 @@
                                                     <a class="producto font-weight-bold" :href="'/tienda/producto/' + producto.id">@{{ locale === 'es' ? producto.nombre_es : producto.nombre_en }}</a>
                                                 </h6>
                                                 <div class="py-2">
-                                                    <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : Math.round(producto.sumatoria_calificaciones / producto.cantidad_calificaciones), productoId: producto.id }"></div>
+                                                    <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }"></div>
                                                     <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
                                                 </div>
                                                 <div class="pb-2">

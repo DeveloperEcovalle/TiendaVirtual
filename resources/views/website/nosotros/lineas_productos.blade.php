@@ -3,11 +3,11 @@
 @section('title', 'Nosotros | Líneas de Productos')
 
 @section('content')
-    <section v-if="iCargando === 0" class="h-35">
+    <section v-if="iCargando === 0">
         <a :href="pagina.enlace_imagen_portada" v-if="pagina.enlace_imagen_portada">
-            <img :src="pagina.ruta_imagen_portada" class="w-100 h-100">
+            <img :src="pagina.ruta_imagen_portada" class="w-100">
         </a>
-        <img :src="pagina.ruta_imagen_portada" class="w-100 h-100" v-else>
+        <img :src="pagina.ruta_imagen_portada" class="w-100" v-else>
     </section>
 
     <section class="bg-ecovalle-6">

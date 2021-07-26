@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="py-2 py-lg-0">
+                    <div class="py-5 py-lg-0">
                         <a :href="pagina.enlace_baner_publicitario" v-if="pagina.enlace_baner_publicitario">
                             <img class="img-fluid" :src="pagina.ruta_baner_publicitario">
                         </a>
@@ -124,7 +124,7 @@
                             <p><img src="/img/spinner.svg"></p>
                         </div>
                     </div>
-                    <div class="row py-2 py-lg-0" v-else>
+                    <div class="row py-4 py-lg-0" v-else>
                         <div class="col-12" v-if="lstCategoriasSeleccionadas.length === 0">
                             <div class="row mx-0 pb-4">
                                 <div class="col-12 py-5" style="background-image: url('/img/buscar_producto.jpg'); background-position: center; background-size: cover">
@@ -320,17 +320,17 @@
             </div>
 
             <div class="row" v-if="iCargandoProductos === 0 && lstCategoriasSeleccionadas.length === 0">
-                <div class="col-md-6 py-2">
+                <div class="col-md-6 py-4">
                     <a href="/tienda?pagina=0&orden=popular&categorias=13">
                         <img class="img-fluid" src="/img/belleza.jpg">
                     </a>
                 </div>
-                <div class="col-md-6 py-2">
+                <div class="col-md-6 py-4">
                     <a href="/tienda?pagina=0&orden=popular&categorias=11">
                         <img class="img-fluid" src="/img/control_peso.jpg">
                     </a>
                 </div>
-                <div class="col-12 py-2">
+                <div class="col-12 py-4">
                     <h2 class="font-weight-bold titulo-subrayado text-center mb-3">{{ $lstLocales['new_revenues'] }}</h2>
                     <div id="carouselProductos" class="carousel slide pb-5" data-ride="carousel">
                         <ol class="carousel-indicators" v-if="lstCarouselProductos.length > 1">

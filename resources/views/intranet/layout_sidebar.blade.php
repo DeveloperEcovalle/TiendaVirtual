@@ -27,7 +27,7 @@
     <body class="top-navigation fixed-nav fixed-sidebar md-skin">
 
         <div id="wrapper">
-            <nav class="navbar-default navbar-static-side" role="navigation" style="margin-top: 45px;">
+            <nav class="navbar-default navbar-static-side" role="navigation">
                 <div class="sidebar-collapse overflow-auto">
                     <ul class="nav metismenu" id="side-menu" v-cloak>
                         <li v-for="menu of lstMenus" :class="menu.id == {{ $iMenuId }} ? 'active' : ''">
@@ -61,7 +61,7 @@
                         </div>
                     </nav>
                 </div>
-                <div class="wrapper wrapper-content m-l-n m-r-n p-0" id="layoutContent" style="margin-top: 45px;">
+                <div class="wrapper wrapper-content m-l-n m-r-n p-0" id="layoutContent">
                     @yield('content')
                 </div>
             </div>

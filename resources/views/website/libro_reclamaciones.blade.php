@@ -4,8 +4,8 @@
 
 @section('content')
 
-    <section class="h-35">
-        <img src="{{ $empresa->ruta_imagen_libro }}" class="w-100 h-100">
+    <section>
+        <img src="{{ $empresa->ruta_imagen_libro }}" class="w-100">
     </section>
 
     <div class="container-xl" v-if="iCargandoLR === 0" v-cloak>

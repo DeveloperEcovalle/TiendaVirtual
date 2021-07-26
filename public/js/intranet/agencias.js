@@ -148,80 +148,31 @@ listarMenus(function (lstModulos, lstMenus) {
                     let vueEditar = new Vue({
                         el: '#panel',
                         data: {
-                            iCargando: 1,
                             agencia: agencia,
                             lstPerfiles: [],
                             iActualizando: 0,
                             iActualizandoContrasena: 0,
-                            iEliminando: 0,
-                            iInsertandoDestino: 0,
-                            nuevoDestino: null,
-                            lstUbigeo: [],
-                            lstDestinos: [],
-                            sNuevoDestino: '',
-                            sDepartamentoSeleccionado:'',
-                            sProvinciaSeleccionada: '',
-                        },
-                        computed: {
-                            lstDepartamentos: function () {
-                                let lst = [];
-                                for (let ubigeo of this.lstUbigeo) {
-                                    if (lst.findIndex((departamento) => departamento === ubigeo.departamento) === -1) {
-                                        lst.push(ubigeo.departamento);
-                                    }
-                                }
-                                return lst;
-                            },
-                            lstProvincias: function () {
-                                let lstUbigeoFiltrado = this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.sDepartamentoSeleccionado);
-                                let lst = [];
-                                for (let ubigeo of lstUbigeoFiltrado) {
-                                    if (lst.findIndex((provincia) => provincia === ubigeo.provincia) === -1) {
-                                        lst.push(ubigeo.provincia);
-                                    }
-                                }
-                                return lst;
-                            },
-                            lstDistritos: function () {
-                                return this.lstUbigeo.filter(ubigeo => ubigeo.departamento === this.sDepartamentoSeleccionado && ubigeo.provincia === this.sProvinciaSeleccionada);
-                            },
-
+                            iEliminando: 0
                         },
                         mounted: function () {
                             let $this = this;
-                            $this.ajaxListar();
+                            /*$.ajax({
+                                type: 'post',
+                                url: '/intranet/app/configuracion/agencias/ajax/editar/listarPerfiles',
+                                success: function (respuesta) {
+                                    if (respuesta.result === result.success) {
+                                        $this.lstPerfiles = respuesta.data.lstPerfiles;
+                                    }
+                                },
+                                error: function (respuesta) {
+                                    $this.iInsertando = 0;
+
+                                    let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
+                                    toastr[result.error](sHtmlMensaje);
+                                }
+                            });*/
                         },
                         methods: {
-                            ajaxListar: function(){
-                                let $this = this;
-                                $.ajax({
-                                    type: 'get',
-                                    url: '/intranet/app/configuracion/agencias/ajax/editar/listarUbigeo/'+iId,
-                                    success: function (respuesta) {
-                                        if (respuesta.result === result.success) {
-                                            $this.lstUbigeo = respuesta.data.lstUbigeo;
-                                            $this.lstDestinos = respuesta.data.lstDestinos;
-                                            $this.iCargando = 0;
-                                        }
-                                    },
-                                    error: function (respuesta) {
-                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
-                                        toastr[result.error](sHtmlMensaje);
-                                    }
-                                });
-                            },
-                            onSelectAutocompleteDestino: function (e, ui) {
-                                let $this = this;
-                                $this.nuevoDestino = JSON.parse(JSON.stringify(ui.item.entidad));
-                                $this.sNuevoDestino = $this.nuevoDestino.departamento+' - '+$this.nuevoDestino.provincia+' - '+$this.nuevoDestino.distrito;
-                                e.preventDefault();
-                            },
-                            onChangeAutocompleteDestino: function (e, ui) {
-                                if (ui.item === null) {
-                                    this.nuevoDestino = null;
-                                }
-                                e.preventDefault();
-                            },
                             ajaxActualizar: function () {
                                 let $this = this;
 
@@ -289,45 +240,6 @@ listarMenus(function (lstModulos, lstMenus) {
                                 vueAgencias.panelListar(function () {
                                     vueAgencias.iIdSeleccionado = 0;
                                     window.history.replaceState(null, 'AGENCIAS', '/intranet/app/configuracion/agencias');
-                                });
-                            },
-                            ajaxAgregarDestino: function() {
-                                let $this = this;
-
-                                let frmEditar = document.getElementById('frmAgregarDestino');
-                                let formData = new FormData(frmEditar);
-                                formData.append('id', iId);
-
-                                $this.iInsertandoDestino = 1;
-                                $.ajax({
-                                    type: 'post',
-                                    url: '/intranet/app/configuracion/agencias/ajax/insertarDestino',
-                                    data: formData,
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    success: function (respuesta) {
-                                        $this.iActualizando = 0;
-
-                                        if (respuesta.result === result.success) {
-                                            $this.ajaxListar();
-                                            $this.sDepartamentoSeleccionado = '';
-                                            $this.sProvinciaSeleccionada = '';
-                                            $('#frmAgregarDestino')[0].reset();
-                                        }
-
-                                        toastr[respuesta.result](respuesta.mensaje);
-                                    },
-                                    error: function (respuesta) {
-                                        $this.iActualizando = 0;
-
-                                        let sHtmlMensaje = sHtmlErrores(respuesta.responseJSON.errors);
-                                        toastr[result.error](sHtmlMensaje);
-                                    },
-                                    complete: function()
-                                    {
-                                        $this.iInsertandoDestino = 0;
-                                    }
                                 });
                             }
                         }

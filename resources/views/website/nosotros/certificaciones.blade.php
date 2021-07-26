@@ -3,8 +3,8 @@
 @section('title', 'Nosotros | Certificaciones')
 
 @section('content')
-    <section class="h-35">
-        <img src="/img/certificaciones.jpg" class="w-100 h-100">
+    <section>
+        <img src="/img/certificaciones.jpg" class="img-fluid">
     </section>
 
     <div class="container">

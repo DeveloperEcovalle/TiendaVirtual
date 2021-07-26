@@ -8,11 +8,11 @@
             <li data-target="#carouselExampleIndicators" v-for="(banner, i) in lstBanners" :data-slide-to="i" :class="{ active: i === 0 }"></li>
         </ol>
         <div class="carousel-inner">
-            <div v-for="(banner, i) in lstBanners" :class="{ active: i === 0 }" class="carousel-item h-35">
+            <div v-for="(banner, i) in lstBanners" :class="{ active: i === 0 }" class="carousel-item">
                 <a :href="banner.enlace" target="_blank" v-if="banner.enlace">
-                    <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100 h-100">
+                    <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100">
                 </a>
-                <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100 h-100" v-else>
+                <img :src="banner.ruta_imagen" :alt="banner.descripcion" class="d-block w-100" v-else>
                 <div class="carousel-caption d-none d-md-block" v-if="banner.descripcion">
                     <h5>@{{ banner.descripcion }}</h5>
                 </div>

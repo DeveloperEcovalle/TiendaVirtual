@@ -139,7 +139,7 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        $SECRET_KEY = "sk_test_DDIXikjr5xQLViGo"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp
+        $SECRET_KEY = "sk_live_c6a62e7d9661faea"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp - sk_live_c6a62e7d9661faea
         $culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
         $token = $request->get('token');
@@ -174,7 +174,7 @@ class PagoEnvio extends Website
     {
         try{
 
-            //DB::beginTransaction();
+            DB::beginTransaction();
             $respuesta = new Respuesta;
 
             $token = $request->get('token');
@@ -352,7 +352,7 @@ class PagoEnvio extends Website
 
             //-----ACTUALIZAR SESSION CLIENTE
 
-            //DB::commit();
+            DB::commit();
 
             $respuesta->result = Result::SUCCESS;
             $respuesta->mensaje = 'Compra realizada exitosamente. ';
@@ -360,7 +360,7 @@ class PagoEnvio extends Website
         }
         catch (Exception $e)
         {
-            //DB::rollBack();
+            DB::rollBack();
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = $e->getMessage();
             return response()->json($respuesta);

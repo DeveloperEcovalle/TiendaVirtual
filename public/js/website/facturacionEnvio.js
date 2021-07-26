@@ -15,9 +15,6 @@ let vueFacturacionEnvio = new Vue({
         lstPreciosDelivery: [],
         lstAgencias: [],
 
-        sTipoEnvio: 'RA',
-        sCollapse_1: 0,
-        sCollapse_2: 0,
         datosEnvio: {
             sCabecera: 'NN',
             sTipoDoc: '',
@@ -40,6 +37,7 @@ let vueFacturacionEnvio = new Vue({
             sUbigeo: '',
             sOpcion: 0,
         },
+        eatermcond: [],
 
         datosRecojo: {
             sCabecera: 'RT',
@@ -50,13 +48,9 @@ let vueFacturacionEnvio = new Vue({
             sEmail: '',
             sTelefono: '',
             sTipoComprobante: '',
-            sRecoge: {
-                sDocumento: '',
-                sRazonSocial: '',
-                sTelefono: '',
-            },
             sOpcion: 0,
         },
+        ratermcond: [],
         
         datosDelivery: {
             sCabecera: 'ED',
@@ -71,14 +65,9 @@ let vueFacturacionEnvio = new Vue({
             sDistrito: '',
             sDireccion: '',
             sTipoComprobante: '',
-            sRecoge: {
-                sDocumento: '',
-                sRazonSocial: '',
-                sTelefono: '',
-            },
             sOpcion: 0,
         }, 
-        termCond: [],
+        datermcond: [],
 
         iDireccionEnvioEstablecida: 0,
         iDireccionEnvioConfirmada: 0,
@@ -89,11 +78,14 @@ let vueFacturacionEnvio = new Vue({
         iRecojoEstablecido: 0,
         iRecojoConfirmado: 0,
 
+        rTipoDoc:'',
         bClienteEnSesion: null,
         iCargandoConsultaApir: 0,
 
+        dTipoDoc:'',
         iCargandoConsultaApid: 0,
 
+        sTipoDoc:'',
         iCargandoConsultaApi: 0,
         sMensajeError: '',
 
@@ -102,109 +94,16 @@ let vueFacturacionEnvio = new Vue({
         sLocation: 'E',
     },
     computed: {
-        bDestinoEncontrado: function (){
-            let $this = this;
-            if($this.lstUbigeo.length > 0 && $this.iCargando === 0)
-            {
-                if($this.sLocation == 'E')
-                {
-                    let  indiceUbigeo = $this.lstUbigeo.findIndex(ubigeo => ubigeo.departamento == $this.datosEnvio.sDepartamento && ubigeo.provincia == $this.datosEnvio.sProvincia && ubigeo.distrito == $this.datosEnvio.sDistrito && ubigeo.estado == 'ACTIVO');
-                    let destinoEncontrado = $this.lstUbigeo[indiceUbigeo];
-                    if(destinoEncontrado != undefined)
-                    {
-                        $this.datosEnvio.sUbigeo = destinoEncontrado.id;
-                        return destinoEncontrado;
-                    }
-                    else{
-                        $this.datosEnvio.sAgencia = '';
-                    }
-                }
-            }
-        },
-        bAgencias: function (){
-            let $this = this;
-            if($this.lstUbigeo.length > 0 && $this.lstAgencias.length > 0 && $this.iCargando === 0)
-            {
-                if($this.bDestinoEncontrado)
-                {
-                    if($this.bDestinoEncontrado.agencias.length > 0)
-                    {
-                        let lst = [];
-                        if($this.sTipoEnvio === 'RA')
-                        {
-                            for (let item of $this.bDestinoEncontrado.agencias) {
-                                if (lst.findIndex((agencia) => agencia.nombre === item.nombre) === -1  && item.nombre != $this.lstAgencias[0].nombre) {
-                                    lst.push(item);
-                                }
-                            }
-                        }
-                        else{
-                            let iIndice = $this.bDestinoEncontrado.agencias.findIndex(agencia => agencia.id === 1);
-                            let bAgencia = $this.bDestinoEncontrado.agencias[iIndice];
-                            if(bAgencia !=undefined)
-                            {
-                                lst.push(bAgencia);
-                            }
-                        }
-                        return lst;
-                    }
-                }
-
-            }
-            return [];
-        },
-        bOlva: function()
-        {
-            let $this = this;
-            if($this.lstUbigeo.length > 0 && $this.iCargando === 0)
-            {
-                if($this.bDestinoEncontrado)
-                {
-                    if($this.bDestinoEncontrado.agencias.length > 0)
-                    {
-                        return $this.bDestinoEncontrado.agencias.findIndex(agencia => agencia.id === 1) > -1;
-                    }
-                }
-            }
-        },
-        bComprobanteEncontrado: function (){
-            let $this = this;
-            if($this.sLocation == 'E')
-            {
-                let indiceTipo = $this.datosEnvio.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosEnvio.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    return tipoComprobante.tipo_comprobante_sunat.descripcion;
-                }
-            }
-
-            if($this.sLocation == 'R')
-            {
-                let indiceTipo = $this.datosRecojo.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosRecojo.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    return tipoComprobante.tipo_comprobante_sunat.descripcion;
-                }
-            }
-
-            if($this.sLocation == 'D')
-            {
-                let indiceTipo = $this.datosDelivery.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosDelivery.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    return tipoComprobante.tipo_comprobante_sunat.descripcion;
-                }
-            }
-        },
         lstPreciosDeliveryFiltrado: function () {
             return this.lstPreciosDelivery.filter(tarifa =>
                 tarifa.distrito.toLowerCase().includes(this.sBuscard.toLowerCase())
+            );
+        },
+        lstPreciosEnvioNacionalFiltrado: function () {
+            return this.lstPreciosEnvioNacional.filter(tarifa =>
+                tarifa.departamento.toLowerCase().includes(this.sBuscar.toLowerCase())
+                || tarifa.provincia.toLowerCase().includes(this.sBuscar.toLowerCase())
+                || tarifa.distrito.toLowerCase().includes(this.sBuscar.toLowerCase())
             );
         },
         bDireccionEnvioValida: function () {
@@ -219,8 +118,7 @@ let vueFacturacionEnvio = new Vue({
                 && this.datosEnvio.sRecoge.sTelefono.trim().length > 0
                 && this.datosEnvio.sTipoDoc.trim().length > 0
                 && this.datosEnvio.sAgencia.trim().length > 0
-                && this.datosEnvio.sNombres.trim().length > 0
-                && this.datosEnvio.sTipoComprobante.toString().trim().length > 0;
+                && this.datosEnvio.sNombres.trim().length > 0;
         },
         bRecojoValida: function () {
             return this.datosRecojo.sDocumento.trim().length > 0
@@ -317,20 +215,13 @@ let vueFacturacionEnvio = new Vue({
         fDelivery: function () {
             if(this.sLocation == 'E')
             {
-                if(this.iCargando === 0)
-                {
-                    if(this.bDestinoEncontrado && this.bDestinoEncontrado.agencias.length > 0)
-                    {
-                        if(this.bAgencias.length > 0)
-                        {
-                            for (let precioEnvio of this.bAgencias) {
-                                if (this.datosEnvio.sAgencia !== '' && precioEnvio.nombre === this.datosEnvio.sAgencia) return precioEnvio.pivot.tarifa;
-                            }
-                            return 0;
-                        }
-                        return 0;
-                    }
-                    return 0;
+                for (let precioEnvio of this.lstPreciosEnvioNacional) {
+                    if (this.datosEnvio.sDepartamento !== ''
+                        && this.datosEnvio.sProvincia !== ''
+                        && this.datosEnvio.sDistrito !== ''
+                        && precioEnvio.distrito === this.datosEnvio.sDistrito
+                        && precioEnvio.provincia === this.datosEnvio.sProvincia
+                        && precioEnvio.departamento === this.datosEnvio.sDepartamento) return precioEnvio.tarifa;
                 }
                 return 0;
             }
@@ -414,9 +305,19 @@ let vueFacturacionEnvio = new Vue({
                     lst.push(ubigeo.provincia);
                 }
             }
+            if(this.datosEnvio.sDepartamento == '')
+            {
+                this.datosEnvio.sProvincia = '';
+                this.datosEnvio.sProvincia = '';
+            }
             return lst;
         },
         lstDistritos: function () {
+            if(this.datosEnvio.sProvincia == '')
+            {
+                this.datosEnvio.sDistrito = '';
+                this.datosEnvio.sDistrito = '';
+            }
             return this.lstUbigeo.filter(ubigeo =>
                 ubigeo.departamento === this.datosEnvio.sDepartamento
                 && ubigeo.provincia === this.datosEnvio.sProvincia
@@ -435,11 +336,27 @@ let vueFacturacionEnvio = new Vue({
             }
             return sDetalles.substr(0, sDetalles.length - 1);
         },
+        bComprobanteEnvio: function(){
+            return this.datosEnvio.sTipoComprobante.trim().length > 0;
+        },
         bComprobanteRecojo: function(){
-            return this.datosRecojo.sTipoComprobante.toString().trim().length > 0;
+            return this.datosRecojo.sTipoComprobante.trim().length > 0;
         },
         bComprobanteDelivery: function(){
-            return this.datosDelivery.sTipoComprobante.toString().trim().length > 0;
+            return this.datosDelivery.sTipoComprobante.trim().length > 0;
+        },
+        bAgencia: function() {
+            let $this = this;
+            if($this.lstAgencias.length > 0)
+            {
+                if($this.datosEnvio.sAgencia != '')
+                {
+                    let iIndice = $this.lstAgencias.findIndex(agencia => agencia.nombre == $this.datosEnvio.sAgencia);
+                    let agencia = $this.lstAgencias[iIndice];
+                    return agencia.descripcion;
+                }
+            }
+            return '';
         }
     },
     mounted: function () {
@@ -494,10 +411,6 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosRecojo.sApellidos = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                     $this.datosRecojo.sEmail = bClienteEnSesion.correo;
                     $this.datosRecojo.sTelefono = bClienteEnSesion.telefono;
-
-                    $this.datosRecojo.sRecoge.sRazonSocial = bClienteEnSesion.nombres + ' ' + bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
-                    $this.datosRecojo.sRecoge.sDocumento = bClienteEnSesion.documento;
-                    $this.datosRecojo.sRecoge.sTelefono = bClienteEnSesion.telefono;
                 }
                 $this.datosRecojo.sOpcion = 0;
 
@@ -513,10 +426,6 @@ let vueFacturacionEnvio = new Vue({
                     $this.datosDelivery.sEmail = bClienteEnSesion.correo;
                     $this.datosDelivery.sDireccion = bClienteEnSesion.direccion;
                     $this.datosDelivery.sTelefono = bClienteEnSesion.telefono;
-
-                    $this.datosDelivery.sRecoge.sRazonSocial = bClienteEnSesion.nombres + ' ' + bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
-                    $this.datosDelivery.sRecoge.sDocumento = bClienteEnSesion.documento;
-                    $this.datosDelivery.sRecoge.sTelefono = bClienteEnSesion.telefono;
                 }
                 $this.datosDelivery.sOpcion = 0;
 
@@ -841,18 +750,7 @@ let vueFacturacionEnvio = new Vue({
                     .then(response => {
                         let respuesta = response.data;
                         if (respuesta.result === result.success) {
-                            if(this.sLocation === 'E')
-                            {
-                                this.datosEnvio.sRecoge.sRazonSocial = respuesta.data.nombres + ' ' + respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
-                            }
-                            if(this.sLocation === 'R')
-                            {
-                                this.datosRecojo.sRecoge.sRazonSocial = respuesta.data.nombres + ' ' + respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
-                            }
-                            if(this.sLocation === 'D')
-                            {
-                                this.datosDelivery.sRecoge.sRazonSocial = respuesta.data.nombres + ' ' + respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
-                            }
+                            this.datosEnvio.sRecoge.sRazonSocial = respuesta.data.nombres + ' ' + respuesta.data.apellidoPaterno + ' ' + respuesta.data.apellidoMaterno;
                         }
                         else{
                             toastr.clear();
@@ -906,7 +804,7 @@ let vueFacturacionEnvio = new Vue({
             this.iDireccionEnvioEstablecida = 1;
             this.iDireccionEnvioConfirmada = 1;
             $cookies.set('datosEnvio', this.datosEnvio, 12);
-            $('#modalEditarDatosEnvio').modal('hide');
+            $('#modalEditarDireccionEnvio').modal('hide');
         },
         confirmarRecojo: function () {
             this.iRecojoEstablecido = 1;
@@ -982,7 +880,6 @@ let vueFacturacionEnvio = new Vue({
             if(this.bDireccionEnvioValida && (this.bVerificaDni || this.bVerificaRuc))
             {
                 this.iDireccionEnvioConfirmada = 1;
-                this.datosEnvio.sAgencia = '';
             }
             if(this.bRecojoValida)
             {
@@ -1004,86 +901,6 @@ let vueFacturacionEnvio = new Vue({
         fnComprobanteRecojo: function(value)
         {
             this.datosDelivery.sTipoComprobante = value;
-        },
-        fCollapse: function(key){
-            if(key == 'collapse_1')
-            {
-                if(this.sCollapse_1 === 1)
-                {
-                    this.sCollapse_1 = 0;
-                }
-                else
-                {
-                    this.sCollapse_1 = 1;
-                }
-            }
-
-            if(key == 'collapse_2')
-            {
-                if(this.sCollapse_2 === 1)
-                {
-                    this.sCollapse_2 = 0;
-                }
-                else
-                {
-                    this.sCollapse_2 = 1;
-                }
-            }
-        },
-        fAgencia:function(key)
-        {
-            let $this = this;
-            if($this.sLocation == 'E')
-            {
-                $this.datosEnvio.sAgencia = key;
-            }
-        },
-        fControlTipoDoc: function(key) {
-            let $this = this;
-            if(key == 'E')
-            {
-                let indiceTipo = $this.datosEnvio.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosEnvio.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    let existeTipoDoc = tipoComprobante.tipo_comprobante_sunat.tipos_documento.findIndex(tipoDoc => tipoDoc.abreviatura == $this.datosEnvio.sTipoDoc) > -1;
-                    if(!existeTipoDoc)
-                    {
-                        $this.datosEnvio.sTipoDoc =  tipoComprobante.tipo_comprobante_sunat.tipos_documento[0].abreviatura;
-                    }
-                }
-            }
-
-            if(key == 'R')
-            {
-                let indiceTipo = $this.datosRecojo.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosRecojo.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    let existeTipoDoc = tipoComprobante.tipo_comprobante_sunat.tipos_documento.findIndex(tipoDoc => tipoDoc.abreviatura == $this.datosRecojo.rTipoDoc) > -1;
-                    if(!existeTipoDoc)
-                    {
-                        $this.datosRecojo.rTipoDoc =  tipoComprobante.tipo_comprobante_sunat.tipos_documento[0].abreviatura;
-                    }
-                }
-            }
-
-            if(key == 'D')
-            {
-                let indiceTipo = $this.datosDelivery.sTipoComprobante != '' ? $this.lstTiposComprobante.findIndex(tipo => tipo.id === $this.datosDelivery.sTipoComprobante) : -1;
-                let tipoComprobante = $this.lstTiposComprobante[indiceTipo];
-
-                if(tipoComprobante != undefined)
-                {
-                    let existeTipoDoc = tipoComprobante.tipo_comprobante_sunat.tipos_documento.findIndex(tipoDoc => tipoDoc.abreviatura == $this.datosDelivery.dTipoDoc) > -1;
-                    if(!existeTipoDoc)
-                    {
-                        $this.datosDelivery.dTipoDoc =  tipoComprobante.tipo_comprobante_sunat.tipos_documento[0].abreviatura;
-                    }
-                }
-            }
-        },
+        }
     },
 });

@@ -22,10 +22,6 @@ class Cliente extends Model {
         return $this->hasMany(Compra::class, 'cliente_id');
     }
 
-    public function calificaciones() {
-        return $this->hasMany(Calificacion::class, 'cliente_id');
-    }
-
     public function detalles_carrito() {
         return $this->hasMany(DetalleCarrito::class, 'cliente_id');
     }

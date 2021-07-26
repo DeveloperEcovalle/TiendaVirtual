@@ -8898,11 +8898,6 @@ button.bg-dark:focus {
   .mx-sm-auto {
     margin-left: auto !important;
   }
-
-  .bg-ecovalle-2-sm{
-    background-color: #02793C !important;
-    color: #ffffff;
-  }
 }
 
 @media (min-width: 768px) {
@@ -9247,11 +9242,6 @@ button.bg-dark:focus {
   .ml-md-auto,
   .mx-md-auto {
     margin-left: auto !important;
-  }
-
-  .bg-ecovalle-2-md{
-    background-color: #02793C !important;
-    color: #ffffff;
   }
 }
 
@@ -9598,11 +9588,6 @@ button.bg-dark:focus {
   .mx-lg-auto {
     margin-left: auto !important;
   }
-
-  .bg-ecovalle-2-lg{
-    background-color: transparent !important;
-    color: #ffffff;
-  }
 }
 
 @media (min-width: 1200px) {
@@ -9947,11 +9932,6 @@ button.bg-dark:focus {
   .ml-xl-auto,
   .mx-xl-auto {
     margin-left: auto !important;
-  }
-
-  .bg-ecovalle-2-xl{
-    background-color: transparent !important;
-    color: #ffffff;
   }
 }
 

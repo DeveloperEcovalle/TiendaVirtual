@@ -85,48 +85,4 @@ class Producto extends Model {
     public function detalles() {
         return $this->hasMany(DetalleCompra::class, 'producto_id');
     }
-
-    public function calificaciones() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->orderBy('created_at', 'desc');
-    }
-
-    public function calificacion_5() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->where('stars', 5);
-    }
-
-    public function calificacion_4() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->where('stars', 4);
-    }
-
-    public function calificacion_3() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->where('stars', 3);
-    }
-
-    public function calificacion_2() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->where('stars', 2);
-    }
-
-    public function calificacion_1() {
-        return $this->hasMany(Calificacion::class, 'producto_id')
-                ->where('stars', 1);
-    }
-
-    public function cantidad_calificaciones() {
-        return count($this->calificaciones);
-    }
-
-    public function sumatoria_calificaciones() {
-        $calificaciones = $this->calificaciones;
-        $sumatoria = 0;
-        foreach($calificaciones as $item)
-        {
-            $sumatoria = $sumatoria + $item->stars;
-        }
-        return $sumatoria;
-    }
 }

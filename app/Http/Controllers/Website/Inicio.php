@@ -60,12 +60,6 @@ class Inicio extends Website {
         $fechaHace3Meses = now()->subMonth(3);
         $lstProductos = Producto::where('fecha_reg', '>=', $fechaHace3Meses->toDateTimeString())->whereHas('precio_actual')
             ->with(['precio_actual', 'oferta_vigente', 'imagenes', 'promocion_vigente'])->orderBy('fecha_reg', 'asc')->limit(20)->get();
-        
-        foreach($lstProductos as $producto)
-        {
-            $producto['cantidad_calificaciones'] = $producto->cantidad_calificaciones();
-            $producto['sumatoria_calificaciones'] = $producto->sumatoria_calificaciones();
-        }
 
         $bannerMedio = Banner::where('medio', 1)->first();
         $lstBlogs = Blog::orderBy('fecha_reg', 'desc')->limit(3)->get();

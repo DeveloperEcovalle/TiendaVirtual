@@ -15,12 +15,6 @@
                 <textarea name="descripcion" rows="2" class="form-control"></textarea>
             </div>
         </div>
-        <div class="form-group row d-none">
-            <label class="col-md-3 py-md-2">Direcci&oacute;n</label>
-            <div class="col-md-9">
-                <textarea name="direccion" rows="2" class="form-control"></textarea>
-            </div>
-        </div>
         <div class="form-group row">
             <label class="col-md-3 py-md-2">Estado <span class="text-danger">*</span></label>
             <div class="col-md-9">

@@ -33,7 +33,6 @@ class Contactanos extends Website {
                 'Send' => 'Send',
                 'Minimum characters' => 'Minimum characters',
                 'Total characters' => 'Total characters',
-                'accept_term_cond' => 'terms and conditions',
             ],
             'es' => [
                 'Keep in touch with us' => 'Mant&eacute;n contacto con nosotros',
@@ -49,7 +48,6 @@ class Contactanos extends Website {
                 'Send' => 'Enviar',
                 'Minimum characters' => 'Caracteres como m&iacute;nimo',
                 'Total characters' => 'Caracteres en total',
-                'accept_term_cond' => 'terminos y condiciones',
             ]
         ];
     }

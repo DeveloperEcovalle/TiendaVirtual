@@ -168,7 +168,7 @@ class FacturacionEnvio extends Website {
             $sunat_tipo_comprobante->where('ventas', 1);
         })->with('tipo_comprobante_sunat', 'tipo_comprobante_sunat.tipos_documento')->orderBy('id')->get();
 
-        $lstUbigeo = Ubigeo::with(['agencias'])->get();
+        $lstUbigeo = Ubigeo::all();
 
         $respuesta = new Respuesta;
         $respuesta->result = Result::SUCCESS;
