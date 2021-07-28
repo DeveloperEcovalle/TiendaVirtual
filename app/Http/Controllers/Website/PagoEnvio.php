@@ -139,7 +139,7 @@ class PagoEnvio extends Website
             return response()->json($respuesta);
         }
 
-        $SECRET_KEY = "sk_test_yE35C4w9LPOqh1qp"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp - sk_live_c6a62e7d9661faea
+        $SECRET_KEY = "sk_live_c6a62e7d9661faea"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp - sk_live_c6a62e7d9661faea
         $culqi = new Culqi(array('api_key' => $SECRET_KEY));
 
         $token = $request->get('token');
