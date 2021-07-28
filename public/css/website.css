@@ -1084,7 +1084,7 @@ button.btn-round:hover{
     justify-content: center;
     top: 0;
     left: 0;
-    z-index: 80;
+    z-index: 100;
 }
 
 .modal-pago.active::after{
@@ -1519,4 +1519,64 @@ header {
     outline: none !important;
     box-shadow: none !important;
     border-color: #ced4da !important;
+}
+
+/**********************+++++++*/
+.autocompletar-1{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+}
+
+#inputSearch-1{
+    width: 100%;
+    height: 40px;
+    background: #ffffff;
+    border: none;
+    font-size: 12pt;
+    float: left;
+    padding-left: 50px;
+    padding-right: 10px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    outline: none;
+}
+
+.autocompletar-1 input#inputSearch-1::-webkit-input-placeholder {
+    color: #65737e;
+ }
+  
+ .autocompletar-1 input#inputSearch-1:-moz-placeholder { /* Firefox 18- */
+    color: #65737e;  
+ }
+  
+ .autocompletar-1 input#inputSearch-1::-moz-placeholder {  /* Firefox 19+ */
+    color: #65737e;  
+ }
+  
+ .autocompletar-1 input#inputSearch-1:-ms-input-placeholder {  
+    color: #65737e;  
+ }
+
+.autocompletar-1 button.icon{
+    -webkit-border-top-left-radius: 15px;
+    -webkit-border-bottom-left-radius: 15px;
+    -moz-border-radius-topleft: 15px;
+    -moz-border-radius-bottomleft: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+   
+    border: none;
+    background: #ffffff; /*#232833*/
+    height: 40px;
+    width: 50px;
+    color: var(--verde-ecovalle-4);
+    font-size: 10pt;
+    outline: none;
+    opacity: 1;
+    margin-left: -100%;
+    
 }

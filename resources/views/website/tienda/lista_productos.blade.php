@@ -38,25 +38,25 @@
     <section class="bg-ecovalle-6">
         <div class="container-xl">
             <div class="row py-4 py-lg-5">
-                <div class="col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
+                <div class="col-6 col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
                     <img src="/img/delivery.svg" class="img-atributo-ecovalle">
                     <img src="/img/delivery_hover.svg" class="img-atributo-ecovalle hover">
                     <p class="font-weight-bolder text-uppercase mb-0 mt-2">Delivery</p>
                     <p class="mb-0">{{ $lstLocales['nationwide_shipments'] }}</p>
                 </div>
-                <div class="col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
+                <div class="col-6 col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
                     <img src="/img/atencion_online.svg" class="img-atributo-ecovalle">
                     <img src="/img/atencion_online_hover.svg" class="img-atributo-ecovalle hover">
                     <p class="font-weight-bolder text-uppercase mb-0 mt-2">{{ $lstLocales['online_service'] }}</p>
                     <p class="mb-0">{{ $lstLocales['hours_from_monday_to_saturday'] }}</p>
                 </div>
-                <div class="col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
+                <div class="col-6 col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
                     <img src="/img/pago_seguro.svg" class="img-atributo-ecovalle">
                     <img src="/img/pago_seguro_hover.svg" class="img-atributo-ecovalle hover">
                     <p class="font-weight-bolder text-uppercase mb-0 mt-2">{{ $lstLocales['secure_payment'] }}</p>
                     <p class="mb-0">{{ $lstLocales['guaranteed_payment_technology'] }}</p>
                 </div>
-                <div class="col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
+                <div class="col-6 col-lg-3 py-3 py-lg-0 text-center panel-atributo-ecovalle">
                     <img src="/img/calidad_garantizada.svg" class="img-atributo-ecovalle">
                     <img src="/img/calidad_garantizada_hover.svg" class="img-atributo-ecovalle hover">
                     <p class="font-weight-bolder text-uppercase mb-0 mt-2">{{ $lstLocales['guaranteed_quality'] }}</p>
@@ -78,7 +78,212 @@
     <section class="pb-5">
         <div class="container-xl">
             <div class="row">
-                <div class="col-lg-3">
+                <div class="col-12 col-lg-9 d-md-none">
+                    <div class="row py-4 py-lg-0" v-if="iCargandoProductos === 1">
+                        <div class="col-12 text-center">
+                            <p><img src="/img/spinner.svg"></p>
+                        </div>
+                    </div>
+                    <div class="row py-4 py-lg-0" v-else>
+                        <div class="col-12" v-if="lstCategoriasSeleccionadas.length === 0">
+                            <div class="row mx-0 pb-4">
+                                <div class="col-12 py-5" style="background-image: url('/img/buscar_producto.jpg'); background-position: center; background-size: cover">
+                                    <div class="row">
+                                        <div class="col-12 col-md-4"></div>
+                                        <div class="col-12 col-md-7">
+                                            <h2 class="text-center text-white text-uppercase font-weight-bold">
+                                                {{ $lstTraduccionesTiendaListaProductos['find_your_favorite_product_here'] }}
+                                            </h2>
+                                            <form id="buscar_prod_1" method="POST" action="{{route('tienda.buscarProducto')}}">
+                                                @csrf
+                                                <div class="autocompletar-1">
+                                                    <input id="inputSearch-1" name="keyword" class="form-control form-control-lg" placeholder="{{ $lstTraduccionesTiendaListaProductos['search_product'] }}" autocomplete="off" v-model="sBuscar"
+                                                    v-autocomplete="{ url: '/tienda/ajax/buscarProducto', select: onSelectAutocompleteProducto, renderItem: renderProducto}">
+                                                    <button class="icon" type="button" onclick="$('#buscar_prod_1').submit()"><i class="fa fa-search"></i></button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 pb-4">
+                                    <a href="/tienda?pagina=0&orden=popular&categorias=1">
+                                        <img class="img-fluid" src="/img/sistema_digestivo.jpg">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12" v-else>
+                            <div class="row">
+                                <div class="col-md-8 align-items-center d-flex">
+                                    <p class="m-0" v-if="lstProductos.length > 0">{{ $lstTraduccionesTiendaListaProductos['showing'] }} @{{ iIndiceInicioMuestra + '-' + iIndiceFinMuestra }} {{ $lstTraduccionesTiendaListaProductos['of'] }} @{{ iTotalProductos }} resultados</p>
+                                    <p class="m-0" v-else>{{ $lstTraduccionesTiendaListaProductos['no_results'] }}</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" v-model="sOrden">
+                                        <option value="popular">{{ $lstTraduccionesTiendaListaProductos['most_popular'] }}</option>
+                                        <option value="precio_asc">{{ $lstTraduccionesTiendaListaProductos['cheaper_first'] }}</option>
+                                        <option value="precio_desc">{{ $lstTraduccionesTiendaListaProductos['more_expensive_first'] }}</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 py-3 text-center" v-if="lstProductos.length === 0">
+                                    <p>{{ $lstTraduccionesTiendaListaProductos['no_products_to_show'] }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4" v-for="(producto, i) in lstProductos">
+                                    <div class="card my-2 shadow">
+                                        <div id="carouselImagenesProducto" class="carousel slide" data-ride="carousel" style="height: 180px">
+                                            <div class="carousel-inner">
+                                                <div class="position-absolute div-oferta" v-if="producto.oferta_vigente">
+                                                    <div class="text-center">
+                                                        <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.</p>
+                                                    </div>
+                                                </div>
+                                                <span class="badge badge-success badge-oferta position-absolute px-2 py-1 d-none" v-if="producto.oferta_vigente">
+                                                    @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }}
+                                                </span>
+                                                <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
+                                                    <div class="text-center">
+                                                        <p class="p-0 m-0" style="line-height: 12px;">@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.</p>
+                                                    </div>
+                                                </div>
+                                                <span class="badge badge-danger badge-promocion position-absolute px-2 py-1 d-none" v-if="producto.promocion_vigente">
+                                                    +@{{ producto.promocion_vigente.min }}__@{{ producto.promocion_vigente.porcentaje ? (producto.promocion_vigente.porcentaje + '%') : ('S/ ' + producto.promocion_vigente.monto) }} Dscto.__-@{{ producto.promocion_vigente.max }}
+                                                </span>
+                                                <span class="badge badge-warning badge-nuevo position-absolute px-2 py-1 text-white"
+                                                      v-if="(new Date().getTime() - new Date(producto.fecha_reg).getTime()) / (1000 * 3600 * 24) <= 90">
+                                                    @{{ locale === 'es' ? 'NUEVO' : 'NEW' }}
+                                                </span>
+                                                <span class="badge badge-danger badge-ultimos position-absolute px-2 py-1 text-white"
+                                                      v-if="producto.stock_actual - producto.stock_separado <= 10 && producto.stock_actual - producto.stock_separado > 1">
+                                                    @{{ locale === 'es' ? `ULTIMOS ${producto.stock_actual - producto.stock_separado}` : `LAST ${producto.stock_actual - producto.stock_separado}` }}
+                                                </span>
+                                                <span class="badge badge-danger badge-ultimos position-absolute px-2 py-1 text-white"
+                                                      v-if="producto.stock_actual - producto.stock_separado === 1">
+                                                    @{{ locale === 'es' ? `ULTIMO` : `LAST ONE` }}
+                                                </span>
+                                                <div v-for="(imagen, i) in producto.imagenes" :class="{ active: i === 0 }" class="carousel-item">
+                                                    <a class="img-producto" :href="'/tienda/producto/' + producto.id">
+                                                        <div class="img-background-thumbnail producto" :class="{ 'gray-scale': producto.stock_actual - producto.stock_separado === 0 }"
+                                                             :style="{ 'background-image': 'url(' + imagen.ruta + ')' }"></div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <a class="carousel-control-prev" href="#carouselImagenesProducto" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Previous</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#carouselImagenesProducto" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </div>
+
+                                        <div class="card-body bg-light p-3">
+                                            <h6 class="card-title m-0">
+                                                <a class="producto font-weight-bold" :href="'/tienda/producto/' + producto.id">@{{ locale === 'es' ? producto.nombre_es : producto.nombre_en }}</a>
+                                            </h6>
+                                            <div class="py-2">
+                                                <div class="starrr" v-star-rating="{ readOnly: true, rating: producto.cantidad_calificaciones === 0 ? 0 : (producto.sumatoria_calificaciones / producto.cantidad_calificaciones) }"></div>
+                                                <p class="text-muted m-0 small">(@{{ producto.cantidad_calificaciones + (producto.cantidad_calificaciones === 1 ? ' calificación' : ' calificaciones') }})</p>
+                                            </div>
+                                            <div class="pb-2">
+                                                <div class="text-right">
+                                                    <p class="font-bold m-0 h4">
+                                                        <span class="text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente && producto.promocion_vigente == null">
+                                                            S/ @{{ (Math.round((producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                        </span>
+                                                        <span class="text-amarillo-ecovalle font-weight-bold d-inline" v-if="producto.oferta_vigente == null && producto.promocion_vigente == null">
+                                                            S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                        </span>
+                                                        <span class="text-muted font-weight-bold d-inline" v-if="producto.oferta_vigente && producto.promocion_vigente == null" style="text-decoration:line-through;">
+                                                            S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                        </span>
+                                                        <span class="text-amarillo-ecovalle font-weight-bold d-inline mr-2" v-if="producto.oferta_vigente == null && producto.promocion_vigente ">
+                                                            <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                             S/ @{{ (Math.round((producto.promocion_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.promocion_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.promocion_vigente.monto)) * 10) / 10).toFixed(2) }}
+                                                            </span>
+                                                        </span>
+                                                        <span class="text-muted font-weight-bold d-inline"  v-if="producto.oferta_vigente == null && producto.promocion_vigente" style="text-decoration:line-through;">
+                                                            <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                                S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                            </span>
+                                                        </span>
+                                        
+                                                        <span class="text-amarillo-ecovalle font-weight-bold"  v-if="producto.oferta_vigente == null && producto.promocion_vigente">
+                                                            <span class="d-inline" v-if="producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max">
+                                                            </span>
+                                                            <span class="d-inline" v-else>
+                                                                S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                            </span>
+                                                        </span>
+                                                        <!--<span class="text-amarillo-ecovalle font-weight-bold" v-if="producto.oferta_vigente">
+                                                            S/ @{{ (producto.oferta_vigente.porcentaje ? (producto.precio_actual.monto * (100 - producto.oferta_vigente.porcentaje) / 100) : (producto.precio_actual.monto - producto.oferta_vigente.monto)).toFixed(2) }}
+                                                        </span>
+                                                        <span class="text-amarillo-ecovalle font-weight-bold" v-else>
+                                                            S/ @{{ producto.precio_actual.monto.toFixed(2) }}
+                                                        </span>-->
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div v-if="producto.stock_actual - producto.stock_separado === 0">
+                                                <button class="btn btn-sm btn-block btn-danger font-weight-bold py-2" disabled="disabled">
+                                                    @{{ locale === 'es' ? 'AGOTADO' : 'SOLD OUT' }}
+                                                </button>
+                                            </div>
+                                            <div v-else>
+                                                <div class="input-group" v-if="producto.cantidad && producto.cantidad > 0">
+                                                    <span class="input-group-prepend">
+                                                        <button type="button" class="btn btn-ecovalle" v-on:click="ajaxDisminuirCantidadProductoCarritoA(producto)">
+                                                            <i class="fas" :class="{ 'fa-minus': producto.cantidad > 1, 'fa-trash-alt': producto.cantidad === 1 }"></i>
+                                                        </button>
+                                                    </span>
+                                                        <input type="text" class="form-control text-center" :value="producto.cantidad" :placeholder="producto.cantidad" v-on:keyup="changeCantidad(producto,i)" :id="'cantidad'+i" onkeypress="return isNumber(event)">
+                                                    <span class="input-group-append">
+                                                        <button type="button" class="btn btn-ecovalle" :disabled="producto.cantidad >= producto.stock_actual" v-on:click="ajaxAumentarCantidadProductoCarritoA(producto)">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </span>
+                                                </div>
+                                                <button class="btn btn-sm btn-block btn-ecovalle py-2" v-on:click="ajaxAgregarAlCarrito(producto)" :disabled="iAgregandoAlCarrito === 1 && iProductoId === producto.id" v-else>
+                                                    <span v-if="iAgregandoAlCarrito === 1 && iProductoId === producto.id"><i class="fas fa-circle-notch fa-spin"></i></span>
+                                                    <span v-else><i class="fas fa-shopping-cart"></i>&nbsp;{{ $lstLocales['Add to cart'] }}</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 pt-5 pb-3">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination justify-content-center" v-cloak>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" v-on:click.prevent="navegarAnterior" aria-label="Previous" :disabled="iPaginaSeleccionada === 0">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <li class="page-item" v-for="iPagina in lstPaginas" :class="{ active: iPagina === iPaginaSeleccionada }" :disabled="iPagina === -1">
+                                                <a class="page-link" href="#" v-on:click.prevent="iPaginaSeleccionada = iPagina" v-if="iPagina !== -1">@{{ iPagina + 1 }}</a>
+                                                <a class="page-link" href="#" v-on:click.prevent v-else>...</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#" v-on:click.prevent="navegarSiguiente" aria-label="Next" :disabled="iPaginaSeleccionada + 1 === iTotalPaginas">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-3">
                     <form v-on:submit.prevent>
                         <div class="row">
                             <div class="col-12">
@@ -118,7 +323,7 @@
                     </div>
                 </div>
 
-                <div class="col-lg-9">
+                <div class="col-12 col-lg-9 d-none d-md-block">
                     <div class="row py-4 py-lg-0" v-if="iCargandoProductos === 1">
                         <div class="col-12 text-center">
                             <p><img src="/img/spinner.svg"></p>
@@ -134,8 +339,14 @@
                                             <h2 class="text-center text-white text-uppercase font-weight-bold">
                                                 {{ $lstTraduccionesTiendaListaProductos['find_your_favorite_product_here'] }}
                                             </h2>
-                                            <input class="form-control form-control-lg" placeholder="{{ $lstTraduccionesTiendaListaProductos['search_product'] }}" autocomplete="off" v-model="sBuscar"
-                                                   v-autocomplete="{ url: '/tienda/ajax/buscarProducto', select: onSelectAutocompleteProducto, renderItem: renderProducto}">
+                                            <form id="buscar_prod" method="POST"  action="{{route('tienda.buscarProducto')}}">
+                                                @csrf
+                                                <div class="autocompletar-1">
+                                                    <input id="inputSearch-1" name="keyword" class="form-control form-control-lg" placeholder="{{ $lstTraduccionesTiendaListaProductos['search_product'] }}" autocomplete="off" v-model="sBuscar"
+                                                    v-autocomplete="{ url: '/tienda/ajax/buscarProducto', select: onSelectAutocompleteProducto, renderItem: renderProducto}">
+                                                    <button class="icon" type="button" onclick="$('#buscar_prod').submit()"><i class="fa fa-search"></i></button>
+                                                </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

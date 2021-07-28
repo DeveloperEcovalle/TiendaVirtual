@@ -95,6 +95,7 @@ class Tienda extends Website {
             ->join('productos', 'productos_categorias.producto_id', '=', 'productos.id')
             ->join('precios', 'productos.id', '=', 'precios.producto_id')
             ->whereNotNull('precios.id')
+            ->where('precios.eliminado',0)
             ->select($orderBy,'categorias_producto.id', DB::raw('count(productos.id) as cantidad_productos'))
             ->groupBy('categorias_producto.id',$orderBy)
             ->orderBy($orderBy, 'asc')
