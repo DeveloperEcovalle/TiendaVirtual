@@ -66,15 +66,15 @@
     <div id="content">
         <header class="bg-ecovalle-2 position-fixed">
             <div class="container-xl px-0" style="background: url('/img/bg_header.svg'); background-position: top right; background-repeat: no-repeat; background-size: 75%">
-                <div class="row p-2">
+                <div class="row p-1 p-lg-2 align-items-center" style="height: 90% !important;">
                     <div class="col-12 col-md-3 d-none d-lg-block col-lg-3">
-                        <a href="/index">
-                            <img src="/img/logo_ecovalle_fondo_blanco.svg" class="img-fluid" alt="Logo Ecovalle">
+                        <a href="/index" class="float-right">
+                            <img src="/img/logo_ecovalle_fondo_blanco.svg" class="img-fluid" style="height: 100%;" alt="Logo Ecovalle">
                         </a>
                     </div>
                     <div class="col-12 col-md-12 col-xs-12 col-lg-9">
                         <nav class="navbar navbar-dark justify-content-center justify-content-lg-end p-0 pt-1">
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <form class="mb-0" action="{{route('tienda.buscarProducto')}}" method="POST" id="search-form">
                                     @csrf
                                     <div class="autocompletar">
@@ -83,47 +83,56 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-md-6">
-                                <ul class="nav align-items-center justify-content-between" id="navUsuario">
-                                    <li class="nav-item dropdown">
-                                        @if(session()->has('cliente'))
-                                        <a class="nav-link nav-ecovalle-blanco dropdown py-0 d-flex align-items-center text-right" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <!-- /mi-cuenta -->
-                                            <span class="mr-13" style="line-height: 1.2">{{ session('cliente')->persona->nombres }}</span>
-                                            <i class="ecovalle-usuario fa-2x"></i>
+                            <div class="col-12 col-md-4">
+                                <div class="row align-items-center">
+                                    <div class="col-3 d-md-none">
+                                        <a href="/index">
+                                            <img src="/img/logo_ecovalle_fondo_blanco.svg" class="img-fluid" alt="Logo Ecovalle">
                                         </a>
-                                        <div class="dropdown-menu rounded py-0" style="min-width: auto" aria-labelledby="navbarDropdown">
-                                            <a class="dropdown-item py-2 px-3" href="/mi-cuenta">
-                                                <i class="fa fa-user"></i> {{ $lstLocales['My account'] }}
-                                            </a>
-                                            <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSalir()">
-                                                <i class="fa fa-sign-out"></i> {{ $lstLocales['Logout'] }}
-                                            </a>
-                                        </div>
-                                        @else
-                                        <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#" data-toggle="modal" data-target="#modalInicioSesion">
-                                            <span class="mr-1">{{ $lstLocales['Sign In'] }}</span>
-                                            <i class="ecovalle-usuario fa-2x"></i>
-                                        </a>
-                                        @endif
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link nav-ecovalle-blanco position-relative py-0" href="/carrito-compras">
-                                            <i class="ecovalle-carrito-compras mr-2 fa-2x"></i>
-                                            <span class="badge badge-nuevo bg-amarillo position-absolute" style="top: 25%" v-if="lstCarritoCompras.length > 0" v-cloak>
-                                                @{{ lstCarritoCompras.length }}</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link nav-ecovalle-blanco dropdown-toggle text-uppercase" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                                            {{ session('locale') }}
-                                        </a>
-                                        <div class="dropdown-menu rounded py-0" style="min-width: auto">
-                                            <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSetLocale('{{ session('locale') === 'es' ? 'en' : 'es' }}')">
-                                                {{ session('locale') === 'es' ? 'EN' : 'ES' }}
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
+                                    </div>
+                                    <div class="col-9 col-md-12">
+                                        <ul class="nav align-items-center justify-content-between" id="navUsuario">
+                                            <li class="nav-item dropdown">
+                                                @if(session()->has('cliente'))
+                                                <a class="nav-link nav-ecovalle-blanco dropdown py-0 d-flex align-items-center text-right" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <!-- /mi-cuenta -->
+                                                    <span class="mr-13" style="line-height: 1.2">{{ session('cliente')->persona->nombres }}</span>
+                                                    <i class="ecovalle-usuario fa-2x"></i>
+                                                </a>
+                                                <div class="dropdown-menu rounded py-0" style="min-width: auto" aria-labelledby="navbarDropdown">
+                                                    <a class="dropdown-item py-2 px-3" href="/mi-cuenta">
+                                                        <i class="fa fa-user"></i> {{ $lstLocales['My account'] }}
+                                                    </a>
+                                                    <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSalir()">
+                                                        <i class="fa fa-sign-out"></i> {{ $lstLocales['Logout'] }}
+                                                    </a>
+                                                </div>
+                                                @else
+                                                <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#" data-toggle="modal" data-target="#modalInicioSesion">
+                                                    <span class="mr-1">{{ $lstLocales['Sign In'] }}</span>
+                                                    <i class="ecovalle-usuario fa-2x"></i>
+                                                </a>
+                                                @endif
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link nav-ecovalle-blanco position-relative py-2" href="/carrito-compras">
+                                                    <i class="ecovalle-carrito-compras mr-2 fa-2x"></i>
+                                                    <span class="badge badge-nuevo bg-amarillo position-absolute" style="top: 25%" v-if="lstCarritoCompras.length > 0" v-cloak>
+                                                        @{{ lstCarritoCompras.length }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item dropdown d-none">
+                                                <a class="nav-link nav-ecovalle-blanco dropdown-toggle text-uppercase" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                    {{ session('locale') }}
+                                                </a>
+                                                <div class="dropdown-menu rounded py-0" style="min-width: auto">
+                                                    <a class="dropdown-item py-2 px-3" href="#" v-on:click.prevent="ajaxSetLocale('{{ session('locale') === 'es' ? 'en' : 'es' }}')">
+                                                        {{ session('locale') === 'es' ? 'EN' : 'ES' }}
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             </div>
                         </nav>
                         <nav class="navbar navbar-expand-md navbar-dark p-0">
@@ -131,7 +140,7 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
 
-                            <div class="collapse bg-ecovalle-2 p-1 navbar-collapse mt-lg-3" id="navbarEnlacesPrincipales">
+                            <div class="collapse bg-ecovalle-2-xl bg-ecovalle-2 p-1 navbar-collapse mt-lg-3" id="navbarEnlacesPrincipales">
                                 <ul class="nav nav-fill flex-column flex-fill flex-md-row mt-2">
                                     <li class="nav-item {{ $iPagina === 1 ? 'active' : '' }} dropdown mt-1 mr-md-1">
                                         <a class="nav-link text-uppercase px-2 px-xl-3 mr-lg-1 rounded border dropdown-toggle" href="/nosotros" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
