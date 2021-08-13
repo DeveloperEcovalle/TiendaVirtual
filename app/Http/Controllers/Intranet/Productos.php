@@ -19,6 +19,7 @@ use App\ProductoLinea;
 use App\ProductoSubproducto;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class Productos extends Intranet {
@@ -488,62 +489,72 @@ class Productos extends Intranet {
 
     public function ajaxEliminar(Request $request) {
         $this->init();
+       try{
+            DB::beginTransaction();
 
-        $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoEliminar)->first();
+            $permiso = $this->perfil->permisos->where('codigo', $this->sPermisoEliminar)->first();
 
-        $respuesta = new Respuesta;
-        if ($permiso === null) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
-            return response()->json($respuesta);
-        }
-
-        $request->validate([
-            'id' => 'required|numeric'
-        ]);
-
-        $iProductoId = $request->get('id');
-
-        //TODO: VERIFICAR SI EL PRODUCTO TIENE VENTAS REGISTRADAS
-
-        $producto = Producto::find($iProductoId);
-
-        $detalles = DetalleCarrito::where('producto_id', $iProductoId)->get();
-
-        if(count($detalles) == 0)
-        {
-            Precio::where('producto_id', $iProductoId)->delete();
-            Oferta::where('producto_id', $iProductoId)->delete();
-            ProductoLinea::where('producto_id', $iProductoId)->delete();
-            ProductoCategoria::where('producto_id', $iProductoId)->delete();
-            ProductoSubproducto::where('producto_id', $iProductoId)->delete();
-
-            foreach($producto->imagenes as $img)
-            {
-                $url_baner = public_path().$img->ruta;
-                try
-                {
-                    unlink($url_baner);
-                }catch(Exception $e)
-                {}
+            $respuesta = new Respuesta;
+            if ($permiso === null) {
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'No tiene permiso para realizar esta acci&oacute;n';
+                return response()->json($respuesta);
             }
 
-            ImagenProducto::where('producto_id', $iProductoId)->delete();
+            $request->validate([
+                'id' => 'required|numeric'
+            ]);
 
-            // $sRutaImagen = str_replace('/storage/', '', $producto->ruta_imagen);
-            // Storage::disk('public')->delete($sRutaImagen);
+            $iProductoId = $request->get('id');
 
-            $producto->delete();
+            //TODO: VERIFICAR SI EL PRODUCTO TIENE VENTAS REGISTRADAS
 
-            $respuesta->result = Result::SUCCESS;
-            $respuesta->mensaje = 'Producto eliminado correctamente.';
+            $producto = Producto::find($iProductoId);
 
-            return response()->json($respuesta);
-        }else{
+            $detalles = DetalleCarrito::where('producto_id', $iProductoId)->get();
+
+            if(count($detalles) == 0)
+            {
+                Precio::where('producto_id', $iProductoId)->delete();
+                Oferta::where('producto_id', $iProductoId)->delete();
+                ProductoLinea::where('producto_id', $iProductoId)->delete();
+                ProductoCategoria::where('producto_id', $iProductoId)->delete();
+                ProductoSubproducto::where('producto_id', $iProductoId)->delete();
+
+                foreach($producto->imagenes as $img)
+                {
+                    $sRutaImagen = str_replace('/storage/', '', $img->ruta);
+                    Storage::disk('public')->delete($sRutaImagen);
+                }
+
+                ImagenProducto::where('producto_id', $iProductoId)->delete();
+                DB::table('kardex')->where('producto_id', $iProductoId)->delete();
+                DB::table('movimientos_stock')->where('producto_id', $iProductoId)->delete();
+
+                // $sRutaImagen = str_replace('/storage/', '', $producto->ruta_imagen);
+                // Storage::disk('public')->delete($sRutaImagen);
+
+                $producto->delete();
+
+                DB::commit();
+
+                $respuesta->result = Result::SUCCESS;
+                $respuesta->mensaje = 'Producto eliminado correctamente.';
+
+                return response()->json($respuesta);
+            }else{
+                $respuesta->result = Result::ERROR;
+                $respuesta->mensaje = 'Producto con detalles no puedes eliminarlo.';
+
+                return response()->json($respuesta);
+            }
+       }
+       catch(Exception $e)
+       {    DB::rollBack();
             $respuesta->result = Result::ERROR;
-            $respuesta->mensaje = 'Producto con detalles no puedes eliminarlo.';
+            $respuesta->mensaje = $e->getMessage();
 
             return response()->json($respuesta);
-        }
+       }
     }
 }

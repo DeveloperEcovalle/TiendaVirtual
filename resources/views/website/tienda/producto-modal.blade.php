@@ -126,10 +126,10 @@
                 <p class="font-weight-bold text-muted mt-0 mb-1 text-modal-total">S/. @{{ fDescuento.toFixed(2) }}</p>
             </div>
             <div class="col-md-6 p-1 m-0">
-                <button type="button" v-on:click="removeModal" class="btn btn-sm btn-block btn-ecovalle-compra-modal mb-1 text-modal-total">Continuar comprando</button>
+                <button type="button" v-on:click="removeModal" class="btn btn-sm btn-block btn-amarillo-compra-modal mb-1 text-modal-total">Continuar comprando</button>
             </div>
             <div class="col-md-6 p-1 m-0">
-                <a class="btn btn-sm btn-block btn-amarillo-compra-modal text-modal-total" href="/carrito-compras">Procesar compra</a>
+                <a class="btn btn-sm btn-block btn-ecovalle-compra-modal text-modal-total" href="/carrito-compras">Procesar compra</a>
             </div>
         </div>
     </div>
