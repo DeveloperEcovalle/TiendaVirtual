@@ -10,7 +10,9 @@ use App\Http\Controllers\ItemAutocompletar;
 use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\ImagenProducto;
+use App\Kardex;
 use App\LineaProducto;
+use App\MovimientoStock;
 use App\Oferta;
 use App\Precio;
 use App\Producto;
@@ -520,7 +522,6 @@ class Productos extends Intranet {
                 ProductoLinea::where('producto_id', $iProductoId)->delete();
                 ProductoCategoria::where('producto_id', $iProductoId)->delete();
                 ProductoSubproducto::where('producto_id', $iProductoId)->delete();
-
                 foreach($producto->imagenes as $img)
                 {
                     $sRutaImagen = str_replace('/storage/', '', $img->ruta);
@@ -528,8 +529,8 @@ class Productos extends Intranet {
                 }
 
                 ImagenProducto::where('producto_id', $iProductoId)->delete();
-                DB::table('kardex')->where('producto_id', $iProductoId)->delete();
-                DB::table('movimientos_stock')->where('producto_id', $iProductoId)->delete();
+                Kardex::where('producto_id', $iProductoId)->delete();
+                MovimientoStock::where('producto_id', $iProductoId)->delete();
 
                 // $sRutaImagen = str_replace('/storage/', '', $producto->ruta_imagen);
                 // Storage::disk('public')->delete($sRutaImagen);
