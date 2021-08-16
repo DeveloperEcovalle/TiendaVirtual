@@ -554,8 +554,8 @@
                                         <div class="card my-2 shadow-lg">
                                             <div class="card-header p-0 bg-transparent" style="height: 180px">
                                                 <div class="div-oferta position-absolute" v-if="producto.oferta_vigente">
-                                                    <div class="justify-content-between">
-                                                        @{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.
+                                                    <div class="text-center">
+                                                        <p class="m-0 p-0" style="line-height: 12px;">@{{ producto.oferta_vigente.porcentaje ? (producto.oferta_vigente.porcentaje + '%') : ('S/ ' + producto.oferta_vigente.monto) }} Dscto.</p>
                                                     </div>
                                                 </div>
                                                 <div class="div-promocion position-absolute" v-if="producto.promocion_vigente">
