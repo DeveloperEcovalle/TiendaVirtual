@@ -1,21 +1,14 @@
 <html>
 <head>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1FHPDW986R"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH0M0ENR80"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-1FHPDW986R');
+        gtag('config', 'G-CH0M0ENR80');
     </script>
-    <!-- Google Analytics -->
-    <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
-    <script>
-    window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-    ga('create', 'UA-199871946-1', 'auto');
-    ga('send', 'pageview');
-    </script>
-    <script async src='https://www.google-analytics.com/analytics.js'></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
