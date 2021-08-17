@@ -1,13 +1,13 @@
 <html>
 <head>
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH0M0ENR80"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2GX015VX64"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-CH0M0ENR80');
+        gtag('config', 'G-2GX015VX64');
     </script>
     
     <script async src='https://www.google-analytics.com/analytics.js'></script>
