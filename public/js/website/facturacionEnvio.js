@@ -360,6 +360,11 @@ let vueFacturacionEnvio = new Vue({
         }
     },
     mounted: function () {
+        
+        gtag('event', 'Facturacion', {
+            'event_category' : 'VisitaPagina',
+            'event_label' : 'FacturacionEnvio'
+        });
         let $this = this;
         ajaxWebsiteLocale().then(response => {
             let respuesta = response.data;
