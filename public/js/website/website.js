@@ -211,7 +211,10 @@ let ajaxWebsiteAgregarAlCarrito = function (producto, actualizarLstProductos, ls
         let respuesta = response.data;
         if (respuesta.result === result.success) {
             mostrarMensajeProductoAgregado(producto);
-
+            gtag('event', 'add_to_cart', {
+                'event_category' : 'Producto_agregado',
+                'event_label' : producto.nombre_es
+            });
             producto.cantidad = 1;
             actualizarLstProductos();
 
