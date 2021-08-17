@@ -9,6 +9,8 @@
 
         gtag('config', 'G-CH0M0ENR80');
     </script>
+    
+    <script async src='https://www.google-analytics.com/analytics.js'></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
