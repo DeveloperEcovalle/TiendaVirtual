@@ -590,6 +590,7 @@ a.img-producto:hover > .img-background-thumbnail {
 .btn-ecovalle-2:hover {
     background-color: var(--verde-ecovalle);
     border: 1px solid var(--verde-ecovalle);
+    color: #fff;
 }
 
 .btn-amarillo {
