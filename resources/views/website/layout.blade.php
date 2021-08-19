@@ -78,14 +78,14 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="col-12 col-md-4">
+                            <div class="col-12 col-md-4 pt-2 pt-md-0">
                                 <div class="row align-items-center">
-                                    <div class="col-3 d-md-none">
+                                    <div class="col-4 d-md-none">
                                         <a href="/index">
                                             <img src="/img/logo_ecovalle_fondo_blanco.svg" class="img-fluid" alt="Logo Ecovalle">
                                         </a>
                                     </div>
-                                    <div class="col-9 col-md-12">
+                                    <div class="col-8 col-md-12">
                                         <ul class="nav align-items-center justify-content-between" id="navUsuario">
                                             <li class="nav-item dropdown">
                                                 @if(session()->has('cliente'))

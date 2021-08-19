@@ -1341,35 +1341,86 @@ button.btn-round:hover{
 
 header {
     width: 100%;
-    height:140px; 
+    height: 150px; 
     z-index: 100;
 }
 
 .container-page{
-    padding-top: 140px;
+    padding-top: 150px;
 }
 
-@media screen and (max-width: 500px){    
-    .container-page {
-        padding-top: 130px;
-    }
-
+@media screen and (min-width: 430px){   
     header {
-        height:130px; 
+        height: 160px; 
     }
-}
-
-@media screen and (max-width: 900px){
+     
     .container-page {
-        padding-top: 130px !important;
-    } 
-
-    header {
-        width: 100%;
-        height: 130px !important; 
-        z-index: 100;
+        padding-top: 160px;
     }
 }
+
+@media screen and (min-width: 500px){   
+    header {
+        height: 190px; 
+    }
+     
+    .container-page {
+        padding-top: 190px;
+    }
+}
+
+@media screen and (min-width: 650px){   
+    header {
+        height: 200px; 
+    }
+     
+    .container-page {
+        padding-top: 200px;
+    }
+}
+
+@media screen and (min-width: 680px){   
+    header {
+        height: 210px; 
+    }
+     
+    .container-page {
+        padding-top: 210px;
+    }
+}
+
+@media screen and (min-width: 770px){   
+    header {
+        height: 140px; 
+    }
+     
+    .container-page {
+        padding-top: 140px;
+    }
+}
+
+@media screen and (min-width: 990px){   
+    header {
+        height: 180px; 
+    }
+     
+    .container-page {
+        padding-top: 180px;
+    }
+}
+
+
+@media screen and (min-width: 1080px){   
+    header {
+        height: 140px; 
+    }
+     
+    .container-page {
+        padding-top: 140px;
+    }
+}
+
+
 
 
 .modal-producto {
