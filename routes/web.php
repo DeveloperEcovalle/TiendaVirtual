@@ -846,6 +846,21 @@ Route::namespace('Intranet')->group(function () {
 });
 
 Route::get('ruta', function () {
+
+    $empresa = Empresa::find(1);
+    $venta = Compra::find(1);
+    $estado = Estado::find(1);
+    $agencia = Agencia::find(1);
+    $carrito = array();
+    foreach($venta->detalles as $detalle)
+    {
+        $producto = $detalle->producto;
+        $producto->cantidad = $detalle->cantidad;
+        $producto->pFinal = $detalle->precio_venta;
+        array_push($carrito, $producto);
+    }
+
+    return view('website.pdf.pedido',compact('venta','carrito'));
     /*$empresa = Empresa::find(1);
     $venta = Compra::find(23);
     $estado = Estado::find(1);

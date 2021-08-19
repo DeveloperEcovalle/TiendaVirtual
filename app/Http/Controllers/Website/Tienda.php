@@ -170,7 +170,8 @@ class Tienda extends Website {
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
         $lstProductos_aux = Producto::whereHas('precio_actual')
-            ->where('nombre_es', 'like', $sBusqueda0);
+            ->where('nombre_es','like','%'.$sBuscar.'%');
+        /*    ->orWhere('nombre_es', 'like', $sBusqueda0);
 
         if (count($lstBuscar) > 1) {
             foreach ($lstBuscar as $i => $sBuscando) {
@@ -179,7 +180,7 @@ class Tienda extends Website {
                     $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
-        }
+        }*/
 
         $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
             ->limit(8)
@@ -208,7 +209,8 @@ class Tienda extends Website {
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
         $lstProductos_aux = Producto::whereHas('precio_actual')
-            ->where('nombre_es', 'like', $sBusqueda0)
+            ->where('nombre_es','like','%'.$sBuscar.'%');
+        /*    ->orWhere('nombre_es', 'like', $sBusqueda0)
             ->orWhere('beneficios_es', 'like', $sBusqueda0)
             ->orWhere('descripcion_es', 'like', $sBusqueda0);
 
@@ -219,7 +221,7 @@ class Tienda extends Website {
                     $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
-        }
+        }*/
 
         $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes'])
             ->limit(8)
@@ -276,7 +278,8 @@ class Tienda extends Website {
 
         $sBusqueda0 = '%' . $lstBuscar[0] . '%';
         $lstProductos_aux = Producto::whereHas('precio_actual')
-            ->where('nombre_es', 'like', $sBusqueda0)
+            ->where('nombre_es','like','%'.$sBuscar.'%');
+        /*    ->orWhere('nombre_es', 'like', $sBusqueda0)
             ->orWhere('beneficios_es', 'like', $sBusqueda0)
             ->orWhere('descripcion_es', 'like', $sBusqueda0);
 
@@ -287,7 +290,7 @@ class Tienda extends Website {
                     $lstProductos_aux = $lstProductos_aux->orWhere('nombre_es', 'like', $sBusqueda);
                 }
             }
-        }
+        }*/
 
         $lstProductos_aux = $lstProductos_aux->with(['precio_actual', 'oferta_vigente', 'categorias', 'imagenes', 'promocion_vigente'])->get();
         $lstBlogs = Blog::where('titulo', 'like', $sBusqueda0)->limit(5)->get();

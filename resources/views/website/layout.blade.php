@@ -103,7 +103,7 @@
                                                 </div>
                                                 @else
                                                 <a class="nav-link nav-ecovalle-blanco py-0 d-flex align-items-center text-right" href="#" data-toggle="modal" data-target="#modalInicioSesion">
-                                                    <span class="mr-1">{{ $lstLocales['Sign In'] }}</span>
+                                                    <span class="mr-1 d-none d-lg-block">{{ $lstLocales['Sign In'] }}</span>
                                                     <i class="ecovalle-usuario fa-2x"></i>
                                                 </a>
                                                 @endif

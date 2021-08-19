@@ -112,6 +112,8 @@
                                                     <br>
                                                     @endif
                                                     <strong>Tipo Moneda: </strong>&nbsp; SOLES/PEN.
+                                                    <br>
+                                                    <strong>*Nota: </strong>&nbsp; El Courier puede variar, según disponibilidad del mismo y la ciudad de destino.
                                                 </td>
                                             </tr>
                                         </tbody>

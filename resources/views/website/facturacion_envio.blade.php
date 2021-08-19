@@ -149,6 +149,9 @@
                                         <p v-else class="text-danger"><b>Agencia: </b><i class="fa fa-exclamation-circle"></i> <b>Seleccionar agencia </b></p>
                                     </div>
                                     <div class="col-12">
+                                        <p>*Nota: El Courier puede variar, según disponibilidad del mismo y la ciudad de destino.</p>
+                                    </div>
+                                    <div class="col-12">
                                         <div class="bg-ecovalle">
                                             <div class="form-group row p-4 align-items-end">
                                                 <div v-for="(tipo, i) in lstTiposComprobante" class="col-lg-6 col-12 m-0" >

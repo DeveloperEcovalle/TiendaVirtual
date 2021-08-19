@@ -404,7 +404,7 @@ function autocompletar()
         $.ajax({
             type: 'post',
             url: '/tienda/ajax/buscarProductoAllDatos',
-            data: {'texto':search_p},
+            data: {'texto': search_p},
             dataType: 'json',
             success: function (respuesta) {
                 if(respuesta.result == "success")
