@@ -90,19 +90,14 @@
     </table>
 
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-6">Valor venta</label>
+        <label class="font-weight-bold col-6">Sub Total</label>
         <div class="col-6">
-            <p class="text-right">S/ @{{ (venta.subtotal + venta.delivery + venta.descuento).toFixed(2) }}</p>
+            <p class="text-right">S/ @{{ (venta.subtotal + venta.descuento).toFixed(2) }}</p>
         </div>
     </div>
+    
     <div class="form-group m-0 row">
-        <label class="font-weight-bold col-6">Operaciones Gravadas</label>
-        <div class="col-6">
-            <p class="text-right">S/ @{{ (venta.subtotal + venta.delivery + venta.descuento).toFixed(2) }}</p>
-        </div>
-    </div>
-    <div class="form-group m-0 row">
-        <label class="font-weight-bold col-6">Operaciones Exoneradas</label>
+        <label class="font-weight-bold col-6">Descuento</label>
         <div class="col-6">
             <p class="text-right">S/ @{{ venta.descuento.toFixed(2) }}</p>
         </div>

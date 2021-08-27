@@ -66,7 +66,7 @@
                 </tr>
                 <tr>
                     <td colspan="6">
-                        <b style="font-size: 15px;margin-top: 2px !important">{{$empresa->razon_social}} / R.U.C. {{$empresa->ruc_empresa}}</b>&emsp;
+                        <b style="font-size: 15px;margin-top: 2px !important">{{$empresa->razon_social}} / R.U.C. {{$empresa->ruc}}</b>&emsp;
                         <p style="font-size: 10px;margin-top: 0px !important;margin-bottom: 2px !important;">{{$empresa->direccion}}</p>
                     </td>
                 </tr>

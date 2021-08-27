@@ -14,8 +14,7 @@
     </div>
 
     <div class="modal-pago active" v-if="iPagando === 1">
-        <img src="/img/carrito.gif" alt="Shopping">
-        <b><span>Por favor, espere ...</span></b>
+        <img src="/img/cargando-carrito.gif" alt="Shopping">
     </div>
 
     <section class="pt-5 pb-5" v-if="iCargando === 1" v-cloak>

@@ -847,7 +847,7 @@ Route::namespace('Intranet')->group(function () {
 
 Route::get('ruta', function () {
 
-    $empresa = Empresa::find(1);
+    /*$empresa = Empresa::find(1);
     $venta = Compra::find(1);
     $estado = Estado::find(1);
     $agencia = Agencia::find(1);
@@ -860,7 +860,7 @@ Route::get('ruta', function () {
         array_push($carrito, $producto);
     }
 
-    return view('website.pdf.pedido',compact('venta','carrito'));
+    return view('website.pdf.pedido',compact('venta','carrito'));*/
     /*$empresa = Empresa::find(1);
     $venta = Compra::find(23);
     $estado = Estado::find(1);
@@ -914,5 +914,20 @@ Route::get('ruta', function () {
     {
         $result = enviapedido($venta, $empresa->telefono_pedidos_1);
     }*/
-    return 'ok';
+
+    $ventas = Compra::with(['detalles'])->orderBy('id','desc')->limit(2)->get();
+
+    foreach($ventas as $venta)
+    {
+        $descuento = 0;
+        $des = $venta->descuento;
+        foreach($venta->detalles as $detalle)
+        {
+            $fdes = ($detalle->precio_actual - $detalle->precio_venta) * $detalle->cantidad;
+            $descuento = $descuento + $fdes;
+        }
+        $venta->descuento = $des + number_format(round(($descuento * 10) / 10, 1), 2);
+        $venta->update();
+    }
+    return $ventas;
 });

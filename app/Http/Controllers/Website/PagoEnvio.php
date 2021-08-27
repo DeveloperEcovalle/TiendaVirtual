@@ -252,9 +252,14 @@ class PagoEnvio extends Website
                 $detalle->precio_actual = $producto->precio_actual->monto;
                 $detalle->precio_venta = number_format(round(($fPrecio * 10) / 10, 1), 2);
                 $detalle->promocion = number_format(round(($fPromocion * 10) / 10, 1), 2);
+                $fOferta = 0;
+                if($producto->precio_actual)
+                {
+                    $fOferta = $producto->precio_actual->monto - number_format(round(($fPrecio * 10) / 10, 1), 2);
+                }
                  /*----------------------------------*/
                 $detalle->save();
-                $fDescuento = $fDescuento + ($fPromocion * $detalles[$cont]->cantidad);
+                $fDescuento = $fDescuento + (($fPromocion * $detalles[$cont]->cantidad) + ($fOferta * $detalles[$cont]->cantidad));
                 $cont = $cont + 1;
             }
 
