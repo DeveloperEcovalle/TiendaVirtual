@@ -915,7 +915,7 @@ Route::get('ruta', function () {
         $result = enviapedido($venta, $empresa->telefono_pedidos_1);
     }*/
 
-    $ventas = Compra::with(['detalles'])->orderBy('id','desc')->limit(2)->get();
+    $ventas = Compra::with(['detalles'])->get();
 
     foreach($ventas as $venta)
     {
