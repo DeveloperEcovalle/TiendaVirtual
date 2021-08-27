@@ -11,6 +11,22 @@
     <form role="form" v-on:submit.prevent="ajaxActualizar" class="w-100" id="frmEditar">
         <h4 class="mt-4">Datos personales</h4>
         <div class="form-group row">
+            <label class="col-md-3 py-md-2">Tipo de documento</label>
+            <div class="col-md-9">
+                <select name="tipo_documento" class="form-control" name="tipo_documento" v-model="cliente.persona.tipo_documento" required>
+                    <option value="">Seleccionar</option>
+                    <option value="DNI">DNI</option>
+                    <option value="RUC">RUC</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 py-md-2">Documento</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="documento" v-model="cliente.persona.documento" autocomplete="off" required>
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-md-3 py-md-2">Nombres / Raz&oacute;n social <span class="text-danger">*</span></label>
             <div class="col-md-9">
                 <input type="text" class="form-control" name="nombres" v-model="cliente.persona.nombres" required="required" autocomplete="off" v-on:keyup="restablecerHabido">
@@ -42,9 +58,15 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-md-3 py-md-2">Tel&eacute;fono fijo</label>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="telefono_fijo" v-model="cliente.persona.telefono_fijo" autocomplete="off">
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-md-3 py-md-2">Departamento</label>
             <div class="col-md-9">
-                <select class="form-control" v-model="sDepartamentoSeleccionado" v-cloak>
+                <select class="form-control" name="departamento" v-model="sDepartamentoSeleccionado" v-cloak>
                     <option v-for="departamento in lstDepartamentos" :value="departamento">@{{ departamento }}</option>
                 </select>
             </div>
@@ -52,7 +74,7 @@
         <div class="form-group row">
             <label class="col-md-3 py-md-2">Provincia</label>
             <div class="col-md-9">
-                <select class="form-control" v-model="sProvinciaSeleccionada" v-cloak>
+                <select class="form-control" name="provincia" v-model="sProvinciaSeleccionada" v-cloak>
                     <option v-for="provincia in lstProvincias" :value="provincia">@{{ provincia }}</option>
                 </select>
             </div>
@@ -71,7 +93,7 @@
                 <input type="text" class="form-control" name="direccion" v-model="cliente.persona.direccion" autocomplete="off">
             </div>
         </div>
-        <div class="form-group text-right" v-if="cliente.clientes_varios === 0">
+        <div class="form-group text-right">
             <button class="btn btn-white" type="button" v-on:click="ajaxCancelar" v-bind:disabled="iActualizando === 1" v-cloak>Cancelar</button>
             <button class="btn btn-primary ml-2" type="submit" v-bind:disabled="iActualizando === 1" v-cloak>
                 <span v-if="iActualizando === 0">Guardar cambios</span>

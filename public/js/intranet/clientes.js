@@ -500,7 +500,7 @@ $(document).ready(function () {
                                     let frmEditar = document.getElementById('frmEditar');
                                     let formData = new FormData(frmEditar);
                                     formData.append('id', iId);
-                                    formData.append('lista_documentos', $this.sLstDocumentos);
+                                    //formData.append('lista_documentos', $this.sLstDocumentos);
 
                                     $.ajax({
                                         type: 'post',

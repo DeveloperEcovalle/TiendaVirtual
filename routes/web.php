@@ -917,7 +917,7 @@ Route::get('ruta', function () {
 
     $ventas = Compra::with(['detalles'])->get();
 
-    foreach($ventas as $venta)
+    /*foreach($ventas as $venta)
     {
         $descuento = 0;
         $des = $venta->descuento;
@@ -928,6 +928,6 @@ Route::get('ruta', function () {
         }
         $venta->descuento = $des + number_format(round(($descuento * 10) / 10, 1), 2);
         $venta->update();
-    }
+    }*/
     return $ventas;
 });
