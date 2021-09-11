@@ -36,8 +36,8 @@ return [
     'mailers' => [
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST','mail.ecovalle.pe'),
-            'port' => env('MAIL_PORT', 587),
+            'host' => env('MAIL_HOST','email.ecovalle.pe'),
+            'port' => env('MAIL_PORT', 465),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
