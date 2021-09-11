@@ -174,7 +174,7 @@ class PagoEnvio extends Website
     {
         try{
 
-            DB::beginTransaction();
+            //DB::beginTransaction();
             $respuesta = new Respuesta;
 
             $token = $request->get('token');
@@ -265,6 +265,8 @@ class PagoEnvio extends Website
 
             $venta->descuento = number_format(round(($fDescuento * 10) / 10, 1), 2);
             $venta->update();
+
+            //DB::commit();
 
             //-------ENVÍO DE CORREO PEDIDO---------
             $carrito = array();
@@ -357,15 +359,13 @@ class PagoEnvio extends Website
 
             //-----ACTUALIZAR SESSION CLIENTE
 
-            DB::commit();
-
             $respuesta->result = Result::SUCCESS;
             $respuesta->mensaje = 'Compra realizada exitosamente. ';
             return response()->json($respuesta);
         }
         catch (Exception $e)
         {
-            DB::rollBack();
+            //DB::rollBack();
             $respuesta->result = Result::WARNING;
             $respuesta->mensaje = $e->getMessage();
             return response()->json($respuesta);
