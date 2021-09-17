@@ -150,8 +150,8 @@ let culqi = function () {
                         }
                     })
                     .catch(error => {
-                        let respuesta = error.response.data;
-                        let message = JSON.parse(respuesta.message);
+                        // let respuesta = error.response.data;
+                        // let message = JSON.parse(respuesta.message);
                         toastr.clear();
                         toastr.options = {
                             iconClasses: {
@@ -161,7 +161,7 @@ let culqi = function () {
                                 warning: 'bg-warning',
                             },
                         };
-                        toastr.error(message.merchant_message);
+                        toastr.error(error);
                         vuePagoEnvio.iPagando = 0;
                     });
 

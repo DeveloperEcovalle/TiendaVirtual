@@ -173,7 +173,7 @@ class PagoEnvio extends Website
     public function ajaxCrearVenta(Request $request)
     {
         try{
-
+            ini_set("max_execution_time", 60000);
             //DB::beginTransaction();
             $respuesta = new Respuesta;
 
@@ -299,12 +299,6 @@ class PagoEnvio extends Website
             });
 
             $empresa = Empresa::first();
-
-            /*Mail::send('website.email.confirm_pedido',compact("venta","empresa"), function ($mail) use ($venta) {
-                $mail->subject('PEDIDO CONFIRMADO');
-                $mail->to($venta->email);
-                $mail->from('website@ecovalle.pe','ECOVALLE');
-            });*/
             
             if($empresa->correo_pedidos)
             {
