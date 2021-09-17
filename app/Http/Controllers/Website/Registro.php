@@ -191,10 +191,6 @@ class Registro extends Website {
             $cliente->email = $sEmail;
             $cliente->password = md5($sContrasena);
             $cliente->save();
-    
-            $clienteSesion = Cliente::find($cliente->id);
-            session()->forget('cliente');
-            session()->put('cliente', $clienteSesion);
 
             Mail::send('website.email.register',compact("persona"), function ($mail) use ($persona) {
                 $mail->subject('BIENVENID@ A ECOVALLE');
@@ -203,6 +199,9 @@ class Registro extends Website {
             });
             
             DB::commit();
+            $clienteSesion = Cliente::find($cliente->id);
+            session()->forget('cliente');
+            session()->put('cliente', $clienteSesion);
             $ruta = session()->get('ruta');
             $respuesta->result = Result::SUCCESS;
             $respuesta->data = $ruta;

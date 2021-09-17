@@ -266,8 +266,6 @@ class PagoEnvio extends Website
             $venta->descuento = number_format(round(($fDescuento * 10) / 10, 1), 2);
             $venta->update();
 
-            //DB::commit();
-
             //-------ENVÍO DE CORREO PEDIDO---------
             $carrito = array();
             $i = 0;
@@ -356,6 +354,8 @@ class PagoEnvio extends Website
             {
                 $detalle->delete();
             }
+
+            //DB::commit();
 
             //-----ACTUALIZAR SESSION CLIENTE
 
