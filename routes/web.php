@@ -848,7 +848,7 @@ Route::namespace('Intranet')->group(function () {
 Route::get('ruta', function () {
 
     $empresa = Empresa::find(1);
-    $venta = Compra::find(1);
+    $venta = Compra::find(43);
     $estado = Estado::find(1);
     $agencia = Agencia::find(1);
     $carrito = array();    

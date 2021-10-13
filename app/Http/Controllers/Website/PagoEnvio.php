@@ -318,14 +318,14 @@ class PagoEnvio extends Website
                     $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
                     $mail->from('website@ecovalle.pe','ECOVALLE');
                 });
-
-                Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
-                    $mail->to('ccubas@unitru.edu.pe');
-                    $mail->subject('PEDIDO COD: '.$venta->codigo);
-                    $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
-                    $mail->from('website@ecovalle.pe','ECOVALLE');
-                });
             }
+
+            Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                $mail->to('ccubas@unitru.edu.pe');
+                $mail->subject('PEDIDO COD: '.$venta->codigo);
+                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
             
             if($empresa->telefono_pedidos)
             {
