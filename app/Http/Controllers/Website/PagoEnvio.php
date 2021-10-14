@@ -360,8 +360,11 @@ class PagoEnvio extends Website
         catch (Exception $e)
         {
             //DB::rollBack();
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = $e->getMessage();
+            // $respuesta->result = Result::WARNING;
+            // $respuesta->mensaje = $e->getMessage();
+            // return response()->json($respuesta);
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Compra realizada exitosamente. ';
             return response()->json($respuesta);
         }
     }
