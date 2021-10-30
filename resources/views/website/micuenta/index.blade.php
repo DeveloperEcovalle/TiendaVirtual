@@ -12,6 +12,10 @@
         </nav>
     </div>
 
+    <div class="modal-pago active" v-if="iPagando == 1">
+        <img src="/img/cargando-carrito.gif" alt="Shopping">
+    </div>
+
     <section v-cloak>
         <div class="container-xl">
             <div class="row">
@@ -30,7 +34,7 @@
                                                     <label class="m-0">
                                                         &nbsp;@{{ locale === 'es' ? 'Escritorio' : 'Desk' }}
                                                     </label>
-                                                   
+
                                                 </div>
                                                 <div class="d-inline-block float-right pr-2 mt-1">
                                                     <i class="fa fa-tachometer"></i>
@@ -92,7 +96,7 @@
                                 </div>
                             </div>
                             <div class="modal-pedido" id="pedido">
-                                
+
                             </div>
                         </div>
                     </div>
@@ -103,5 +107,6 @@
 @endsection
 
 @section('js')
+    <script src="https://checkout.culqi.com/js/v3"></script>
     <script src="/js/website/miCuenta.js?cvcn=14"></script>
 @endsection

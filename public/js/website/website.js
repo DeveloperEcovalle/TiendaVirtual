@@ -268,7 +268,7 @@ let ajaxSalir = function() {
     });
 };
 
-function locationRegister() 
+function locationRegister()
 {
     let sUrl = location.pathname;
     let formData = new FormData();
@@ -305,7 +305,7 @@ let vuePopup = new Vue({
                     {
                         if(publicidad.enlace)
                         {
-                            var data = [            
+                            var data = [
                                 {
                                     userWebsite_href: publicidad.enlace,
                                 }
@@ -313,17 +313,17 @@ let vuePopup = new Vue({
                         }
                         else
                         {
-                            var data = [            
+                            var data = [
                                 {
                                     userWebsite_href: '#',
                                 }
                             ];
                         }
 
-                
+
                         // initalize popup
-                        $.magnificPopup.open({ 
-                            key: 'my-popup', 
+                        $.magnificPopup.open({
+                            key: 'my-popup',
                             items: data,
                             fixedContentPos: false,
                             fixedBgPos: true,
@@ -343,7 +343,7 @@ let vuePopup = new Vue({
                                         '</div>'
                             },
                             gallery: {
-                                enabled: true 
+                                enabled: true
                             },
                             callbacks: {
                                 markupParse: function(template, values, item) {
@@ -357,8 +357,8 @@ let vuePopup = new Vue({
                 }
             });
         }
-        
-        
+
+
     },
     methods: {
         cerrar: function () {
@@ -435,7 +435,7 @@ function autocompletar()
                                                                 </div>
                                                             </div>
                                                         </div>`;
-                            
+
                             elementoLista.addEventListener('click', function(){
                                 //inputSearch.value = this.innerText;
                                 cerrarLista();
@@ -458,7 +458,7 @@ function autocompletar()
                                                                 </div>
                                                             </div>
                                                         </div>`;
-                            
+
                             elementoLista.addEventListener('click', function(){
                                 //inputSearch.value = this.innerText;
                                 cerrarLista();
@@ -491,7 +491,7 @@ function autocompletar()
         let items;
 
         if(divList){
-            items = divList.querySelectorAll('.div-item'); 
+            items = divList.querySelectorAll('.div-item');
 
             switch (e.keyCode) {
                 case 40: //abajo

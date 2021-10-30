@@ -95,7 +95,7 @@
             <p class="text-right">S/ @{{ (venta.subtotal + venta.descuento).toFixed(2) }}</p>
         </div>
     </div>
-    
+
     <div class="form-group m-0 row">
         <label class="font-weight-bold col-6">Descuento</label>
         <div class="col-6">
@@ -119,12 +119,23 @@
             <h4 class="mb-0">ESTADO DE PEDIDO</h4>
         </div>
     </div>
-    <form class="mb-5" id="frmEstado">
+    <form class="mb-2" id="frmEstado">
         <div class="form-group row">
             <label class="col-md-3 py-md-2 font-weight-bold">Estado <span class="text-danger">*</span></label>
             <div class="col-md-9">
                 <select name="estado" id="estado" class="form-control" v-model="estado" v-on:change="ajaxEditarEstado">
                     <option v-for="estado in lstEstados" :value="estado.id">@{{ estado.estado }}</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <form class="mb-5" id="frmEstadoPago">
+        <div class="form-group row">
+            <label class="col-md-3 py-md-2 font-weight-bold">Pago <span class="text-danger">*</span></label>
+            <div class="col-md-9">
+                <select name="estado_pago" id="estado_pago" class="form-control" v-model="venta.estado_pago" disabled>
+                    <option value="1">PAGADO</option>
+                    <option value="0">POR PAGAR</option>
                 </select>
             </div>
         </div>

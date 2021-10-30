@@ -162,7 +162,7 @@ Route::middleware([Locale::class])->group(function () {
             Route::prefix('/ajax')->group(function () {
                 Route::get('/listarPreciosEnvio', 'PagoEnvio@ajaxListarPreciosEnvio');
                 Route::post('/listarDatosPago', 'PagoEnvio@ajaxListarDatosPago');
-                Route::post('/crearCargo', 'PagoEnvio@ajaxCrearCargo');
+                Route::post('/crearCargo/{id}', 'PagoEnvio@ajaxCrearCargo');
                 Route::post('/crearVenta', 'PagoEnvio@ajaxCrearVenta');
             });
         });
@@ -196,6 +196,7 @@ Route::middleware([Locale::class])->group(function () {
                 Route::get('/download/{codigo}', 'MiCuenta@ajaxDownload');
 
                 Route::get('/panelShow', 'MiCuenta@ajaxListarPanelShow');
+                Route::post('/crearCargo/{id}', 'MiCuenta@ajaxCrearCargo');
             });
         });
 
@@ -221,7 +222,7 @@ Route::middleware([Locale::class])->group(function () {
 
         Route::prefix('/libro-reclamaciones')->group(function () {
             Route::get('/', 'LibroReclamaciones@index');
-            
+
             Route::prefix('/ajax')->group(function () {
                 Route::post('/listar', 'LibroReclamaciones@ajaxListar');
                 Route::post('/enviar', 'LibroReclamaciones@ajaxEnviar');
@@ -712,7 +713,7 @@ Route::namespace('Intranet')->group(function () {
                         Route::prefix('/ajax')->group(function () {
                             Route::get('/panelListar', 'GestionCarrito@ajaxPanelListar');
                             Route::get('/listar', 'GestionCarrito@ajaxListar');
-                            
+
                             Route::get('/panelEditar', 'GestionCarrito@ajaxPanelEditar');
                             Route::post('/actualizar', 'GestionCarrito@ajaxActualizar');
 
@@ -848,10 +849,10 @@ Route::namespace('Intranet')->group(function () {
 Route::get('ruta', function () {
 
     $empresa = Empresa::find(1);
-    $venta = Compra::find(43);
+    $venta = Compra::find(1);
     $estado = Estado::find(1);
     $agencia = Agencia::find(1);
-    $carrito = array();    
+    $carrito = array();
     foreach($venta->detalles as $detalle)
     {
         $producto = $detalle->producto;
@@ -889,7 +890,7 @@ Route::get('ruta', function () {
     //         $mail->from('website@ecovalle.pe','ECOVALLE');
     //     });
     // }
-    
+
     // if($empresa->telefono_pedidos)
     // {
     //     $result = enviapedido($venta, $empresa->telefono_pedidos);

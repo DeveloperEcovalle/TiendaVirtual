@@ -13,7 +13,7 @@
         </nav>
     </div>
 
-    <div class="modal-pago active" v-if="iPagando === 1">
+    <div class="modal-pago active" v-if="iPagando == 1">
         <img src="/img/cargando-carrito.gif" alt="Shopping">
     </div>
 
@@ -27,7 +27,7 @@
         </div>
     </section>
 
-    <section class="pt-4 pb-2" v-if="lstCarritoCompras.length > 0 && iCargando === 0 && iPagado === 0" v-cloak>
+    <section class="pt-4 pb-2" v-if="lstCarritoCompras.length > 0 && iCargando === 0 && iPagado === 0 && iErrorPago == 0" v-cloak>
         <div class="container-xl">
             <div class="row">
                 <div class="col-lg-4">
@@ -207,7 +207,7 @@
             </div>
         </div>
     </section>
-    <section class="pt-4 pb-2" v-if="iPagado === 1"> 
+    <section class="pt-4 pb-2" v-if="iCargando === 0 && iPagado === 1">
         <div class="container-xl">
             <div class="row">
                 <div class="col-12 p-5 bg-white text-justify">
@@ -215,6 +215,32 @@
                     <p class="font-weight-bold h5  text-ecovalle" style="font-size: 25px;">ECOVALLE</p>
                     <div class="text-center">
                         <a href="/tienda" class="btn btn-ecovalle">Continuar comprando</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pt-4 pb-2" v-if="iCargando === 0 && iErrorPago === 1">
+        <div class="container-xl">
+            <div class="row">
+                <div class="col-12 p-5 bg-white text-justify text-warning">
+                    <p class="mb-0" style="font-size: 25px;">Su compra se ha registrado satisfactoriamente, sin embargo ocurrio un error al momento de realizar el Pago, porfavor para aceptar su compra puede pagar en la seccion <b>Mi Cuenta</b>. ¡Muchas Gracias!</p>
+                    <p class="font-weight-bold h5  text-ecovalle" style="font-size: 25px;">ECOVALLE</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="text-center">
+                        <a href="/tienda" class="btn btn-ecovalle">Continuar comprando</a>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="text-center">
+                        <a href="/mi-cuenta?menu=3" class="btn btn-amarillo-compra">Mi Cuenta</a>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="mt-2 alert alert-danger text-center p-2" v-if="sMensajeError != ''">
+                        @{{ sMensajeError }}
                     </div>
                 </div>
             </div>

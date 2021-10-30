@@ -11,10 +11,16 @@ use App\Http\Controllers\Respuesta;
 use App\Http\Controllers\Result;
 use App\Persona;
 use App\Cliente;
+use App\Compra;
+use App\Producto;
 use App\Ubigeo;
 use App\TelefonoEmpresa;
+use Culqi\Culqi;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade as PDF;
+use Carbon\Carbon;
 
 class MiCuenta extends Website
 {
@@ -70,7 +76,7 @@ class MiCuenta extends Website
                 'documento' => 'required|unique:personas,documento,'.session('cliente')->persona_id,
                 'apellidos' => 'required_if:tipo_documento,DNI',
                 'correo' => 'required|email|unique:personas,correo,'.session('cliente')->persona_id,
-    
+
             ];
             $message = [
                 'nombres.required' => 'El campo nombres es obligatorio.',
@@ -82,7 +88,7 @@ class MiCuenta extends Website
                 'correo.email' => 'El campo correo debe ser un email.',
                 'correo.unique' => 'El correo electrónico ingresado ya se encuentra registrado.',
             ];
-    
+
             $validator =  Validator::make($data, $rules, $message);
 
             if ($validator->fails()) {
@@ -91,7 +97,7 @@ class MiCuenta extends Website
                 $respuesta->result = Result::ERROR;
                 $respuesta->mensaje = 'Ocurrió un error de validación.';
                 $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
-                return response()->json($respuesta);    
+                return response()->json($respuesta);
             }
 
             $lstApellidos = explode(' ', $request->apellidos);
@@ -224,7 +230,7 @@ class MiCuenta extends Website
                 'provincia' => 'required',
                 'distrito' => 'required',
                 'direccion' => 'required',
-    
+
             ];
             $message = [
                 'departamento.required' => 'El campo departamento es obligatorio.',
@@ -232,7 +238,7 @@ class MiCuenta extends Website
                 'distrito.required' => 'El campo distrito es obligatorio.',
                 'direccion.required' => 'El direccion es obligatorio.',
             ];
-    
+
             $validator =  Validator::make($data, $rules, $message);
 
             if ($validator->fails()) {
@@ -241,7 +247,7 @@ class MiCuenta extends Website
                 $respuesta->result = Result::ERROR;
                 $respuesta->mensaje = 'Ocurrió un error de validación.';
                 $respuesta->data = array('errors' => $validator->getMessageBag()->toArray());
-                return response()->json($respuesta);    
+                return response()->json($respuesta);
             }
 
             $persona = Persona::find(session()->get('cliente')->persona_id);
@@ -276,7 +282,7 @@ class MiCuenta extends Website
     public function ajaxListarOrders(){
         $respuesta = new Respuesta();
         $lstOrders = [];
-        $lstOrders = session('cliente')->compras;
+        $lstOrders = Compra::where('cliente_id',session('cliente')->id)->orderBy('id','desc')->get();
         foreach($lstOrders as $compra)
         {
             $compra->estado;
@@ -301,5 +307,142 @@ class MiCuenta extends Website
 
     public function ajaxListarPanelShow(){
         return view('website.micuenta.panel_show');
+    }
+
+    public function ajaxCrearCargo(Request $request, $id) {
+        ini_set("max_execution_time", 60000);
+        $respuesta = new Respuesta;
+
+        $SECRET_KEY = "sk_live_c6a62e7d9661faea"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp - sk_live_c6a62e7d9661faea
+        $culqi = new Culqi(array('api_key' => $SECRET_KEY));
+
+        $token = $request->get('token');
+        $amount = $request->get('amount');
+        $email = $request->get('email');
+        $cliente = $request->get('cliente');
+
+        $venta = Compra::find($id);
+
+        $cargo = $culqi->Charges->create(
+            array(
+                'amount' => $amount,
+                'currency_code' => 'PEN',
+                'email' => $email,
+                'source_id' => $token
+            )
+        );
+        if ($cargo === null) {
+            $respuesta->result = Result::WARNING;
+            $respuesta->mensaje = 'No se pudo obtener el registro de pago.<br>Verifique su cuenta o línea de crédito a través de su banca por internet.';
+            return response()->json($respuesta);
+        }
+
+        //$cargo = '';
+        $f_actual = Carbon::now();
+        $anio = date_format($f_actual,'Y');
+        $codigo = substr($token,9,6).substr($venta->id,0,1).'-'.$anio;
+        $venta->codigo = $codigo;
+        $venta->token = $token;
+        $venta->estado_pago = '1';
+        $venta->update();
+
+        $carrito = array();
+        $i = 0;
+        while($i < count($venta->detalles))
+        {
+            $producto = Producto::find($venta->detalles[$i]->producto_id);
+            $producto->cantidad = $venta->detalles[$i]->cantidad;
+            $fPromocion = $producto->promocion_vigente === null ? 0.00 :
+                ($producto->cantidad >= $producto->promocion_vigente->min && $producto->cantidad <= $producto->promocion_vigente->max ? ($producto->promocion_vigente->porcentaje ? (($producto->precio_actual->monto * $producto->promocion_vigente->porcentaje) / 100) : ($producto->promocion_vigente->monto)) : 0.00);
+            $fPrecio = ($producto->oferta_vigente === null ? $producto->precio_actual->monto :
+                ($producto->oferta_vigente->porcentaje ? ($producto->precio_actual->monto * (100 - $producto->oferta_vigente->porcentaje) / 100) : ($producto->precio_actual->monto - $producto->oferta_vigente->monto))) - $fPromocion;
+            $producto->pFinal = $fPrecio;
+            array_push($carrito,$producto);
+            $i = $i + 1;
+        }
+
+        $enviar_mail = self::enviar_mail($venta->id, $carrito);
+        $enviar_wsp = self::enviar_wsp($venta->id);
+
+        $respuesta->result = Result::SUCCESS;
+        $dataRespuesta = ['cargo' => $cargo];
+        $respuesta->data = $dataRespuesta;
+        $respuesta->mensaje = 'El pago se ha realizado con exito muchas gracias por elegirnos.';
+        return response()->json($respuesta);
+    }
+
+    public function enviar_mail($id, $carrito = array())
+    {
+        try
+        {
+            $venta = Compra::find($id);
+            $pdf = PDF::loadview('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])->setPaper('a4')->setWarnings(false);
+            PDF::loadView('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])
+                ->save(public_path().'/storage/pedidos/' . $venta->codigo.'.pdf');
+
+            Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($pdf,$venta) {
+                $mail->to($venta->email);
+                $mail->subject('PEDIDO COD: '.$venta->codigo);
+                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
+
+            $empresa = Empresa::first();
+
+            if($empresa->correo_pedidos)
+            {
+                Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                    $mail->to($empresa->correo_pedidos);
+                    $mail->subject('PEDIDO COD: '.$venta->codigo);
+                    $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                    $mail->from('website@ecovalle.pe','ECOVALLE');
+                });
+            }
+
+            if($empresa->correo_pedidos_1)
+            {
+                Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                    $mail->to($empresa->correo_pedidos_1);
+                    $mail->subject('PEDIDO COD: '.$venta->codigo);
+                    $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                    $mail->from('website@ecovalle.pe','ECOVALLE');
+                });
+            }
+
+            Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
+                $mail->to('ccubas@unitru.edu.pe');
+                $mail->subject('PEDIDO COD: '.$venta->codigo);
+                $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
+                $mail->from('website@ecovalle.pe','ECOVALLE');
+            });
+            return array('success' => true);
+        }
+        catch(Exception $e)
+        {
+
+            return array('success' => true);
+        }
+    }
+
+    public function enviar_wsp($id)
+    {
+        try{
+            $venta = Compra::find($id);
+            $empresa = Empresa::first();
+            if($empresa->telefono_pedidos)
+            {
+                $result = enviapedido($venta, $empresa->telefono_pedidos);
+            }
+
+            if($empresa->telefono_pedidos_1)
+            {
+                $result = enviapedido($venta, $empresa->telefono_pedidos_1);
+            }
+            return array('success' => true);
+        }
+        catch(Exception $e)
+        {
+            return array('success' => false);
+        }
     }
 }

@@ -129,15 +129,9 @@ class PagoEnvio extends Website
         return view('website.pago_envio', $data);
     }
 
-    public function ajaxCrearCargo(Request $request) {
+    public function ajaxCrearCargo(Request $request, $id) {
+        ini_set("max_execution_time", 60000);
         $respuesta = new Respuesta;
-
-        $detalles = $request->get('detalles');
-        if (strlen($detalles) === 0) {
-            $respuesta->result = Result::WARNING;
-            $respuesta->mensaje = 'El carrito de compras está vacío.';
-            return response()->json($respuesta);
-        }
 
         $SECRET_KEY = "sk_live_c6a62e7d9661faea"; //sk_test_DDIXikjr5xQLViGo - sk_test_yE35C4w9LPOqh1qp - sk_live_c6a62e7d9661faea
         $culqi = new Culqi(array('api_key' => $SECRET_KEY));
@@ -147,11 +141,13 @@ class PagoEnvio extends Website
         $email = $request->get('email');
         $cliente = $request->get('cliente');
 
+        $venta = Compra::find($id);
+
         $cargo = $culqi->Charges->create(
             array(
-                'amount' => $amount, 
-                'currency_code' => 'PEN', 
-                'email' => $email, 
+                'amount' => $amount,
+                'currency_code' => 'PEN',
+                'email' => $email,
                 'source_id' => $token
             )
         );
@@ -162,11 +158,31 @@ class PagoEnvio extends Website
         }
 
         //$cargo = '';
+        $venta->estado_pago = '1';
+        $venta->update();
+
+        $carrito = array();
+        $i = 0;
+        while($i < count($venta->detalles))
+        {
+            $producto = Producto::find($venta->detalles[$i]->producto_id);
+            $producto->cantidad = $venta->detalles[$i]->cantidad;
+            $fPromocion = $producto->promocion_vigente === null ? 0.00 :
+                ($producto->cantidad >= $producto->promocion_vigente->min && $producto->cantidad <= $producto->promocion_vigente->max ? ($producto->promocion_vigente->porcentaje ? (($producto->precio_actual->monto * $producto->promocion_vigente->porcentaje) / 100) : ($producto->promocion_vigente->monto)) : 0.00);
+            $fPrecio = ($producto->oferta_vigente === null ? $producto->precio_actual->monto :
+                ($producto->oferta_vigente->porcentaje ? ($producto->precio_actual->monto * (100 - $producto->oferta_vigente->porcentaje) / 100) : ($producto->precio_actual->monto - $producto->oferta_vigente->monto))) - $fPromocion;
+            $producto->pFinal = $fPrecio;
+            array_push($carrito,$producto);
+            $i = $i + 1;
+        }
+
+        $enviar_mail = self::enviar_mail($venta->id, $carrito);
+        $enviar_wsp = self::enviar_wsp($venta->id);
 
         $respuesta->result = Result::SUCCESS;
         $dataRespuesta = ['cargo' => $cargo];
         $respuesta->data = $dataRespuesta;
-        $respuesta->mensaje = 'Pago realizado con exito.';
+        $respuesta->mensaje = 'Compra registrada y pago realizado con exito.';
         return response()->json($respuesta);
     }
 
@@ -174,12 +190,14 @@ class PagoEnvio extends Website
     {
         try{
             ini_set("max_execution_time", 60000);
-            //DB::beginTransaction();
+            DB::beginTransaction();
+
             $respuesta = new Respuesta;
+
 
             $token = $request->get('token');
             $email = $request->get('email');
-    
+
             $tipo_compra = $request->get('tipo_compra');
             $tipo_comprobante = $request->get('tipo_comprobante');
             $cliente = $request->get('cliente');
@@ -198,11 +216,17 @@ class PagoEnvio extends Website
             $agencia = $request->get('agencia');
             $detalles = $request->get('detalles');
 
+            if (strlen($detalles) === 0) {
+                $respuesta->result = Result::WARNING;
+                $respuesta->mensaje = 'El carrito de compras está vacío.';
+                return response()->json($respuesta);
+            }
+
             $cliente_id = session()->has('cliente') ? session()->get('cliente')->id : null;
 
             $fecha_reg = now();
             $fecha_reg = date_format($fecha_reg, 'Y-m-d');
-    
+
             $venta = new Compra();
             $venta->tipo_compra = $tipo_compra;
             $venta->tipo_documento = $tipo_documento;
@@ -287,10 +311,41 @@ class PagoEnvio extends Website
                 $i = $i + 1;
             }
 
+            //-----ACTUALIZAR SESSION CLIENTE
+
+            $cliente = Cliente::find(session('cliente')->id);
+            session()->put('cliente', $cliente);
+
+            foreach($cliente->detalles_carrito as $detalle)
+            {
+                $detalle->delete();
+            }
+
+            DB::commit();
+
+            $respuesta->result = Result::SUCCESS;
+            $respuesta->mensaje = 'Compra realizada exitosamente. ';
+            $respuesta->data = array('id' => $venta->id);
+            return response()->json($respuesta);
+        }
+        catch (Exception $e)
+        {
+            DB::rollBack();
+            $respuesta->result = Result::ERROR;
+            $respuesta->mensaje = $e->getMessage();
+            return response()->json($respuesta);
+        }
+    }
+
+    public function enviar_mail($id, $carrito = array())
+    {
+        try
+        {
+            $venta = Compra::find($id);
             $pdf = PDF::loadview('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])->setPaper('a4')->setWarnings(false);
             PDF::loadView('website.pdf.pedido',['venta' => $venta, 'carrito' => $carrito])
                 ->save(public_path().'/storage/pedidos/' . $venta->codigo.'.pdf');
-                
+
             Mail::send('website.email.pedido',compact("venta"), function ($mail) use ($pdf,$venta) {
                 $mail->to($venta->email);
                 $mail->subject('PEDIDO COD: '.$venta->codigo);
@@ -299,7 +354,7 @@ class PagoEnvio extends Website
             });
 
             $empresa = Empresa::first();
-            
+
             if($empresa->correo_pedidos)
             {
                 Mail::send('website.email.pedido_empresa',compact("venta"), function ($mail) use ($pdf,$venta,$empresa) {
@@ -326,7 +381,20 @@ class PagoEnvio extends Website
                 $mail->attachdata($pdf->output(), $venta->codigo.'.pdf');
                 $mail->from('website@ecovalle.pe','ECOVALLE');
             });
-            
+            return array('success' => true);
+        }
+        catch(Exception $e)
+        {
+
+            return array('success' => true);
+        }
+    }
+
+    public function enviar_wsp($id)
+    {
+        try{
+            $venta = Compra::find($id);
+            $empresa = Empresa::first();
             if($empresa->telefono_pedidos)
             {
                 $result = enviapedido($venta, $empresa->telefono_pedidos);
@@ -336,36 +404,11 @@ class PagoEnvio extends Website
             {
                 $result = enviapedido($venta, $empresa->telefono_pedidos_1);
             }
-
-            //-----ENVÍO DE CORREO PEDIDO-----
-
-            //-----ACTUALIZAR SESSION CLIENTE
-
-            $cliente = Cliente::find(session('cliente')->id);
-            session()->put('cliente', $cliente);
-
-            foreach($cliente->detalles_carrito as $detalle)
-            {
-                $detalle->delete();
-            }
-
-            //DB::commit();
-
-            //-----ACTUALIZAR SESSION CLIENTE
-
-            $respuesta->result = Result::SUCCESS;
-            $respuesta->mensaje = 'Compra realizada exitosamente. ';
-            return response()->json($respuesta);
+            return array('success' => true);
         }
-        catch (Exception $e)
+        catch(Exception $e)
         {
-            //DB::rollBack();
-            // $respuesta->result = Result::WARNING;
-            // $respuesta->mensaje = $e->getMessage();
-            // return response()->json($respuesta);
-            $respuesta->result = Result::SUCCESS;
-            $respuesta->mensaje = 'Compra realizada exitosamente. ';
-            return response()->json($respuesta);
+            return array('success' => false);
         }
     }
 }

@@ -4,6 +4,112 @@ let iPaginaSeleccionada = pagina === null ? 0 : parseInt(pagina);
 let iMenu = lstUrlParams.get('menu');
 let iMenuSeleccionado = iMenu === null ? 0 : parseInt(iMenu);*/
 
+let culqi = function () {
+    if (Culqi.token) { // ¡Objeto Token creado exitosamente!
+        let sToken = Culqi.token.id;
+        if(vueMiCuentaLista.iIdPedidoSeleccionado != 0 && vueMiCuentaLista.iIdPedidoSeleccionado != '')
+        {
+            let iIndice = vueMiCuentaLista.lstPedidos.findIndex((order) => order.id === parseInt(vueMiCuentaLista.iIdPedidoSeleccionado));
+            let order = Object.assign({}, vueMiCuentaLista.lstPedidos[iIndice]);
+            let fTotalCulqi = Math.round(((order.subtotal * 100) + (order.delivery * 100)) * 10) / 10;
+            let sEmail = order.email;
+            let iId = order.id;
+            let formData = new FormData();
+            formData.append('token', sToken);
+            formData.append('amount', fTotalCulqi);
+            formData.append('email', sEmail);
+            vueMiCuentaLista.iPagando = 1;
+            axios({
+                url: '/mi-cuenta/ajax/crearCargo/'+iId,
+                method: 'post',
+                data: formData
+            })
+            .then(response => {
+                let rpta = response.data;
+                if(rpta.result == 'success')
+                {
+                    toastr.clear();
+                    toastr.options = {
+                        iconClasses: {
+                            error: 'bg-danger',
+                            info: 'bg-info',
+                            success: 'bg-success',
+                            warning: 'bg-warning',
+                        },
+                    };
+                    toastr.info(rpta.mensaje);
+                    vueMiCuentaLista.panelOrders();
+
+                    vueMiCuentaLista.iPagando = 0;
+                }else{
+                    toastr.clear();
+                    toastr.options = {
+                        iconClasses: {
+                            error: 'bg-danger',
+                            info: 'bg-info',
+                            success: 'bg-success',
+                            warning: 'bg-warning',
+                        },
+                    };
+                    toastr.error(rpta.mensaje);
+                    vueMiCuentaLista.panelOrders();
+                    vueMiCuentaLista.iPagando = 0;
+                }
+            })
+            .catch(error => {
+                vueMiCuentaLista.iPagando = 0;
+                console.log(error);
+                let respuesta = error.response.data;
+                let message = JSON.parse(respuesta.message);
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.error(message.merchant_message);
+                vueMiCuentaLista.panelOrders();
+            });
+        }
+        else
+        {
+            toastr.clear();
+            toastr.options = {
+                iconClasses: {
+                    error: 'bg-danger',
+                    info: 'bg-info',
+                    success: 'bg-success',
+                    warning: 'bg-warning',
+                },
+            };
+            toastr.error('Ocurrio un error por favor, por favor recargar la pagina o elegir nuevamente la compra a pagar');
+}
+
+    } else {
+        toastr.clear();
+        toastr.options = {
+            iconClasses: {
+                error: 'bg-danger',
+                info: 'bg-info',
+                success: 'bg-success',
+                warning: 'bg-warning',
+            },
+        };
+        toastr.error(Culqi.error.user_message);
+    }
+};
+
+Culqi.publicKey = culqiEcovalle.publicKeyTest; // Configura tu llave pública
+Culqi.options({
+    style: {
+        logo: 'https://ecovalle.pe/img/logo_ecovalle_240x240.png',
+        maincolor: '#009D65',
+    }
+});
+
 let vueMiCuentaLista = new Vue({
     el: '#content',
     data: {
@@ -11,6 +117,9 @@ let vueMiCuentaLista = new Vue({
 
         iMenuSeleccionado: 0,
         bClienteEnSesion : {},
+        lstPedidos: [],
+        iIdPedidoSeleccionado: 0,
+        iPagando: 0,
 
         iCargandoPanel: 0,
         lstCarritoCompras: []
@@ -36,17 +145,17 @@ let vueMiCuentaLista = new Vue({
                         {
                             location = '/index';
                         }
-                        
+
                         $this.bClienteEnSesion = bClienteEnSesion;
                         let sApellido_2 = bClienteEnSesion.apellido_2 === null ? '' : bClienteEnSesion.apellido_2;
                         $this.bClienteEnSesion['apellidos'] = bClienteEnSesion.apellido_1 + ' ' + sApellido_2;
                         let lstCarritoComprasServer = data.lstCarrito;
                         //let bClienteEnSesion = data.bClienteEnSesion;
-        
+
                         let cookieLstCarritoCompras = $cookies.get('lstCarritoCompras');
-        
+
                         let lstCarritoCompras = cookieLstCarritoCompras && cookieLstCarritoCompras.length > 0 ? cookieLstCarritoCompras : lstCarritoComprasServer;
-        
+
                         $this.lstCarritoCompras = lstCarritoCompras;
 
                         if (onSuccess) {
@@ -125,7 +234,7 @@ let vueMiCuentaLista = new Vue({
                             $this = this;
                             let formAccount = document.getElementById('frmAccount');
                             let formData = new FormData(formAccount);
-                            
+
                             $this.iActualizando = 1;
                             axios.post('/mi-cuenta/ajax/actualizarAccount', formData)
                             .then(response => {
@@ -148,7 +257,7 @@ let vueMiCuentaLista = new Vue({
                                     $('#password_nueva').val('');
                                     $('#password_confirm').val('');
                                     vueMiCuentaLista.ajaxListar();
-                                } 
+                                }
                                 else if(respuesta.result === result.warning)
                                 {
                                     toastr.warning(sHtmlErrores(respuesta.data.errors));
@@ -235,7 +344,7 @@ let vueMiCuentaLista = new Vue({
                             $this = this;
                             let formAccount = document.getElementById('frmAddress');
                             let formData = new FormData(formAccount);
-                            
+
                             $this.iActualizando = 1;
                             axios.post('/mi-cuenta/ajax/actualizarAddress', formData)
                             .then(response => {
@@ -255,7 +364,7 @@ let vueMiCuentaLista = new Vue({
                                     localStorage.removeItem('datosDelivery');
                                     toastr.success(respuesta.mensaje);
                                     vueMiCuentaLista.ajaxListar();
-                                } 
+                                }
                                 else if(respuesta.result === result.warning)
                                 {
                                     toastr.warning(sHtmlErrores(respuesta.data.errors));
@@ -293,6 +402,7 @@ let vueMiCuentaLista = new Vue({
                         iCargandoOrders: 0,
                         sBuscar: '',
                         iIdSeleccionado: 0,
+                        sMensajeError: '',
                         lstOrders: [],
                     },
                     computed: {
@@ -312,8 +422,8 @@ let vueMiCuentaLista = new Vue({
                             axios.get('/mi-cuenta/ajax/listarOrders')
                                 .then(response => {
                                     let respuesta = response.data;
-                                    console.log(respuesta);
                                     this.lstOrders = respuesta.data.lstOrders;
+                                    vueMiCuentaLista.lstPedidos = respuesta.data.lstOrders;
                                 }).then(() => this.iCargandoOrders = 0);
                         },
                         panelShow: function(iId){
@@ -330,7 +440,25 @@ let vueMiCuentaLista = new Vue({
                                 $('#modalOrder').modal('show');
                             });
                             this.iIdSeleccionado = iId;
-                        }
+                        },
+                        mostrarModalPago: function (iId) {
+                            this.sMensajeError = '';
+                            let iIndice = vueOrders.lstOrders.findIndex((order) => order.id === parseInt(iId));
+                            let order = Object.assign({}, vueOrders.lstOrders[iIndice]);
+
+                            vueMiCuentaLista.iIdPedidoSeleccionado = iId;
+
+                            let fTotalCulqi = Math.round(((order.subtotal * 100) + (order.delivery * 100)) * 10) / 10;
+
+                            Culqi.settings({
+                                title: 'Ecovalle',
+                                currency: 'PEN',
+                                description: 'Pedido Ecovalle',
+                                amount: fTotalCulqi
+                            });
+
+                            Culqi.open();
+                        },
                     }
                 });
                 setTimeout(() => {

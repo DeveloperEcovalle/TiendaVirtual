@@ -96,62 +96,31 @@ let culqi = function () {
         formData.append('provincia', sProvincia);
         formData.append('distrito', sDistrito);
         vuePagoEnvio.iPagando = 1;
-        axios.post('/pago-envio/ajax/crearCargo', formData)
-            .then(response => {
-                let respuesta = response.data;
-                if(respuesta.result == 'success')
-                {
-                    axios({
-                        url: '/pago-envio/ajax/crearVenta',
-                        method: 'post',
-                        data: formData
-                      })
-                      .then(function (response) {
-                        let respuesta = response.data;
-                        if (respuesta.result === 'success') {
-                            vuePagoEnvio.lstCarritoCompras = [];
-                            vuePagoEnvio.datosEnvio.sOpcion = 0;
-                            vuePagoEnvio.datosDelivery.sOpcion = 0;
-                            vuePagoEnvio.datosRecojo.sOpcion = 0;
-                            $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
-                            $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12); 
-                            $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
-                            vuePagoEnvio.guardarLstCarritoCompras();
-                            toastr.clear();
-                            toastr.options = {
-                                iconClasses: {
-                                    error: 'bg-danger',
-                                    info: 'bg-info',
-                                    success: 'bg-success',
-                                    warning: 'bg-warning',
-                                },
-                            };
-                            toastr.info(respuesta.mensaje);
-                            setTimeout(() => {
-                                vuePagoEnvio.iPagado = 1;
-                                vuePagoEnvio.iPagando = 0;
-                                //location = '/tienda';
-                            }, 3000);
-                        } else {
-                            vuePagoEnvio.iPagado = 0;
-                            setTimeout(() => {
-                                vuePagoEnvio.iPagando = 0;
-                            }, 3000);
-                            toastr.clear();
-                            toastr.options = {
-                               iconClasses: {
-                                    error: 'bg-danger',
-                                    info: 'bg-info',
-                                    success: 'bg-success',
-                                    warning: 'bg-warning',
-                                },
-                            };
-                            toastr.error(respuesta.mensaje);
-                        }
-                    })
-                    .catch(error => {
-                        // let respuesta = error.response.data;
-                        // let message = JSON.parse(respuesta.message);
+        axios({
+            url: '/pago-envio/ajax/crearVenta',
+            method: 'post',
+            data: formData
+          })
+          .then(function (response) {
+            let respuesta = response.data;
+            if (respuesta.result === 'success') {
+                axios({
+                    url: '/pago-envio/ajax/crearCargo/'+respuesta.data.id,
+                    method: 'post',
+                    data: formData
+                })
+                .then(response => {
+                    let rpta = response.data;
+                    if(rpta.result == 'success')
+                    {
+                        vuePagoEnvio.lstCarritoCompras = [];
+                        vuePagoEnvio.datosEnvio.sOpcion = 0;
+                        vuePagoEnvio.datosDelivery.sOpcion = 0;
+                        vuePagoEnvio.datosRecojo.sOpcion = 0;
+                        $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
+                        $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12);
+                        $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
+                        vuePagoEnvio.guardarLstCarritoCompras();
                         toastr.clear();
                         toastr.options = {
                             iconClasses: {
@@ -161,11 +130,56 @@ let culqi = function () {
                                 warning: 'bg-warning',
                             },
                         };
-                        toastr.error(error);
-                        vuePagoEnvio.iPagando = 0;
-                    });
+                        toastr.info(rpta.mensaje);
+                        setTimeout(() => {
+                            vuePagoEnvio.iPagado = 1;
+                            vuePagoEnvio.iPagando = 0;
+                            //location = '/tienda';
+                        }, 3000);
 
-                }else{
+                    }else{
+                        vuePagoEnvio.lstCarritoCompras = [];
+                        vuePagoEnvio.datosEnvio.sOpcion = 0;
+                        vuePagoEnvio.datosDelivery.sOpcion = 0;
+                        vuePagoEnvio.datosRecojo.sOpcion = 0;
+                        $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
+                        $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12);
+                        $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
+                        vuePagoEnvio.guardarLstCarritoCompras();
+                        toastr.clear();
+                        toastr.options = {
+                            iconClasses: {
+                                error: 'bg-danger',
+                                info: 'bg-info',
+                                success: 'bg-success',
+                                warning: 'bg-warning',
+                            },
+                        };
+                        setTimeout(() => {
+                            vuePagoEnvio.iErrorPago = 1;
+                            vuePagoEnvio.iPagando = 0;
+                        }, 3000);
+                        toastr.error(rpta.mensaje);
+                        vuePagoEnvio.sMensajeError = rpta.mensaje;
+                    }
+                })
+                .catch(error => {
+                    vuePagoEnvio.lstCarritoCompras = [];
+                    vuePagoEnvio.datosEnvio.sOpcion = 0;
+                    vuePagoEnvio.datosDelivery.sOpcion = 0;
+                    vuePagoEnvio.datosRecojo.sOpcion = 0;
+                    $cookies.set('datosEnvio', vuePagoEnvio.datosEnvio, 12);
+                    $cookies.set('datosDelivery', vuePagoEnvio.datosDelivery, 12);
+                    $cookies.set('datosRecojo', vuePagoEnvio.datosRecojo, 12);
+                    vuePagoEnvio.guardarLstCarritoCompras();
+                    setTimeout(() => {
+                        vuePagoEnvio.iErrorPago = 1;
+                        vuePagoEnvio.iPagando = 0;
+                        //location = '/tienda';
+                    }, 3000);
+
+                    let respuesta = error.response.data;
+                    let message = JSON.parse(respuesta.message);
                     toastr.clear();
                     toastr.options = {
                         iconClasses: {
@@ -175,27 +189,45 @@ let culqi = function () {
                             warning: 'bg-warning',
                         },
                     };
-                    toastr.error(respuesta.mensaje);
-                    vuePagoEnvio.sMensajeError = respuesta.mensaje;
-                }
-            })
-            .catch(error => {
-                let respuesta = error.response.data;
-                let message = JSON.parse(respuesta.message);
-                vuePagoEnvio.sMensajeError = message.merchant_message;
+                    toastr.error(message.merchant_message);
+                    console.log(message.merchant_message)
+                    vuePagoEnvio.sMensajeError = message.merchant_message;
+                    vuePagoEnvio.iPagando = 0;
+                    vuePagoEnvio.iErrorPago = 1;
+                });
+            } else {
+                vuePagoEnvio.iPagado = 0;
+                setTimeout(() => {
+                    vuePagoEnvio.iPagando = 0;
+                }, 3000);
                 toastr.clear();
                 toastr.options = {
-                    iconClasses: {
+                   iconClasses: {
                         error: 'bg-danger',
                         info: 'bg-info',
                         success: 'bg-success',
                         warning: 'bg-warning',
                     },
                 };
-                toastr.error(message.merchant_message);
-                vuePagoEnvio.sMensajeError = message.merchant_message;
-                vuePagoEnvio.iPagando = 0;
-            });
+                toastr.error(respuesta.mensaje);
+            }
+        })
+        .catch(error => {
+            // let respuesta = error.response.data;
+            // let message = JSON.parse(respuesta.message);
+            console.log('error'+error)
+            toastr.clear();
+            toastr.options = {
+                iconClasses: {
+                    error: 'bg-danger',
+                    info: 'bg-info',
+                    success: 'bg-success',
+                    warning: 'bg-warning',
+                },
+            };
+            toastr.error(error);
+            vuePagoEnvio.iPagando = 0;
+        });
     } else {
         toastr.clear();
         toastr.options = {
@@ -266,7 +298,7 @@ let vuePagoEnvio = new Vue({
             sTelefono: '',
             sOpcion: 0,
         },
-        
+
         datosDelivery: {
             sCabecera: 'ED',
             dTipoDoc: '',
@@ -284,6 +316,8 @@ let vuePagoEnvio = new Vue({
 
         iPagando: 0,
         iPagado: 0,
+        iErrorPago: 0,
+        sMensajeErrorPago: '',
         sMensajeError: '',
 
         respuestaPago: null
@@ -326,7 +360,7 @@ let vuePagoEnvio = new Vue({
 
                 let fPromocion = producto.promocion_vigente === null ? 0.00 :
                     (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
-                
+
                 let promocion = detalle.cantidad * fPromocion;
                 let oferta = detalle.cantidad * fOferta;
                 let total = promocion + oferta;

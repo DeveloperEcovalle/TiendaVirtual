@@ -31,24 +31,24 @@
                     </div>
                     <div class="col-12 col-lg-6"></div>
                     <div class="col-12 col-lg-6">
-                        <table class="float-right">
+                        <table class="float-right table" cellpadding="0" cellspacing="0" style="font-size: 12px;">
                             <tbody>
-                                <tr style="border-bottom: 1px solid #333333;">
+                                <tr>
                                     <td class="w-60" style="width: 60%;"><b>SubTotal</b></td>
                                     <td class="text-right">S/.</td>
                                     <td class="text-right"> @{{ (order.subtotal + order.descuento).toFixed(2) }}</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid #333333;">
+                                <tr>
                                     <td class="w-60"><b>Descuento</b></td>
                                     <td class="text-right">S/.</td>
                                     <td class="text-right"> @{{ (order.descuento).toFixed(2) }}</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid #333333;">
+                                <tr>
                                     <td class="w-60"><b>Delivery</b></td>
                                     <td class="text-right">S/.</td>
                                     <td class="text-right"> @{{ (order.delivery).toFixed(2) }}</td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid #333333;">
+                                <tr class="border-bottom">
                                     <td class="w-60"><b>Total</b></td>
                                     <td class="text-right">S/.</td>
                                     <td class="text-right"> @{{ (order.subtotal + order.delivery).toFixed(2) }}</td>
