@@ -42,7 +42,7 @@ let vueCarritoCompras = new Vue({
             return Math.round(fSubtotal * 10) / 10;
         },
         fVentaValida: function() {
-            return this.fSubtotal >= 50;
+            return this.fSubtotal >= 49.50;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;
@@ -159,7 +159,7 @@ let vueCarritoCompras = new Vue({
                         'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
                         'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
                     };
-                
+
                     toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Si decea al por mayor se le puede brindar a un mejor precio. ¡¡Contáctanos!!</p>
                     <div class="text-center mt-2">
                     <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
@@ -235,13 +235,13 @@ let vueCarritoCompras = new Vue({
                             'showDuration': '300', 'hideDuration': '1000', 'timeOut': 0, 'extendedTimeOut': 0,
                             'showEasing': 'swing', 'hideEasing': 'linear', 'showMethod': 'fadeIn', 'hideMethod': 'fadeOut'
                         };
-                    
+
                         toastr[result.success](`<p class="text-center font-weight-bold text-ecovalle-2">Si decea al por mayor se le puede brindar a un mejor precio. ¡¡Contáctanos!!</p>
                         <div class="text-center mt-2">
                         <button class="btn btn-sm btn-ecovalle mr-3" onclick="toastr.clear()">Continuar comprando</button>
                         <a class="btn btn-sm btn-amarillo" href="/contactanos">Contactar</a>
                         </div>`);
-                    }   
+                    }
                     ajaxWebsiteAumentarCantidadProductoCarritoCant(iProductoId,cant)
                         .then(response => {
                             let respuesta = response.data;
@@ -249,7 +249,7 @@ let vueCarritoCompras = new Vue({
                                 let detalle = $this.lstCarritoCompras[i];
                                 detalle.cantidad = cant;
                                 detalle.producto.cantidad = cant;
-        
+
                                 $this.guardarLstCarritoCompras();
                             }
                         });
@@ -262,7 +262,7 @@ let vueCarritoCompras = new Vue({
                                 let detalle = $this.lstCarritoCompras[i];
                                 detalle.cantidad = cant_aux;
                                 detalle.producto.cantidad = cant_aux;
-        
+
                                 $this.guardarLstCarritoCompras();
                             }
                         });
@@ -277,7 +277,7 @@ let vueCarritoCompras = new Vue({
                     };
                     toastr.error($this.lstCarritoCompras[i].producto.stock_actual +' en stock.');
                     $('#cantidad'+i.toString()).val(cant_aux);
-                }                    
+                }
             }
         },
         ajaxLocalizarFacturacion: function(){
@@ -292,7 +292,7 @@ let vueCarritoCompras = new Vue({
                         warning: 'bg-warning',
                     },
                 };
-                toastr.info('¡No olvides! Tu compra mínima es desde S/. 50.00');   
+                toastr.info('¡No olvides! Tu compra mínima es desde S/. 49.50');
             }else{
                 location = '/facturacion-envio';
             }

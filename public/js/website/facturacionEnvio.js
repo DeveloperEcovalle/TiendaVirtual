@@ -51,7 +51,7 @@ let vueFacturacionEnvio = new Vue({
             sOpcion: 0,
         },
         ratermcond: [],
-        
+
         datosDelivery: {
             sCabecera: 'ED',
             dTipoDoc: '',
@@ -66,7 +66,7 @@ let vueFacturacionEnvio = new Vue({
             sDireccion: '',
             sTipoComprobante: '',
             sOpcion: 0,
-        }, 
+        },
         datermcond: [],
 
         iDireccionEnvioEstablecida: 0,
@@ -249,7 +249,7 @@ let vueFacturacionEnvio = new Vue({
 
                 let fPromocion = producto.promocion_vigente === null ? 0.00 :
                     (producto.cantidad >= producto.promocion_vigente.min && producto.cantidad <= producto.promocion_vigente.max ? (producto.promocion_vigente.porcentaje ? ((producto.precio_actual.monto * producto.promocion_vigente.porcentaje) / 100) : (producto.promocion_vigente.monto)) : 0.00);
-                
+
                 let promocion = detalle.cantidad * fPromocion;
                 let oferta = detalle.cantidad * fOferta;
                 let total = promocion + oferta;
@@ -270,7 +270,7 @@ let vueFacturacionEnvio = new Vue({
             return Math.round(fSubtotal * 10) / 10;
         },
         fVentaValida: function() {
-            return this.fSubtotal >= 50;
+            return this.fSubtotal >= 49.50;
         },
         fTotal: function () {
             return this.fSubtotal + this.fDelivery;
@@ -360,7 +360,7 @@ let vueFacturacionEnvio = new Vue({
         }
     },
     mounted: function () {
-        
+
         gtag('event', 'Facturacion', {
             'event_category' : 'VisitaPagina',
             'event_label' : 'FacturacionEnvio'
@@ -381,7 +381,7 @@ let vueFacturacionEnvio = new Vue({
                 localStorage.removeItem('datosEnvio');
                 localStorage.removeItem('datosRecojo');
                 localStorage.removeItem('datosDelivery');
-                $('#modalInicioSesion').modal('show'); 
+                $('#modalInicioSesion').modal('show');
             }
             else{
                 let sApellido_2 = bClienteEnSesion.apellido_2 === null ? '' : bClienteEnSesion.apellido_2;
@@ -444,17 +444,17 @@ let vueFacturacionEnvio = new Vue({
 
             $this.ajaxListarPreciosEnvio();
             $this.ajaxListarDatosFacturacion();
-            //$('#modalEditarDireccionEnvio').modal('show'); 
+            //$('#modalEditarDireccionEnvio').modal('show');
         }).then(() => {
             $this.guardarLstCarritoCompras();
             if(this.bClienteEnSesion != null)
             {
                 let cookiedatosEnvio = $cookies.get('datosEnvio');
                 cookiedatosEnvio.sDocumento != '' ? this.iDireccionEnvioEstablecida = 1 : this.iDireccionEnvioEstablecida = 0;
-    
+
                 let cookiedatosRecojo = $cookies.get('datosRecojo');
                 cookiedatosRecojo.sDocumento != '' ? this.iRecojoEstablecido = 1 : this.iRecojoEstablecido = 0;
-    
+
                 let cookiedatosDelivery = $cookies.get('datosDelivery');
                 cookiedatosDelivery.sDocumento != '' ? this.iDeliveryEstablecido = 1 : this.iDeliveryEstablecido = 0;
             }
@@ -464,7 +464,15 @@ let vueFacturacionEnvio = new Vue({
             }
         }).then(() => {
             this.verificaDatos();
-            $this.iCargando = 0;
+
+            if($this.fTotal < 49.50)
+            {
+                location = '/carrito-compras';
+            }
+            else
+            {
+                $this.iCargando = 0;
+            }
         }));
     },
     methods: {

@@ -427,10 +427,17 @@ let vuePagoEnvio = new Vue({
             $this.lstCarritoCompras = lstCarritoCompras;
             $this.guardarLstCarritoCompras();
             $this.ajaxListarPreciosEnvio();
-            $this.iCargando = 0;
+            if($this.fTotal < 49.50)
+            {
+                location = '/carrito-compras';
+            }
+            else
+            {
+                $this.iCargando = 0;
+            }
 
         }).then(() => {
-            if ($this.lstCarritoCompras.length === 0) {
+            if ($this.lstCarritoCompras.length == 0) {
                 location = '/carrito-compras';
             }
             if($this.datosEnvio.sOpcion == 0 && $this.datosRecojo.sOpcion == 0 && $this.datosDelivery.sOpcion == 0)
@@ -453,16 +460,32 @@ let vuePagoEnvio = new Vue({
             });
         },
         mostrarModalPago: function () {
-            this.sMensajeError = '';
+            if(this.fTotal >= 49.50)
+            {
+                this.sMensajeError = '';
 
-            Culqi.settings({
-                title: 'Ecovalle',
-                currency: 'PEN',
-                description: 'Pedido Ecovalle',
-                amount: this.fTotalCulqi
-            });
+                Culqi.settings({
+                    title: 'Ecovalle',
+                    currency: 'PEN',
+                    description: 'Pedido Ecovalle',
+                    amount: this.fTotalCulqi
+                });
 
-            Culqi.open();
+                Culqi.open();
+            }
+            else
+            {
+                toastr.clear();
+                toastr.options = {
+                    iconClasses: {
+                        error: 'bg-danger',
+                        info: 'bg-info',
+                        success: 'bg-success',
+                        warning: 'bg-warning',
+                    },
+                };
+                toastr.info('¡No olvides! Tu compra mínima es desde S/. 49.50');
+            }
         },
         ajaxEnviarContanciaYapePlin: function () {
             this.iPagando = 1;
